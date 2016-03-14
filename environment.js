@@ -15,11 +15,11 @@ function Environment(map) {
             this.tiles[i][j] = t
         }
     }
-    
+
     this.player = new Player(0,0)
     this.actions = [player.moveleft,player.moveright,player.moveup,player.movedown]
 
-    this.state = function() {
+    this.get_state = function() {
         return [player.x, player.y]
     }
 
