@@ -1,42 +1,23 @@
-canvas = document.createElement("canvas");
-ctx = this.canvas.getContext("2d");
-canvas.width = D*N-1;
-canvas.height = D*N-1;
-document.body.insertBefore(this.canvas,document.body.childNodes[0]);
-
-var Environment = function() {
+var Environment = function(map) {
     this.tiles = []
-    this.playerx = 0
-    this.playery = 0
+    this.playerx = 0; this.playery = 0
 
     this.penalty = 1;
     this.reward = 10;
     this.score = 0;
-}
+    this.M = map[0].length
+    this.N = map.length
 
-function update(env) {
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    for (i = 0; i < N; i++) {
-        for (j = 0; j < N; j++) {
-            env.tiles[i][j].update()
+    for (i = 0; i < this.M; i++) {
+        this.tiles[i] = new Array(this.N);
+        for (j = 0; j < this.N; j++) {
+            var t = new Tile(map[i][j],i,j)
+            this.tiles[i][j] = t
         }
     }
-    ctx.fillStyle = "blue";
-    ctx.fillRect(env.playerx*D,env.playery*D,d,d);
-    document.getElementById("score").textContent=env.score;
 }
 
 Environment.prototype = {
-    init : function(map) {
-        for (i = 0; i < N; i++) {
-            this.tiles[i] = new Array(N);
-            for (j = 0; j < N; j++) {
-                var t = new Tile(map[i][j],i,j)
-                t.update()
-                this.tiles[i][j] = t
-            }
-        }
-    },
     new_chocolate : function() {
         var i; var j;
         while (true) {
@@ -50,26 +31,25 @@ Environment.prototype = {
     },
     check_move : function() {
         if (this.playerx < 0 || this.playery < 0 || this.playerx >= N || this.playery >= N) {
-            this.score -= env.penalty;
+            this.score -= this.penalty;
             return false;
         } else {
             var type = this.tiles[this.playerx][this.playery].type
             if (type == "W") {
-                this.score -= env.penalty;
+                this.score -= this.penalty;
                 return false;
             } else if (type == "C"){
-                this.score += env.reward;
-                env.tiles[this.playerx][this.playery].type = "F"
+                this.score += this.reward;
+                this.tiles[this.playerx][this.playery].type = "F"
                 this.new_chocolate();
                 return true;
             } else if (type == "T") {
-                this.score -= 2 * env.penalty;
+                this.score -= 2 * this.penalty;
                 return true;
             }
         }
         return true;
     },
-
     move : function(xx,yy) {
         this.playerx = this.playerx+xx;
         this.playery = this.playery+yy;
@@ -78,12 +58,10 @@ Environment.prototype = {
             this.playery = this.playery-yy;
         }
     },
-
     moveleft : function() {this.move(-1,0)},
     moveright : function() {this.move(1,0)},
     moveup : function() {this.move(0,-1)},
     movedown : function() {this.move(0,1)},
-
 }
 
 function Tile(type,x,y) {
@@ -92,7 +70,7 @@ function Tile(type,x,y) {
     this.width = d;
     this.x = x;
     this.y = y;
-    this.update = function() {
+    this.draw = function(ctx) {
         if (this.type == "W") {
             ctx.fillStyle = "black";
         } else if (this.type == "F") {
