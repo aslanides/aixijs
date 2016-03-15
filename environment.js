@@ -1,74 +1,88 @@
-function Environment(map) {
-    this.tiles = [];
-    this.player;
-    this.score;
+canvas = document.createElement("canvas");
+ctx = this.canvas.getContext("2d");
+canvas.width = D*N-1;
+canvas.height = D*N-1;
+document.body.insertBefore(this.canvas,document.body.childNodes[0]);
 
-    var penalty = 1;
-    var reward = 10;
-    var score = 0;
+var Environment = function() {
+    this.tiles = []
+    this.playerx = 0
+    this.playery = 0
 
+    this.penalty = 1;
+    this.reward = 10;
+    this.score = 0;
+}
+
+function update(env) {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
     for (i = 0; i < N; i++) {
-        tiles[i] = new Array(N);
         for (j = 0; j < N; j++) {
-            var t = new Tile(map[i][j],i,j)
-            t.update()
-            this.tiles[i][j] = t
+            env.tiles[i][j].update()
         }
     }
+    ctx.fillStyle = "blue";
+    ctx.fillRect(env.playerx*D,env.playery*D,d,d);
+    document.getElementById("score").textContent=env.score;
+}
 
-    this.player = new Player(0,0)
-    this.actions = [player.moveleft,player.moveright,player.moveup,player.movedown]
-
-    this.get_state = function() {
-        return [player.x, player.y]
-    }
-
-    this.newChocolate = function() {
-        var i = Math.floor(Math.random() * N);
-        var j = Math.floor(Math.random() * N);
-        if (tiles[i][j].type == "floor") {
-            tiles[i][j].type = "chocolate"
-        } else {
-            newChocolate();
-        }
-    }
-
-    this.update = function() {
-        this.visualisation.clear();
+Environment.prototype = {
+    init : function(map) {
         for (i = 0; i < N; i++) {
+            this.tiles[i] = new Array(N);
             for (j = 0; j < N; j++) {
-                tiles[i][j].update()
+                var t = new Tile(map[i][j],i,j)
+                t.update()
+                this.tiles[i][j] = t
             }
         }
-        player.update()
-        document.getElementById("score").textContent=score;
+    },
+    new_chocolate : function() {
+        var i; var j;
+        while (true) {
+            i = Math.floor(Math.random() * N)
+            j = Math.floor(Math.random() * N)
+            if (this.tiles[i][j].type == "F") {
+                this.tiles[i][j].type = "C"
+                break
+            }
         }
-    }
+    },
+    check_move : function() {
+        if (this.playerx < 0 || this.playery < 0 || this.playerx >= N || this.playery >= N) {
+            this.score -= env.penalty;
+            return false;
+        } else {
+            var type = this.tiles[this.playerx][this.playery].type
+            if (type == "W") {
+                this.score -= env.penalty;
+                return false;
+            } else if (type == "C"){
+                this.score += env.reward;
+                env.tiles[this.playerx][this.playery].type = "F"
+                this.new_chocolate();
+                return true;
+            } else if (type == "T") {
+                this.score -= 2 * env.penalty;
+                return true;
+            }
+        }
+        return true;
+    },
 
-    this.visualisation = {
-        canvas : document.createElement("canvas"),
-        context : {},
-        start : function() {
-            this.canvas.width = D*N-1;
-            this.canvas.height = D*N-1;
-            this.context = this.canvas.getContext("2d");
-            document.body.insertBefore(this.canvas,document.body.childNodes[0]);
-            this.interval = setInterval(this.update,1000/fps);
-            window.addEventListener("keydown",
-                function(e) {
-                    if (e.keyCode == 37) {player.moveleft()}
-                    if (e.keyCode == 39) {player.moveright()}
-                    if (e.keyCode == 38) {player.moveup()}
-                    if (e.keyCode == 40) {player.movedown()}
-            })
-            window.addEventListener("keyup",
-                function(e) {
-            })
-        },
-        clear : function() {
-            this.context.clearRect(0,0,this.canvas.width,this.canvas.height);
+    move : function(xx,yy) {
+        this.playerx = this.playerx+xx;
+        this.playery = this.playery+yy;
+        if (!this.check_move()) {
+            this.playerx = this.playerx-xx;
+            this.playery = this.playery-yy;
         }
-    }
+    },
+
+    moveleft : function() {this.move(-1,0)},
+    moveright : function() {this.move(1,0)},
+    moveup : function() {this.move(0,-1)},
+    movedown : function() {this.move(0,1)},
 
 }
 
@@ -79,7 +93,6 @@ function Tile(type,x,y) {
     this.x = x;
     this.y = y;
     this.update = function() {
-        ctx = gridView.context;
         if (this.type == "W") {
             ctx.fillStyle = "black";
         } else if (this.type == "F") {
@@ -93,52 +106,4 @@ function Tile(type,x,y) {
         }
         ctx.fillRect(this.x*D,this.y*D,this.width,this.height);
     }
-}
-
-function Player(x,y) {
-    this.x = x;
-    this.y = y;
-    this.height = d;
-    this.width = d;
-    this.update = function() {
-        ctx = gridView.context;
-        ctx.fillStyle = "blue";
-        ctx.fillRect(this.x*D,this.y*D,this.width,this.height);
-    }
-
-    this.checkMove = function() {
-        if (this.x < 0 || this.y < 0 || this.x >= N || this.y >= N) {
-            score -= penalty;
-            return false;
-        } else {
-            var type = tiles[this.x][this.y].type
-            if (type == "W") {
-                score -= penalty;
-                return false;
-            } else if (type == "C"){
-                score += reward;
-                tiles[this.x][this.y].type = "F"
-                newChocolate();
-                return true;
-            } else if (type == "T") {
-                score -= 2 * penalty;
-                return true;
-            }
-        }
-        return true;
-    }
-
-    this.move(xx,yy) = function() {
-        this.x = this.x+xx;
-        this.y = this.y+yy;
-        if (!this.checkMove()) {
-            this.x = this.x-xx;
-            this.y = this.y-yy;
-        }
-    }
-
-    this.moveleft = this.move(-1,0)
-    this.moveright = this.move(1,0)
-    this.moveup = this.move(0,-1)
-    this.movedown = this.move(0,1)
 }
