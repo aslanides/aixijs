@@ -1,41 +1,38 @@
-function QLearn(env,alpha,gamma,epsilon) {
+var QLearn = function(env,alpha,gamma,epsilon) {
     this.epsilon = epsilon
     this.gamma = gamma
     this.alpha = alpha
-    this.actions = params.environment.allowed_actions
-    this.Q = new Map();
-    for (i = 0; i < params.environment.M; i++) {
-        for (j = 0; j < params.environment.N; j++) {
-            for (a of this.actions) {
-                wtf = [i,j,a].join()
-                this.Q.set(wtf,0.0)
-            }
-        }
-    }
-    this.argmaxQ = function(s) {
+    this.num_actions = env.actions.length
+    this.Q = zeros(env.M*env.N * this.num_actions)
+}
+
+QLearn.prototype = {
+    argmaxQ : function(obs) {
         var Q_max = Number.NEGATIVE_INFINITY
-        var a_max;
-        var Q;
-        for (a in this.actions) {
-            Q = this.Q.get([s[0],s[1],a].join())
+        for (i = 0; i < this.num_actions; i++) {
+            Q = this.Q[this.get_idx(obs,i)]
             if (Q > Q_max) {
                 Q_max = Q
-                a_max = a;
+                a_max = i
             }
         }
         return a_max
-    }
-    this.select_action = function(s) {
+    },
+    select_action : function(obs) {
         if (Math.random() < this.epsilon) {
-            return this.actions[Math.floor(Math.random() * this.actions.length)]
+            return Math.floor(Math.random() * this.num_actions)
         } else {
-            return this.argmaxQ(s)
+            return this.argmaxQ(obs)
         }
+    },
+    update_Q : function(obs,a,rew,obs_) {
+        idx = this.get_idx(obs,a)
 
-    }
-    this.update_Q = function(s,a,r,s_) {
-        sa = [s[0],s[1],a].join()
-        Q_tmp = this.Q.get(sa)
-        this.Q.set(sa,Q_tmp + this.alpha*(r+this.gamma*this.Q.get([s_[0],s_[1],this.argmaxQ(s_)].join()) - Q_tmp))
+        //console.log(obs_)
+        Q_tmp = this.Q[idx]
+        this.Q[idx] = Q_tmp + this.alpha*(rew+this.gamma*this.Q[this.get_idx(obs_,this.argmaxQ(obs_))] - Q_tmp)
+    },
+    get_idx : function(o,a) {
+        return o*this.num_actions+a
     }
 }
