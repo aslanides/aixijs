@@ -25,7 +25,7 @@ const D = d + 1; // TODO look at JQuery!
 
 var alpha = 0.9
 var gamma = 0.99
-var epsilon = 0.3
+var epsilon = 0.01
 
 // visualisation
 
@@ -73,13 +73,13 @@ function draw(ctx,env) {
 }
 
 function start() {
-    env = new Environment(map3)
+    env = new Environment(map1)
     ctx = visualize(env)
     agent = new QLearn(env,alpha,gamma,epsilon)
     lens = []
     l = 0
     s = 0
-    for (iter = 0; iter < 5e6; iter++) {
+    for (iter = 0; iter < 5e5; iter++) {
         l += 1
         a = agent.select_action(s)
         percept = env.do(a)
@@ -93,11 +93,13 @@ function start() {
         s = s_
     }
     draw(ctx,env)
+    console.log("Episode lengths:")
     console.log(lens)
     sum = 0
     for (i = 0;i < lens.length; i++) {
         sum += lens[i]
     }
-    console.log(sum/lens.length)
+    console.log("Average episode length: " + sum/lens.length)
+    console.log("Agent Q values:")
     console.log(agent.Q)
 }
