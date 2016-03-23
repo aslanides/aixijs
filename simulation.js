@@ -89,7 +89,7 @@ function start() {
             lens.push(l)
             l = 0
         }
-        agent.update_Q(s,a,r,s_)
+        agent.update(s,a,r,s_)
         s = s_
     }
     draw(ctx,env)
