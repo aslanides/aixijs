@@ -8,7 +8,9 @@ class Agent {
     select_action(obs) {
         return Math.floor(Math.random() * this.num_actions)
     }
-    update(obs,a,rew,obs_) {}
+    update(obs,a,rew,obs_) {
+        console.log("Beep Beep Boop")
+    }
 }
 
 class TabularAgent extends Agent {
@@ -51,7 +53,11 @@ class QLearn extends TabularAgent {
     update(obs,a,rew,obs_) {
         var idx = this.get_idx(obs,a)
         var Q_tmp = this.Q[idx]
-        this.Q[idx] = Q_tmp + this.alpha*(rew+this.gamma*this.Q[this.get_idx(obs_,this.argmax(this.Q,obs_),this.num_actions)] - Q_tmp)
+        this.Q[idx] = Q_tmp +
+            this.alpha*(
+                rew + this.gamma*this.Q[this.get_idx(obs_,this.argmax(obs_))]
+                 - Q_tmp
+            )
     }
 }
 
@@ -59,6 +65,9 @@ class SARSA extends TabularAgent {
     update(obs,a,rew,obs_) {
         var idx = this.get_idx(obs,a)
         var Q_tmp = this.Q[idx]
-        this.Q[idx] = Q_tmp + this.alpha*(rew+this.gamma*this.Q[this.get_idx(obs_,this.select_action(obs_),this.num_actions)] - Q_tmp)
+        this.Q[idx] = Q_tmp +
+            this.alpha*(
+                rew + this.gamma*this.Q[this.get_idx(obs_,this.select_action(obs_))] - Q_tmp
+            )
     }
 }
