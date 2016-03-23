@@ -10,11 +10,13 @@ var Environment = function(map,episodic) {
     this.chocolate = 10;
     this.M = map[0].length
     this.N = map.length
-    this.actions = [function(e) {return e.moveleft()},
+    this.actions = [
+        function(e) {return e.moveleft()},
         function(e) {return e.moveright()},
         function(e) {return e.moveup()},
-        function (e){return e.movedown()}]
-
+        function (e){return e.movedown()}
+    ]
+    this.num_states = this.M * this.N
     for (i = 0; i < this.M; i++) {
         this.tiles[i] = new Array(this.N);
         for (j = 0; j < this.N; j++) {
