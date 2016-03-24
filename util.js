@@ -1,8 +1,4 @@
 var zeros = function(n) {
-    /*
-        (int) -> Array
-
-    */
   if(typeof(n)==='undefined' || isNaN(n)) { return []; }
   if(typeof ArrayBuffer === 'undefined') {
     // lacking browser support

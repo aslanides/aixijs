@@ -1,3 +1,16 @@
+class Environment {
+    constructor(map) {
+        this.tiles = []
+        for (i = 0; i < this.M; i++) {
+            this.tiles[i] = new Array(this.N);
+            for (j = 0; j < this.N; j++) {
+                var t = new Tile(map[i][j],i,j)
+                this.tiles[i][j] = t
+            }
+        }
+    }
+}
+
 var Environment = function(map,episodic) {
     this.episodic = typeof episodic === 'boolean' ? episodic : true
     this.tiles = []
@@ -10,6 +23,8 @@ var Environment = function(map,episodic) {
     this.chocolate = 10;
     this.M = map[0].length
     this.N = map.length
+    this.initial_state = this._encode_percept()
+    this.optimal_average_reward = this.chocolate / 26 // magic number 26 is how many steps to the choclate from beginning
     this.actions = [
         function(e) {return e.moveleft()},
         function(e) {return e.moveright()},
