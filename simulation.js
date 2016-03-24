@@ -14,7 +14,7 @@ function simulate(env,agent,t) {
     iter = 1;
     while (iter <= t) {
         a = agent.select_action(s)
-        percept = env.do(a)
+        percept = env.perform(a)
         s_ = percept.obs
         r = percept.rew
         agent.update(s,a,r,s_)
@@ -27,7 +27,7 @@ function simulate(env,agent,t) {
 
 function start() {
     var alpha = 0.9; var gamma = 0.99; var epsilon = 0.01
-    env = new Environment(map1)
+    env = new EpisodicGrid(map1)
     agent = new QLearn(env,alpha,gamma,epsilon)
     ctx = visualize(env)
     res = simulate(env,agent,5e5)
