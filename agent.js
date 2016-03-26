@@ -9,25 +9,21 @@ class Agent {
         return Math.floor(Math.random() * this.num_actions)
     }
     update(obs,a,rew,obs_) {
-        console.log("Beep Beep Boop")
+        throw "Not implemented!"
     }
 }
 
 class TabularAgent extends Agent {
     constructor(env,alpha,gamma,epsilon) {
         super(env,alpha,gamma,epsilon)
-        this.Q = zeros(env.num_states * this.num_actions)
+        this.Q = new QTable(env.num_states,this.num_actions)
     }
     select_action(obs) {
-        // epsilon-greedy
         if (Math.random() < this.epsilon) {
             return Math.floor(Math.random() * this.num_actions)
         } else {
             return this.argmax(obs)
         }
-    }
-    get_idx(obs,a) {
-        return obs*this.num_actions + a
     }
     argmax(obs) {
         //arg max Q over actions given obs. break ties uniformly at random
@@ -35,7 +31,7 @@ class TabularAgent extends Agent {
         var ties = []
         var Qtmp
         for (var a = 0; a < this.num_actions; a++) {
-            Qtmp = this.Q[this.get_idx(obs,a)]
+            Qtmp = this.Q.get(obs,a)
             if (Qtmp < Q_max) {
                 continue
             } else if (Qtmp > Q_max) {
@@ -51,23 +47,22 @@ class TabularAgent extends Agent {
 
 class QLearn extends TabularAgent {
     update(obs,a,rew,obs_) {
-        var idx = this.get_idx(obs,a)
-        var Q_tmp = this.Q[idx]
-        this.Q[idx] = Q_tmp +
+        var Q_old = this.Q.get(obs,a)
+        var Q_new = Q_old +
             this.alpha*(
-                rew + this.gamma*this.Q[this.get_idx(obs_,this.argmax(obs_))]
-                 - Q_tmp
+                rew + this.gamma*this.Q.get(obs_,this.argmax(obs_)) - Q_old
             )
+        this.Q.set(obs,a,Q_new)
     }
 }
 
 class SARSA extends TabularAgent {
     update(obs,a,rew,obs_) {
-        var idx = this.get_idx(obs,a)
-        var Q_tmp = this.Q[idx]
-        this.Q[idx] = Q_tmp +
+        var Q_old = this.Q.get(obs,a)
+        var Q_new = Q_old +
             this.alpha*(
-                rew + this.gamma*this.Q[this.get_idx(obs_,this.select_action(obs_))] - Q_tmp
+                rew + this.gamma*this.Q.get(obs_,this.select_action(obs_)) - Q_old
             )
+        this.Q.set(obs,a,Q_new)
     }
 }

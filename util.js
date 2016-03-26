@@ -13,3 +13,18 @@ var zeros = function(n) {
 var random_choice = function(arr) {
     return arr[Math.floor(Math.random() * arr.length)]
 }
+
+function QTable(num_states,num_actions) {
+    this.num_states = num_states
+    this.num_actions = num_actions
+    this.QArr = zeros(this.num_states * this.num_actions)
+    this.idx = function(obs,action) {
+        return obs * this.num_actions + action
+    }
+    this.get = function(obs,action) {
+        return this.QArr[this.idx(obs,action)]
+    }
+    this.set = function(obs,action,value) {
+        this.QArr[this.idx(obs,action)] = value
+    }
+}
