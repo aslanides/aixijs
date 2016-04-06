@@ -78,7 +78,7 @@ class Gridworld extends Environment {
     _inbounds(x,y) {
         return x >= 0 && y >= 0 && x < this.M && y < this.N
     }
-    _dynamics(x,y) {}
+    _dynamics(tile) {}
     _encode_percept() {
         throw "Not implemented!"
     }
