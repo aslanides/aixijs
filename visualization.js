@@ -47,4 +47,5 @@ window.addEventListener("keydown",
         if (e.keyCode == 38) {env.moveup()}
         if (e.keyCode == 40) {env.movedown()}
 })
+}
 */
