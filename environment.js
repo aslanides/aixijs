@@ -132,7 +132,7 @@ class SimpleDispenserGrid extends Gridworld {
             }
             var f = 0
             var disp = false
-            for (var val of this.disp)
+            for (var val of this.disp) {
                 if (this.pos.x == val[0] && this.pos.y == val[1]) {
                     f = this.tiles[val[0],val[1]].freq
                     disp = true
