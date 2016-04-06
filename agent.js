@@ -17,6 +17,7 @@ class TabularAgent extends Agent {
     constructor(env,alpha,gamma,epsilon) {
         super(env,alpha,gamma,epsilon)
         this.Q = new QTable(env.num_states,this.num_actions)
+        this.td_updater
     }
     select_action(obs) {
         if (Math.random() < this.epsilon) {
@@ -43,26 +44,35 @@ class TabularAgent extends Agent {
         }
         return random_choice(ties)
     }
-}
-
-class QLearn extends TabularAgent {
     update(obs,a,rew,obs_) {
         var Q_old = this.Q.get(obs,a)
         var Q_new = Q_old +
             this.alpha*(
-                rew + this.gamma*this.Q.get(obs_,this.argmax(obs_)) - Q_old
+                rew + this.gamma*this.Q.get(obs_,this.td_updater(obs_)) - Q_old
             )
         this.Q.set(obs,a,Q_new)
     }
 }
 
+class QLearn extends TabularAgent {
+    constructor(env,alpha,gamma,epsilon) {
+        super(env,alpha,gamma,epsilon)
+        this.td_updater = this.argmax
+    }
+}
+
 class SARSA extends TabularAgent {
-    update(obs,a,rew,obs_) {
-        var Q_old = this.Q.get(obs,a)
-        var Q_new = Q_old +
-            this.alpha*(
-                rew + this.gamma*this.Q.get(obs_,this.select_action(obs_)) - Q_old
-            )
-        this.Q.set(obs,a,Q_new)
+    constructor(env,alpha,gamma,epsilon) {
+        super(env,alpha,gamma,epsilon)
+        this.td_updater = this.select_action
+    }
+}
+
+class BayesAgent extends Agent {
+    constructor(env,gamma) {
+        super(env,0,gamma,0)
+        this.environment_class = []
+        this.weights = []
+        //this.xi = TODO
     }
 }

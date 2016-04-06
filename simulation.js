@@ -21,6 +21,12 @@ class timeSlice {
   }
 }
 
+var map2 = [["F","F","F","F","F"],
+            ["W","W","F","W","F"],
+            ["W","F","F","F","W"],
+            ["F","F","F","W","W"],
+            ["W","W","C","W","W"]]
+
 function simulate(env,agent,t) {
     s = env.initial_state
     r_ave = 0
@@ -60,11 +66,11 @@ function viewTime(){
 function start() {
     // experiment parameters
     var alpha = 0.9; var gamma = 0.99; var epsilon = 0.01;var t_max = 1e6
-    env = new EpisodicGrid(map1)
+
+    env = new SimpleEpisodicGrid(map1)
     agent = new QLearn(env,alpha,gamma,epsilon)
     res = simulate(env,agent,t_max)
-
-  //  console.log("Agent's average reward: " + res[0])
+    env.optimal_average_reward = 10 / 26 // for map1 (!)
     console.log("Optimal average reward: " + env.optimal_average_reward)
     //console.log("Total reward: " + Math.floor(res[0] * res[1]))
 // todo VISUALISE history / show statistics/etc

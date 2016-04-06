@@ -17,18 +17,8 @@ function draw(ctx,env) {
     ctx.clearRect(0,0,canvas.width,canvas.height);
     for (i = 0; i < env.M; i++) {
         for (j = 0; j < env.N; j++) {
-            var t = env.tiles[i][j].type
-            if (t == "W") {
-                ctx.fillStyle = "black";
-            } else if (t == "F") {
-                ctx.fillStyle = "red";
-            } else if (t == "C"){
-                ctx.fillStyle = "yellow";
-            } else if (t == "T") {
-                ctx.fillStyle = "pink";
-            } else {
-                ctx.fillStyle = "green";
-            }
+            var t = env.tiles[i][j]
+            ctx.fillStyle = t.color
             ctx.fillRect(i*D,j*D,d,d);
         }
     }
