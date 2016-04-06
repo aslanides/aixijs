@@ -17,14 +17,18 @@ var random_choice = function(arr) {
 function QTable(num_states,num_actions) {
     this.num_states = num_states
     this.num_actions = num_actions
-    this.QArr = zeros(this.num_states * this.num_actions)
-    this.idx = function(obs,action) {
+    this._QMap = new Map()
+    this._key = function(obs,action) {
         return obs * this.num_actions + action
     }
     this.get = function(obs,action) {
-        return this.QArr[this.idx(obs,action)]
+        var val = this._QMap.get(this._key(obs,action))
+        if (val == undefined) {
+            return 0
+        }
+        return val
     }
     this.set = function(obs,action,value) {
-        this.QArr[this.idx(obs,action)] = value
+        this._QMap.set(this._key(obs,action),value)
     }
 }
