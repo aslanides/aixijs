@@ -8,6 +8,12 @@ var map1 = [["F","F","W","F","F","F","F","F","F"],
             ["F","F","W","F","W","W","W","F","F"],
             ["F","F","W","F","F","F","F","F","F"]]
 
+var map2 = [["F","F","F","F","F"],
+            ["W","W","F","W","F"],
+            ["W","F","F","F","W"],
+            ["F","F","F","W","W"],
+            ["W","W","C","W","W"]]
+
 function simulate(env,agent,t) {
     s = env.initial_state
     r_ave = 0
