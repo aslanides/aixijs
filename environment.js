@@ -89,7 +89,7 @@ class SimpleEpisodicGrid extends Gridworld {
         var o = this.M * this.pos.x + this.pos.y
         var r = this.reward
         this.nu = function(obs,rew) {
-            return obs == o && rew == r ? 1 : 0
+            return obs == o && rew == r ? 1 : 0 // deterministic
         }
         return {
             obs : o,
@@ -124,9 +124,36 @@ class SimpleDispenserGrid extends Gridworld {
                 }
             }
         }
+        var o = percept.join("")
+        var r = this.reward
+        this.nu = function(obs,rew) {
+            if (obs != o) {
+                return 0
+            }
+            var f = 0
+            var disp = false
+            for (var val of this.disp)
+                if (this.pos.x == val[0] && this.pos.y == val[1]) {
+                    f = this.tiles[val[0],val[1]].freq
+                    disp = true
+                    break
+                }
+            }
+            if (disp) {
+                if (rew == r_chocolate) {
+                    return f
+                } else if (rew == r_empty) {
+                    return 1-f
+                } else {
+                    return 0
+                }
+            } else {
+                return rew == r ? 1 : 0
+            }
+        }
         return {
-            obs : percept.join(""),
-            rew : this.reward
+            obs : o,
+            rew : r
         }
     }
     _dynamics(tile) {
