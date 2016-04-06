@@ -13,11 +13,14 @@ class Environment {
 }
 
 class Gridworld extends Environment {
-    constructor(map) {
+    constructor(config) {
         super()
         this.tiles = []
+        var map = config.map
         this.M = map[0].length
         this.N = map.length
+        var didx = 0
+        this.disp = []
         for (var i = 0; i < this.M; i++) {
             this.tiles[i] = new Array(this.N);
             for (var j = 0; j < this.N; j++) {
@@ -30,19 +33,23 @@ class Gridworld extends Environment {
                 } else if (type == "C") {
                     tile = new Chocolate(i,j)
                 } else if (type == "D") {
-                    tile = new Dispenser(i,j,Math.random())
+                    tile = new Dispenser(i,j,config.freqs[didx])
+                    this.disp[didx] = [i,j]
+                    didx++
                 } else {
                     throw "Unknown tile type"
                 }
                 this.tiles[i][j] = tile
             }
         }
+        this.optimal_average_reward = config.optimal_average_reward
         this.num_states = this.M * this.N
         this.actions = [
             function(e) {return e._move(-1,0)},
             function(e) {return e._move(1,0)},
             function(e) {return e._move(0,1)},
-            function(e) {return e._move(0,-1)}
+            function(e) {return e._move(0,-1)},
+            function(e) {return e._move(0,0)}
         ]
         this.pos = {
             x : 0,
@@ -96,11 +103,35 @@ class SimpleEpisodicGrid extends Gridworld {
     }
 }
 
-class DispenserGrid extends Gridworld {
-    _dynamics(tile) {
-
-    }
+class SimpleDispenserGrid extends Gridworld {
     _encode_percept() {
-
+        var percept = new Array(9)
+        for (var i = 0; i < 3; i++) {
+            for (var j = 0; j < 3; j++) {
+                var tt = this.tiles[this.pos.x-1+i]
+                if (tt == undefined) {
+                    percept[3*i+j] = 1
+                    continue
+                }
+                var t = tt[this.pos.y-1+j]
+                if (t == undefined) {
+                    percept[3*i+j] = 1
+                    continue
+                } else if (t.constructor.name == "Tile") {
+                    percept[3*i+j] = 0
+                } else {
+                    percept[3*i+j] = 1
+                }
+            }
+        }
+        return {
+            obs : percept.join(""),
+            rew : this.reward
+        }
+    }
+    _dynamics(tile) {
+        for (var val of this.disp) {
+            this.tiles[val[0]][val[1]].dispense()
+        }
     }
 }
