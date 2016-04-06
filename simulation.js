@@ -35,9 +35,11 @@ function start() {
     // experiment parameters
     var alpha = 0.9; var gamma = 0.99; var epsilon = 0.01;var t_max = 1e6
 
-    env = new EpisodicGrid(map1)
+    env = new SimpleEpisodicGrid(map1)
     agent = new QLearn(env,alpha,gamma,epsilon)
     res = simulate(env,agent,t_max)
+
+    env.optimal_average_reward = 10 / 26 // for map1 (!)
 
     console.log("Agent's average reward: " + res[0])
     console.log("Optimal average reward: " + env.optimal_average_reward)

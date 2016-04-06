@@ -77,29 +77,30 @@ class Gridworld extends Environment {
     }
 }
 
-class EpisodicGrid extends Gridworld {
-    constructor(map) {
-        super(map)
-        this.optimal_average_reward = 10 / 26 // TODO fix; map dependent!
-    }
+class SimpleEpisodicGrid extends Gridworld {
     _encode_percept() {
         var o = this.M * this.pos.x + this.pos.y
         var r = this.reward
         this.nu = function(obs,rew) {
-            if (obs == o && rew == r) {
-                return 1
-            } else {
-                return 0
-            }
+            return obs == o && rew == r ? 1 : 0
         }
         return {
             obs : o,
             rew : r
         }
     }
-    _dynamics(t) {
-        if (t.constructor.name == "Chocolate") {
-            this.pos = {x:0,y:0}
+    _dynamics(tile) {
+        if (tile.constructor.name == "Chocolate") {
+            this.pos = {x:0,y:0} // "episodic"
         }
+    }
+}
+
+class DispenserGrid extends Gridworld {
+    _dynamics(tile) {
+
+    }
+    _encode_percept() {
+
     }
 }
