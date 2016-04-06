@@ -3,6 +3,9 @@ class Environment {
         this.actions = []
         this.reward = 0
         this.optimal_average_reward = 0
+        this.nu = function() {
+            throw "Not implemented"
+        }
     }
     perform(action) {
         throw "Not implemented!"
@@ -18,78 +21,86 @@ class Gridworld extends Environment {
         for (var i = 0; i < this.M; i++) {
             this.tiles[i] = new Array(this.N);
             for (var j = 0; j < this.N; j++) {
-                var t = new Tile(map[i][j],i,j)
-                this.tiles[i][j] = t
+                var type = map[i][j]
+                var tile
+                if (type == "F") {
+                    tile = new Tile(i,j)
+                } else if (type == "W") {
+                    tile = new Wall(i,j)
+                } else if (type == "C") {
+                    tile = new Chocolate(i,j)
+                } else if (type == "D") {
+                    tile = new Dispenser(i,j,Math.random())
+                } else {
+                    throw "Unknown tile type"
+                }
+                this.tiles[i][j] = tile
             }
         }
         this.num_states = this.M * this.N
         this.actions = [
-            function(e) {return e.move(-1,0)},
-            function(e) {return e.move(1,0)},
-            function(e) {return e.move(0,1)},
-            function(e) {return e.move(0,-1)}
+            function(e) {return e._move(-1,0)},
+            function(e) {return e._move(1,0)},
+            function(e) {return e._move(0,1)},
+            function(e) {return e._move(0,-1)}
         ]
         this.pos = {
             x : 0,
             y : 0
         }
-        this.initial_state = this.encode_percept()
-    }
-    encode_percept() {
-        return {
-            obs: this.M * this.pos.x + this.pos.y,
-            rew : this.reward
-        }
-
+        this.initial_state = 0
     }
     perform(action) {
         return this.actions[action](this)
     }
-    move(xx,yy) {
+    _move(xx,yy) {
         var newx = this.pos.x + xx
         var newy = this.pos.y + yy
-        if (this.legal(newx,newy)) {
-            this.pos.x = newx
-            this.pos.y = newy
+        if (!this._inbounds(newx,newy)) {
+            this.reward = -1
+        } else {
+            var t = this.tiles[newx][newy]
+            this.reward = t.reward()
+            this._dynamics(t)
+            if (t.legal) {
+                this.pos = {x:newx,y:newy}
+            }
         }
-        return this.encode_percept()
+        return this._encode_percept()
     }
-    inbounds(x,y) {
-        return !(x < 0 || y < 0 || x >= this.M || y >= this.N)
+    _inbounds(x,y) {
+        return x >= 0 && y >= 0 && x < this.M && y < this.N
     }
-    legal(x,y) {
+    _dynamics(x,y) {}
+    _encode_percept() {
         throw "Not implemented!"
     }
 }
 
-class EpisodicGrid extends Gridworld {
-    constructor(map) {
-        super(map)
-        this.chocolate = 10;
-        this.optimal_average_reward = this.chocolate / 26 // magic number 26 is how many steps to the chocolate from beginning
+class SimpleEpisodicGrid extends Gridworld {
+    _encode_percept() {
+        var o = this.M * this.pos.x + this.pos.y
+        var r = this.reward
+        this.nu = function(obs,rew) {
+            return obs == o && rew == r ? 1 : 0
+        }
+        return {
+            obs : o,
+            rew : r
+        }
     }
-
-    legal(newx,newy) {
-        if (!this.inbounds(newx,newy)) {
-            this.reward = -1
-            return false
+    _dynamics(tile) {
+        if (tile.constructor.name == "Chocolate") {
+            this.pos = {x:0,y:0} // "episodic"
         }
-        var type = this.tiles[newx][newy].type
-        if (type == "W") {
-            this.reward = -1
-            return false;
-        } else if (type == "C"){
-            this.reward = this.chocolate;
-            this.pos.x = 0; this.pos.y = 0;
-            return false;
-        }
-        this.reward = 0;
-        return true
     }
 }
 
-function Tile(type,x,y) {
-    this.type = type;
-    this.x = x;
-    this.y = y;
+class DispenserGrid extends Gridworld {
+    _dynamics(tile) {
+
+    }
+    _encode_percept() {
+
+    }
 }

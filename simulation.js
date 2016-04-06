@@ -66,18 +66,6 @@ function viewTime(){
 
 }
 
-function viewTime(){
-      //Retrieve user defined timeslice
-    time = document.getElementById("selectTime").value
-
-    //log the timeslice info
-      console.log("History: Agent is in position (" + res[time].ypos+ ","+
-    res[time].xpos+") with an  updated Q value of "+ res[time].q);
-
-    draw(context, res[0], res[time].xpos, res[time].ypos)
-
-}
-
 
 function increment(){
       time++;
