@@ -13,7 +13,8 @@ function visualize(env) {
     return canvas.getContext("2d")
 }
 
-function draw(ctx,env) {
+function draw(ctx,env, x, y) { //Change this later for more general agents
+  //(difference right now is only in position)
     ctx.clearRect(0,0,canvas.width,canvas.height);
     for (i = 0; i < env.M; i++) {
         for (j = 0; j < env.N; j++) {
@@ -23,7 +24,8 @@ function draw(ctx,env) {
         }
     }
     ctx.fillStyle = "blue";
-    ctx.fillRect(env.pos.x*D,env.pos.y*D,d,d);
+    console.log(x+"&"+ y)
+    ctx.fillRect(x*D,y*D,d,d);
     // document.getElementById("score").textContent="Total reward: "+ env.score;
 }
 

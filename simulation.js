@@ -8,16 +8,18 @@ var map1 = [["F","F","W","F","F","F","F","F","F"],
             ["F","F","W","F","W","W","W","F","F"],
             ["F","F","W","F","F","F","F","F","F"]]
 
-//My code
+//Not sure if these should be global
 var history;
 var res;
+var context;
+var time;
 class timeSlice {
-  constructor(q, obs, reward, xpos, ypos) {
-    this.q = q;
+  constructor(q, obs, reward, envt) {
+    this.q = q; // Make abstract for other agents
     this.obs = obs;
     this.reward = reward
-    this.xpos = xpos
-    this.ypos = ypos
+    this.xpos = envt.pos.x
+    this.ypos = envt.pos.y
   }
 }
 
@@ -39,10 +41,8 @@ function simulate(env,agent,t) {
         agent.update(s,a,r,s_)
         //My code
         q = agent.Q.get(s_, a)
-        xpos = env.pos.x
-        ypos = env.pos.y
-        time = new timeSlice(q, s_, r, xpos, ypos)
-        history[iter - 1] = time
+        time = new timeSlice(q, s_, r, env)
+        history[iter] = time
         //TODO start to show history and visualise
         //(User defined parameters, so will select which timeSlice to view,
         //or can progress at a set speed (maybe add graphs etc later) )
@@ -51,29 +51,57 @@ function simulate(env,agent,t) {
         r_ave = (r + iter * r_ave)/(iter + 1)
         iter++
     }
+    history[0] = env //first element will be used to figure out context for vis.
     return history
 }
 function viewTime(){
       //Retrieve user defined timeslice
-    var time = document.getElementById("selectTime").value
+    time = document.getElementById("selectTime").value
+
     //log the timeslice info
       console.log("History: Agent is in position (" + res[time].ypos+ ","+
     res[time].xpos+") with an updated Q value of "+ res[time].q);
 
+    draw(context, res[0], res[time].xpos, res[time].ypos)
+
 }
 
+function viewTime(){
+      //Retrieve user defined timeslice
+    time = document.getElementById("selectTime").value
+
+    //log the timeslice info
+      console.log("History: Agent is in position (" + res[time].ypos+ ","+
+    res[time].xpos+") with an  updated Q value of "+ res[time].q);
+
+    draw(context, res[0], res[time].xpos, res[time].ypos)
+
+}
+
+
+function increment(){
+      time++;
+      console.log("History: Agent is in position (" + res[time].ypos+ ","+
+    res[time].xpos+") with an  updated Q value of "+ res[time].q);
+    draw(context, res[0], res[time].xpos, res[time].ypos)
+
+}
 
 function start() {
     // experiment parameters
     var alpha = 0.9; var gamma = 0.99; var epsilon = 0.01;var t_max = 1e6
 
     env = new SimpleEpisodicGrid(map1)
+
+    context = visualize(env)
+
+
     agent = new QLearn(env,alpha,gamma,epsilon)
     res = simulate(env,agent,t_max)
     env.optimal_average_reward = 10 / 26 // for map1 (!)
     console.log("Optimal average reward: " + env.optimal_average_reward)
     //console.log("Total reward: " + Math.floor(res[0] * res[1]))
 // todo VISUALISE history / show statistics/etc
-    ctx = visualize(env)
-    draw(ctx,env)
+  //  ctx = visualize(env)
+    //draw(ctx,env)
 }
