@@ -32,6 +32,7 @@ class Dispenser extends Tile {
         super(x,y)
         this.freq = freq
         this.color = "orange"
+        this.num_dispensed = 0
         this.reward = function() {
             var rew = this.chocolate ? 10 : 0
             this.chocolate = false
@@ -40,7 +41,8 @@ class Dispenser extends Tile {
     }
     dispense() {
         if (!this.chocolate) {
-            if (Math.random() < freq) {
+            if (Math.random() < this.freq) {
+                this.num_dispensed++
                 this.chocolate = true
             }
         }
