@@ -17,7 +17,7 @@ function simulate(env,agent,t) {
 
 function start() {
     env = new SimpleDispenserGrid(dispenser1)
-    agent = new QLearn(env,alpha=0.9,gamma=0.99,epsilon=0.01)
+    agent = new QLearn(alpha=0.9,gamma=0.99,epsilon=0.01,env.actions.length)
     res = simulate(env,agent,t=1e6)
 
     // log output
@@ -25,10 +25,10 @@ function start() {
     console.log("Agent's average reward: " + res[0])
     console.log("Optimal average reward: " + env.optimal_average_reward)
     console.log("Total reward: " + Math.floor(res[0] * res[1]))
-    if (env.constructor.name == "DispenserGrid") {
+    if (env.constructor.name == "SimpleDispenserGrid") {
         nd = 0
-        for (var val of env.disp) {
-            nd += env.tiles[val[0]][val[1]].num_dispensed
+        for (var val of env.grid.disp) {
+            nd += env.grid.get_tile(val[0],val[1]).num_dispensed
         }
         console.log("Chocolates dispensed: " +  nd)
     }

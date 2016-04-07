@@ -7,17 +7,17 @@ const D = d + 1; // TODO look at JQuery!
 
 function visualize(env) {
     canvas = document.createElement("canvas");
-    canvas.width = D*env.M-1;
-    canvas.height = D*env.N-1;
+    canvas.width = D*env.grid.M-1;
+    canvas.height = D*env.grid.N-1;
     document.body.insertBefore(this.canvas,document.body.childNodes[0]);
     return canvas.getContext("2d")
 }
 
 function draw(ctx,env) {
     ctx.clearRect(0,0,canvas.width,canvas.height);
-    for (i = 0; i < env.M; i++) {
-        for (j = 0; j < env.N; j++) {
-            var t = env.tiles[i][j]
+    for (i = 0; i < env.grid.M; i++) {
+        for (j = 0; j < env.grid.N; j++) {
+            var t = env.grid.get_tile(i,j)
             ctx.fillStyle = t.color
             ctx.fillRect(i*D,j*D,d,d);
         }

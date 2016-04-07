@@ -15,35 +15,8 @@ class Environment {
 class Gridworld extends Environment {
     constructor(config) {
         super()
-        this.tiles = []
-        var map = config.map
-        this.M = map[0].length
-        this.N = map.length
-        var didx = 0
-        this.disp = []
-        for (var i = 0; i < this.M; i++) {
-            this.tiles[i] = new Array(this.N);
-            for (var j = 0; j < this.N; j++) {
-                var type = map[i][j]
-                var tile
-                if (type == "F") {
-                    tile = new Tile(i,j)
-                } else if (type == "W") {
-                    tile = new Wall(i,j)
-                } else if (type == "C") {
-                    tile = new Chocolate(i,j)
-                } else if (type == "D") {
-                    tile = new Dispenser(i,j,config.freqs[didx])
-                    this.disp[didx] = [i,j]
-                    didx++
-                } else {
-                    throw "Unknown tile type"
-                }
-                this.tiles[i][j] = tile
-            }
-        }
+        this.grid = new Grid(config)
         this.optimal_average_reward = config.optimal_average_reward
-        this.num_states = this.M * this.N
         this.actions = [
             function(e) {return e._move(-1,0)},
             function(e) {return e._move(1,0)},
@@ -66,7 +39,7 @@ class Gridworld extends Environment {
         if (!this._inbounds(newx,newy)) {
             this.reward = -1
         } else {
-            var t = this.tiles[newx][newy]
+            var t = this.grid.get_tile(newx,newy)
             this.reward = t.reward()
             this._dynamics(t)
             if (t.legal) {
@@ -76,7 +49,7 @@ class Gridworld extends Environment {
         return this._encode_percept()
     }
     _inbounds(x,y) {
-        return x >= 0 && y >= 0 && x < this.M && y < this.N
+        return x >= 0 && y >= 0 && x < this.grid.M && y < this.grid.N
     }
     _dynamics(tile) {}
     _encode_percept() {
@@ -86,7 +59,7 @@ class Gridworld extends Environment {
 
 class SimpleEpisodicGrid extends Gridworld {
     _encode_percept() {
-        var o = this.M * this.pos.x + this.pos.y
+        var o = this.grid.M * this.pos.x + this.pos.y
         var r = this.reward
         this.nu = function(obs,rew) {
             return obs == o && rew == r ? 1 : 0 // deterministic
@@ -104,11 +77,12 @@ class SimpleEpisodicGrid extends Gridworld {
 }
 
 class SimpleDispenserGrid extends Gridworld {
+    // partially observable. percepts are 9 bits.
     _encode_percept() {
         var percept = new Array(9)
         for (var i = 0; i < 3; i++) {
             for (var j = 0; j < 3; j++) {
-                var tt = this.tiles[this.pos.x-1+i]
+                var tt = this.grid.get_row(this.pos.x-1+i)
                 if (tt == undefined) {
                     percept[3*i+j] = 1
                     continue
@@ -132,9 +106,9 @@ class SimpleDispenserGrid extends Gridworld {
             }
             var f = 0
             var disp = false
-            for (var val of this.disp) {
+            for (var val of this.grid.disp) {
                 if (this.pos.x == val[0] && this.pos.y == val[1]) {
-                    f = this.tiles[val[0],val[1]].freq
+                    f = this.grid.get_tile(val[0],val[1]).freq
                     disp = true
                     break
                 }
@@ -157,8 +131,8 @@ class SimpleDispenserGrid extends Gridworld {
         }
     }
     _dynamics(tile) {
-        for (var val of this.disp) {
-            this.tiles[val[0]][val[1]].dispense()
+        for (var val of this.grid.disp) {
+            this.grid.get_tile(val[0],val[1]).dispense()
         }
     }
 }

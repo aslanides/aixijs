@@ -1,9 +1,9 @@
 class Agent {
-    constructor(env,alpha,gamma,epsilon) {
+    constructor(alpha,gamma,epsilon,num_actions) {
         this.epsilon = epsilon
         this.gamma = gamma
         this.alpha = alpha
-        this.num_actions = env.actions.length
+        this.num_actions = num_actions
     }
     select_action(obs) {
         return Math.floor(Math.random() * this.num_actions)
@@ -14,9 +14,9 @@ class Agent {
 }
 
 class TabularAgent extends Agent {
-    constructor(env,alpha,gamma,epsilon) {
-        super(env,alpha,gamma,epsilon)
-        this.Q = new QTable(env.num_states,this.num_actions)
+    constructor(alpha,gamma,epsilon,num_actions) {
+        super(alpha,gamma,epsilon,num_actions)
+        this.Q = new QTable(this.num_actions)
         this.td_updater
     }
     select_action(obs) {
@@ -69,10 +69,16 @@ class SARSA extends TabularAgent {
 }
 
 class BayesAgent extends Agent {
-    constructor(env,gamma) {
+    constructor(env,gamma,config) {
         super(env,0,gamma,0)
-        this.environment_class = []
+        this.env_class = []
+        for (var i = 0; i < env.grid.M; i++) {
+            for (var j = 0; j < env.grid.N; j++) {
+
+            }
+        }
         this.weights = []
         //this.xi = TODO
+
     }
 }

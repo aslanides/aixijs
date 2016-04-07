@@ -14,8 +14,7 @@ var random_choice = function(arr) {
     return arr[Math.floor(Math.random() * arr.length)]
 }
 
-function QTable(num_states,num_actions) {
-    this.num_states = num_states
+function QTable(num_actions) {
     this.num_actions = num_actions
     this._QMap = new Map()
     this._key = function(obs,action) {

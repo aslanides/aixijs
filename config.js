@@ -21,12 +21,11 @@ var dispenser1 = {
     optimal_average_reward : 5
 }
 
-var dispenser2 = {
-    map :   [["F","F","D","F","F"],
-            ["W","W","F","W","F"],
-            ["W","F","F","F","W"],
-            ["F","F","F","W","W"],
-            ["W","W","D","W","W"]],
-    freqs : [0.2,0.9],
+var blank5x5 = {
+    map :   [["F","F","F","F","F"],
+            ["F","F","F","F","F"],
+            ["F","F","F","F","F"],
+            ["F","F","F","F","F"],
+            ["F","F","F","F","F"]],
     optimal_average_reward : NaN
 }
