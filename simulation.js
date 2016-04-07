@@ -1,38 +1,38 @@
 function simulate(env,agent,t) {
     s = env.initial_state
-    r_tot = 0
     iter = 1;
+	r_ave = 0
     while (iter <= t) {
         a = agent.select_action(s)
         percept = env.perform(a)
         s_ = percept.obs
         r = percept.rew
         agent.update(s,a,r,s_)
+        q = agent.Q.get(s_, a)
+        r_ave = (r + iter * r_ave)/(iter + 1)
+        time = new TimeSlice(q, s_, r, env, r_ave)
+        history[iter] = time
         s = s_
-        r_tot += r
         iter++
     }
-    return [r_tot/iter, iter]
+    history[0] = env //first element will be used to figure out context for vis.
+    return history
 }
 
 function start() {
-    env = new SimpleDispenserGrid(dispenser1)
-    agent = new QLearn(env,alpha=0.9,gamma=0.99,epsilon=0.01)
-    res = simulate(env,agent,t=1e6)
+    // experiment parameters
+    var alpha = document.getElementById("alpha").value;
+    var gamma = document.getElementById("gamma").value;
+    var epsilon = document.getElementById("epsilon").value;
+    var t_max = document.getElementById("t_max").value;
 
-    // log output
-    console.log("Agent: "+ agent.constructor.name)
-    console.log("Agent's average reward: " + res[0])
+    time = 0;
+    env = new SimpleEpisodicGrid(episodic1)
+    context = visualize(env)
+    agent = new QLearn(env,alpha,gamma,epsilon)
+    res = simulate(env,agent,t_max)
+    env.optimal_average_reward = 10 / 26 // for map1 (!)
     console.log("Optimal average reward: " + env.optimal_average_reward)
-    console.log("Total reward: " + Math.floor(res[0] * res[1]))
-    if (env.constructor.name == "DispenserGrid") {
-        nd = 0
-        for (var val of env.disp) {
-            nd += env.tiles[val[0]][val[1]].num_dispensed
-        }
-        console.log("Chocolates dispensed: " +  nd)
-    }
-
-    ctx = visualize(env)
-    draw(ctx,env)
+    viewTime();
+// todo VISUALISE history / show statistics/etc
 }
