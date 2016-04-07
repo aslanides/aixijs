@@ -31,26 +31,24 @@
         <label for="gamma">Epsilon:</label>
         <input type="" name="gamma" id="epsilon" min="0" max="1" value="0.01">
         <label for="t_max">Interaction Cycles:</label>
-        <input type="" name="t_max" id="t_max" min="0" max="1e6" value="1e6">
+        <input type="" name="t_max" id="t_max" min="0" max="1e5" value="1e5">
     </p>
 
     <button onclick="start()">Start</button>
     <!--TODO change visibility of below based on whether started-->
 
-    <p>Enter TimeSlice to view:</p>
+    <p>Enter time step to jump:</p>
     <!--TODO change the max values based on user input-->
-    <input type="number" name="Time" min="0" max = "1000000" id ="selectTime" value="0">
-    <input type="range" name="slider" min="0" max="1e6" step="100" value="0" oninput="vis.slide(value)">
-
+    <input type="number" name="Time" min="0" max = "1000000" id ="select_time" value="0">
+    <button onclick="vis.jump_to(select_time.value)">Jump</button>
     <p>
-        <button onclick="vis.viewTime()">view time</button>
-        <button onclick="vis.increment()">increment</button>
+        <input type="range" name="slider" min="0" max="1e5" step="100" value="0" oninput="vis.jump_to(value)">
+        <button onclick="vis.pause()">Pause</button>
     </p>
     <p>
         <button onclick="vis.run(100)">Slow</button>
         <button onclick="vis.run(10)">Medium</button>
         <button onclick="vis.run(1)">Fast</button>
-        <button onclick="vis.pause()">Pause</button>
     </p>
 
     <label for="r_ave">Average Reward</label>

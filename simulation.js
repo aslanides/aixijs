@@ -10,14 +10,13 @@ function simulate(env,agent,t) {
         agent.update(s,a,r,s_)
         s = s_
 
-        time = {
-            q:agent.Q.get(s_, a), // TODO only works for tabular agents
-            obs:s_,
-            reward:r_total+=r,
-            pos:env.pos
+        slice = {
+            q : agent.Q.get(s_, a), // TODO only works for tabular agents
+            obs : s_,
+            reward : r_total+=r,
+            pos : env.pos
         }
-
-        history.push(time)
+        history.push(slice)
     }
     return history
 }
@@ -33,5 +32,5 @@ function start() {
     history = simulate(env,agent,t_max)
 
     vis = new Visualisation(env,history)
-    vis.viewTime()
+    vis.jump_to(0)
 }
