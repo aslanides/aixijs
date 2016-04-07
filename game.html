@@ -10,7 +10,7 @@
     }
     </style>
 </head>
-<body onload="start()">
+<body ><!-- onload="start()"-->
     <script src="simulation.js"></script>
     <script src="environment.js"></script>
     <script src="tiles.js"></script>
@@ -19,5 +19,37 @@
     <script src="util.js"></script>
     <script src="config.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.0.0/math.min.js"></script>
+    <div id="score"></span>
+    <p>Enter simulation parameters:</p>
+    <p>
+      <label for="gamma">Alpha:</label>
+      <input type="" name="alpha" id="alpha" min ="0" max = "1" value="0.9">
+      <label for="gamma">Gamma:</label>
+      <input type="" name="gamma" id="gamma" min ="0" max = "1" value="0.99">
+    </p>
+    <p>
+      <label for="gamma">Epsilon:</label>
+      <input type="" name="gamma" id="epsilon" min ="0" max = "1" value="0.01">
+      <label for="t_max">Interaction Cycles:</label>
+      <input type="" name="t_max" id="t_max" min ="0" max = "1e6" value="1e6">
+    </p>
+    <button onclick="start()">Start</button>
+    <!-- change visibility of below based on if started-->
+    <p>Enter TimeSlice to view:</p>
+    <!--Change the max values based on user input-->
+    <input type="number" name="Time" min="0" max = "1000000" id ="selectTime" value="0">
+    <input type="range" name="slider" min="0" max="1e6" step="100" value="0" oninput="slide(value)">
+  <p>
+    <button onclick="viewTime()">view time</button>
+    <button onclick="increment()">increment</button>
+  </p>
+  <p>
+    <button onclick="run(10)">Medium</button>
+    <button onclick="run(100)">Slow</button>
+    <button onclick="run(1)">Fast</button>
+    <button onclick="pause()">Pause</button>
+  </p>
+  <label for="r_ave">Average Reward</label>
+  <input type="text" name="Reward" id="r_ave" value="">
 </body>
 </html>
