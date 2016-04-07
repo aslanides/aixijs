@@ -30,8 +30,5 @@ function start() {
     context = visualize(env)
     agent = new QLearn(alpha,gamma,epsilon,env.actions.length)
     res = simulate(env,agent,t_max)
-    env.optimal_average_reward = 10 / 26 // for map1 (!)
-    console.log("Optimal average reward: " + env.optimal_average_reward)
     viewTime();
-
 }

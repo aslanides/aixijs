@@ -2,7 +2,6 @@ class Environment {
     constructor() {
         this.actions = []
         this.reward = 0
-        this.optimal_average_reward = 0
         this.nu = function() {
             throw "Not implemented"
         }
