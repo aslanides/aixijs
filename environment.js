@@ -15,7 +15,6 @@ class Gridworld extends Environment {
     constructor(config) {
         super()
         this.grid = new Grid(config)
-        this.optimal_average_reward = config.optimal_average_reward
         this.actions = [
             function(e) {return e._move(-1,0)},
             function(e) {return e._move(1,0)},
@@ -27,7 +26,8 @@ class Gridworld extends Environment {
             x : 0,
             y : 0
         }
-        this.initial_state = 0
+        this.initial_state = this._encode_percept()
+        this.optimal_average_reward = config.optimal_average_reward
     }
     perform(action) {
         return this.actions[action](this)

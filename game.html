@@ -35,22 +35,22 @@
     </p>
 
     <button onclick="start()">Start</button>
-    <!-- change visibility of below based on whether started-->
+    <!--TODO change visibility of below based on whether started-->
 
     <p>Enter TimeSlice to view:</p>
-    <!--Change the max values based on user input-->
+    <!--TODO change the max values based on user input-->
     <input type="number" name="Time" min="0" max = "1000000" id ="selectTime" value="0">
-    <input type="range" name="slider" min="0" max="1e6" step="100" value="0" oninput="slide(value)">
+    <input type="range" name="slider" min="0" max="1e6" step="100" value="0" oninput="vis.slide(value)">
 
     <p>
-        <button onclick="viewTime()">view time</button>
-        <button onclick="increment()">increment</button>
+        <button onclick="vis.viewTime()">view time</button>
+        <button onclick="vis.increment()">increment</button>
     </p>
     <p>
-        <button onclick="run(100)">Slow</button>
-        <button onclick="run(10)">Medium</button>
-        <button onclick="run(1)">Fast</button>
-        <button onclick="pause()">Pause</button>
+        <button onclick="vis.run(100)">Slow</button>
+        <button onclick="vis.run(10)">Medium</button>
+        <button onclick="vis.run(1)">Fast</button>
+        <button onclick="vis.pause()">Pause</button>
     </p>
 
     <label for="r_ave">Average Reward</label>

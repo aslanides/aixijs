@@ -1,34 +1,37 @@
 function simulate(env,agent,t) {
+    history = []
+    r_total = 0
     s = env.initial_state
-    iter = 1;
-	r_ave = 0
-    while (iter <= t) {
+    for (var iter = 0; iter < t; iter++) {
         a = agent.select_action(s)
         percept = env.perform(a)
         s_ = percept.obs
         r = percept.rew
         agent.update(s,a,r,s_)
-        q = agent.Q.get(s_, a)
-        r_ave = (r + iter * r_ave)/(iter + 1)
-        time = new TimeSlice(q, s_, r, env, r_ave)
-        history[iter] = time
         s = s_
-        iter++
+
+        time = {
+            q:agent.Q.get(s_, a), // TODO only works for tabular agents
+            obs:s_,
+            reward:r_total+=r,
+            pos:env.pos
+        }
+
+        history.push(time)
     }
-    history[0] = env //first element will be used to figure out context for vis.
     return history
 }
 
 function start() {
-    var alpha = document.getElementById("alpha").value;
-    var gamma = document.getElementById("gamma").value;
-    var epsilon = document.getElementById("epsilon").value;
-    var t_max = document.getElementById("t_max").value;
+    var alpha = doc_get("alpha")
+    var gamma = doc_get("gamma")
+    var epsilon = doc_get("epsilon")
+    var t_max = doc_get("t_max")
 
-    time = 0;
     env = new SimpleEpisodicGrid(episodic1)
-    context = visualize(env)
     agent = new QLearn(alpha,gamma,epsilon,env.actions.length)
-    res = simulate(env,agent,t_max)
-    viewTime();
+    history = simulate(env,agent,t_max)
+
+    vis = new Visualisation(env,history)
+    vis.viewTime()
 }

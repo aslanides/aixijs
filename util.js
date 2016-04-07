@@ -31,3 +31,7 @@ function QTable(num_actions) {
         this._QMap.set(this._key(obs,action),value)
     }
 }
+
+function doc_get(str) {
+    return document.getElementById(str).value
+}
