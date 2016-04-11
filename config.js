@@ -8,7 +8,11 @@ var episodic1 = {
             ["F","F","W","F","W","C","W","F","F"],
             ["F","F","W","F","W","W","W","F","F"],
             ["F","F","W","F","F","F","F","F","F"]],
-    optimal_average_reward : 10/26
+    optimal_average_reward : 10/26,
+    initial_pos : {
+        x : 0,
+        y : 0
+    }
 }
 
 var dispenser1 = {
@@ -18,7 +22,11 @@ var dispenser1 = {
             ["F","F","F","W","W"],
             ["W","W","D","W","W"]],
     freqs : [0.5],
-    optimal_average_reward : 5
+    optimal_average_reward : 5,
+    initial_pos : {
+        x : 0,
+        y : 0
+    }
 }
 
 var blank5x5 = {
@@ -27,5 +35,9 @@ var blank5x5 = {
             ["F","F","F","F","F"],
             ["F","F","F","F","F"],
             ["F","F","F","F","F"]],
-    optimal_average_reward : NaN
+    optimal_average_reward : NaN,
+    initial_pos : {
+        x : 0,
+        y : 0
+    }
 }

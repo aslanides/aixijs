@@ -22,10 +22,7 @@ class Gridworld extends Environment {
             function(e) {return e._move(0,-1)},
             function(e) {return e._move(0,0)}
         ]
-        this.pos = {
-            x : 0,
-            y : 0
-        }
+        this.pos = config.initial_pos
         this.initial_state = this._encode_percept()
         this.optimal_average_reward = config.optimal_average_reward
     }
