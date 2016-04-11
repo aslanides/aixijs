@@ -11,6 +11,7 @@ class Visualisation {
 	    this.canvas.height = (this.d+1)*this.grid.N-1
 	    document.body.insertBefore(this.canvas,document.body.childNodes[0])
 	    this.context = this.canvas.getContext("2d")
+		this.jump_to(this.time)
 	}
 	run(speed) {
 		this.pause()

@@ -30,7 +30,5 @@ function start() {
     env = new SimpleEpisodicGrid(episodic1)
     agent = new QLearn(alpha,gamma,epsilon,env.actions.length)
     history = simulate(env,agent,t_max)
-
     vis = new Visualisation(env,history)
-    vis.jump_to(0)
 }
