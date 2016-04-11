@@ -42,7 +42,7 @@ class Visualisation {
 	            this.context.fillRect(i*(d+1),j*(d+1),d,d);
 	        }
 	    }
-	    this.context.fillStyle = "blue";
+	    this.context.fillStyle = c_agent;
 	    this.context.fillRect(this.history[this.time].pos.x*(d+1),this.history[this.time].pos.y*(d+1),d,d);
 	}
 	update_ui() {

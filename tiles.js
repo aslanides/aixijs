@@ -7,13 +7,19 @@ const m_chocolate = "C"
 const m_wall = "W"
 const m_dispenser = "D"
 
+const c_empty = "grey"
+const c_wall = "wall"
+const c_chocolate = "yellow"
+const c_dispenser = "orange"
+const c_agent = "blue"
+
 class Tile {
     constructor(x,y) {
         this.x = x
         this.y = y
         this.reward = function() {return r_empty}
         this.legal = true
-        this.color = "grey"
+        this.color = c_empty
         this.chocolate = false
     }
 }
@@ -23,7 +29,7 @@ class Wall extends Tile {
         super(x,y)
         this.reward = function() {return r_wall}
         this.legal = false
-        this.color = "black"
+        this.color = c_wall
     }
 }
 
@@ -32,7 +38,7 @@ class Chocolate extends Tile {
         super(x,y)
         this.reward = function() {return r_chocolate}
         this.legal = false // TODO fix this hack
-        this.color = "yellow"
+        this.color = c_chocolate
     }
 }
 
@@ -40,7 +46,7 @@ class Dispenser extends Tile {
     constructor(x,y,freq) {
         super(x,y)
         this.freq = freq
-        this.color = "orange"
+        this.color = c_dispenser
         this.num_dispensed = 0
         this.reward = function() {
             var rew = this.chocolate ? r_chocolate : r_empty
