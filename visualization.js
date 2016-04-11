@@ -1,7 +1,7 @@
 class Visualisation {
 	constructor(env,history) {
-		this.time = 0;
 		this.interval;
+		this.time;
 		this.grid = env.grid;
 		this.history = history;
 		this.d = 40
@@ -11,7 +11,7 @@ class Visualisation {
 	    this.canvas.height = (this.d+1)*this.grid.N-1
 	    document.body.insertBefore(this.canvas,document.body.childNodes[0])
 	    this.context = this.canvas.getContext("2d")
-		this.jump_to(this.time)
+		this.jump_to(0)
 	}
 	run(speed) {
 		this.pause()

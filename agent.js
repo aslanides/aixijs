@@ -1,9 +1,9 @@
 class Agent {
-    constructor(alpha,gamma,epsilon,num_actions) {
-        this.epsilon = epsilon
-        this.gamma = gamma
-        this.alpha = alpha
-        this.num_actions = num_actions
+    constructor(options) {
+        this.epsilon = options.epsilon
+        this.gamma = options.gamma
+        this.alpha = options.alpha
+        this.num_actions = options.num_actions
     }
     select_action(obs) {
         throw "Not implemented!"
@@ -21,8 +21,8 @@ class RandomAgent {
 }
 
 class TabularAgent extends Agent {
-    constructor(alpha,gamma,epsilon,num_actions) {
-        super(alpha,gamma,epsilon,num_actions)
+    constructor(options) {
+        super(options)
         this.Q = new QTable()
         this.td_updater
     }
@@ -62,35 +62,23 @@ class TabularAgent extends Agent {
 }
 
 class QLearn extends TabularAgent {
-    constructor(alpha,gamma,epsilon,num_actions) {
-        super(alpha,gamma,epsilon,num_actions)
+    constructor(options) {
+        super(options)
         this.td_updater = this.argmax
     }
 }
 
 class SARSA extends TabularAgent {
-    constructor(alpha,gamma,epsilon,num_actions) {
-        super(alpha,gamma,epsilon,num_actions)
+    constructor(options) {
+        super(options)
         this.td_updater = this.select_action
     }
 }
 
 class BayesAgent extends Agent {
-    constructor(gamma,config) {
-        super(0,gamma,0,num_actions)
-        var model_class = []
-        for (var i = 0; i < config.map[0].length; i++) {
-            for (var j = 0; j < config.map.length; j++) {
-                model = new SimpleDispenserGrid(config)
-                model.add_dispenser(i,j,0.5)
-                model_class.push(env)
-            }
-        }
-        var prior = new Array(this.C)
-        for (var i = 0; i < this.C; i++) {
-            prior[i] = 1/(this.C) // uniform
-        }
-        this.model = new BayesMixture(model_class,prior)
+    constructor(options) {
+        super(options)
+        this.model = new BayesMixture(options.model_class,options.prior)
         this.horizon = 5
         this.UCBweight = 1
         this.max_reward = r_chocolate

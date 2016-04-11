@@ -34,3 +34,10 @@ function QTable() {
 function doc_get(str) {
     return document.getElementById(str).value
 }
+
+function assert(condition, message) {
+    if (!condition) {
+        message = message || "Assertion failed"
+        throw new Error(message)
+    }
+}
