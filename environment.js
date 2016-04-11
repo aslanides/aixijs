@@ -49,6 +49,7 @@ class Gridworld extends Environment {
     }
     _dynamics(tile) {}
     _encode_percept() {
+        // note: observations must be strings
         throw "Not implemented!"
     }
 }
