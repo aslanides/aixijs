@@ -28,16 +28,3 @@ var dispenser1 = {
         y : 0
     }
 }
-
-var blank5x5 = {
-    map :   [["F","F","F","F","F"],
-            ["F","F","F","F","F"],
-            ["F","F","F","F","F"],
-            ["F","F","F","F","F"],
-            ["F","F","F","F","F"]],
-    optimal_average_reward : NaN,
-    initial_pos : {
-        x : 0,
-        y : 0
-    }
-}

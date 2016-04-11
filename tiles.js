@@ -68,14 +68,20 @@ class Grid {
     constructor(config) {
         this.tiles = []
         this.disp = []
+        this.freqs = config.freqs
         var map = config.map
-        this.M = map[0].length
-        this.N = map.length
+        if (map == undefined) {
+            this.M = config.M
+            this.N = config.N
+        } else {
+            this.M = map[0].length
+            this.N = map.length
+        }
         var didx = 0
         for (var i = 0; i < this.M; i++) {
             this.tiles[i] = new Array(this.N);
             for (var j = 0; j < this.N; j++) {
-                var type = map[i][j]
+                var type = map ? map[i][j] : m_empty
                 var tile
                 if (type == m_empty) {
                     tile = new Tile(i,j)
@@ -84,7 +90,7 @@ class Grid {
                 } else if (type == m_chocolate) {
                     tile = new Chocolate(i,j)
                 } else if (type == m_dispenser) {
-                    tile = new Dispenser(i,j,config.freqs[didx])
+                    tile = new Dispenser(i,j,this.freqs[didx])
                     this.disp.push([i,j])
                     didx++
                 } else {

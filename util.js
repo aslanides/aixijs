@@ -41,3 +41,11 @@ function assert(condition, message) {
         throw new Error(message)
     }
 }
+
+function sum(arr) {
+    var s = 0
+    for (var i = 0; i < arr.length; i++) {
+        s += arr[i]
+    }
+    return s
+}
