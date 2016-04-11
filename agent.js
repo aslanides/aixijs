@@ -55,22 +55,22 @@ class TabularAgent extends Agent {
 }
 
 class QLearn extends TabularAgent {
-    constructor(env,alpha,gamma,epsilon) {
-        super(env,alpha,gamma,epsilon)
+    constructor(alpha,gamma,epsilon,num_actions) {
+        super(alpha,gamma,epsilon,num_actions)
         this.td_updater = this.argmax
     }
 }
 
 class SARSA extends TabularAgent {
-    constructor(env,alpha,gamma,epsilon) {
-        super(env,alpha,gamma,epsilon)
+    constructor(alpha,gamma,epsilon,num_actions) {
+        super(alpha,gamma,epsilon,num_actions)
         this.td_updater = this.select_action
     }
 }
 
 class BayesAgent extends Agent {
-    constructor(env,gamma,config) {
-        super(env,0,gamma,0)
+    constructor(gamma,config) {
+        super(0,gamma,0,num_actions)
         this.env_class = []
         for (var i = 0; i < env.grid.M; i++) {
             for (var j = 0; j < env.grid.N; j++) {
