@@ -1,9 +1,21 @@
+var alpha = "alpha"
+var gamma = "gamma"
+var epsilon = "epsilon"
+var t_max = "t_max"
+
+// defaults
+doc_set(alpha,0.9)
+doc_set(gamma,0.99)
+doc_set(epsilon,0.01)
+doc_set(t_max,1e5)
+
 class Options {
     constructor(env) {
-        this.alpha = doc_get("alpha"),
-        this.gamma = doc_get("gamma"),
-        this.epsilon = doc_get("epsilon"),
-        this.t_max = doc_get("t_max")
+        this.alpha = doc_get(alpha),
+        this.gamma = doc_get(gamma),
+        this.epsilon = doc_get(epsilon),
+        this.t_max = doc_get(t_max)
+        doc_set("slider",t_max,true)
         this.num_actions = env.actions.length
         this.model_class = []
         this.M = env.grid.M
@@ -13,15 +25,24 @@ class Options {
     set_model_class(freq) {
         for (var i = 0; i < this.M; i++) {
             for (var j = 0; j < this.N; j++) {
-                var model = new SimpleDispenserGrid({M:this.M,N:this.N})
+                var cfg = {
+                    M : this.M,
+                    N : this.N,
+                    initial_pos : {
+                        x : 0,
+                        y : 0
+                    }
+                }
+                var model = new SimpleDispenserGrid(cfg)
+
                 model.grid.add_dispenser(i,j,freq)
                 this.model_class.push(model)
             }
         }
     }
     set_prior(type,x,y) {
-        assert(C > 0, "Model class not set!")
         var C = this.model_class.length
+        assert(C > 0, "Model class not set!")
         this.prior = zeros(C)
         if (type == "Uniform") {
             for (var i = 0; i < C; i++) {

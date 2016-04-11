@@ -35,6 +35,15 @@ function doc_get(str) {
     return document.getElementById(str).value
 }
 
+function doc_set(key,val,max) {
+    if (max) {
+        document.getElementById(key).max = val
+    } else {
+        document.getElementById(key).value = val
+    }
+
+}
+
 function assert(condition, message) {
     if (!condition) {
         message = message || "Assertion failed"
