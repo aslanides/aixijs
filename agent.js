@@ -6,11 +6,18 @@ class Agent {
         this.num_actions = num_actions
     }
     select_action(obs) {
-        return Math.floor(Math.random() * this.num_actions)
+        throw "Not implemented!"
     }
     update(obs,a,rew,obs_) {
         throw "Not implemented!"
     }
+}
+
+class RandomAgent {
+    select_action(obs) {
+        return Math.floor(Math.random() * this.num_actions)
+    }
+    update(obs,a,rew,obs_) {}
 }
 
 class TabularAgent extends Agent {
@@ -71,14 +78,25 @@ class SARSA extends TabularAgent {
 class BayesAgent extends Agent {
     constructor(gamma,config) {
         super(0,gamma,0,num_actions)
-        this.env_class = []
-        for (var i = 0; i < env.grid.M; i++) {
-            for (var j = 0; j < env.grid.N; j++) {
-
+        var model_class = []
+        for (var i = 0; i < config.map[0].length; i++) {
+            for (var j = 0; j < config.map.length; j++) {
+                model = new SimpleDispenserGrid(config)
+                model.add_dispenser(i,j,0.5)
+                model_class.push(env)
             }
         }
-        this.weights = []
-        //this.xi = TODO
-
+        var prior = new Array(this.C)
+        for (var i = 0; i < this.C; i++) {
+            prior[i] = 1/(this.C) // uniform
+        }
+        this.mixture = new BayesMixture(model_class,prior)
+        this.horizon = 5
+    }
+    update(obs,a,rew,obs_) {
+        this.mixture.update(obs,a,rew)
+    }
+    select_action(obs) {
+        // MCTS
     }
 }
