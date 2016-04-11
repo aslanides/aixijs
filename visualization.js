@@ -4,6 +4,7 @@ class Visualisation {
 		this.time;
 		this.grid = env.grid;
 		this.history = history;
+		this.t_max = history.length - 1
 		this.d = 40
 
 		this.canvas = document.createElement("canvas")
@@ -18,6 +19,7 @@ class Visualisation {
 		var f = function(viz) {
 			function g() {
 				viz.time++
+				viz.check_time()
 				viz.draw()
 			}
 			return g
@@ -27,8 +29,15 @@ class Visualisation {
 	pause() {
 		clearInterval(this.interval)
 	}
+	check_time() {
+		if (this.time > this.t_max) {
+			this.time = this.t_max
+			this.pause()
+		}
+	}
 	jump_to(time) {
 		this.time = time
+		this.check_time()
 		this.draw()
 	}
 	draw() {
