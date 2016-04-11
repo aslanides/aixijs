@@ -19,7 +19,6 @@ class Visualisation {
 		var f = function(viz) {
 			function g() {
 				viz.time++
-				viz.check_time()
 				viz.draw()
 			}
 			return g
@@ -37,10 +36,10 @@ class Visualisation {
 	}
 	jump_to(time) {
 		this.time = time
-		this.check_time()
 		this.draw()
 	}
 	draw() {
+		this.check_time()
 		this.update_ui()
 		var d = this.d
 	    this.context.clearRect(0,0,this.canvas.width,this.canvas.height);
