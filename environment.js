@@ -58,7 +58,7 @@ class Gridworld extends Environment {
 
 class SimpleEpisodicGrid extends Gridworld {
     _encode_percept() {
-        var o = this.grid.M * this.pos.x + this.pos.y
+        var o = (this.pos.x).toString() + (this.pos.y).toString()
         var r = this.reward
         this.nu = function(obs,rew) {
             return obs == o && rew == r ? 1 : 0 // deterministic

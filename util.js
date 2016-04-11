@@ -14,11 +14,10 @@ var random_choice = function(arr) {
     return arr[Math.floor(Math.random() * arr.length)]
 }
 
-function QTable(num_actions) {
-    this.num_actions = num_actions
+function QTable() {
     this._QMap = new Map()
     this._key = function(obs,action) {
-        return obs * this.num_actions + action
+        return obs + action // obs is string, so cast action to string and concatenate
     }
     this.get = function(obs,action) {
         var val = this._QMap.get(this._key(obs,action))

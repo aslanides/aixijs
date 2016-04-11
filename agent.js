@@ -16,7 +16,7 @@ class Agent {
 class TabularAgent extends Agent {
     constructor(alpha,gamma,epsilon,num_actions) {
         super(alpha,gamma,epsilon,num_actions)
-        this.Q = new QTable(this.num_actions)
+        this.Q = new QTable()
         this.td_updater
     }
     select_action(obs) {
