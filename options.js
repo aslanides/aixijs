@@ -22,12 +22,16 @@ class Options {
         assert(C > 0, "Model class not set!")
         var C = this.model_class.length
         this.prior = new Array(C)
-        if (type == "uniform") {
+        if (type == "Uniform") {
             for (var i = 0; i < C; i++) {
                 this.prior[i] = 1/(C)
             }
+        } else if (type == "Ockham") {
+            throw "TODO"
+        } else if (type == "Dogmatic") {
+            throw "TODO"
         } else {
-            throw "Unknown prior type"
+            throw "Unknown prior type."
         }
     }
 }
