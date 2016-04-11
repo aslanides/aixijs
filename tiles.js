@@ -8,7 +8,7 @@ const m_wall = "W"
 const m_dispenser = "D"
 
 const c_empty = "grey"
-const c_wall = "wall"
+const c_wall = "black"
 const c_chocolate = "yellow"
 const c_dispenser = "orange"
 const c_agent = "blue"
