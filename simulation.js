@@ -11,7 +11,7 @@ function simulate(env,agent,t) {
         s = s_
 
         slice = {
-            q : agent.Q.get(s_, a), // TODO only works for tabular agents
+            //q : agent.Q.get(s_, a), // TODO only works for tabular agents
             obs : s_,
             reward : r_total+=r,
             pos : env.pos
@@ -19,16 +19,4 @@ function simulate(env,agent,t) {
         history.push(slice)
     }
     return history
-}
-
-function start() {
-    var alpha = doc_get("alpha")
-    var gamma = doc_get("gamma")
-    var epsilon = doc_get("epsilon")
-    var t_max = doc_get("t_max")
-
-    env = new SimpleEpisodicGrid(episodic1)
-    agent = new QLearn(alpha,gamma,epsilon,env.actions.length)
-    history = simulate(env,agent,t_max)
-    vis = new Visualisation(env,history)
 }
