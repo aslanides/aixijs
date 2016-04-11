@@ -90,13 +90,25 @@ class BayesAgent extends Agent {
         for (var i = 0; i < this.C; i++) {
             prior[i] = 1/(this.C) // uniform
         }
-        this.mixture = new BayesMixture(model_class,prior)
+        this.model = new BayesMixture(model_class,prior)
         this.horizon = 5
+        this.UCBweight = 1
+        this.max_reward = r_chocolate
+        this.min_reward = r_wall
+        this.timeout = 100 // iterations of search
+        this.search_tree = new DecisionNode()
     }
     update(obs,a,rew,obs_) {
-        this.mixture.update(obs,a,rew)
+        this.model.update(obs,a,rew)
     }
     select_action(obs) {
-        // MCTS
+        iter = 0
+        this.model.save_checkpoint()
+        while (iter < this.timeout) {
+            this.search_tree.sample(this,0)
+            this.model.load_checkpoint()
+            iter++
+        }
+        return this.search_tree.best_action(this)
     }
 }
