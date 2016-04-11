@@ -1,6 +1,11 @@
-var r_chocolate = 10
-var r_wall = -1
-var r_empty = 0
+const r_chocolate = 10
+const r_wall = -1
+const r_empty = 0
+
+const m_empty = "F"
+const m_chocolate = "C"
+const m_wall = "W"
+const m_dispenser = "D"
 
 class Tile {
     constructor(x,y) {
@@ -66,13 +71,13 @@ class Grid {
             for (var j = 0; j < this.N; j++) {
                 var type = map[i][j]
                 var tile
-                if (type == "F") {
+                if (type == m_empty) {
                     tile = new Tile(i,j)
-                } else if (type == "W") {
+                } else if (type == m_wall) {
                     tile = new Wall(i,j)
-                } else if (type == "C") {
+                } else if (type == m_chocolate) {
                     tile = new Chocolate(i,j)
-                } else if (type == "D") {
+                } else if (type == m_dispenser) {
                     tile = new Dispenser(i,j,config.freqs[didx])
                     this.disp.push([i,j])
                     didx++
