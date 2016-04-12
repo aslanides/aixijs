@@ -48,6 +48,7 @@ class Dispenser extends Tile {
         this.freq = freq
         this.color = c_dispenser
         this.num_dispensed = 0
+        this.chocolate = false
         this.reward = function() {
             var rew = this.chocolate ? r_chocolate : r_empty
             this.chocolate = false
@@ -121,6 +122,9 @@ class Grid {
     add_dispenser(i,j,f) {
         this.tiles[i][j] = new Dispenser(i,j,f)
         this.disp.push([i,j])
+    }
+    get_dispenser() {
+        return this.get_tile(this.disp[0][0],this.disp[0][1])
     }
     get_tile(i,j) {
         return this.tiles[i][j]
