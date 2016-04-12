@@ -11,13 +11,18 @@ class BayesMixture {
         for (var i = 0; i < this.C; i++) {
             s += this.weights[i] * this.model_class[i].nu(obs,rew)
         }
+        if (s == 0) {
+            throw new Error(`The agent's Bayesian mixture assigns 0 probability to the percept (${obs},${rew})`)
+        }
         return s
     }
 
     update(a,obs,rew) {
-        var xi_tmp = this.xi(obs,rew)
         for (var i = 0; i < this.C; i++) {
             this.model_class[i].perform(a)
+        }
+        var xi_tmp = this.xi(obs,rew)
+        for (var i = 0; i < this.C; i++) {
             this.weights[i] = this.weights[i] * this.model_class[i].nu(obs,rew) / xi_tmp
         }
     }
