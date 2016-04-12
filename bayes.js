@@ -9,6 +9,9 @@ class BayesMixture {
     xi(obs,rew) {
         var s = 0
         for (var i = 0; i < this.C; i++) {
+            if (this.weights[i] == 0) {
+                continue
+            }
             s += this.weights[i] * this.model_class[i].nu(obs,rew)
         }
         if (s == 0) {
@@ -41,10 +44,16 @@ class BayesMixture {
         }
         return percept
     }
-    save_checkpoint() {
+    save() {
         this.saved_weights = Array.from(this.weights)
+        for (var i = 0; i < this.C; i++) {
+            this.model_class[i].save()
+        }
     }
-    load_checkpoint() {
+    load() {
         this.weights = Array.from(this.saved_weights)
+        for (var i = 0; i < this.C; i++) {
+            this.model_class[i].load()
+        }
     }
 }

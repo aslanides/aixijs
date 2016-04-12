@@ -91,10 +91,10 @@ class BayesAgent extends Agent {
     }
     select_action(obs) {
         var iter = 0
-        this.model.save_checkpoint()
+        this.model.save()
         while (iter < this.timeout) {
             this.search_tree.sample(this,0)
-            this.model.load_checkpoint()
+            this.model.load()
             iter++
         }
         return this.search_tree.best_action(this)
