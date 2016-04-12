@@ -22,20 +22,11 @@ class Options {
         this.N = env.grid.N
         this.freqs = env.grid.freqs
     }
-    set_model_class(freq) {
+    set_model_class(cfg) {
         for (var i = 0; i < this.M; i++) {
             for (var j = 0; j < this.N; j++) {
-                var cfg = {
-                    M : this.M,
-                    N : this.N,
-                    initial_pos : {
-                        x : 0,
-                        y : 0
-                    }
-                }
+                cfg.dispenser_pos = {x:i,y:j}
                 var model = new SimpleDispenserGrid(cfg)
-
-                model.grid.add_dispenser(i,j,freq)
                 this.model_class.push(model)
             }
         }

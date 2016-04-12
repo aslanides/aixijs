@@ -70,6 +70,12 @@ class Grid {
         this.disp = []
         this.freqs = config.freqs
         var map = config.map
+        if (config.dispenser_pos != undefined) {
+            var dx = config.dispenser_pos.x
+            var dy = config.dispenser_pos.y
+            var old = map[dx][dy]
+            map[dx][dy] = "D"
+        }
         if (map == undefined) {
             this.M = config.M
             this.N = config.N
@@ -98,6 +104,9 @@ class Grid {
                 }
                 this.tiles[i][j] = tile
             }
+        }
+        if (dx != undefined) {
+            map[dx][dy] = old
         }
     }
     remove_dispenser(i,j) {
