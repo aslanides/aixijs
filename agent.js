@@ -90,7 +90,7 @@ class BayesAgent extends Agent {
         this.model.update(obs,a,rew)
     }
     select_action(obs) {
-        iter = 0
+        var iter = 0
         this.model.save_checkpoint()
         while (iter < this.timeout) {
             this.search_tree.sample(this,0)

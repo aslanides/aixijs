@@ -7,11 +7,11 @@ class BayesMixture {
     }
 
     xi(obs,rew) {
-        sum = 0
+        var s = 0
         for (var i = 0; i < this.C; i++) {
-            sum += this.weights[i] * this.model_class[i].nu(obs,rew)
+            s += this.weights[i] * this.model_class[i].nu(obs,rew)
         }
-        return sum
+        return s
     }
 
     update(a,obs,rew) {
@@ -24,12 +24,12 @@ class BayesMixture {
 
     sample(a) {
         // TODO check that this is correct
-        p = 0
-        s = Math.random()
+        var p = 0
+        var s = Math.random()
         var percept
-        for (var i = 0; i < this.C. i++) {
+        for (var i = 0; i < this.C; i++) {
             p += this.weights[i]
-            pp = this.model_class[i].perform(a)
+            var pp = this.model_class[i].perform(a)
             if (s <= p) {
                 percept = pp
             }
