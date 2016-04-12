@@ -52,6 +52,21 @@ class Gridworld extends Environment {
         // note: observations must be strings
         throw "Not implemented!"
     }
+    save() {
+        this.state = {
+            pos : this.pos,
+            reward : this.reward,
+            chocolate :  this.grid.get_dispenser().chocolate
+        }
+    }
+    load() {
+        if (this.state == undefined) {
+            throw "No saved state to load!"
+        }
+        this.pos = this.state.pos
+        this.reward = this.state.reward
+        this.grid.get_dispenser().chocolate = this.state.chocolate
+    }
 }
 
 class SimpleEpisodicGrid extends Gridworld {
