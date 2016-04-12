@@ -8,7 +8,7 @@ var episodic1 = {
             ["F","F","W","F","W","C","W","F","F"],
             ["F","F","W","F","W","W","W","F","F"],
             ["F","F","W","F","F","F","F","F","F"]],
-    optimal_average_reward : 10/26,
+    optimal_average_reward : r_chocolate/26,
     initial_pos : {
         x : 0,
         y : 0
