@@ -1,7 +1,7 @@
 function simulate(env,agent,t) {
     var history = []
-    var r_total = 0
-    var s = env.initial_state
+    var r_total = env.initial_percept.rew
+    var s = env.initial_percept.obs
     for (var iter = 0; iter < t; iter++) {
         var slice = {
             obs : s,

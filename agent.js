@@ -87,7 +87,7 @@ class BayesAgent extends Agent {
         this.search_tree = new DecisionNode()
     }
     update(obs,a,rew,obs_) {
-        this.model.update(obs,a,rew)
+        this.model.update(a,obs,rew)
     }
     select_action(obs) {
         var iter = 0
