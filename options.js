@@ -1,20 +1,9 @@
-var alpha = "alpha"
-var gamma = "gamma"
-var epsilon = "epsilon"
-var t_max = "t_max"
-
-// defaults
-doc_set(alpha,0.9)
-doc_set(gamma,0.99)
-doc_set(epsilon,0.01)
-doc_set(t_max,1e5)
-
 class Options {
     constructor(env) {
-        this.alpha = doc_get(alpha),
-        this.gamma = doc_get(gamma),
-        this.epsilon = doc_get(epsilon),
-        this.t_max = doc_get(t_max)
+        this.alpha = doc_get("alpha"),
+        this.gamma = doc_get("gamma"),
+        this.epsilon = doc_get("epsilon"),
+        this.t_max = doc_get("t_max")
         doc_set("slider",this.t_max,true)
         this.num_actions = env.actions.length
         this.model_class = []
