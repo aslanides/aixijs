@@ -15,7 +15,7 @@ class Options {
         this.gamma = doc_get(gamma),
         this.epsilon = doc_get(epsilon),
         this.t_max = doc_get(t_max)
-        doc_set("slider",t_max,true)
+        doc_set("slider",this.t_max,true)
         this.num_actions = env.actions.length
         this.model_class = []
         this.M = env.grid.M
