@@ -81,8 +81,8 @@ class Grid {
             this.M = config.M
             this.N = config.N
         } else {
-            this.M = map[0].length
-            this.N = map.length
+            this.M = map.length
+            this.N = map[0].length
         }
         var didx = 0
         for (var i = 0; i < this.M; i++) {
@@ -101,7 +101,7 @@ class Grid {
                     this.disp.push([i,j])
                     didx++
                 } else {
-                    throw "Unknown tile type"
+                    throw `Unknown tile type: ${type} for tile (${i},${j})`
                 }
                 this.tiles[i][j] = tile
             }
