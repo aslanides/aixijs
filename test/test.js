@@ -53,6 +53,6 @@ QUnit.test("SimpleDispenserGrid",function(assert) {
 })
 
 QUnit.test("BayesMixture",function(assert) {
-    var model = new BayesMixture()
+    //var model = new BayesMixture()
     assert.ok(true)
 })
