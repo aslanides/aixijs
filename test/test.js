@@ -51,3 +51,8 @@ QUnit.test("SimpleDispenserGrid",function(assert) {
     assert.equal(percept.rew,r_chocolate)
     assert.equal(e.pos.x,2)
 })
+
+QUnit.test("BayesMixture",function(assert) {
+    var model = new BayesMixture()
+    assert.ok(true)
+})
