@@ -10,8 +10,17 @@
     }
     </style>
 </head>
-<body>
-    <p>Enter simulation parameters:</p>
+<body onload="init()">
+    <p>
+        Agent: <select name="agent_select" id="agent_select"></select>
+    </p>
+    <p>
+        Environment: <select name="env_select" id="env_select"></select>
+    </p>
+    <p>
+        Map: <select name="conf_select" id="conf_select"></select>
+    </p>
+    <p>Parameters:</p>
     <p>
         <label for="alpha">Alpha:</label>
         <input type="" name="alpha" id="alpha" min="0" max="1" value="0.9">
