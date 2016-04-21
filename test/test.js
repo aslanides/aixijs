@@ -86,27 +86,56 @@ QUnit.test("Nu",function(assert) {
 })
 
 QUnit.test("BayesMixture",function(assert) {
-    var M = make_M(SimpleDispenserGrid,Test.config())
-    assert.equal(M.length,6)
+    var cfg = Test.config()
+    var M = Options.make_M(SimpleDispenserGrid,cfg)
     var truth = 5
     var model = new BayesMixture(M,"Mu",5)
 
-    var cfg = Test.config()
     cfg.dispenser_pos = {x:2,y:1}
     var env = new SimpleDispenserGrid(cfg)
-
+    model.save()
     var actions = [0,1,2,3,4]
     for (var i=0;i<1e3;i++) {
         var a = Util.random_choice(actions)
         var or = env.perform(a)
         try {
             model.update(a,or.obs,or.rew)
+            assert.deepEqual(env.pos,model.model_class[truth].pos)
         } catch(e) {
             console.error(e)
-            assert.deepEqual(env.pos,model.model_class[truth].pos)
             assert.ok(false)
             break
         }
-
     }
+    model.load()
+    for (var i = 0; i < model.C; i++) {
+        assert.deepEqual(model.model_class[i].pos,cfg.initial_pos)
+    }
+    assert.equal(model.weights[truth],1)
+    assert.equal(Util.sum(model.weights),1)
+})
+
+QUnit.test("Search",function(assert) {
+    var options = {
+        model_class : Options.make_M(SimpleDispenserGrid,Test.config()),
+        midx : 5,
+        num_actions : 5,
+        prior_type : "Mu"
+    }
+    var agent = new BayesAgent(options)
+    tree = new DecisionNode()
+
+    agent.model.save()
+    assert.equal(agent.model.weights[options.midx],1)
+    tree.sample(agent,0)
+    assert.equal(tree.visits,1)
+    assert.equal(tree.children.size,0)
+    agent.model.load()
+
+    tree.sample(agent,0)
+    assert.equal(tree.children.size,1)
+    for (var i = 0; i < 100; i++) {
+        tree.sample(agent,0)
+    }
+    Visualization.draw_mcts_tree(tree)
 })
