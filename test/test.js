@@ -137,5 +137,5 @@ QUnit.test("Search",function(assert) {
     for (var i = 0; i < 100; i++) {
         tree.sample(agent,0)
     }
-    Visualization.draw_mcts_tree(tree)
+    Visualization.drawMCTSTree(tree)
 })
