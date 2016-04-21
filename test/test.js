@@ -27,11 +27,11 @@ QUnit.test("Dispenser",function(assert) {
 
 QUnit.test("Grid",function(assert) {
     var g = new Grid(Test.config())
-    g.add_dispenser(0,0,0.3)
-    assert.equal(g.get_dispenser().chocolate,false)
-    assert.equal(g.get_dispenser().freq,0.3)
-    g.remove_dispenser(0,0)
-    assert.equal(g.get_tile(0,0).reward(),r_empty)
+    g.addDispenser(0,0,0.3)
+    assert.equal(g.getDispenser().chocolate,false)
+    assert.equal(g.getDispenser().freq,0.3)
+    g.removeDispenser(0,0)
+    assert.equal(g.getTile(0,0).reward(),r_empty)
 
 })
 
@@ -39,7 +39,7 @@ QUnit.test("SimpleDispenserGrid",function(assert) {
     var e = new SimpleDispenserGrid(Test.config())
 
     // dispenser stuff
-    e.grid.add_dispenser(2,1,1)
+    e.grid.addDispenser(2,1,1)
     assert.equal(e.grid.disp[0][0],2)
     assert.equal(e.grid.disp.length,1)
 
@@ -87,7 +87,7 @@ QUnit.test("Nu",function(assert) {
 
 QUnit.test("BayesMixture",function(assert) {
     var cfg = Test.config()
-    var M = Options.make_M(SimpleDispenserGrid,cfg)
+    var M = Options.makeModels(SimpleDispenserGrid,cfg)
     var truth = 5
     var model = new BayesMixture(M,"Mu",5)
 
@@ -117,7 +117,7 @@ QUnit.test("BayesMixture",function(assert) {
 
 QUnit.test("Search",function(assert) {
     var options = {
-        model_class : Options.make_M(SimpleDispenserGrid,Test.config()),
+        model_class : Options.makeModels(SimpleDispenserGrid,Test.config()),
         midx : 5,
         num_actions : 5,
         prior_type : "Mu"

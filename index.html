@@ -34,9 +34,9 @@
 
     <p>Enter time step to jump:</p>
     <input type="number" name="Time" min="0" max = "1000000" id ="select_time" value="0">
-    <button onclick="demo.vis.jump_to(select_time.value)">Jump</button>
+    <button onclick="demo.vis.jumpTo(select_time.value)">Jump</button>
     <p>
-        <input type="range" name="slider" id="slider" min="0" max="1e5" step="100" value="0" oninput="demo.vis.jump_to(value)">
+        <input type="range" name="slider" id="slider" min="0" max="1e5" step="100" value="0" oninput="demo.vis.jumpTo(value)">
         <button onclick="demo.vis.pause()">Pause</button>
     </p>
     <p>
