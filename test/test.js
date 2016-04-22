@@ -11,6 +11,10 @@ class Test {
             freqs : [1]
         }
     }
+    static do(env,a) {
+        env.do(a)
+        return env.generatePercept()
+    }
 }
 
 QUnit.test("Dispenser",function(assert) {
@@ -45,42 +49,43 @@ QUnit.test("SimpleDispenserGrid",function(assert) {
 
     // rewards and dynamics
     e.pos = {x:1,y:1}
-    var percept = e.perform(0) // up
+    var percept = Test.do(e,0) // up
     assert.equal(percept.rew,r_wall)
-    percept = e.perform(1) // down
+    percept = Test.do(e,1) // down
     assert.equal(percept.rew,r_chocolate)
-    percept = e.perform(4) // noop
+    percept = Test.do(e,4) // noop
     assert.equal(percept.rew,r_chocolate)
-    percept = e.perform(1) // down
+    percept = Test.do(e,1) // down
     assert.equal(percept.rew,r_wall)
-    percept = e.perform(4) // noop
+    percept = Test.do(e,4) // noop
     assert.equal(percept.rew,r_chocolate)
-    percept = e.perform(2)
+    percept = Test.do(e,2)
     assert.equal(percept.rew,r_wall)
-    percept = e.perform(4) // noop
+    percept = Test.do(e,4) // noop
     assert.equal(percept.rew,r_chocolate)
 
     // save and load
     e.save()
-    percept = e.perform(0)
+    percept = Test.do(e,0)
     assert.equal(percept.rew,r_empty)
-    percept = e.perform(4)
+    percept = Test.do(e,4)
     assert.equal(percept.rew,r_empty)
     e.load()
-    percept = e.perform(4)
+    percept = Test.do(e,4)
     assert.equal(percept.rew,r_chocolate)
     assert.equal(e.pos.x,2)
 })
 
-QUnit.test("Nu",function(assert) {
+QUnit.test("conditionalDistribution",function(assert) {
     var cfg = Test.config()
     cfg.dispenser_pos = {x:2,y:1}
     var env = new SimpleDispenserGrid(cfg)
     var actions = [0,1,2,3,4]
     for (var i=0; i<1e3; i++) {
         var a = Util.random_choice(actions)
-        var or = env.perform(a)
-        var n = env.nu(or.obs,or.rew)
+        env.do(a)
+        var percept = env.generatePercept()
+        var n = env.conditionalDistribution(percept)
         assert.notEqual(n,0)
     }
 })
@@ -97,9 +102,9 @@ QUnit.test("BayesMixture",function(assert) {
     var actions = [0,1,2,3,4]
     for (var i=0;i<1e3;i++) {
         var a = Util.random_choice(actions)
-        var or = env.perform(a)
+        var or = Test.do(env,a)
         try {
-            model.update(a,or.obs,or.rew)
+            model.update(a,or)
             assert.deepEqual(env.pos,model.model_class[truth].pos)
         } catch(e) {
             console.error(e)
@@ -134,7 +139,7 @@ QUnit.test("Search",function(assert) {
 
     tree.sample(agent,0)
     assert.equal(tree.children.size,1)
-    for (var i = 0; i < 100; i++) {
+    for (var i = 0; i < 500; i++) {
         tree.sample(agent,0)
     }
     Visualization.drawMCTSTree(tree)
