@@ -6,43 +6,59 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body onload="Demo.init()">
-    <p>
-        Demo: <select id="demo_select"></select>
-    </p>
-    <p>Parameters:</p>
-    <p>
-        <label for="alpha">Alpha:</label>
-        <input type="" name="alpha" id="alpha" min="0" max="1" value="0.9">
-        <label for="gamma">Gamma:</label>
-        <input type="" name="gamma" id="gamma" min="0" max="1" value="0.99">
-    </p>
-    <p>
-        <label for="epsilon">Epsilon:</label>
-        <input type="" name="epsilon" id="epsilon" min="0" max="1" value="0.01">
-        <label for="t_max">Interaction Cycles:</label>
-        <input type="" name="t_max" id="t_max" min="0" max="1e6" value="1e5">
-    </p>
+    <div class="header">
+        <h1>General Reinforcement Learning Demo</h1>
+        <hr />
+    </div>
+    <section>
+        <div class="grid" id="gridvis" style="display: none; float: left"></div>
+        <div id="plots"></div>
+    </section>
+    <section>
+        <div class="grid" id="navigation" style="display: none;">
+            <hr />
+            <h3>Navigation</h3>
+            <input type="number" name="Time" min="0" max = "1000000" id ="select_time" value="0">
+            <button onclick="demo.vis.jumpTo(select_time.value)">Jump</button>
+            <p>
+                <input type="range" name="slider" id="slider" min="0" step="100" value="0" oninput="demo.vis.jumpTo(value)">
+                <button onclick="demo.vis.pause()">| |</button>
+                <button onclick="demo.vis.run(100)">Play (x1)</button>
+                <button onclick="demo.vis.run(10)">Play (x10)</button>
+                <button onclick="demo.vis.run(1)">Play (x100)</button>
+            </p>
 
-    <button onclick="Demo.run()">Run</button>
-    <!--TODO change visibility of below based on whether started-->
-
-    <p>Enter time step to jump:</p>
-    <input type="number" name="Time" min="0" max = "1000000" id ="select_time" value="0">
-    <button onclick="demo.vis.jumpTo(select_time.value)">Jump</button>
-    <p>
-        <input type="range" name="slider" id="slider" min="0" max="1e5" step="100" value="0" oninput="demo.vis.jumpTo(value)">
-        <button onclick="demo.vis.pause()">Pause</button>
-    </p>
-    <p>
-        <button onclick="demo.vis.run(100)">Slow</button>
-        <button onclick="demo.vis.run(10)">Medium</button>
-        <button onclick="demo.vis.run(1)">Fast</button>
-    </p>
-
-    <label for="r_ave">Average Reward</label>
-    <input type="text" name="Reward" id="r_ave" value="">
-	<div><p></p></div>
-
+            <label for="r_ave">Average Reward</label>
+            <input type="text" name="Reward" id="r_ave" value="">
+            <hr />
+        </div>
+        <div class="grid" id="setup">
+            <h3>Setup</h3>
+            <form>
+                <p class="params">
+                    <label for="demo_select">Demo:</label>
+                    <select id="demo_select"></select>
+                </p>
+                <p class="params">
+                    <label for="alpha">Alpha:</label>
+                    <input class="params" name="alpha" id="alpha" min="0" max="1" value="0.9">
+                </p>
+                <p class="params">
+                    <label for="gamma">Gamma:</label>
+                    <input class="params" name="gamma" id="gamma" min="0" max="1" value="0.99">
+                </p>
+                <p class="params">
+                    <label for="epsilon">Epsilon:</label>
+                    <input class="params" name="epsilon" id="epsilon" min="0" max="1" value="0.01">
+                </p>
+                <p class="params">
+                    <label for="t_max">Max Cycles:</label>
+                    <input class="params" name="t_max" id="t_max" min="0" max="1e6" value="1e5">
+                </p>
+            </form>
+            <button onclick="Demo.run()">Run</button>
+        </div>
+    </section>
 </body>
 
 <script src="lib/demo.js"></script>

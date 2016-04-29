@@ -18,7 +18,14 @@
     border: 1px solid #d3d3d3;
     background-color: #f1f1f1;
 }
-body { font: 12px Arial;}
+
+body {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 300;
+  background-color: #fdfdfd;
+}
 
 path {
     stroke: steelblue;
@@ -32,4 +39,28 @@ path {
     stroke: grey;
     stroke-width: 1;
     shape-rendering: crispEdges;
+}
+
+div.grid {
+    width: 40%;
+}
+
+form {
+    display: table;
+}
+
+select {
+    display: table-cell;
+}
+
+p.params {
+    display: table-row;
+}
+
+label {
+    display: table-cell;
+}
+
+input.params {
+    display: table-cell;
 }
