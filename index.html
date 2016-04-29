@@ -5,15 +5,9 @@
     </title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body onload="init()">
+<body onload="Demo.init()">
     <p>
-        Agent: <select name="agent_select" id="agent_select"></select>
-    </p>
-    <p>
-        Environment: <select name="env_select" id="env_select"></select>
-    </p>
-    <p>
-        Map: <select name="conf_select" id="conf_select"></select>
+        Demo: <select id="demo_select"></select>
     </p>
     <p>Parameters:</p>
     <p>
@@ -29,7 +23,7 @@
         <input type="" name="t_max" id="t_max" min="0" max="1e6" value="1e5">
     </p>
 
-    <button onclick="demo.run(document)">Run</button>
+    <button onclick="Demo.run()">Run</button>
     <!--TODO change visibility of below based on whether started-->
 
     <p>Enter time step to jump:</p>
@@ -58,8 +52,8 @@
 <script src="lib/search.js"></script>
 <script src="lib/visualization.js"></script>
 <script src="lib/util.js"></script>
-<script src="lib/config.js"></script>
 <script src="lib/options.js"></script>
+<script src="lib/config.js"></script>
 <script src="external/mathjs-3.1.4.min.js"></script>
 <script src="external/jquery-2.2.3.min.js"></script>
 <script src="external/d3-3.5.16.min.js"></script>
