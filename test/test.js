@@ -82,7 +82,7 @@ QUnit.test("conditionalDistribution",function(assert) {
     var env = new SimpleDispenserGrid(cfg)
     var actions = [0,1,2,3,4]
     for (var i=0; i<1e3; i++) {
-        var a = Util.random_choice(actions)
+        var a = Util.randomChoice(actions)
         env.do(a)
         var percept = env.generatePercept()
         var n = env.conditionalDistribution(percept)
@@ -101,7 +101,7 @@ QUnit.test("BayesMixture",function(assert) {
     model.save()
     var actions = [0,1,2,3,4]
     for (var i=0;i<1e3;i++) {
-        var a = Util.random_choice(actions)
+        var a = Util.randomChoice(actions)
         var or = Test.do(env,a)
         try {
             model.update(a,or)
