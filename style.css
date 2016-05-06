@@ -63,4 +63,5 @@ label {
 
 input.params {
     display: table-cell;
+    width: 40px;
 }
