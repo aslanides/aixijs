@@ -94,7 +94,7 @@ QUnit.test("BayesMixture",function(assert) {
     var cfg = Test.config()
     var M = Options.makeModels(SimpleDispenserGrid,cfg)
     var truth = 5
-    var model = new BayesMixture(M,"Mu",5)
+    var model = new BayesMixture({model_class:M,prior_type:"Mu",midx:5})
 
     cfg.dispenser_pos = {x:2,y:1}
     var env = new SimpleDispenserGrid(cfg)
@@ -120,6 +120,29 @@ QUnit.test("BayesMixture",function(assert) {
     assert.equal(Util.sum(model.weights),1)
 })
 
+QUnit.test("BayesMixture2",function(assert) {
+    var options = {
+        model_class : Options.makeModels(SimpleDispenserGrid,Test.config()),
+        midx : 5,
+        num_actions : 5,
+        prior_type : "Mu"
+    }
+    var model  = new BayesMixture(options)
+    var percept
+    for (var i = 0;i < 100; i++) {
+        percept = model.sample(4) // noop
+        assert.equal(percept.rew,r_empty)
+    }
+    percept = model.sample(1) // down
+    assert.equal(percept.rew,r_chocolate)
+    for (var i = 0;i < 100; i++) {
+        percept = model.sample(4) // noop
+        assert.equal(percept.rew,r_chocolate)
+    }
+    assert.equal(model.xi(percept),1)
+
+})
+
 QUnit.test("Search",function(assert) {
     var options = {
         model_class : Options.makeModels(SimpleDispenserGrid,Test.config()),
@@ -127,20 +150,20 @@ QUnit.test("Search",function(assert) {
         num_actions : 5,
         prior_type : "Mu"
     }
-    var agent = new BayesAgent(options)
     tree = new DecisionNode()
+    agent = new BayesAgent(options)
 
     agent.model.save()
     assert.equal(agent.model.weights[options.midx],1)
     tree.sample(agent,0)
     assert.equal(tree.visits,1)
     assert.equal(tree.children.size,0)
-    agent.model.load()
-
     tree.sample(agent,0)
     assert.equal(tree.children.size,1)
-    for (var i = 0; i < 500; i++) {
+    agent.model.load()
+    for (var i = 0; i < 5000; i++) {
         tree.sample(agent,0)
+        agent.model.load()
     }
-    Visualization.drawMCTSTree(tree)
+    assert.equal(tree.bestAction(agent),1) // down
 })
