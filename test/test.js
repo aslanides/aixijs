@@ -82,7 +82,7 @@ QUnit.test("conditionalDistribution",function(assert) {
     var env = new SimpleDispenserGrid(cfg)
     var actions = [0,1,2,3,4]
     for (var i=0; i<1e3; i++) {
-        var a = Util.random_choice(actions)
+        var a = Util.randomChoice(actions)
         env.do(a)
         var percept = env.generatePercept()
         var n = env.conditionalDistribution(percept)
@@ -101,7 +101,7 @@ QUnit.test("BayesMixture",function(assert) {
     model.save()
     var actions = [0,1,2,3,4]
     for (var i=0;i<1e3;i++) {
-        var a = Util.random_choice(actions)
+        var a = Util.randomChoice(actions)
         var or = Test.do(env,a)
         try {
             model.update(a,or)
@@ -143,4 +143,13 @@ QUnit.test("Search",function(assert) {
         tree.sample(agent,0)
     }
     Visualization.drawMCTSTree(tree)
+})
+
+QUnit.test("myMap", function(assert){
+	var q_old = new MyMap
+    q_old.set("abc", 2, 0.9)
+	var q_new = Util.deepMap(q_old)
+	assert.equal(q_new.get("abc", 2), 0.9)
+	q_old.set("abc", 2, 0.123)
+	assert.equal(q_new.get("abc", 2), 0.9)
 })
