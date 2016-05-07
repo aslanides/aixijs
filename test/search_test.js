@@ -45,7 +45,7 @@ QUnit.test("Search2",function(assert) {
         num_actions : 5,
         prior_type : "Informed"
     }
-    agent = new BayesAgent(options)
+    var agent = new BayesAgent(options)
     agent.model.save()
     for (var i = 0; i < 5000; i++) {
         agent.search_tree.sample(agent,0)
@@ -58,41 +58,61 @@ QUnit.test("Search2",function(assert) {
     assert.equal(agent.search_tree.bestAction(agent),2)
 })
 
-QUnit.test("Search3",function(assert) {
+QUnit.test("Search2.5",function(assert) {
+
+    // given an informed agent
     var options = {
         model_class : Options.makeModels(SimpleDispenserGrid,environments.dispenser2),
         midx : 22,
         num_actions : 5,
         prior_type : "Informed"
     }
-    env = new SimpleDispenserGrid(environments.dispenser2)
-    agent = new BayesAgent(options)
+    var agent = new BayesAgent(options)
 
-    var o = env.initial_percept.obs
-    var r = env.initial_percept.rew
-    for (var i = 0; i < 6; i++) {
-        console.log(env.pos)
-        console.log(agent.model.model_class[22].pos)
-
-        var a = agent.selectAction(o)
-        console.log("---")
-        if (a != 1 && a != 2) {
-            assert.ok(false)
-            break
-        }
-        env.do(a)
-        var percept = env.generatePercept()
-        var o_ = percept.obs
-        r = percept.rew
-        agent.update(o,a,r,o)
-        if (env.pos.y > 3) {
-            assert.ok(false,"fuck")
-            console.log(env.pos)
-            console.log(environments.dispenser2.dispenser_pos)
-            console.log
-            break
-        }
-        o = o_
+    // when we mutate its model so that it's at the chocolate
+    var percept
+    for (var i = 0; i < 4; i++) {
+        percept = agent.model.sample(1)
+        assert.equal(percept.rew,r_empty)
     }
-    assert.ok(true)
+
+    percept = agent.model.sample(2)
+    assert.equal(percept.rew,r_empty)
+    percept = agent.model.sample(2)
+
+    // then its model predicts that it gets chocolate
+    assert.equal(percept.rew,r_chocolate)
+    assert.deepEqual(agent.model.model_class[22].pos,{x:4,y:2})
+
+    // now if we query the agent, it should want to stay still
+    var a = agent.selectAction(percept.obs)
+    assert.equal(a,4)
+    agent.model.save()
+    for (var i = 0; i < 500; i++) {
+        agent.search_tree.sample(agent,0)
+        agent.model.load()
+    }
+    for (var i =0; i < 10; i++) {
+        var a = agent.search_tree.bestAction(agent)
+        assert.equal(a,4)
+    }
+})
+
+QUnit.test("Search3",function(assert) {
+    var N = 10
+    for (var i =0; i < N; i++) {
+        var options = {
+            model_class : Options.makeModels(SimpleDispenserGrid,environments.dispenser2),
+            midx : 22,
+            num_actions : 5,
+            prior_type : "Informed"
+        }
+        var ag = new BayesAgent(options)
+        var p = ag.model.sample(4)
+        for (var t=0;t<6;t++) {
+            var a = ag.selectAction(p.obs)
+            p = ag.model.sample(a)
+        }
+        assert.equal(p.rew,r_chocolate)
+    }
 })
