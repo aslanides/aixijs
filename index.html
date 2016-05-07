@@ -23,7 +23,7 @@
             <input type="number" name="Time" min="0" max = "1000000" id ="select_time" value="0">
             <button onclick="demo.vis.jumpTo(select_time.value)">Jump</button>
             <p>
-                <input type="range" name="slider" id="slider" min="0" step="100" value="0" oninput="demo.vis.jumpTo(value)">
+                <input type="range" name="slider" id="slider" min="0" value="0" oninput="demo.vis.jumpTo(value)">
                 <button onclick="demo.vis.pause()">| |</button>
                 <button onclick="demo.vis.run(100)">Play (x1)</button>
                 <button onclick="demo.vis.run(10)">Play (x10)</button>
