@@ -6,7 +6,7 @@ QUnit.test("Search",function(assert) {
     options.prior_type = "Informed"
 
     // given an informed bayesian agent with an empty decision tree
-    var tree = new DecisionNode()
+    var tree = new RLDecisionNode()
     agent = new BayesAgent(options)
 
     agent.model.save()
