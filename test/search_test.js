@@ -1,18 +1,19 @@
 QUnit.test("Search",function(assert) {
     var options = new Options()
     options.model_class = Options.makeModels(SimpleDispenserGrid,Test.config())
-    options.midx = 5
+    options.mu = 5
     options.num_actions = 5
     options.prior_type = "Informed"
 
     // given an informed bayesian agent with an empty decision tree
     var tree = new DecisionNode()
-    var agent = new BayesAgent(options)
+    agent = new BayesAgent(options)
 
     agent.model.save()
     // when we sample once
     tree.sample(agent,0)
     // then we visit the root once, and generate no successors
+    agent.model.load()
     assert.equal(tree.visits,1)
     assert.equal(tree.children.size,0)
     // now, when we sample the root again
@@ -29,7 +30,9 @@ QUnit.test("Search",function(assert) {
     // then the best action is to go down
     assert.equal(tree.bestAction(agent),1)
     // and, if the agent sits still and retrieves a percept from its model
-    var p = agent.model.sample(4)
+    var p = Test.do(agent.model,4)
+    // the model should be in the initial state
+    assert.deepEqual(agent.model.get(options.mu).pos,Test.config().initial_pos)
     // the agent's selectAction routine should do this as well
     var a = agent.selectAction(p.obs)
     assert.equal(a,1)
@@ -41,7 +44,7 @@ QUnit.test("Search2",function(assert) {
 
     var options = new Options()
     options.model_class = Options.makeModels(SimpleDispenserGrid,cfg)
-    options.midx = 22
+    options.mu = 22
     options.num_actions = 5
     options.prior_type = "Informed"
 
@@ -52,7 +55,7 @@ QUnit.test("Search2",function(assert) {
         agent.model.load()
     }
     for (var i =0; i < 5; i++) {
-        var p = agent.model.sample(2)
+        var p = Test.do(agent.model,2)
         agent.model.load()
     }
     assert.equal(agent.search_tree.bestAction(agent),2)
@@ -62,7 +65,7 @@ QUnit.test("Search2.5",function(assert) {
     // given an informed agent
     var options = new Options()
     options.model_class = Options.makeModels(SimpleDispenserGrid,environments.dispenser2)
-    options.midx = 22
+    options.mu = 22
     options.num_actions = 5
     options.prior_type = "Informed"
     var agent = new BayesAgent(options)
@@ -70,13 +73,13 @@ QUnit.test("Search2.5",function(assert) {
     // when we mutate its model so that it's at the chocolate
     var percept
     for (var i = 0; i < 4; i++) {
-        percept = agent.model.sample(1)
+        percept = Test.do(agent.model,1)
         assert.equal(percept.rew,r_empty)
     }
 
-    percept = agent.model.sample(2)
+    percept = Test.do(agent.model,2)
     assert.equal(percept.rew,r_empty)
-    percept = agent.model.sample(2)
+    percept = Test.do(agent.model,2)
 
     // then its model predicts that it gets chocolate
     assert.equal(percept.rew,r_chocolate)
@@ -101,14 +104,14 @@ QUnit.test("Search3",function(assert) {
     for (var i =0; i < N; i++) {
         var options = new Options()
         options.model_class = Options.makeModels(SimpleDispenserGrid,environments.dispenser2)
-        options.midx = 22
+        options.mu = 22
         options.num_actions = 5
         options.prior_type = "Informed"
         var ag = new BayesAgent(options)
-        var p = ag.model.sample(4)
+        var p = ag.Test.do(model,4)
         for (var t=0;t<6;t++) {
             var a = ag.selectAction(p.obs)
-            p = ag.model.sample(a)
+            p = ag.Test.do(model,a)
         }
         assert.equal(p.rew,r_chocolate)
     }

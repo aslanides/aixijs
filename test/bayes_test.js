@@ -4,7 +4,7 @@ QUnit.test("BayesMixtureUpdates",function(assert) {
     var cfg = Test.config()
     var M = Options.makeModels(SimpleDispenserGrid,cfg)
     var truth = 5
-    var model = new BayesMixture({model_class:M,prior_type:"Informed",midx:5})
+    var model = new BayesMixture({model_class:M,prior_type:"Informed",mu:5})
 
     // and given corresponding ground truth environment
     cfg.dispenser_pos = {x:2,y:1}
@@ -43,21 +43,21 @@ QUnit.test("BayesMixtureUpdates",function(assert) {
 QUnit.test("BayesMixtureSamples",function(assert) {
     var options = {
         model_class : Options.makeModels(SimpleDispenserGrid,Test.config()),
-        midx : 5,
+        mu : 5,
         num_actions : 5,
         prior_type : "Informed"
     }
     var model  = new BayesMixture(options)
     var percept
-    assert.equal(model.weights[options.midx],1)
+    assert.equal(model.weights[options.mu],1)
     for (var i = 0;i < 100; i++) {
-        percept = model.sample(4) // noop
+        percept = Test.do(model,4) // noop
         assert.equal(percept.rew,r_empty)
     }
-    var percept = model.sample(1) // down
+    var percept = Test.do(model,1) // down
     assert.equal(percept.rew,r_chocolate)
     for (var i = 0;i < 100; i++) {
-        percept = model.sample(4) // noop
+        percept = Test.do(model,4) // noop
         assert.equal(percept.rew,r_chocolate)
     }
     assert.equal(model.xi(percept),1)
