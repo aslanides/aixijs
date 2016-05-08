@@ -8,3 +8,4 @@ General Reinforcement Learning Demo
 - Use default agent/cycle params for demos
 - Add progress bar to UI for long simulations
 - Figure out how to get MarkDown working in index.html
+- MCTS performance optimisations (!)
