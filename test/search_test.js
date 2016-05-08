@@ -108,10 +108,10 @@ QUnit.test("Search3",function(assert) {
         options.num_actions = 5
         options.prior_type = "Informed"
         var ag = new BayesAgent(options)
-        var p = ag.Test.do(model,4)
+        var p = Test.do(ag.model,4)
         for (var t=0;t<6;t++) {
             var a = ag.selectAction(p.obs)
-            p = ag.Test.do(model,a)
+            p = Test.do(ag.model,a)
         }
         assert.equal(p.rew,r_chocolate)
     }
