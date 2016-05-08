@@ -1,10 +1,9 @@
 QUnit.test("Search",function(assert) {
-    var options = {
-        model_class : Options.makeModels(SimpleDispenserGrid,Test.config()),
-        midx : 5,
-        num_actions : 5,
-        prior_type : "Informed"
-    }
+    var options = new Options()
+    options.model_class = Options.makeModels(SimpleDispenserGrid,Test.config())
+    options.midx = 5
+    options.num_actions = 5
+    options.prior_type = "Informed"
 
     // given an informed bayesian agent with an empty decision tree
     var tree = new DecisionNode()
@@ -39,12 +38,13 @@ QUnit.test("Search",function(assert) {
 QUnit.test("Search2",function(assert) {
     var cfg = Util.deepCopy(environments.dispenser2)
     cfg.initial_pos = {x:4,y:1}
-    var options = {
-        model_class : Options.makeModels(SimpleDispenserGrid,cfg),
-        midx : 22,
-        num_actions : 5,
-        prior_type : "Informed"
-    }
+
+    var options = new Options()
+    options.model_class = Options.makeModels(SimpleDispenserGrid,cfg)
+    options.midx = 22
+    options.num_actions = 5
+    options.prior_type = "Informed"
+
     var agent = new BayesAgent(options)
     agent.model.save()
     for (var i = 0; i < 5000; i++) {
@@ -59,14 +59,12 @@ QUnit.test("Search2",function(assert) {
 })
 
 QUnit.test("Search2.5",function(assert) {
-
     // given an informed agent
-    var options = {
-        model_class : Options.makeModels(SimpleDispenserGrid,environments.dispenser2),
-        midx : 22,
-        num_actions : 5,
-        prior_type : "Informed"
-    }
+    var options = new Options()
+    options.model_class = Options.makeModels(SimpleDispenserGrid,environments.dispenser2)
+    options.midx = 22
+    options.num_actions = 5
+    options.prior_type = "Informed"
     var agent = new BayesAgent(options)
 
     // when we mutate its model so that it's at the chocolate
@@ -101,12 +99,11 @@ QUnit.test("Search2.5",function(assert) {
 QUnit.test("Search3",function(assert) {
     var N = 10
     for (var i =0; i < N; i++) {
-        var options = {
-            model_class : Options.makeModels(SimpleDispenserGrid,environments.dispenser2),
-            midx : 22,
-            num_actions : 5,
-            prior_type : "Informed"
-        }
+        var options = new Options()
+        options.model_class = Options.makeModels(SimpleDispenserGrid,environments.dispenser2)
+        options.midx = 22
+        options.num_actions = 5
+        options.prior_type = "Informed"
         var ag = new BayesAgent(options)
         var p = ag.model.sample(4)
         for (var t=0;t<6;t++) {
