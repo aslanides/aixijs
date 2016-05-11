@@ -1,5 +1,18 @@
 # rl-demo
 General Reinforcement Learning Demo
+## Usage
+This software consists of a bunch of different `demo` classes, each of which, when run, will simulate some user-specified number of cycles of agent-environment interaction for some agent/environment pair, with user-specified agent params.
+
+The agents implemented are:
+- Bayes (AIXI)
+- KSA (Square, Shannon, and Kullback-Leibler)
+- MDL
+- Optimistic AIXI
+- Thompson Sampling
+- (Tabular) QLearning/SARSA
+
+## License
+GPL.
 
 ## TODO
 - **Agents**
