@@ -32,3 +32,4 @@ GPL.
     - Implement all the showcase environments/demos!
 - **Misc**
     - Refactor things
+    - Fix up Search unit tests!
