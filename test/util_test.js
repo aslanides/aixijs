@@ -16,3 +16,12 @@ QUnit.test("Sample",function(assert) {
         assert.equal(s,0)
     }
 })
+
+QUnit.test("myMap", function(assert){
+	var q_old = new MyMap
+    q_old.set("abc", 2, 0.9)
+	var q_new = Util.deepMap(q_old)
+	assert.equal(q_new.get("abc", 2), 0.9)
+	q_old.set("abc", 2, 0.123)
+	assert.equal(q_new.get("abc", 2), 0.9)
+})
