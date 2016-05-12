@@ -30,6 +30,7 @@ GPL.
     - Figure out how to get MarkDown/LaTeX working in index.html
     - Make play/pause a toggle button
 - **Demos**
+    - Give default demo params in DOM
     - Implement all the showcase environments/demos!
 - **Misc**
     - Refactor things
