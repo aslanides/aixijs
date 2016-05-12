@@ -43,3 +43,5 @@ GPL.
 - **Misc**
     - Refactor things
     - Fix up Search unit tests!
+- **Reports**
+	- Make a UML for Sean's semester report
