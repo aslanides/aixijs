@@ -28,6 +28,7 @@ GPL.
     - Use default agent/cycle params for demos
     - Add progress bar for long simulations
     - Figure out how to get MarkDown/LaTeX working in index.html
+    - Make play/pause a toggle button
 - **Demos**
     - Implement all the showcase environments/demos!
 - **Misc**
