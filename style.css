@@ -59,9 +59,15 @@ p.params {
 
 label {
     display: table-cell;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 input.params {
     display: table-cell;
     width: 40px;
+}
+
+input.display {
+    width: 80px;
 }

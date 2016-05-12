@@ -20,19 +20,24 @@
         <div class="grid" id="navigation" style="display: none;">
             <hr />
             <h3>Navigation</h3>
-            <input type="number" name="Time" min="0" max = "1000000" id ="select_time" value="0">
-            <button onclick="demo.vis.jumpTo(select_time.value)">Jump</button>
             <p>
                 <input type="range" name="slider" id="slider" min="0" value="0" oninput="demo.vis.jumpTo(value)">
-                <button onclick="demo.vis.jumpTo(0)">|<<</button>
+                <button onclick="demo.vis.jumpTo(0);demo.vis.pause()">|<<</button>
                 <button onclick="demo.vis.pause()">||</button>
                 <button onclick="demo.vis.run(100)">></button>
                 <button onclick="demo.vis.run(10)">>></button>
                 <button onclick="demo.vis.run(1)">>>></button>
             </p>
-
-            <label for="r_ave">Average Reward</label>
-            <input type="text" name="Reward" id="r_ave" value="">
+            <form>
+                <p class="params">
+                    <label for="display_time">Cycle</label>
+                    <input class="display" type="text" name="Time" id="display_time" value="0" readonly>
+                </p>
+                <p class="params">
+                    <label for="r_ave">Average Reward</label>
+                    <input class="display" type="text" name="Reward" id="r_ave" value="" readonly>
+                </p>
+            </form>
             <hr />
         </div>
         <div class="grid" id="setup">
@@ -55,7 +60,7 @@
                     <input type="number" class="params" name="epsilon" id="epsilon" min="0" max="1" value="0.01" step="0.01">
                 </p>
                 <p class="params">
-                    <label for="t_max">Max Cycles:</label>
+                    <label for="t_max">Cycles:</label>
                     <input type="number" class="params" name="t_max" id="t_max" min="0" max="1e6" value="1e5">
                 </p>
             </form>
