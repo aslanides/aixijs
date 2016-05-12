@@ -24,10 +24,11 @@
             <button onclick="demo.vis.jumpTo(select_time.value)">Jump</button>
             <p>
                 <input type="range" name="slider" id="slider" min="0" value="0" oninput="demo.vis.jumpTo(value)">
-                <button onclick="demo.vis.pause()">| |</button>
-                <button onclick="demo.vis.run(100)">Play (x1)</button>
-                <button onclick="demo.vis.run(10)">Play (x10)</button>
-                <button onclick="demo.vis.run(1)">Play (x100)</button>
+                <button onclick="demo.vis.jumpTo(0)">|<<</button>
+                <button onclick="demo.vis.pause()">||</button>
+                <button onclick="demo.vis.run(100)">></button>
+                <button onclick="demo.vis.run(10)">>></button>
+                <button onclick="demo.vis.run(1)">>>></button>
             </p>
 
             <label for="r_ave">Average Reward</label>
