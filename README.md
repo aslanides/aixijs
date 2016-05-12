@@ -23,6 +23,7 @@ GPL.
     - Implement general discounting in MCTS
 - **Visualization**
     - Add optimal reward to d3 plots
+    - Make arrow updates more efficient
     - Display Q-value overlay on visualization
 - **UI**
     - Use default agent/cycle params for demos
