@@ -31,13 +31,14 @@ GPL.
 	- Add 'landmarks' with descriptive text for user to jump to interesting events
 	- Mouse cursor tooltip
 - **UI**
-    - Use default agent/cycle params for demos
+    - Use default agent/cycle params for demos (involves large refactor to Demo/Options class)
     - Add progress bar for long simulations
     - Figure out how to get MarkDown/LaTeX working in index.html
     - Make play/pause a toggle button
 	- Options to look at different plots
 - **Demos**
     - Give default demo params in DOM
+	- In Demo.simulate(), make agent internals logging more abstract
     - Implement all the showcase environments/demos!
 - **Misc**
     - Refactor things
