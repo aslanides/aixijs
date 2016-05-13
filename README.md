@@ -1,5 +1,5 @@
 # rl-demo
-General Reinforcement Learning Demo
+General Reinforcement Learning Demo. Work in progress - expected completion ~ September 2016.
 ## Usage
 This software consists of a bunch of different `demo` classes, each of which, when run, will simulate some user-specified number of cycles of agent-environment interaction for some agent/environment pair, with user-specified agent params.
 
@@ -10,6 +10,8 @@ The agents implemented are:
 - Optimistic AIXI
 - Thompson Sampling
 - (Tabular) QLearning/SARSA
+
+For more details, see the documentation/explanation that accompanies the demos themselves.
 
 ## License
 GPL.
