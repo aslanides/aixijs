@@ -9,13 +9,3 @@ QUnit.test("Dispenser",function(assert) {
         assert.notOk(t.chocolate)
     }
 })
-
-QUnit.test("Grid",function(assert) {
-    var g = new Grid(Test.config())
-    g.addDispenser(0,0,0.3)
-    assert.equal(g.getDispenser().chocolate,false)
-    assert.equal(g.getDispenser().freq,0.3)
-    g.removeDispenser(0,0)
-    assert.equal(g.getTile(0,0).reward(),r_empty)
-
-})

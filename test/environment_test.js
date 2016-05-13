@@ -1,8 +1,10 @@
 QUnit.test("SimpleDispenserGrid",function(assert) {
-    var e = new SimpleDispenserGrid(Test.config())
+	var cfg = Test.config()
+	cfg.freqs=[1]
+	cfg.dispenser_pos = {x:2,y:1}
+	var e = new SimpleDispenserGrid(cfg)
 
     // dispenser stuff
-    e.grid.addDispenser(2,1,1)
     assert.equal(e.grid.disp[0][0],2)
     assert.equal(e.grid.disp.length,1)
 
