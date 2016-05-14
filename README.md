@@ -1,5 +1,5 @@
 # rl-demo
-General Reinforcement Learning Demo. Work in progress - expected completion ~ September 2016.
+General Reinforcement Learning (RL) Demo for demonstrating asymptotic optimality and other behaviors/properties of RL agents in general (partially observable, non-Markov, non-ergodic) environments. **Work in progress** -- expected completion ~ September 2016.
 ## Usage
 This software consists of a bunch of different `demo` classes, each of which, when run, will simulate some user-specified number of cycles of agent-environment interaction for some agent/environment pair, with user-specified agent params.
 
