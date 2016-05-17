@@ -26,6 +26,7 @@ GPL.
 - **Visualization**
     - Add optimal reward to d3 plots
     - Make arrow updates more efficient
+    - Fix arrow updates at t = 0
     - Display Q-value overlay on visualization
 	- Make VisTile / VisGrid that inherit from Tile/Grid
 	- Remove magic numbers
