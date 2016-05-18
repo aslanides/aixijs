@@ -30,6 +30,7 @@ GPL.
     - Display Q-value overlay on visualization
 	- Make VisTile / VisGrid that inherit from Tile/Grid
 	- Remove magic numbers
+	- Make button to toggle policy arrows
 - **Plots**
 	- Add 'landmarks' with descriptive text for user to jump to interesting events
 	- Mouse cursor tooltip
