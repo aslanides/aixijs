@@ -14,10 +14,12 @@
 	<script type="text/javascript" src="lib/agent.js"></script>
 	<script type="text/javascript" src="lib/bayes.js"></script>
 	<script type="text/javascript" src="lib/search.js"></script>
+	<script type="text/javascript" src="lib/trace.js"></script>
 	<script type="text/javascript" src="lib/visualization.js"></script>
 	<script type="text/javascript" src="lib/util.js"></script>
 	<script type="text/javascript" src="lib/options.js"></script>
 	<script type="text/javascript" src="lib/config.js"></script>
+
 	<script type="text/javascript" src="external/mathjs-3.1.4.min.js"></script>
 	<script type="text/javascript" src="external/jquery-2.2.3.min.js"></script>
 	<script type="text/javascript" src="external/d3-3.5.16.min.js"></script>
@@ -69,11 +71,11 @@
             <button onclick="demo.vis.run(1)">>>></button>
         </p>
         <form>
-            <p class="params">
+            <p class="monitor">
                 <label for="display_time">Cycle</label>
                 <input class="display" type="text" name="Time" id="display_time" value="0" readonly>
             </p>
-            <p class="params">
+            <p class="monitor">
                 <label for="r_ave">Average Reward</label>
                 <input class="display" type="text" name="Reward" id="r_ave" value="" readonly>
             </p>

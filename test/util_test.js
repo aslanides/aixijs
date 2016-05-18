@@ -17,8 +17,8 @@ QUnit.test("Sample",function(assert) {
     }
 })
 
-QUnit.test("myMap", function(assert){
-	var q_old = new MyMap
+QUnit.test("QTable", function(assert){
+	var q_old = new QTable
     q_old.set("abc", 2, 0.9)
 	var q_new = Util.deepMap(q_old)
 	assert.equal(q_new.get("abc", 2), 0.9)
