@@ -85,29 +85,30 @@
     <div class="grid" id="setup">
         <h3>Setup</h3>
         <form id="param_form">
-            <p class="params">
+            <p class="params" id="p_select" style="display: table-row">
                 <label for="demo_select">Demo:</label>
-                <select id="demo_select" onchange="Demo.setup()" required="true">
+                <select id="demo_select" onchange="Demo.setOptions()" required="true">
 					<option selected disabled hidden style="display: none" value=""></option>
 				</select>
             </p>
-            <p class="params">
-                <label for="alpha">Alpha:</label>
-                <input type="number" class="params" name="alpha" id="alpha" min="0" max="1" step="0.01" required="true">
+			<hr />
+            <p class="params" id="p_alpha">
+                <label title="Learning rate">Alpha:</label>
+                <input type="number" class="params" id="alpha" min="0" max="1" step="0.01" required="true">
             </p>
-            <p class="params">
-                <label for="gamma">Gamma:</label>
-                <input type="number" class="params" name="gamma" id="gamma" min="0" max="1" step="0.01" required="true">
+            <p class="params" id="p_gamma">
+                <label title="Discount rate (geometric)">Gamma:</label>
+                <input type="number" class="params" id="gamma" min="0" max="1" step="0.01" required="true">
             </p>
-            <p class="params">
-                <label for="epsilon">Epsilon:</label>
-                <input type="number" class="params" name="epsilon" id="epsilon" min="0" max="1" step="0.01" required="true">
+            <p class="params" id="p_epsilon">
+                <label title="Exploration rate">Epsilon:</label>
+                <input type="number" class="params" id="epsilon" min="0" max="1" step="0.01" required="true">
             </p>
-            <p class="params">
-                <label for="t_max">Cycles:</label>
-                <input type="number" class="params" name="t_max" id="t_max" min="1" max="1000000" required="true">
+            <p class="params" id="p_cycles">
+                <label title="Number of cycles to run the simulation for">Cycles:</label>
+                <input type="number" class="params" id="cycles" min="1" max="1000000" required="true">
             </p>
-			<input type="submit" value="Run" onclick="Demo.run()">
+			<input type="submit" value="Run" onclick="Demo.run(document)">
 		</form>
     </div>
 </section>

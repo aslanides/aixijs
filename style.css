@@ -54,7 +54,7 @@ select {
 }
 
 p.params {
-    display: table-row;
+    display: none;
 }
 
 label {
