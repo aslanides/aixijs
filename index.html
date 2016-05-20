@@ -104,9 +104,17 @@
                 <label title="Exploration rate">Epsilon:</label>
                 <input type="number" class="params" name="epsilon" id="epsilon" min="0" max="1" step="0.01" required="true">
             </p>
+			<p class="params" id="p_horizon">
+                <label title="Planning horizon">Horizon:</label>
+                <input type="number" class="params" name="horizon" id="horizon" min="1" max="100" step="1" required="true">
+            </p>
+			<p class="params" id="p_samples">
+                <label title="Number of MCTS samples">MCTS Samples:</label>
+                <input type="number" class="params" name="samples" id="samples" min="1" max="10000" step="1" required="true">
+            </p>
             <p class="params" id="p_cycles">
                 <label title="Number of cycles to run the simulation for">Cycles:</label>
-                <input type="number" class="params" name="cycles" id="cycles" min="1" max="1000000" required="true">
+                <input type="number" class="params" name="cycles" id="cycles" min="1" max="1000000" step="1" required="true">
             </p>
 			<input type="submit" value="Run" onclick="Demo.run(document)">
 		</form>

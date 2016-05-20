@@ -2,7 +2,7 @@ QUnit.test("BayesMixtureUpdates",function(assert) {
 
     // given an informed bayes mixture
     var cfg = Test.config()
-    var M = Options.makeModels(SimpleDispenserGrid,cfg,"dispenser_pos")
+    var M = options.makeModels(SimpleDispenserGrid,cfg,"dispenser_pos")
     var truth = 5
     var model = new BayesMixture({model_class:M,prior_type:"Informed",mu:5})
 
@@ -42,7 +42,7 @@ QUnit.test("BayesMixtureUpdates",function(assert) {
 
 QUnit.test("BayesMixtureSamples",function(assert) {
     var options = {
-        model_class : Options.makeModels(SimpleDispenserGrid,Test.config(),"dispenser_pos"),
+        model_class : options.makeModels(SimpleDispenserGrid,Test.config(),"dispenser_pos"),
         mu : 5,
         num_actions : 5,
         prior_type : "Informed"
