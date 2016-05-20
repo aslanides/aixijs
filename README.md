@@ -13,6 +13,8 @@ The agents implemented are:
 
 For more details, see the documentation/explanation that accompanies the demos themselves.
 
+Note: this is built using features ECMAScript 2015, and so at the moment (May 2016) we don't support older browsers/Safari.
+
 ## License
 GPL.
 
@@ -30,14 +32,13 @@ GPL.
     - Display Q-value overlay on visualization
 	- Make VisTile / VisGrid that inherit from Tile/Grid
 	- Remove magic numbers
-	- Make button to toggle policy arrows
+	- Make button to toggle policy arrows/Bayes posterior
 - **Plots**
 	- Add 'landmarks' with descriptive text for user to jump to interesting events
 	- Mouse cursor tooltip
 - **UI**
-    - Use default agent/cycle params for demos (involves large refactor to Demo/Options class)
+	- Show different markdown for different demos
     - Add progress bar for long simulations
-    - Figure out how to get MarkDown/LaTeX working in index.html
     - Make play/pause a toggle button
 	- Options to look at different plots
 - **Demos**
@@ -47,5 +48,6 @@ GPL.
 - **Misc**
     - Refactor things
     - Fix up Search unit tests!
+	- Add browser version check
 - **Reports**
 	- Make a UML for Sean's semester report

@@ -57,6 +57,10 @@ p.params {
     display: none;
 }
 
+p.monitor {
+	display: table-row;
+}
+
 label {
     display: table-cell;
     padding-left: 10px;
