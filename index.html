@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 
@@ -129,9 +130,7 @@ $("#param_form").submit(function(event) {
 })
 </script>
 <!-- Explanation -->
-<div class="md">
-# Notation and setup
-TODO
+<div class="md" id="bayes_exp">
 # Bayes Agents
 All Bayes agents have a mixture model of the form
 $$
@@ -146,13 +145,14 @@ AI\\(\xi\\) is the Bayes-optimal reinforcement learning agent:
 $$
 a\_{t}^{\text{AIXI}} = \arg\max\_{a\_t}\sum\_{e\_t}\cdots\max\_{a\_\infty}\sum\_{e\_\infty}\sum\_{k=t}^{\infty}\gamma\_k r\_k \xi(e\_k|ae\_{\lt k})
 $$
+</div>
 
+<div class="md" id="ksa_exp" style="display:none">
 # Knowledge Seeking Agents (KSA)
 If we generalise from reinforcement-learning agents to _utility_ agents, we can naturally define several several types of KSA which seek to minimize entropy / maximize information gain.
 
-The \\(d\\)-expected information gain is given by
+The \\(d\\)-expected information gain is given by TODO
 
-# Other agents
 </div>
 
 </body>
