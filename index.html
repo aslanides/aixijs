@@ -53,10 +53,10 @@
     <h1>General Reinforcement Learning Demo</h1>
     <hr />
 </div>
-<section>
+<div>
     <div class="grid" id="gridvis" style="display: none; float: left"></div>
     <div id="plots"></div>
-</section>
+</div>
 <section>
 
 	<!-- Navigation -->
@@ -65,11 +65,11 @@
         <h3>Navigation</h3>
         <p>
             <input type="range" name="slider" id="slider" min="0" value="0" oninput="demo.vis.jumpTo(value)">
-            <button onclick="demo.vis.jumpTo(0);demo.vis.pause()">|<<</button>
+            <button onclick="demo.vis.jumpTo(0);demo.vis.pause()">|&lt;&lt;</button>
             <button onclick="demo.vis.pause()">||</button>
-            <button onclick="demo.vis.run(100)">></button>
-            <button onclick="demo.vis.run(10)">>></button>
-            <button onclick="demo.vis.run(1)">>>></button>
+            <button onclick="demo.vis.run(100)">&gt;</button>
+            <button onclick="demo.vis.run(10)">&gt;&gt;</button>
+            <button onclick="demo.vis.run(1)">&gt;&gt;&gt;</button>
         </p>
         <form>
             <p class="monitor">
@@ -90,34 +90,34 @@
         <form id="param_form">
             <p class="params" id="p_select" style="display: table-row">
                 <label for="demo_select">Demo:</label>
-                <select id="demo_select" name="demo_select" onchange="Demo.setOptions()" required="true">
+                <select id="demo_select" name="demo_select" onchange="Demo.setOptions()" required>
 					<option selected disabled hidden style="display: none" value=""></option>
 				</select>
             </p>
 			<hr />
             <p class="params" id="p_alpha">
                 <label title="Learning rate">Alpha:</label>
-                <input type="number" class="params" name="alpha" id="alpha" min="0" max="1" step="0.01" required="true">
+                <input type="number" class="params" name="alpha" id="alpha" min="0" max="1" step="0.01" required>
             </p>
             <p class="params" id="p_gamma">
                 <label title="Discount rate (geometric)">Gamma:</label>
-                <input type="number" class="params" name="gamma" id="gamma" min="0" max="1" step="0.01" required="true">
+                <input type="number" class="params" name="gamma" id="gamma" min="0" max="1" step="0.01" required>
             </p>
             <p class="params" id="p_epsilon">
                 <label title="Exploration rate">Epsilon:</label>
-                <input type="number" class="params" name="epsilon" id="epsilon" min="0" max="1" step="0.01" required="true">
+                <input type="number" class="params" name="epsilon" id="epsilon" min="0" max="1" step="0.01" required>
             </p>
 			<p class="params" id="p_horizon">
                 <label title="Planning horizon">Horizon:</label>
-                <input type="number" class="params" name="horizon" id="horizon" min="1" max="100" step="1" required="true">
+                <input type="number" class="params" name="horizon" id="horizon" min="1" max="100" step="1" required>
             </p>
 			<p class="params" id="p_samples">
                 <label title="Number of MCTS samples">MCTS Samples:</label>
-                <input type="number" class="params" name="samples" id="samples" min="1" max="10000" step="1" required="true">
+                <input type="number" class="params" name="samples" id="samples" min="1" max="10000" step="1" required>
             </p>
             <p class="params" id="p_cycles">
                 <label title="Number of cycles to run the simulation for">Cycles:</label>
-                <input type="number" class="params" name="cycles" id="cycles" min="1" max="1000000" step="1" required="true">
+                <input type="number" class="params" name="cycles" id="cycles" min="1" max="1000000" step="1" required>
             </p>
 			<input type="submit" value="Run" onclick="Demo.run(document)">
 		</form>
@@ -152,6 +152,10 @@ $$
 If we generalise from reinforcement-learning agents to _utility_ agents, we can naturally define several several types of KSA which seek to minimize entropy / maximize information gain.
 
 The \\(d\\)-expected information gain is given by TODO
+</div>
+
+<div class="md" id="thompson_exp" style="display:none">
+# Thompson Sampling
 
 </div>
 
