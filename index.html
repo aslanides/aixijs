@@ -129,9 +129,12 @@ $("#param_form").submit(function(event) {
 	event.preventDefault()
 })
 </script>
-<!-- Explanation -->
-<div class="md" id="bayes_exp">
-# Bayes Agents
+<!-- Explanations -->
+<div class="md" id="qlearn_exp" style="display:none">
+# Tabular Q-Learning
+</div>
+<div class="md" id="bayes_exp" style="display:none">
+# The Bayes Agent - AI\\(\xi\\)
 All Bayes agents have a mixture model of the form
 $$
 \xi(x) = \sum\_{\nu\in\mathcal{M}}w\_{\nu}\nu(x).
@@ -143,7 +146,15 @@ p(\nu|x\_t) = \frac{p(x|\nu)p(\nu)}{p(x\_t)}\\
 $$
 AI\\(\xi\\) is the Bayes-optimal reinforcement learning agent:
 $$
-a\_{t}^{\text{AIXI}} = \arg\max\_{a\_t}\sum\_{e\_t}\cdots\max\_{a\_\infty}\sum\_{e\_\infty}\sum\_{k=t}^{\infty}\gamma\_k r\_k \xi(e\_k|ae\_{\lt k})
+a\_{t}^{\text{AI}\xi} = \arg\max\_{a\_t}\sum\_{e\_t}\cdots\max\_{a\_\infty}\sum\_{e\_\infty}\sum\_{k=t}^{\infty}\gamma\_k r\_k \xi(e\_k|ae\_{\lt k})
+$$
+</div>
+
+<div class="md" id="aimu_exp" style="display:none">
+# The Informed Agent - AI\\(\mu\\)
+
+$$
+a\_{t}^{\text{AI}\mu} = \arg\max\_{a\_t}\sum\_{e\_t}\cdots\max\_{a\_\infty}\sum\_{e\_\infty}\sum\_{k=t}^{\infty}\gamma\_k r\_k \mu(e\_k|ae\_{\lt k})
 $$
 </div>
 
