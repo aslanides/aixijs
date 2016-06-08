@@ -23,9 +23,8 @@ GPL.
     - Add optimal reward to d3 plots
     - Make arrow updates more efficient
 	- Make button to toggle policy arrows/Bayes posterior
-- **Plots**
-	- Add 'landmarks' with descriptive text for user to jump to interesting events
-	- Mouse cursor tooltip
+	- Show last action taken by agent in grid worlds
+	- Implement Basic MDP visualization (fully specified by states, transition probabilities, and rewards)
 - **UI**
     - Add progress bar for long simulations
     - Make play/pause a toggle button
@@ -35,3 +34,5 @@ GPL.
 - **Misc**
     - Fix up unit tests!
 	- Add browser version check
+	- Generalize model class setup.
+- See github issues for major TODOs.
