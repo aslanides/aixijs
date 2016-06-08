@@ -5,8 +5,8 @@ QUnit.test("SimpleDispenserGrid",function(assert) {
 	var e = new SimpleDispenserGrid(cfg)
 
     // dispenser stuff
-    assert.equal(e.grid.disp[0][0],2)
-    assert.equal(e.grid.disp.length,1)
+    assert.equal(e.disp[0][0],2)
+    assert.equal(e.disp.length,1)
 
     // rewards and dynamics
     e.pos = {x:1,y:1}
