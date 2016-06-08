@@ -19,35 +19,19 @@ Note: this is built using features ECMAScript 2015, and so at the moment (May 20
 GPL.
 
 ## TODO
-- **Agents**
-    - Implement KullbackLeiblerKSA
-    - Implement MDL, OptimisticAIXI, ThompsonAgent
-    - Add support for scheduling for epsilon-greedy agents
-    - MCTS performance optimisations!
-    - Implement general discounting in MCTS
 - **Visualization**
     - Add optimal reward to d3 plots
     - Make arrow updates more efficient
-    - Fix arrow updates at t = 0
-    - Display Q-value overlay on visualization
-	- Make VisTile / VisGrid that inherit from Tile/Grid
-	- Remove magic numbers
 	- Make button to toggle policy arrows/Bayes posterior
 - **Plots**
 	- Add 'landmarks' with descriptive text for user to jump to interesting events
 	- Mouse cursor tooltip
 - **UI**
-	- Show different markdown for different demos
     - Add progress bar for long simulations
     - Make play/pause a toggle button
 	- Options to look at different plots
 - **Demos**
-    - Give default demo params in DOM
-	- In Demo.simulate(), make agent internals logging more abstract
     - Implement all the showcase environments/demos!
 - **Misc**
-    - Refactor things
-    - Fix up Search unit tests!
+    - Fix up unit tests!
 	- Add browser version check
-- **Reports**
-	- Make a UML for Sean's semester report
