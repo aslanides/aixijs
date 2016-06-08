@@ -52,13 +52,13 @@ QUnit.test("BayesMixtureSamples",function(assert) {
     assert.equal(model.weights[options.mu],1)
     for (var i = 0;i < 100; i++) {
         percept = Test.do(model,4) // noop
-        assert.equal(percept.rew,r_empty)
+        assert.equal(percept.rew,rewards.empty)
     }
     var percept = Test.do(model,1) // down
-    assert.equal(percept.rew,r_chocolate)
+    assert.equal(percept.rew,rewards.chocolate)
     for (var i = 0;i < 100; i++) {
         percept = Test.do(model,4) // noop
-        assert.equal(percept.rew,r_chocolate)
+        assert.equal(percept.rew,rewards.chocolate)
     }
     assert.equal(model.xi(percept),1)
 })

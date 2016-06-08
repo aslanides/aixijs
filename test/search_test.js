@@ -74,15 +74,15 @@ QUnit.test("Search2.5",function(assert) {
     var percept
     for (var i = 0; i < 4; i++) {
         percept = Test.do(agent.model,1)
-        assert.equal(percept.rew,r_empty)
+        assert.equal(percept.rew,rewards.empty)
     }
 
     percept = Test.do(agent.model,2)
-    assert.equal(percept.rew,r_empty)
+    assert.equal(percept.rew,rewards.empty)
     percept = Test.do(agent.model,2)
 
     // then its model predicts that it gets chocolate
-    assert.equal(percept.rew,r_chocolate)
+    assert.equal(percept.rew,rewards.chocolate)
     assert.deepEqual(agent.model.model_class[22].pos,{x:4,y:2})
 
     // now if we query the agent, it should want to stay still
@@ -113,6 +113,6 @@ QUnit.test("Search3",function(assert) {
             var a = ag.selectAction(p.obs)
             p = Test.do(ag.model,a)
         }
-        assert.equal(p.rew,r_chocolate)
+        assert.equal(p.rew,rewards.chocolate)
     }
 })
