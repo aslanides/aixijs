@@ -31,6 +31,7 @@ GPL.
 	- Options to look at different plots
 - **Demos**
     - Implement all the showcase environments/demos!
+	- Implement a dispenser environment with a local maximum
 - **Misc**
     - Fix up unit tests!
 	- Add browser version check
