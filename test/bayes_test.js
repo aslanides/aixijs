@@ -2,12 +2,12 @@ QUnit.test("BayesMixtureUpdates",function(assert) {
 
     // given an informed bayes mixture
     var cfg = Test.config()
-    var M = options.makeModels(SimpleDispenserGrid,cfg,"dispenser_pos")
+    var M = options.makeModels(SimpleDispenserGrid,cfg,"goal_pos")
     var truth = 5
     var model = new BayesMixture({model_class:M,prior_type:"Informed",mu:5})
 
     // and given corresponding ground truth environment
-    cfg.dispenser_pos = {x:2,y:1}
+    cfg.goal_pos = {x:2,y:1}
     var env = new SimpleDispenserGrid(cfg)
 
     // then as we move around and update, our model should be consistent with
@@ -42,7 +42,7 @@ QUnit.test("BayesMixtureUpdates",function(assert) {
 
 QUnit.test("BayesMixtureSamples",function(assert) {
     var options = {
-        model_class : options.makeModels(SimpleDispenserGrid,Test.config(),"dispenser_pos"),
+        model_class : options.makeModels(SimpleDispenserGrid,Test.config(),"goal_pos"),
         mu : 5,
         num_actions : 5,
         prior_type : "Informed"

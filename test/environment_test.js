@@ -1,7 +1,7 @@
 QUnit.test("SimpleDispenserGrid",function(assert) {
 	var cfg = Test.config()
 	cfg.freqs=[1]
-	cfg.dispenser_pos = {x:2,y:1}
+	cfg.goal_pos = {x:2,y:1}
 	var e = new SimpleDispenserGrid(cfg)
 
     // dispenser stuff
@@ -39,7 +39,7 @@ QUnit.test("SimpleDispenserGrid",function(assert) {
 
 QUnit.test("conditionalDistribution",function(assert) {
     var cfg = Test.config()
-    cfg.dispenser_pos = {x:2,y:1}
+    cfg.goal_pos = {x:2,y:1}
     var env = new SimpleDispenserGrid(cfg)
     var actions = [0,1,2,3,4]
     for (var i=0; i<1e3; i++) {

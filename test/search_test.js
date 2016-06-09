@@ -1,6 +1,6 @@
 QUnit.test("Search",function(assert) {
     var options = new Options()
-    options.model_class = options.makeModels(SimpleDispenserGrid,Test.config(),"dispenser_pos")
+    options.model_class = options.makeModels(SimpleDispenserGrid,Test.config(),"goal_pos")
     options.mu = 5
     options.num_actions = 5
     options.prior_type = "Informed"
@@ -43,7 +43,7 @@ QUnit.test("Search2",function(assert) {
     cfg.initial_pos = {x:4,y:1}
 
     var options = new Options()
-    options.model_class = options.makeModels(SimpleDispenserGrid,cfg,"dispenser_pos")
+    options.model_class = options.makeModels(SimpleDispenserGrid,cfg,"goal_pos")
     options.mu = 22
     options.num_actions = 5
     options.prior_type = "Informed"
@@ -64,7 +64,7 @@ QUnit.test("Search2",function(assert) {
 QUnit.test("Search2.5",function(assert) {
     // given an informed agent
     var options = new Options()
-    options.model_class = options.makeModels(SimpleDispenserGrid,environments.dispenser2,"dispenser_pos")
+    options.model_class = options.makeModels(SimpleDispenserGrid,environments.dispenser2,"goal_pos")
     options.mu = 22
     options.num_actions = 5
     options.prior_type = "Informed"
@@ -103,7 +103,7 @@ QUnit.test("Search3",function(assert) {
     var N = 10
     for (var i =0; i < N; i++) {
         var options = new Options()
-        options.model_class = options.makeModels(SimpleDispenserGrid,environments.dispenser2,"dispenser_pos")
+        options.model_class = options.makeModels(SimpleDispenserGrid,environments.dispenser2,"goal_pos")
         options.mu = 22
         options.num_actions = 5
         options.prior_type = "Informed"
