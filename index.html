@@ -147,15 +147,20 @@ p(\nu|x\_t) = \frac{p(x|\nu)p(\nu)}{p(x\_t)}\\
 $$
 AI\\(\xi\\) is the Bayes-optimal reinforcement learning agent:
 $$
-a\_{t}^{\text{AI}\xi} = \arg\max\_{a\_t}\sum\_{e\_t}\cdots\max\_{a\_\infty}\sum\_{e\_\infty}\sum\_{k=t}^{\infty}\gamma\_k r\_k \xi(e\_k|ae\_{\lt k})
+a\_{t}^{\text{AI}\xi} = \arg\max\_{a\_t}\sum\_{e\_t}\cdots\max\_{a\_\infty}\sum\_{e\_\infty}\sum\_{k=t}^{\infty}\gamma\_k r\_k \xi(e\_k|ae\_{\lt k}).
+$$
+
+Note that this is not to be confused with AIXI, the Chuck Norris of AI agents, which uses Solomonoff's Universal prior as its belief distribution:
+$$
+\xi^{\text{AIXI}}(e\_k|ae\_{\lt k}) = \sum\_{q\ :\ U(q;a\_{\lt k})=e\_{1:k}}2^{-l(q)}
 $$
 </div>
 
 <div class="md" id="aimu_exp" style="display:none">
 # The Informed Agent - AI\\(\mu\\)
-
+AI\\(\mu\\) doesn't learn; it is just the expectimax solution. This is the stochastic analogue of minimax for deterministic games:
 $$
-a\_{t}^{\text{AI}\mu} = \arg\max\_{a\_t}\sum\_{e\_t}\cdots\max\_{a\_\infty}\sum\_{e\_\infty}\sum\_{k=t}^{\infty}\gamma\_k r\_k \mu(e\_k|ae\_{\lt k})
+a\_{t}^{\text{AI}\mu} = \arg\max\_{a\_t}\sum\_{e\_t}\cdots\max\_{a\_\infty}\sum\_{e\_\infty}\sum\_{k=t}^{\infty}\gamma\_k r\_k \mu(e\_k|ae\_{\lt k}).
 $$
 </div>
 
