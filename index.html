@@ -54,83 +54,82 @@
     <h1>General Reinforcement Learning Demo</h1>
     <hr />
 </div>
-<div>
-    <div class="grid" id="gridvis" style="display: none; float: left"></div>
-    <div id="plots"></div>
-</div>
 <section>
+	<!-- Vis -->
+	<div style="float: left">
+		<div class="grid" id="gridvis" style="display: none"></div>
+		<!-- Navigation -->
+	    <div class="grid" id="navigation" style="display: none">
+	        <hr />
+	        <h3>Navigation</h3>
+	        <p>
+	            <input type="range" name="slider" id="slider" min="0" value="0" oninput="demo.vis.jumpTo(value)">
+	            <button onclick="demo.vis.jumpTo(0);demo.vis.pause()">|&lt;&lt;</button>
+	            <button onclick="demo.vis.pause()">||</button>
+	            <button onclick="demo.vis.run(100)">&gt;</button>
+	            <button onclick="demo.vis.run(10)">&gt;&gt;</button>
+	            <button onclick="demo.vis.run(1)">&gt;&gt;&gt;</button>
+	        </p>
+	        <form>
+	            <p class="monitor">
+	                <label for="display_time">Cycle</label>
+	                <input class="display" type="text" name="Time" id="display_time" value="0" readonly>
+	            </p>
+	            <p class="monitor">
+	                <label for="r_ave">Average Reward</label>
+	                <input class="display" type="text" name="Reward" id="r_ave" value="" readonly>
+	            </p>
+	        </form>
+	        <hr />
+	    </div>
 
-	<!-- Navigation -->
-    <div class="grid" id="navigation" style="display: none;">
-        <hr />
-        <h3>Navigation</h3>
-        <p>
-            <input type="range" name="slider" id="slider" min="0" value="0" oninput="demo.vis.jumpTo(value)">
-            <button onclick="demo.vis.jumpTo(0);demo.vis.pause()">|&lt;&lt;</button>
-            <button onclick="demo.vis.pause()">||</button>
-            <button onclick="demo.vis.run(100)">&gt;</button>
-            <button onclick="demo.vis.run(10)">&gt;&gt;</button>
-            <button onclick="demo.vis.run(1)">&gt;&gt;&gt;</button>
-        </p>
-        <form>
-            <p class="monitor">
-                <label for="display_time">Cycle</label>
-                <input class="display" type="text" name="Time" id="display_time" value="0" readonly>
-            </p>
-            <p class="monitor">
-                <label for="r_ave">Average Reward</label>
-                <input class="display" type="text" name="Reward" id="r_ave" value="" readonly>
-            </p>
-        </form>
-        <hr />
-    </div>
-
-	<!-- Demo Parameters -->
-    <div class="grid" id="setup">
-        <h3>Setup</h3>
-        <form id="param_form">
-            <p class="params" id="p_select" style="display: table-row">
-                <label for="demo_select">Demo:</label>
-                <select id="demo_select" name="demo_select" onchange="Demo.setOptions()" required>
-					<option selected disabled hidden style="display: none" value=""></option>
-				</select>
-            </p>
-			<hr />
-            <p class="params" id="p_alpha">
-                <label title="Learning rate">Alpha:</label>
-                <input type="number" class="params" name="alpha" id="alpha" min="0" max="1" step="0.01" required>
-            </p>
-            <p class="params" id="p_gamma">
-                <label title="Discount rate (geometric)">Gamma:</label>
-                <input type="number" class="params" name="gamma" id="gamma" min="0" max="1" step="0.01" required>
-            </p>
-            <p class="params" id="p_epsilon">
-                <label title="Exploration rate">Epsilon:</label>
-                <input type="number" class="params" name="epsilon" id="epsilon" min="0" max="1" step="0.01" required>
-            </p>
-			<p class="params" id="p_horizon">
-                <label title="Planning horizon">Horizon:</label>
-                <input type="number" class="params" name="horizon" id="horizon" min="1" max="100" step="1" required>
-            </p>
-			<p class="params" id="p_samples">
-                <label title="Number of MCTS samples">MCTS Samples:</label>
-                <input type="number" class="params" name="samples" id="samples" min="1" max="10000" step="1" required>
-            </p>
-            <p class="params" id="p_cycles">
-                <label title="Number of cycles to run the simulation for">Cycles:</label>
-                <input type="number" class="params" name="cycles" id="cycles" min="1" max="1000000" step="1" required>
-            </p>
-			<input type="submit" value="Run" onclick="Demo.run(document)">
-		</form>
-    </div>
+		<!-- Demo Parameters -->
+	    <div class="grid" id="setup">
+	        <h3>Setup</h3>
+	        <form id="param_form">
+	            <p class="params" id="p_select" style="display: table-row">
+	                <label for="demo_select">Demo:</label>
+	                <select id="demo_select" name="demo_select" onchange="Demo.setOptions()" required>
+						<option selected disabled hidden style="display: none" value="" label=" "></option>
+					</select>
+	            </p>
+				<hr />
+	            <p class="params" id="p_alpha">
+	                <label title="Learning rate">Alpha:</label>
+	                <input type="number" class="params" name="alpha" id="alpha" min="0" max="1" step="0.01" required>
+	            </p>
+	            <p class="params" id="p_gamma">
+	                <label title="Discount rate (geometric)">Gamma:</label>
+	                <input type="number" class="params" name="gamma" id="gamma" min="0" max="1" step="0.01" required>
+	            </p>
+	            <p class="params" id="p_epsilon">
+	                <label title="Exploration rate">Epsilon:</label>
+	                <input type="number" class="params" name="epsilon" id="epsilon" min="0" max="1" step="0.01" required>
+	            </p>
+				<p class="params" id="p_horizon">
+	                <label title="Planning horizon">Horizon:</label>
+	                <input type="number" class="params" name="horizon" id="horizon" min="1" max="100" step="1" required>
+	            </p>
+				<p class="params" id="p_samples">
+	                <label title="Number of MCTS samples">MCTS Samples:</label>
+	                <input type="number" class="params" name="samples" id="samples" min="1" max="10000" step="1" required>
+	            </p>
+	            <p class="params" id="p_cycles">
+	                <label title="Number of cycles to run the simulation for">Cycles:</label>
+	                <input type="number" class="params" name="cycles" id="cycles" min="1" max="1000000" step="1" required>
+	            </p>
+				<input type="submit" value="Run" onclick="Demo.run(document)">
+			</form>
+	    </div>
+	</div>
+	<div id="plots" style="margin-left: 30%"></div>
 </section>
 <hr />
 <script>
-$("#param_form").submit(function(event) {
-	event.preventDefault()
-})
+	$("#param_form").submit(event => event.preventDefault())
 </script>
 <!-- Explanations -->
+<section>
 <div class="md" id="qlearn_exp" style="display:none">
 # Tabular Q-Learning
 </div>
@@ -175,6 +174,6 @@ The \\(d\\)-expected information gain is given by TODO
 # Thompson Sampling
 
 </div>
-
+</section>
 </body>
 </html>

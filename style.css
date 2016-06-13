@@ -41,10 +41,6 @@ path {
     shape-rendering: crispEdges;
 }
 
-div.grid {
-    width: 40%;
-}
-
 form {
     display: table;
 }
