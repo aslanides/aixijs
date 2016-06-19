@@ -66,8 +66,8 @@
 	            <input type="range" name="slider" id="slider" min="0" value="0" oninput="demo.vis.jumpTo(value)">
 	            <button onclick="demo.vis.jumpTo(0);demo.vis.pause()">|&lt;&lt;</button>
 	            <button onclick="demo.vis.pause()">||</button>
-	            <button onclick="demo.vis.run(100)">&gt;</button>
-	            <button onclick="demo.vis.run(10)">&gt;&gt;</button>
+	            <button onclick="demo.vis.run(300)">&gt;</button>
+	            <button onclick="demo.vis.run(50)">&gt;&gt;</button>
 	            <button onclick="demo.vis.run(1)">&gt;&gt;&gt;</button>
 	        </p>
 	        <form>
@@ -113,6 +113,10 @@
 				<p class="params" id="p_samples">
 	                <label title="Number of MCTS samples">MCTS Samples:</label>
 	                <input type="number" class="params" name="samples" id="samples" min="1" max="10000" step="1" required>
+	            </p>
+				<p class="params" id="p_ucb">
+	                <label title="UCB exploration parameter">UCB Weight:</label>
+	                <input type="number" class="params" name="ucb" id="ucb" min="0.01" max="10" step="0.01" required>
 	            </p>
 	            <p class="params" id="p_cycles">
 	                <label title="Number of cycles to run the simulation for">Cycles:</label>
