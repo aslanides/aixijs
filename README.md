@@ -20,8 +20,6 @@ GPL.
 
 ## TODO
 - **Visualization**
-    - Add optimal reward to d3 plots
-    - Make arrow updates more efficient
 	- Make button to toggle policy arrows/Bayes posterior
 	- Show last action taken by agent in grid worlds
 	- Implement Basic MDP visualization (fully specified by states, transition probabilities, and rewards)
@@ -32,8 +30,4 @@ GPL.
 - **Demos**
     - Implement all the showcase environments/demos!
 	- Implement a dispenser environment with a local maximum
-- **Misc**
-    - Fix up unit tests!
-	- Add browser version check
-	- Generalize model class setup.
 - See github issues for major TODOs.
