@@ -47,7 +47,7 @@ QUnit.test("BayesMixtureSamples",function(assert) {
         num_actions : 5,
         prior_type : "Informed"
     }
-    var model  = new BayesMixture(options)
+    var model = new BayesMixture(options)
     var percept
     assert.equal(model.weights[options.mu],1)
     for (var i = 0;i < 100; i++) {
@@ -65,4 +65,19 @@ QUnit.test("BayesMixtureSamples",function(assert) {
         assert.equal(percept.rew,rewards.chocolate + rewards.move)
     }
     assert.equal(model.xi(percept),1)
+})
+
+QUnit.test("BayesMixtureCopy",function(assert) {
+    var options = {
+        model_class : Gridworld.modelClass(SimpleDispenserGrid,environments.dispenser2),
+        mu : 5,
+        num_actions : 5,
+        prior_type : "Informed"
+    }
+    var model = new BayesMixture(options)
+	var idx = Util.sample(model.weights)
+	var rho = model.model_class[idx].copy()
+	rho.do(1)
+	assert.equal(rho.pos.x,1)
+	assert.equal(model.model_class[idx].pos.x,0)
 })
