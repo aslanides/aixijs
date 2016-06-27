@@ -13,7 +13,7 @@ The agents implemented are:
 
 For more details, see the documentation/explanation that accompanies the demos themselves.
 
-Note: this is built using features ECMAScript 2015, and so at the moment (May 2016) we don't support older browsers/Safari.
+Note: this is built using features from ECMAScript 2015 (ES6). For this reason, we highly recommend running on Google Chrome, since we're not supporting other browsers.
 
 ## License
 GPL.
