@@ -1,6 +1,6 @@
 QUnit.test("BayesMixtureUpdates",function(assert) {
     // given an informed bayes mixture
-    var cfg = Test.config()
+    var cfg = test.dispenser
     var M = Gridworld.modelClass(SimpleDispenserGrid,cfg)
     var truth = 5
     var model = new BayesMixture({model_class:M,prior_type:"Informed",mu:5})
@@ -13,7 +13,7 @@ QUnit.test("BayesMixtureUpdates",function(assert) {
     // the environment
     model.save()
     var actions = [0,1,2,3,4]
-    for (var i=0;i<1e3;i++) {
+    for (var i=0;i<1e2;i++) {
         var a = Util.randomChoice(actions)
         var or = Test.do(env,a)
         try {
@@ -31,7 +31,8 @@ QUnit.test("BayesMixtureUpdates",function(assert) {
 
     // then we should retrieve the original model state
     for (var i = 0; i < model.C; i++) {
-        assert.deepEqual(model.model_class[i].pos,cfg.initial_pos)
+        assert.deepEqual(model.model_class[i].pos.x,0)
+		assert.deepEqual(model.model_class[i].pos.y,0)
     }
 
     // final sanity checks: normalization, etc
@@ -41,7 +42,7 @@ QUnit.test("BayesMixtureUpdates",function(assert) {
 
 QUnit.test("BayesMixtureSamples",function(assert) {
     var options = {
-        model_class : SimpleDispenserGrid.modelClass(SimpleDispenserGrid,Test.config()),
+        model_class : Gridworld.modelClass(SimpleDispenserGrid,test.dispenser),
         mu : 5,
         num_actions : 5,
         prior_type : "Informed"
@@ -51,13 +52,17 @@ QUnit.test("BayesMixtureSamples",function(assert) {
     assert.equal(model.weights[options.mu],1)
     for (var i = 0;i < 100; i++) {
         percept = Test.do(model,4) // noop
-        assert.equal(percept.rew,rewards.empty)
+        assert.equal(percept.rew,rewards.move)
     }
-    var percept = Test.do(model,1) // down
-    assert.equal(percept.rew,rewards.chocolate)
+    var percept = Test.do(model,1) // right
+    assert.equal(percept.rew,rewards.move)
+	var percept = Test.do(model,3) // down
+    assert.equal(percept.rew,rewards.move)
+	var percept = Test.do(model,1) // right
+    assert.equal(percept.rew,rewards.chocolate + rewards.move)
     for (var i = 0;i < 100; i++) {
         percept = Test.do(model,4) // noop
-        assert.equal(percept.rew,rewards.chocolate)
+        assert.equal(percept.rew,rewards.chocolate + rewards.move)
     }
     assert.equal(model.xi(percept),1)
 })
