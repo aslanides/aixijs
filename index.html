@@ -4,10 +4,15 @@
 
 <head>
     <title>
-        General Reinforcement Learning Demo
+        AIXIjs: General reinforcement learning demo
     </title>
     <link rel="stylesheet" href="style.css">
     <meta charset="UTF-8">
+	<meta name="description" content="A JavaScript demo for general reinforcement learning agents">
+	<meta name="author" content="John Aslanides and Sean Lamont">
+	<meta name="keywords" content="artificial intelligence, reinforcement learning, AIXI, gridworld">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 	<script type="text/javascript" src="lib/demo.js"></script>
 	<script type="text/javascript" src="lib/plot.js"></script>
 	<script type="text/javascript" src="lib/environment.js"></script>
@@ -47,14 +52,23 @@
 			})();
 		}
 	</script>
+	<style>
+	#wrap {
+	  width:800px;
+	  margin-left: auto;
+	  margin-right: auto;
+	}
+	</style>
 </head>
 
 <body onload="Demo.init();renderMarkdown()">
-
+<div id="wrap">
 <div class="header">
     <img src="assets/roger2.png" style="width: 50px; float:left; margin: 0px 15px 15px 0px" />
-	<h1 style="padding-top: 20px; padding-bottom: 10px">General Reinforcement Learning Demo</h1>
-	<hr />
+	<h1 style="font-size:50px">AIXI<span style="color:#058;">js</span></h1>
+</div>
+<div class="md">
+---
 </div>
 <!-- Fork me on github! -->
 <a href="https://github.com/aslanides/rl-demo" target="_blank"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
@@ -69,6 +83,7 @@
 			        <h3>Navigation</h3>
 			        <p>
 			            <input type="range" name="slider" id="slider" min="0" value="0" oninput="demo.vis.jumpTo(value)">
+						<br />
 			            <button onclick="demo.vis.jumpTo(0);demo.vis.pause()">|&lt;&lt;</button>
 			            <button onclick="demo.vis.pause()">||</button>
 			            <button onclick="demo.vis.run(300)">&gt;</button>
@@ -114,7 +129,7 @@
 			                <input type="number" class="params" name="horizon" id="horizon" min="1" max="100" step="1" required>
 			            </p>
 						<p class="params" id="p_samples">
-			                <label title="Number of MCTS samples">MCTS Samples:</label>
+			                <label title="Number of MCTS samples">Samples:</label>
 			                <input type="number" class="params" name="samples" id="samples" min="1" max="10000" step="1" required>
 			            </p>
 						<p class="params" id="p_ucb">
@@ -225,7 +240,7 @@ $$
 $$
 which corresponds to performing the update at each cycle:
 $$
-w\_\nu\leftarrow\frac{\nu(e\_t)w\_nu}{\xi(e\_t)}.
+w\_\nu\leftarrow\frac{\nu(e\_t)w\_\nu}{\xi(e\_t)}.
 $$
 
 ## AI\\(\xi\\) and AIXI
@@ -238,15 +253,11 @@ It is a universal, parameter-free Bayesian agent, whose behavior is completely s
 $$
 w\_\nu = 2^{-K(\nu)},
 $$
-where \\(K(\nu)\\) is the [Kolmogorov complexity][KC] of environment \\(\nu\\).
+where \\(K(\nu)\\) is the [Kolmogorov complexity][KC] of environment \\(\nu\\). AIXI is hence the 'active' generalization of Solomonoff induction, which is the optimal (but incomputable) inductive learner.
 
 ## Exploration vs exploitation; optimality
 
-TODO
-
-## Optimism
-
-TODO
+The most central issue in reinforcement learning is the __exploration-exploitation dilemma__: TODO
 
 ## Q-Learning
 
@@ -261,8 +272,6 @@ TODO
 TODO
 
 ## Thompson Sampling
-
-TODO
 
 ## Optimistic AIXI
 
@@ -294,7 +303,10 @@ TODO
 [Kleene]: https://en.wikipedia.org/wiki/Kleene_star
 [Convex]: https://en.wikipedia.org/wiki/Convex_combination
 [Cromwell]: https://en.wikipedia.org/wiki/Cromwell%27s_rule
+
+[Leike15]: http://jmlr.org/proceedings/papers/v40/Leike15.pdf
 [Veness11]: https://www.jair.org/media/3125/live-3125-5397-jair.pdf
+
 </span>
 
 <span class="md" id="qlearn_exp" style="display:none"></span>
@@ -311,5 +323,6 @@ TODO
 </tr>
 </table>
 <hr />
+</div>
 </body>
 </html>
