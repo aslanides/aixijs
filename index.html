@@ -52,10 +52,12 @@
 <body onload="Demo.init();renderMarkdown()">
 
 <div class="header">
-    <h1>General Reinforcement Learning Demo</h1>
-    <hr />
+    <img src="assets/roger2.png" style="width: 50px; float:left; margin: 0px 15px 15px 0px" />
+	<h1 style="padding-top: 20px; padding-bottom: 10px">General Reinforcement Learning Demo</h1>
+	<hr />
 </div>
-
+<!-- Fork me on github! -->
+<a href="https://github.com/aslanides/rl-demo" target="_blank"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
 <!-- Vis -->
 <table>
 	<tr>
@@ -139,58 +141,175 @@
 
 <!-- Explanations -->
 <td colspan=2>
-<span class="md" id="qlearn_exp" style="display:none">
+<span class="md" id="rl">
+
 ---
-# Tabular Q-Learning
+
+## Agent-environment interaction
+
+The __agent__ and __environment__ play a turn-based game and interact in cycles. At time/cycle/turn \\(t\\), the agent supplies the environment with an __action__ \\(a\_t\\). The environment then computes some dynamics on its underlying (and in general, hidden) state \\(s_t\\). It then returns a __percept__ \\(e_t\\) to the agent, and the cycle repeats. In the most general setting, the environment is a __partially observable Markov decision process__.
+
+<div style="text-align: center"><img src="assets/agent-env.png" alt="agent-environment interaction" style="width: 200px"/></div>
+
+The actions live in a (for convenience, stationary) action space \\(\mathcal{A}\\). The percepts live in a (again, stationary) percept space \\(\mathcal{E}\\).
+
+We identify an agent with its __policy__ \\(\pi(a\_t\lvert ae\_{&lt;t})\\)
+$$
+\pi\ :\ \left(\mathcal{A}\times\mathcal{E}\right)^*\mapsto\varDelta\mathcal{A}
+$$
+
+where \\(^*\\) is the [Kleene star][Kleene], and \\(\varDelta \mathcal{X}\\) is the set of probability measures over \\(\mathcal{X}\\).
+
+An environment is a distribution over percepts \\(\nu(e\_t\lvert ae\_{&lt;t}a\_t)\\) with
+$$
+\nu\ :\  \left(\mathcal{A}\times\mathcal{E}\right)^*\times\mathcal{A}\mapsto\varDelta\mathcal{E}.
+$$
+The agent and environment interaction induces a distribution over __histories__ \\(\nu^\pi\\):
+
+$$
+\nu^\pi\left(ae\_{&lt;t}\right) \stackrel{.}{=}\prod\_{k=1}^{t}\pi\left(a\_k\lvert ae\_{&lt;t}\right)\nu\left(e\_k\lvert ae\_{&lt;k}a\_k\right).
+$$
+
+Note that TODO: contextual/conditional etc.
+
+## Reinforcement...
+
+Percepts consist of (__observation__, __reward__) pairs \\(e\_k = \left(o\_k,r\_k\right)\\):
+$$
+\mathcal{E} = \mathcal{O}\times\mathbb{R}.
+$$
+Now, introduce the __return__, which is the discounted sum of all future rewards:
+$$
+R\_t \stackrel{.}{=} \sum\_{k=t}^{\infty}\gamma\_k r\_k,
+$$
+where \\(\gamma\ :\ \mathbb{N}\mapsto[0,1]\\) is a discount function with convergent sum.  Now, if our agent is rational in the [Von Neumann-Morgenstern][VNM] sense, it should maximize the expected return, which we call the __value__. The value achieved by policy \\(\pi\\) in environment \\(\nu\\) given history \\(ae\_{&lt;t}\\) is defined as
+$$
+V^{\pi}\_{\nu}\left(ae\_{&lt;t}\right)\stackrel{.}{=}\mathbb{E}^{\pi}\_{\nu}\left[\left.\sum\_{k=t}^{\infty}\gamma\_{k}r\_{k}\right|ae\_{&lt;t}\right]
+$$
+
+Let \\(\mu\\) be the true environment. The __optimal value__ is the highest value achieved by any policy in this environment:
+
+$$
+V\_{\mu}^{*}\stackrel{.}{=}\max\_{\pi}V\_{\mu}^{\pi}.
+$$
+
+AI\\(\mu\\) is the \\(\boldsymbol{\mu}\\)__-optimal policy__ of the __informed agent__:
+$$
+\pi^{\text{AI}\mu}\stackrel{.}{=}\arg\max\_{\pi}V\_{\mu}^{\pi}.
+$$
+Unpacking this yields the __expectimax__ expression
+$$
+a\_{t}^{\text{AI}\mu}=\arg\lim\_{m\to\infty}\max\_{a\_{t}}\sum\_{e\_{t}}\cdots\max\_{a\_{m}}\sum\_{e\_{m}}\sum\_{k=t}^{m}\gamma\_{k}r\_{k}\prod\_{j=t}^{k}\mu\left(e\_{j}\lvert ae\_{&lt;j}a\_{j}\right).
+$$
+This is just a generalization of [minimax][Minimax] to arbitrary stochastic environments/adversaries. In practice, when planning we approximate this computation with [Monte Carlo tree search][Veness11].
+
+## ...Learning
+
+Clearly we don't know \\(\mu\\) _a priori_ in the general RL setting. Generically, there are two main approaches to learning in the context of RL: __model-based__ and __model-free__. They each make their own sets of assumptions:
+* Model-free (e.g. [Q-Learning][QLearning]) generally assume the environment is a finite-state MDP
+* Model-based (e.g. __Bayesian learning__) assumes the __realizable case__.
+
+The agents we'll be dealing with are all Bayesian.
+
+## Bayesian reinforcement learning
+
+Assume the realizable case: the true environment \\(\mu\\) is contained in some countable __model class__ \\(\mathcal{M}\\). Now, constructor a __Bayesian mixture__ over \\(\mathcal{M}\\): a [convex linear combination][Convex] of environments:
+$$
+\xi\left(e\_t\lvert ae\_{&lt;t}a\_t\right)\stackrel{.}{=}\sum\_{\nu\in\mathcal{M}}w\_\nu \nu\left(e\_t\lvert ae\_{&lt;t}a\_t\right).
+$$
+The weights \\(w\_\nu\equiv\Pr\left(\nu\lvert ae\_{&lt;t}\right)\\) specify the agent's __posterior belief distribution__ over \\(\mathcal{M}\\). By [Cromwell's rule][Cromwell], we require further that the __prior__ weights \\(\Pr(\nu\lvert \epsilon)\\) lie in the interval \\((0,1)\ \forall \nu\in\mathcal{M}\\).
+
+Being Bayesian simply means __updating__ these beliefs according to the product rule of probability:
+$$
+\Pr(\nu\lvert e\_t) = \frac{\Pr(e\_t\lvert \nu)\Pr(\nu)}{\Pr(e\_t)},
+$$
+which corresponds to performing the update at each cycle:
+$$
+w\_\nu\leftarrow\frac{\nu(e\_t)w\_nu}{\xi(e\_t)}.
+$$
+
+## AI\\(\xi\\) and AIXI
+
+AI\\(\xi\\) is the __Bayes-optimal__ agent. That is, it is the policy that is optimal with respect to \\(\xi\\)-expected return:
+$$
+\pi^{\text{AI}\xi}\stackrel{.}{=}\arg\max\_\pi V^\pi\_\xi.
+$$
+It is a universal, parameter-free Bayesian agent, whose behavior is completely specified by its model class \\(\mathcal{M}\\) and choice of prior \\(\lbrace w\_\nu\rbrace\_{\nu\in\mathcal{M}}\\). [AIXI][AIXI] uses [Solomonoff's universal prior][Solomonoff]:
+$$
+w\_\nu = 2^{-K(\nu)},
+$$
+where \\(K(\nu)\\) is the [Kolmogorov complexity][KC] of environment \\(\nu\\).
+
+## Exploration vs exploitation; optimality
+
+TODO
+
+## Optimism
+
+TODO
+
+## Q-Learning
+
+TODO
+
+## Knowledge-seeking agents
+
+TODO
+
+## BayesExp
+
+TODO
+
+## Thompson Sampling
+
+TODO
+
+## Optimistic AIXI
+
+TODO
+
+## MDL Agent
+
+TODO
+
+## Policy gradients
+
+TODO
+
+## Function approximation/Deep Q-Learning
+
+TODO
+
+## Compress and Control
+
+TODO
+
+<!-- References -->
+[KC]: https://en.wikipedia.org/wiki/Kolmogorov_complexity
+[QLearning]: https://en.wikipedia.org/wiki/Q-learning
+[AIXI]: https://en.wikipedia.org/wiki/AIXI
+[Solomonoff]: http://www.scholarpedia.org/article/Algorithmic_probability
+[VNM]: https://en.wikipedia.org/wiki/Von_Neumann%E2%80%93Morgenstern_utility_theorem
+[Minimax]: https://en.wikipedia.org/wiki/Minimax
+[Kleene]: https://en.wikipedia.org/wiki/Kleene_star
+[Convex]: https://en.wikipedia.org/wiki/Convex_combination
+[Cromwell]: https://en.wikipedia.org/wiki/Cromwell%27s_rule
+[Veness11]: https://www.jair.org/media/3125/live-3125-5397-jair.pdf
 </span>
 
-<span class="md" id="bayes_exp" style="display:none">
----
-# The Bayes Agent - AI\\(\xi\\)
-All Bayes agents have a mixture model of the form
-$$
-\xi(x) = \sum\_{\nu\in\mathcal{M}}w\_{\nu}\nu(x).
-$$
-Given some history of observations \\(h=(x\_1\dots x\_{t-1})\\) and a new observation \\(x\_t\\), we interpet \\(p(x|\nu)=\nu(x\_t|h)\\) and \\(p(\nu|h)=w\_\nu\\), and so we update with Bayes' rule:
-$$
-p(\nu|x\_t) = \frac{p(x|\nu)p(\nu)}{p(x\_t)}\\
-= \frac{\nu(x\_t|h)w\_\nu}{\sum\_{\nu'\in\mathcal{M}}w\_\nu'\nu'(x\_t)}.
-$$
-AI\\(\xi\\) is the Bayes-optimal reinforcement learning agent:
-$$
-a\_{t}^{\text{AI}\xi} = \arg\max\_{a\_t}\sum\_{e\_t}\cdots\max\_{a\_\infty}\sum\_{e\_\infty}\sum\_{k=t}^{\infty}\gamma\_k r\_k \xi(e\_k|ae\_{\lt k}).
-$$
+<span class="md" id="qlearn_exp" style="display:none"></span>
 
-Note that this is not to be confused with AIXI, which uses Solomonoff's Universal prior as its belief distribution:
-$$
-\xi^{\text{AIXI}}(e\_k|ae\_{\lt k}) = \sum\_{q\ :\ U(q;a\_{\lt k})=e\_{1:k}}2^{-l(q)}
-$$
-</span>
+<span class="md" id="bayes_exp" style="display:none"></span>
 
-<span class="md" id="aimu_exp" style="display:none">
----
-# The Informed Agent - AI\\(\mu\\)
-AI\\(\mu\\) doesn't learn; it is just the expectimax solution. This is the stochastic analogue of minimax for deterministic games:
-$$
-a\_{t}^{\text{AI}\mu} = \arg\max\_{a\_t}\sum\_{e\_t}\cdots\max\_{a\_\infty}\sum\_{e\_\infty}\sum\_{k=t}^{\infty}\gamma\_k r\_k \mu(e\_k|ae\_{\lt k}).
-$$
-</span>
+<span class="md" id="aimu_exp" style="display:none"></span>
 
-<span class="md" id="ksa_exp" style="display:none">
----
-# Knowledge Seeking Agents (KSA)
-If we generalise from reinforcement-learning agents to _utility_ agents, we can naturally define several several types of KSA which seek to minimize entropy / maximize information gain.
+<span class="md" id="ksa_exp" style="display:none"></span>
 
-The \\(d\\)-expected information gain is given by TODO
-</span>
+<span class="md" id="thompson_exp" style="display:none"></span>
 
-<span class="md" id="thompson_exp" style="display:none">
----
-# Thompson Sampling
-</span>
 </td>
 </tr>
 </table>
-
+<hr />
 </body>
 </html>

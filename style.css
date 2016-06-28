@@ -27,6 +27,15 @@ body {
   background-color: #fdfdfd;
 }
 
+a {
+  color: #0074d9; /* From http://clrs.cc */
+  text-decoration: none;
+}
+
+a:hover, a:focus {
+  text-decoration: underline;
+}
+
 path {
     stroke: steelblue;
     stroke-width: 2;
