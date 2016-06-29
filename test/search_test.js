@@ -7,7 +7,6 @@ QUnit.test("Search",function(assert) {
 		num_actions : 5,
 		samples : 800,
 		utility : e => e.rew,
-		decision_node : RLDecisionNode
 	}
 
 	var model = new BayesMixture({
@@ -31,7 +30,6 @@ QUnit.test("Search",function(assert) {
 		num_actions : 5,
 		samples : 400,
 		utility : e => e.rew,
-		decision_node : RLDecisionNode
 	}
 
 	var model = new BayesMixture({
