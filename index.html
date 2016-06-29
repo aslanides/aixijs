@@ -76,7 +76,7 @@
 		<td style="width: 40%">
 			<span id="gridvis"></span>
 			<!-- Navigation -->
-		    <span id="navigation" style="display: none">
+		    <div id="navigation" style="display: none">
 		        <h3>Navigation</h3>
 		        <p>
 		            <input type="range" name="slider" id="slider" min="0" value="0" oninput="demo.vis.jumpTo(value)">
@@ -97,10 +97,10 @@
 		                <input class="display" type="text" name="Reward" id="r_ave" value="" readonly>
 		            </p>
 		        </form>
-		    </span>
+		    </div>
 
 			<!-- Demo Parameters -->
-		    <span id="setup">
+		    <div id="setup">
 		        <h3>Setup</h3>
 		        <form id="param_form">
 		            <p class="params" id="p_select" style="display: table-row">
@@ -142,7 +142,7 @@
 				<script>
 					$("#param_form").submit(event => event.preventDefault())
 				</script>
-		    </span>
+		    </div>
 		</td>
 		<td style="vertical-align: top">
 			<span id="plots"></span>
@@ -160,7 +160,7 @@
 
 The __agent__ and __environment__ play a turn-based game and interact in cycles. At time/cycle/turn \\(t\\), the agent supplies the environment with an __action__ \\(a\_t\\). The environment then computes some dynamics on its underlying (and in general, hidden) state \\(s_t\\). It then returns a __percept__ \\(e_t\\) to the agent, and the cycle repeats. In the most general setting, the environment is a __partially observable Markov decision process__.
 
-<div style="text-align: center"><img src="assets/agent-env.png" alt="agent-environment interaction" style="width: 200px"/></div>
+<p style="text-align: center"><img src="assets/agent-env.png" alt="agent-environment interaction" style="width: 200px"/></p>
 
 The actions live in a (for convenience, stationary) action space \\(\mathcal{A}\\). The percepts live in a (again, stationary) percept space \\(\mathcal{E}\\).
 
