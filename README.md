@@ -11,7 +11,7 @@ The agents implemented are:
 - Thompson Sampling
 - (Tabular) QLearning/SARSA
 
-For more details, see the documentation/explanation that accompanies the demos themselves.
+See the [main site](http://aslanides.github.io/aixijs) for more details, documentation, and demos.
 
 Note: this is built using features from ECMAScript 2015 (ES6). For this reason, we highly recommend running on Google Chrome, since we're not supporting other browsers.
 
