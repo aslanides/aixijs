@@ -26,7 +26,8 @@ GPL.
 - **UI**
     - Add progress bar for long simulations
     - Make play/pause a toggle button
-	- Options to look at different plots
+	- Add option for user to play environment
+	- Add visualization/plot legend
 - **Demos**
     - Implement all the showcase environments/demos!
 	- Implement a dispenser environment with a local maximum
