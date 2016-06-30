@@ -1,6 +1,6 @@
 QUnit.test("ThompsonAgent",function(assert) {
 	var cl = SimpleDispenserGrid
-	var cfg = environments.dispenser2
+	var cfg = config.environments.dispenser2
 
 	env = new cl(cfg)
 	var options = new Options()

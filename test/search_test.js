@@ -2,15 +2,15 @@ QUnit.test("Search",function(assert) {
     var mock_agent = {
 		horizon: 3,
 		UCBweight : 1,
-		max_reward : rewards.chocolate + rewards.move,
-		min_reward : rewards.wall + rewards.move,
+		max_reward : config.rewards.chocolate + config.rewards.move,
+		min_reward : config.rewards.wall + config.rewards.move,
 		num_actions : 5,
 		samples : 800,
 		utility : e => e.rew,
 	}
 
 	var model = new BayesMixture({
-		model_class : Gridworld.modelClass(SimpleDispenserGrid,environments.dispenser2),
+		model_class : Gridworld.modelClass(SimpleDispenserGrid,config.environments.dispenser2),
 		prior_type : "Informed",
 		mu : 1
 	})
@@ -25,15 +25,15 @@ QUnit.test("Search",function(assert) {
     var mock_agent = {
 		horizon: 5,
 		UCBweight : 1,
-		max_reward : rewards.chocolate + rewards.move,
-		min_reward : rewards.wall + rewards.move,
+		max_reward : config.rewards.chocolate + config.rewards.move,
+		min_reward : config.rewards.wall + config.rewards.move,
 		num_actions : 5,
 		samples : 400,
 		utility : e => e.rew,
 	}
 
 	var model = new BayesMixture({
-		model_class : Gridworld.modelClass(SimpleDispenserGrid,environments.dispenser2),
+		model_class : Gridworld.modelClass(SimpleDispenserGrid,config.environments.dispenser2),
 		prior_type : "Informed",
 		mu : 1
 	})

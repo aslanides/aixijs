@@ -1,6 +1,6 @@
 QUnit.test("BayesMixtureUpdates",function(assert) {
     // given an informed bayes mixture
-    var cfg = test.dispenser
+    var cfg = config.test.dispenser
     var M = Gridworld.modelClass(SimpleDispenserGrid,cfg)
     var truth = 5
     var model = new BayesMixture({model_class:M,prior_type:"Informed",mu:5})
@@ -42,7 +42,7 @@ QUnit.test("BayesMixtureUpdates",function(assert) {
 
 QUnit.test("BayesMixtureSamples",function(assert) {
     var options = {
-        model_class : Gridworld.modelClass(SimpleDispenserGrid,test.dispenser),
+        model_class : Gridworld.modelClass(SimpleDispenserGrid,config.test.dispenser),
         mu : 5,
         num_actions : 5,
         prior_type : "Informed"
@@ -52,24 +52,24 @@ QUnit.test("BayesMixtureSamples",function(assert) {
     assert.equal(model.weights[options.mu],1)
     for (var i = 0;i < 100; i++) {
         percept = Test.do(model,4) // noop
-        assert.equal(percept.rew,rewards.move)
+        assert.equal(percept.rew,config.rewards.move)
     }
     var percept = Test.do(model,1) // right
-    assert.equal(percept.rew,rewards.move)
+    assert.equal(percept.rew,config.rewards.move)
 	var percept = Test.do(model,3) // down
-    assert.equal(percept.rew,rewards.move)
+    assert.equal(percept.rew,config.rewards.move)
 	var percept = Test.do(model,1) // right
-    assert.equal(percept.rew,rewards.chocolate + rewards.move)
+    assert.equal(percept.rew,config.rewards.chocolate + config.rewards.move)
     for (var i = 0;i < 100; i++) {
         percept = Test.do(model,4) // noop
-        assert.equal(percept.rew,rewards.chocolate + rewards.move)
+        assert.equal(percept.rew,config.rewards.chocolate + config.rewards.move)
     }
     assert.equal(model.xi(percept),1)
 })
 
 QUnit.test("BayesMixtureCopy",function(assert) {
     var options = {
-        model_class : Gridworld.modelClass(SimpleDispenserGrid,environments.dispenser2),
+        model_class : Gridworld.modelClass(SimpleDispenserGrid,config.environments.dispenser2),
         mu : 5,
         num_actions : 5,
         prior_type : "Informed"

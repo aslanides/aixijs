@@ -1,5 +1,5 @@
 QUnit.test("Grids",function(assert) {
-	env = new SimpleDispenserGrid(environments.dispenser1)
+	env = new SimpleDispenserGrid(config.environments.dispenser1)
 	assert.equal(env.pos.x,0)
 	assert.equal(env.pos.y,0)
 	var e = env.generatePercept()
@@ -8,12 +8,12 @@ QUnit.test("Grids",function(assert) {
 	for (var a of plan) {
 		env.do(a)
 		e = env.generatePercept()
-		assert.equal(e.rew,rewards.move)
+		assert.equal(e.rew,config.rewards.move)
 		assert.ok(env.conditionalDistribution(e) > 0)
 
 	}
 	env.do(3)
 	e = env.generatePercept()
-	assert.equal(e.rew,rewards.chocolate + rewards.move)
+	assert.equal(e.rew,config.rewards.chocolate + config.rewards.move)
 	assert.ok(env.conditionalDistribution(e) > 0)
 })
