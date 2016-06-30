@@ -27,6 +27,12 @@ body {
   background-color: #fdfdfd;
 }
 
+#wrap {
+  width:800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 a {
   color: #0074d9; /* From http://clrs.cc */
   text-decoration: none;
