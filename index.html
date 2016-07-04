@@ -149,38 +149,44 @@
 
 ## Agent-environment interaction
 
-The __agent__ and __environment__ play a turn-based game and interact in cycles. At time/cycle/turn \\(t\\), the agent supplies the environment with an __action__ \\(a\_t\\). The environment then computes some dynamics on its underlying (and in general, hidden) state \\(s_t\\). It then returns a __percept__ \\(e_t\\) to the agent, and the cycle repeats. In the most general setting, the environment is a __partially observable Markov decision process__.
+In the standard [reinforcement learning][RL] (RL) framework, the __agent__ and __environment__ play a turn-based game and interact in cycles. At time/cycle/turn \\(t\\), the agent supplies the environment with an __action__ \\(a\_t\\). The environment then performs some computation and returns a __percept__ \\(e_t\\) to the agent, and the cycle repeats.
 
 <p style="text-align: center"><img src="assets/agent-env.png" alt="agent-environment interaction" style="width: 200px"/></p>
 
-The actions live in a (for convenience, stationary) action space \\(\mathcal{A}\\). The percepts live in a (again, stationary) percept space \\(\mathcal{E}\\).
-
-We identify an agent with its __policy__ \\(\pi(a\_t\lvert ae\_{&lt;t})\\)
+The actions live in an action space \\(\mathcal{A}\\), and the percepts live in a percept space \\(\mathcal{E}\\). We identify an agent with its __policy__, which in general is a distribution over actions \\(\pi(a\_t\lvert ae\_{&lt;t})\\)
 $$
-\pi\ :\ \left(\mathcal{A}\times\mathcal{E}\right)^*\mapsto\varDelta\mathcal{A}
+\pi\ :\ \left(\mathcal{A}\times\mathcal{E}\right)^*\mapsto\varDelta\mathcal{A},
 $$
 
-where \\(^*\\) is the [Kleene star][Kleene], and \\(\varDelta \mathcal{X}\\) is the set of probability measures over \\(\mathcal{X}\\).
+where \\(^*\\) is the [Kleene star][Kleene], and \\(\varDelta \mathcal{X}\\) is the set of probability measures over \\(\mathcal{X}\\). An environment is a distribution over percepts \\(\nu(e\_t\lvert ae\_{&lt;t}a\_t)\\) with
 
-An environment is a distribution over percepts \\(\nu(e\_t\lvert ae\_{&lt;t}a\_t)\\) with
 $$
 \nu\ :\  \left(\mathcal{A}\times\mathcal{E}\right)^*\times\mathcal{A}\mapsto\varDelta\mathcal{E}.
 $$
+
 The agent and environment interaction induces a distribution over __histories__ \\(\nu^\pi\\):
 
 $$
-\nu^\pi\left(ae\_{&lt;t}\right) \stackrel{.}{=}\prod\_{k=1}^{t}\pi\left(a\_k\lvert ae\_{&lt;t}\right)\nu\left(e\_k\lvert ae\_{&lt;k}a\_k\right).
+\nu^\pi\left(ae\_{&lt;t}\right) \stackrel{.}{=}\prod\_{k=1}^{t}\pi\left(a\_k\lvert ae\_{&lt;t}\right)\nu\left(e\_k\lvert ae\_{&lt;k}a\_k\right),
 $$
+which is conveniently expressed as a telescoping product by the [chain rule][ChainRule]. In the general setting, the environment is a [partially observable Markov decision process][POMDP] (POMDP). That is, there is some underlying (hidden) state space \\(\mathcal{S}\\), with respect to which the environment's dynamics are Markovian. The agent cannot observe this state directly, but instead receives (incomplete and noisy) percepts through its sensors. Therefore, the agent must learn and make decisions under uncertainty in order to perform well.
 
-Note that TODO: contextual/conditional etc.
+Notes:
+* We're slightly abusing notation here: environments are _not_ joint distributions over actions and percepts, and so you should read \\(\nu(e\_t\lvert ae\_{&lt;t}a\_t)\\) as shorthand for \\(\nu(e\_t\lvert e\_{&lt;t} \lvert\lvert a_{1:t})\\); that is, a distribution over percepts conditioned on a sequence of past percepts, and in the context of a sequence of past actions given as _inputs_. The same holds for policies, except with actions and percepts reversed.
+* We restrict ourselves to countable percept and action spaces. Although many (but not all) of the important results generalize to continuous spaces, we make this assumption for simplicity.
+* For simplicity, we also assume that the action and percept spaces \\(\mathcal{A}\\) and \\(\mathcal{E}\\) are stationary; i.e. they are time-independent and fixed by the environment.
 
 ## Reinforcement...
 
-Percepts consist of (__observation__, __reward__) pairs \\(e\_k = \left(o\_k,r\_k\right)\\):
+Percepts consist of (__observation__, __reward__) pairs \\(e\_k = \left(o\_k,r\_k\right)\\), with integer-valued rewards such that
 $$
-\mathcal{E} = \mathcal{O}\times\mathbb{R}.
+\mathcal{E} = \mathcal{O}\times\mathbb{Z}.
 $$
-Now, introduce the __return__, which is the discounted sum of all future rewards:
+We make no further assumptions about the observation space \\(\mathcal{O}\\). A good example is the space of \\(M\times N\\)-pixel 8-bit RGB images used in the [Arcade Learning Environment][ALE] (ALE):
+$$
+\mathcal{O}_{\text{ALE}}=\mathcal{B}^{8\times M\times N\times 3},
+$$
+where \\(\mathcal{B}\stackrel{.}{=}\lbrace{0,1\rbrace}\\) is the binary alphabet. Now, introduce the __return__, which is the discounted sum of all future rewards:
 $$
 R\_t \stackrel{.}{=} \sum\_{k=t}^{\infty}\gamma\_k r\_k,
 $$
@@ -200,15 +206,16 @@ $$
 V\_{\mu}^{*}\stackrel{.}{=}\max\_{\pi}V\_{\mu}^{\pi}.
 $$
 
-AI\\(\mu\\) is the \\(\boldsymbol{\mu}\\)__-optimal policy__ of the __informed agent__:
+Using the [distributive property][Distributive] of \\(\max\\) and \\(\sum\\), we can unroll this into the  __expectimax__ expression
+$$
+V\_{\mu}^{*}=\lim\_{m\to\infty}\max\_{a\_{t}\in\mathcal{A}}\sum\_{e\_{t}\in\mathcal{E}}\cdots\max\_{a\_{m}\in\mathcal{A}}\sum\_{e\_{m}\in\mathcal{E}}\sum\_{k=t}^{m}\gamma\_{k}r\_{k}\prod\_{j=t}^{k}\mu\left(e\_{j}\lvert ae\_{&lt;j}a\_{j}\right).
+$$
+This can be viewed as just a generalization of [minimax][Minimax] to stochastic environments/adversaries. In practice, when planning we approximate this computation with [Monte Carlo tree search][MCTS] (MCTS).
+
+We can now introduce our first theoretical [artificial general intelligent][AGI] (AGI) agent: the __informed agent AI__\\(\boldsymbol{\mu}\\). __AI__\\(\boldsymbol{\mu}\\) is simply the (infeasible) \\(\boldsymbol{\mu}\\)__-optimal policy__:
 $$
 \pi^{\text{AI}\mu}\stackrel{.}{=}\arg\max\_{\pi}V\_{\mu}^{\pi}.
 $$
-Unpacking this yields the __expectimax__ expression
-$$
-a\_{t}^{\text{AI}\mu}=\arg\lim\_{m\to\infty}\max\_{a\_{t}}\sum\_{e\_{t}}\cdots\max\_{a\_{m}}\sum\_{e\_{m}}\sum\_{k=t}^{m}\gamma\_{k}r\_{k}\prod\_{j=t}^{k}\mu\left(e\_{j}\lvert ae\_{&lt;j}a\_{j}\right).
-$$
-This is just a generalization of [minimax][Minimax] to arbitrary stochastic environments/adversaries. In practice, when planning we approximate this computation with [Monte Carlo tree search][Veness11].
 
 ## ...Learning
 
@@ -224,9 +231,7 @@ Assume the realizable case: the true environment \\(\mu\\) is contained in some 
 $$
 \xi\left(e\_t\lvert ae\_{&lt;t}a\_t\right)\stackrel{.}{=}\sum\_{\nu\in\mathcal{M}}w\_\nu \nu\left(e\_t\lvert ae\_{&lt;t}a\_t\right).
 $$
-The weights \\(w\_\nu\equiv\Pr\left(\nu\lvert ae\_{&lt;t}\right)\\) specify the agent's __posterior belief distribution__ over \\(\mathcal{M}\\). By [Cromwell's rule][Cromwell], we require further that the __prior__ weights \\(\Pr(\nu\lvert \epsilon)\\) lie in the interval \\((0,1)\ \forall \nu\in\mathcal{M}\\).
-
-Being Bayesian simply means __updating__ these beliefs according to the product rule of probability:
+The weights \\(w\_\nu\equiv\Pr\left(\nu\lvert ae\_{&lt;t}\right)\\) specify the agent's __posterior belief distribution__ over \\(\mathcal{M}\\). By [Cromwell's rule][Cromwell], we require further that the __prior__ weights \\(\Pr(\nu\lvert \epsilon)\\) lie in the interval \\((0,1)\ \forall \nu\in\mathcal{M}\\). Being 'Bayesian' simply means __updating__ these beliefs according to the product rule of probability:
 $$
 \Pr(\nu\lvert e\_t) = \frac{\Pr(e\_t\lvert \nu)\Pr(\nu)}{\Pr(e\_t)},
 $$
@@ -237,15 +242,15 @@ $$
 
 ## AI\\(\xi\\) and AIXI
 
-AI\\(\xi\\) is the __Bayes-optimal__ agent. That is, it is the policy that is optimal with respect to \\(\xi\\)-expected return:
+AI\\(\xi\\) is the __Bayes-optimal__ agent. That is, it is the policy that maximizes the \\(\xi\\)-expected return:
 $$
 \pi^{\text{AI}\xi}\stackrel{.}{=}\arg\max\_\pi V^\pi\_\xi.
 $$
-It is a universal, parameter-free Bayesian agent, whose behavior is completely specified by its model class \\(\mathcal{M}\\) and choice of prior \\(\lbrace w\_\nu\rbrace\_{\nu\in\mathcal{M}}\\). [AIXI][AIXI] uses [Solomonoff's universal prior][Solomonoff]:
+It is a universal, parameter-free Bayesian agent, whose behavior is completely specified by its model class \\(\mathcal{M}\\) and choice of prior \\(\lbrace w\_\nu\rbrace\_{\nu\in\mathcal{M}}\\). AI\\(\xi\\)'s big brother is [AIXI][AIXI], which uses [Solomonoff's universal prior][Solomonoff], which mixes over the model class of all computable probability measures:
 $$
-w\_\nu = 2^{-K(\nu)},
+w\_{\nu} = 2^{-K(\nu)},
 $$
-where \\(K(\nu)\\) is the [Kolmogorov complexity][KC] of environment \\(\nu\\). AIXI is hence the 'active' generalization of Solomonoff induction, which is the optimal (but incomputable) inductive learner.
+where \\(K(\nu)\\) is the [Kolmogorov complexity][KC] of \\(\nu\\). AIXI is hence the 'active' generalization of Solomonoff induction, which is the optimal (but incomputable) inductive learner. A computable approximation to AIXI is [MC-AIXI-CTW][Veness11], which uses the [Context Tree Weighting][CTW] algorithm to approximate the induction component of AIXI.
 
 ## Exploration vs exploitation; optimality
 
@@ -289,6 +294,7 @@ TODO
 
 
 <!-- References -->
+[RL]: https://en.wikipedia.org/wiki/Reinforcement_learning
 [KC]: https://en.wikipedia.org/wiki/Kolmogorov_complexity
 [QLearning]: https://en.wikipedia.org/wiki/Q-learning
 [AIXI]: https://en.wikipedia.org/wiki/AIXI
@@ -299,6 +305,13 @@ TODO
 [Convex]: https://en.wikipedia.org/wiki/Convex_combination
 [Cromwell]: https://en.wikipedia.org/wiki/Cromwell%27s_rule
 [Bellman]: https://en.wikipedia.org/wiki/Bellman_equation
+[MCTS]: https://en.wikipedia.org/wiki/Monte_Carlo_tree_search
+[Distributive]: https://en.wikipedia.org/wiki/Distributive_property
+[POMDP]: https://en.wikipedia.org/wiki/Partially_observable_Markov_decision_process
+[ChainRule]: https://en.wikipedia.org/wiki/Chain_rule_(probability)
+[ALE]: http://www.arcadelearningenvironment.org/
+[AGI]: https://en.wikipedia.org/wiki/Artificial_general_intelligence
+[CTW]: https://cs.anu.edu.au/courses/comp4620/2015/slides-ctw.pdf
 
 [Leike15]: http://jmlr.org/proceedings/papers/v40/Leike15.pdf
 [Veness11]: https://www.jair.org/media/3125/live-3125-5397-jair.pdf
