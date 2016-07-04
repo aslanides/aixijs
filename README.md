@@ -1,4 +1,4 @@
-# rl-demo
+# AIXIjs
 General Reinforcement Learning (RL) Demo for demonstrating asymptotic optimality and other behaviors/properties of RL agents in general (partially observable, non-Markov, non-ergodic) environments. **Work in progress** -- expected completion ~ September 2016.
 ## Usage
 This software consists of a bunch of different `demo` classes, each of which, when run, will simulate some user-specified number of cycles of agent-environment interaction for some agent/environment pair, with user-specified agent params.
@@ -11,29 +11,24 @@ The agents implemented are:
 - Thompson Sampling
 - (Tabular) QLearning/SARSA
 
-For more details, see the documentation/explanation that accompanies the demos themselves.
+See the [main site](http://aslanides.github.io/aixijs) for more details, documentation, and demos.
 
-Note: this is built using features ECMAScript 2015, and so at the moment (May 2016) we don't support older browsers/Safari.
+Note: this is built using features from ECMAScript 2015 (ES6). For this reason, we highly recommend running on Google Chrome, since we're not supporting other browsers.
 
 ## License
 GPL.
 
 ## TODO
 - **Visualization**
-    - Add optimal reward to d3 plots
-    - Make arrow updates more efficient
 	- Make button to toggle policy arrows/Bayes posterior
 	- Show last action taken by agent in grid worlds
 	- Implement Basic MDP visualization (fully specified by states, transition probabilities, and rewards)
 - **UI**
     - Add progress bar for long simulations
     - Make play/pause a toggle button
-	- Options to look at different plots
+	- Add option for user to play environment
+	- Add visualization/plot legend
 - **Demos**
     - Implement all the showcase environments/demos!
 	- Implement a dispenser environment with a local maximum
-- **Misc**
-    - Fix up unit tests!
-	- Add browser version check
-	- Generalize model class setup.
 - See github issues for major TODOs.

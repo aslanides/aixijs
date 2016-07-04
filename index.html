@@ -1,13 +1,16 @@
-
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>
-        General Reinforcement Learning Demo
+        AIXIjs: General reinforcement learning demo
     </title>
     <link rel="stylesheet" href="style.css">
     <meta charset="UTF-8">
+	<meta name="description" content="A JavaScript demo for general reinforcement learning agents">
+	<meta name="author" content="John Aslanides and Sean Lamont">
+	<meta name="keywords" content="artificial intelligence, reinforcement learning, AIXI, gridworld">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 	<script type="text/javascript" src="lib/demo.js"></script>
 	<script type="text/javascript" src="lib/plot.js"></script>
 	<script type="text/javascript" src="lib/environment.js"></script>
@@ -21,7 +24,6 @@
 	<script type="text/javascript" src="lib/options.js"></script>
 	<script type="text/javascript" src="lib/config.js"></script>
 	<script type="text/javascript" src="lib/distribution.js"></script>
-
 	<script type="text/javascript" src="external/mathjs-3.1.4.min.js"></script>
 	<script type="text/javascript" src="external/jquery-2.2.3.min.js"></script>
 	<script type="text/javascript" src="external/d3-3.5.16.min.js"></script>
@@ -29,15 +31,15 @@
 
 	<script>
 		function renderMarkdown() {
-			$(".md").each(function(x){
-				$(this).html(marked($(this).html()));
-			});
+			$(".md").each(function(x) {
+				$(this).html(marked($(this).html()))
+			})
 			renderJax()
 		}
 
 		var jaxrendered = false;
 		function renderJax() {
-			if(jaxrendered) { return; }
+			if (jaxrendered) {return}
 			(function () {
 				var script = document.createElement("script");
 				script.type = "text/javascript";
@@ -48,132 +50,310 @@
 		}
 	</script>
 </head>
-
 <body onload="Demo.init();renderMarkdown()">
+<div id="wrap">
 <div class="header">
-    <h1>General Reinforcement Learning Demo</h1>
-    <hr />
+    <img src="assets/robot.png" alt="Roger the robot :)" style="width: 50px; float:left; margin: 0px 15px 15px 0px" />
+	<h1 style="font-size:50px">AIXI<span style="color:#058;">js</span></h1>
 </div>
-<section>
-	<!-- Vis -->
-	<div style="float: left">
-		<div class="grid" id="gridvis" style="display: none"></div>
-		<!-- Navigation -->
-	    <div class="grid" id="navigation" style="display: none">
-	        <hr />
-	        <h3>Navigation</h3>
-	        <p>
-	            <input type="range" name="slider" id="slider" min="0" value="0" oninput="demo.vis.jumpTo(value)">
-	            <button onclick="demo.vis.jumpTo(0);demo.vis.pause()">|&lt;&lt;</button>
-	            <button onclick="demo.vis.pause()">||</button>
-	            <button onclick="demo.vis.run(100)">&gt;</button>
-	            <button onclick="demo.vis.run(10)">&gt;&gt;</button>
-	            <button onclick="demo.vis.run(1)">&gt;&gt;&gt;</button>
-	        </p>
-	        <form>
-	            <p class="monitor">
-	                <label for="display_time">Cycle</label>
-	                <input class="display" type="text" name="Time" id="display_time" value="0" readonly>
-	            </p>
-	            <p class="monitor">
-	                <label for="r_ave">Average Reward</label>
-	                <input class="display" type="text" name="Reward" id="r_ave" value="" readonly>
-	            </p>
-	        </form>
-	        <hr />
-	    </div>
+<div class="md">
+---
+</div>
+<!-- Fork me on github! -->
+<a href="https://github.com/aslanides/aixijs" target="_blank"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+<!-- Vis -->
+<table>
+	<tr>
+		<td style="width: 40%">
+			<span id="gridvis"></span>
+			<!-- Navigation -->
+		    <div id="navigation" style="display: none">
+		        <h3>Navigation</h3>
+		        <p>
+		            <input type="range" name="slider" id="slider" min="0" value="0" oninput="demo.vis.jumpTo(value)">
+					<br />
+		            <button onclick="demo.vis.jumpTo(0);demo.vis.pause()">|&lt;&lt;</button>
+		            <button onclick="demo.vis.pause()">||</button>
+		            <button onclick="demo.vis.run(300)">&gt;</button>
+		            <button onclick="demo.vis.run(50)">&gt;&gt;</button>
+		            <button onclick="demo.vis.run(1)">&gt;&gt;&gt;</button>
+		        </p>
+		        <form>
+		            <p class="monitor">
+		                <label for="display_time">Cycle</label>
+		                <input class="display" type="text" name="Time" id="display_time" value="" readonly>
+		            </p>
+		            <p class="monitor">
+		                <label for="r_ave">Average Reward</label>
+		                <input class="display" type="text" name="Reward" id="r_ave" value="" readonly>
+		            </p>
+		        </form>
+		    </div>
 
-		<!-- Demo Parameters -->
-	    <div class="grid" id="setup">
-	        <h3>Setup</h3>
-	        <form id="param_form">
-	            <p class="params" id="p_select" style="display: table-row">
-	                <label for="demo_select">Demo:</label>
-	                <select id="demo_select" name="demo_select" onchange="Demo.setOptions()" required>
-						<option selected disabled hidden style="display: none" value="" label=" "></option>
-					</select>
-	            </p>
-				<hr />
-	            <p class="params" id="p_alpha">
-	                <label title="Learning rate">Alpha:</label>
-	                <input type="number" class="params" name="alpha" id="alpha" min="0" max="1" step="0.01" required>
-	            </p>
-	            <p class="params" id="p_gamma">
-	                <label title="Discount rate (geometric)">Gamma:</label>
-	                <input type="number" class="params" name="gamma" id="gamma" min="0" max="1" step="0.01" required>
-	            </p>
-	            <p class="params" id="p_epsilon">
-	                <label title="Exploration rate">Epsilon:</label>
-	                <input type="number" class="params" name="epsilon" id="epsilon" min="0" max="1" step="0.01" required>
-	            </p>
-				<p class="params" id="p_horizon">
-	                <label title="Planning horizon">Horizon:</label>
-	                <input type="number" class="params" name="horizon" id="horizon" min="1" max="100" step="1" required>
-	            </p>
-				<p class="params" id="p_samples">
-	                <label title="Number of MCTS samples">MCTS Samples:</label>
-	                <input type="number" class="params" name="samples" id="samples" min="1" max="10000" step="1" required>
-	            </p>
-	            <p class="params" id="p_cycles">
-	                <label title="Number of cycles to run the simulation for">Cycles:</label>
-	                <input type="number" class="params" name="cycles" id="cycles" min="1" max="1000000" step="1" required>
-	            </p>
-				<input type="submit" value="Run" onclick="Demo.run(document)">
-			</form>
-	    </div>
-	</div>
-	<div id="plots" style="margin-left: 30%"></div>
-</section>
-<hr />
-<script>
-	$("#param_form").submit(event => event.preventDefault())
-</script>
+			<!-- Demo Parameters -->
+		    <div id="setup">
+		        <h3>Setup</h3>
+		        <form id="param_form">
+		            <p class="params" id="p_select" style="display: table-row">
+		                <label for="demo_select">Demo:</label>
+		                <select id="demo_select" name="demo_select" onchange="Demo.setOptions()" required>
+							<option selected disabled hidden style="display: none" value="" label=" "></option>
+						</select>
+		            </p>
+		            <p class="params" id="p_alpha">
+		                <label title="Learning rate">Alpha:</label>
+		                <input type="number" class="params" name="alpha" id="alpha" min="0" max="1" step="0.01" required>
+		            </p>
+		            <p class="params" id="p_gamma">
+		                <label title="Discount rate (geometric)">Gamma:</label>
+		                <input type="number" class="params" name="gamma" id="gamma" min="0" max="1" step="0.01" required>
+		            </p>
+		            <p class="params" id="p_epsilon">
+		                <label title="Exploration rate">Epsilon:</label>
+		                <input type="number" class="params" name="epsilon" id="epsilon" min="0" max="1" step="0.01" required>
+		            </p>
+					<p class="params" id="p_horizon">
+		                <label title="Planning horizon">Horizon:</label>
+		                <input type="number" class="params" name="horizon" id="horizon" min="1" max="100" step="1" required>
+		            </p>
+					<p class="params" id="p_samples">
+		                <label title="Number of MCTS samples">Samples:</label>
+		                <input type="number" class="params" name="samples" id="samples" min="1" max="10000" step="1" required>
+		            </p>
+					<p class="params" id="p_ucb">
+		                <label title="UCB exploration parameter">UCB Weight:</label>
+		                <input type="number" class="params" name="ucb" id="ucb" min="0.01" max="10" step="0.01" required>
+		            </p>
+		            <p class="params" id="p_cycles">
+		                <label title="Number of cycles to run the simulation for">Cycles:</label>
+		                <input type="number" class="params" name="cycles" id="cycles" min="1" max="1000000" step="1" required>
+		            </p>
+					<input type="submit" value="Run" onclick="Demo.run(document)">
+				</form>
+				<script>
+					$("#param_form").submit(event => event.preventDefault())
+				</script>
+		    </div>
+		</td>
+		<td style="vertical-align: top">
+			<span id="plots"></span>
+		</td>
+	</tr>
+	<tr>
+
 <!-- Explanations -->
-<section>
-<div class="md" id="qlearn_exp" style="display:none">
-# Tabular Q-Learning
+<td colspan=2>
+<span class="md" id="rl">
+
+---
+
+## Agent-environment interaction
+
+In the standard [reinforcement learning][RL] (RL) framework, the __agent__ and __environment__ play a turn-based game and interact in cycles. At time/cycle/turn \\(t\\), the agent supplies the environment with an __action__ \\(a\_t\\). The environment then performs some computation and returns a __percept__ \\(e_t\\) to the agent, and the cycle repeats.
+
+<p style="text-align: center"><img src="assets/agent-env.png" alt="agent-environment interaction" style="width: 200px"/></p>
+
+The actions live in an action space \\(\mathcal{A}\\), and the percepts live in a percept space \\(\mathcal{E}\\). We identify an agent with its __policy__, which in general is a distribution over actions \\(\pi(a\_t\lvert ae\_{&lt;t})\\)
+$$
+\pi\ :\ \left(\mathcal{A}\times\mathcal{E}\right)^*\mapsto\varDelta\mathcal{A},
+$$
+
+where \\(^*\\) is the [Kleene star][Kleene], and \\(\varDelta \mathcal{X}\\) is the set of probability measures over \\(\mathcal{X}\\). An environment is a distribution over percepts \\(\nu(e\_t\lvert ae\_{&lt;t}a\_t)\\) with
+
+$$
+\nu\ :\  \left(\mathcal{A}\times\mathcal{E}\right)^*\times\mathcal{A}\mapsto\varDelta\mathcal{E}.
+$$
+
+The agent and environment interaction induces a distribution over __histories__ \\(\nu^\pi\\):
+
+$$
+\nu^\pi\left(ae\_{&lt;t}\right) \stackrel{.}{=}\prod\_{k=1}^{t}\pi\left(a\_k\lvert ae\_{&lt;t}\right)\nu\left(e\_k\lvert ae\_{&lt;k}a\_k\right),
+$$
+which is conveniently expressed as a telescoping product by the [chain rule][ChainRule]. In the general setting, the environment is a [partially observable Markov decision process][POMDP] (POMDP). That is, there is some underlying (hidden) state space \\(\mathcal{S}\\), with respect to which the environment's dynamics are Markovian. The agent cannot observe this state directly, but instead receives (incomplete and noisy) percepts through its sensors. Therefore, the agent must learn and make decisions under uncertainty in order to perform well.
+
+Notes:
+* We're slightly abusing notation here: environments are _not_ joint distributions over actions and percepts, and so you should read \\(\nu(e\_t\lvert ae\_{&lt;t}a\_t)\\) as shorthand for \\(\nu(e\_t\lvert e\_{&lt;t} \lvert\lvert a_{1:t})\\); that is, a distribution over percepts conditioned on a sequence of past percepts, and in the context of a sequence of past actions given as _inputs_. The same holds for policies, except with actions and percepts reversed.
+* We restrict ourselves to countable percept and action spaces. Although many (but not all) of the important results generalize to continuous spaces, we make this assumption for simplicity.
+* For simplicity, we also assume that the action and percept spaces \\(\mathcal{A}\\) and \\(\mathcal{E}\\) are stationary; i.e. they are time-independent and fixed by the environment.
+
+## Reinforcement...
+
+Percepts consist of (__observation__, __reward__) pairs \\(e\_k = \left(o\_k,r\_k\right)\\), with integer-valued rewards such that
+$$
+\mathcal{E} = \mathcal{O}\times\mathbb{Z}.
+$$
+We make no further assumptions about the observation space \\(\mathcal{O}\\). A good example is the space of \\(M\times N\\)-pixel 8-bit RGB images used in the [Arcade Learning Environment][ALE] (ALE):
+$$
+\mathcal{O}_{\text{ALE}}=\mathcal{B}^{8\times M\times N\times 3},
+$$
+where \\(\mathcal{B}\stackrel{.}{=}\lbrace{0,1\rbrace}\\) is the binary alphabet. Now, introduce the __return__, which is the discounted sum of all future rewards:
+$$
+R\_t \stackrel{.}{=} \sum\_{k=t}^{\infty}\gamma\_k r\_k,
+$$
+where \\(\gamma\ :\ \mathbb{N}\mapsto[0,1]\\) is a discount function with convergent sum.  Now, if our agent is rational in the [Von Neumann-Morgenstern][VNM] sense, it should maximize the expected return, which we call the __value__. The value achieved by policy \\(\pi\\) in environment \\(\nu\\) given history \\(ae\_{&lt;t}\\) is defined as
+$$
+V^{\pi}\_{\nu}\left(ae\_{&lt;t}\right)\stackrel{.}{=}\mathbb{E}^{\pi}\_{\nu}\left[\left.\sum\_{k=t}^{\infty}\gamma\_{k}r\_{k}\right|ae\_{&lt;t}\right]
+$$
+
+This is often more conveniently expressed recursively:
+
+$$
+V^{\pi}\_{\nu}\left(ae\_{&lt;t}\right) = \sum\_{a\_t\in\mathcal{A}}\pi(a\_t\lvert ae\_{&lt;t})\sum\_{e\_t\in\mathcal{E}}\nu(e\_t\lvert ae\_{&lt;t}a\_t)\Big[\gamma\_tr\_t+\gamma\_{t+1}V\_{\nu}^{\pi}(ae\_{1:t})\Big],
+$$
+which is often referred to as the [Bellman equation][Bellman]. Now, let \\(\mu\\) be the true environment. The __optimal value__ is the highest value achieved by any policy in this environment:
+
+$$
+V\_{\mu}^{*}\stackrel{.}{=}\max\_{\pi}V\_{\mu}^{\pi}.
+$$
+
+Using the [distributive property][Distributive] of \\(\max\\) and \\(\sum\\), we can unroll this into the  __expectimax__ expression
+$$
+V\_{\mu}^{*}=\lim\_{m\to\infty}\max\_{a\_{t}\in\mathcal{A}}\sum\_{e\_{t}\in\mathcal{E}}\cdots\max\_{a\_{m}\in\mathcal{A}}\sum\_{e\_{m}\in\mathcal{E}}\sum\_{k=t}^{m}\gamma\_{k}r\_{k}\prod\_{j=t}^{k}\mu\left(e\_{j}\lvert ae\_{&lt;j}a\_{j}\right).
+$$
+This can be viewed as just a generalization of [minimax][Minimax] to stochastic environments/adversaries. In practice, when planning we approximate this computation with [Monte Carlo tree search][MCTS] (MCTS).
+
+We can now introduce our first theoretical [artificial general intelligent][AGI] (AGI) agent: the __informed agent AI__\\(\boldsymbol{\mu}\\). __AI__\\(\boldsymbol{\mu}\\) is simply the (infeasible) \\(\boldsymbol{\mu}\\)__-optimal policy__:
+$$
+\pi^{\text{AI}\mu}\stackrel{.}{=}\arg\max\_{\pi}V\_{\mu}^{\pi}.
+$$
+
+## ...Learning
+
+Clearly we don't know \\(\mu\\) _a priori_ in the general RL setting. Generically, there are two main approaches to learning in the context of RL: __model-based__ and __model-free__. They each make their own sets of assumptions:
+* Model-free (e.g. [Q-Learning][QLearning]) generally assume the environment is a finite-state MDP
+* Model-based (e.g. __Bayesian learning__) assumes the __realizable case__.
+
+The agents we'll be dealing with are all Bayesian.
+
+## Bayesian reinforcement learning
+
+Assume the realizable case: the true environment \\(\mu\\) is contained in some countable __model class__ \\(\mathcal{M}\\). Now, constructor a __Bayesian mixture__ over \\(\mathcal{M}\\): a [convex linear combination][Convex] of environments:
+$$
+\xi\left(e\_t\lvert ae\_{&lt;t}a\_t\right)\stackrel{.}{=}\sum\_{\nu\in\mathcal{M}}w\_\nu \nu\left(e\_t\lvert ae\_{&lt;t}a\_t\right).
+$$
+The weights \\(w\_\nu\equiv\Pr\left(\nu\lvert ae\_{&lt;t}\right)\\) specify the agent's __posterior belief distribution__ over \\(\mathcal{M}\\). By [Cromwell's rule][Cromwell], we require further that the __prior__ weights \\(\Pr(\nu\lvert \epsilon)\\) lie in the interval \\((0,1)\ \forall \nu\in\mathcal{M}\\). Being 'Bayesian' simply means __updating__ these beliefs according to the product rule of probability:
+$$
+\Pr(\nu\lvert e\_t) = \frac{\Pr(e\_t\lvert \nu)\Pr(\nu)}{\Pr(e\_t)},
+$$
+which corresponds to performing the update at each cycle:
+$$
+w\_\nu\leftarrow\frac{\nu(e\_t)w\_\nu}{\xi(e\_t)}.
+$$
+
+## AI\\(\xi\\) and AIXI
+
+AI\\(\xi\\) is the __Bayes-optimal__ agent. That is, it is the policy that maximizes the \\(\xi\\)-expected return:
+$$
+\pi^{\text{AI}\xi}\stackrel{.}{=}\arg\max\_\pi V^\pi\_\xi.
+$$
+It is a universal, parameter-free Bayesian agent, whose behavior is completely specified by its model class \\(\mathcal{M}\\) and choice of prior \\(\lbrace w\_\nu\rbrace\_{\nu\in\mathcal{M}}\\). AI\\(\xi\\)'s big brother is [AIXI][AIXI], which uses [Solomonoff's universal prior][Solomonoff], which mixes over the model class of all computable probability measures:
+$$
+w\_{\nu} = 2^{-K(\nu)},
+$$
+where \\(K(\nu)\\) is the [Kolmogorov complexity][KC] of \\(\nu\\). AIXI is hence the 'active' generalization of Solomonoff induction, which is the optimal (but incomputable) inductive learner. A computable approximation to AIXI is MC-AIXI-CTW ([Veness et al., 2011][Veness11]), which uses the [Context Tree Weighting][CTW] algorithm to approximate the induction component of AIXI.
+
+## Exploration vs exploitation; optimality
+
+The most central issue in reinforcement learning is the __exploration-exploitation dilemma__: TODO
+
+## Knowledge-seeking agents
+
+First generalize to Bayesian __utility agents__ that have, in addition to a belief distribution \\(\xi\\), a utility function
+
+$$
+u(e\_t\lvert\lvert a\_t)
+$$
+
+which takes the place of the agent's reward signal. Now, the agent becomes an __expected utility maximizer__, with corresponding value function:
+TODO
+
+Generically, knowledge-seeking agents get utility from gaining knowledge, which in the Bayesian context corresponds to reducing the uncertainty in their posterior belief distribution.
+
+* Square-KSA:
+$$
+u(e\_t\lvert\lvert a\_t) = -\xi(e\_t\lvert ae\_{&lt;t})
+$$
+* Shannon-KSA:
+$$
+u(e\_t\lvert\lvert a\_t) = \log\left(\xi(e\_t\lvert ae\_{&lt;t})\right)
+$$
+* KL-KSA:
+TODO
+
+## BayesExp
+
+TODO
+
+## Thompson Sampling
+
+Define the \\(\varepsilon\\)-effective horizon:
+$$
+H\_{t}^{\gamma}(\varepsilon) \stackrel{.}{=} \min\left\lbrace m\ :\ \sum\_{k=m}^{\infty}\gamma\_{t+k}\leq\varepsilon\right\rbrace,
+$$
+which is the minimum number of cycles ahead one needs to consider in order to accumulate a value of \\((1-\varepsilon)V\_{\nu}^{\pi}\\), for some \\(\varepsilon>0\\). Thompson Sampling ([Leike et al., 2016][Leike16]) has a simple algorithm: every \\(H\_{t}^{\gamma}\\) steps, sample an environment \\(\rho\\) from the posterior belief distribution \\(w\_{\nu}\\), and use the \\(\rho\\)-optimal policy, re-sample, and repeat.
+
+## Optimistic AIXI
+
+TODO
+
+## MDL Agent
+
+TODO
+
+---
+
+## Policy Gradients/Deep Q-Learning
+
+See [Andrej Karpathy][Karpathy]'s excellent [REINFORCEjs][REINFORCEjs] demo, on which this demo is modelled!
+
+## Compress and Control
+
+TODO
+
+## Further Reading
+
+<!-- References -->
+[RL]: https://en.wikipedia.org/wiki/Reinforcement_learning
+[KC]: https://en.wikipedia.org/wiki/Kolmogorov_complexity
+[QLearning]: https://en.wikipedia.org/wiki/Q-learning
+[AIXI]: https://en.wikipedia.org/wiki/AIXI
+[Solomonoff]: http://www.scholarpedia.org/article/Algorithmic_probability
+[VNM]: https://en.wikipedia.org/wiki/Von_Neumann%E2%80%93Morgenstern_utility_theorem
+[Minimax]: https://en.wikipedia.org/wiki/Minimax
+[Kleene]: https://en.wikipedia.org/wiki/Kleene_star
+[Convex]: https://en.wikipedia.org/wiki/Convex_combination
+[Cromwell]: https://en.wikipedia.org/wiki/Cromwell%27s_rule
+[Bellman]: https://en.wikipedia.org/wiki/Bellman_equation
+[MCTS]: https://en.wikipedia.org/wiki/Monte_Carlo_tree_search
+[Distributive]: https://en.wikipedia.org/wiki/Distributive_property
+[POMDP]: https://en.wikipedia.org/wiki/Partially_observable_Markov_decision_process
+[ChainRule]: https://en.wikipedia.org/wiki/Chain_rule_(probability)
+[ALE]: http://www.arcadelearningenvironment.org/
+[AGI]: https://en.wikipedia.org/wiki/Artificial_general_intelligence
+[CTW]: https://cs.anu.edu.au/courses/comp4620/2015/slides-ctw.pdf
+[TD]: https://en.wikipedia.org/wiki/Temporal_difference_learning
+[Karpathy]: http://cs.stanford.edu/people/karpathy/
+[REINFORCEjs]: http://cs.stanford.edu/people/karpathy/reinforcejs/
+
+[Leike15]: http://jmlr.org/proceedings/papers/v40/Leike15.pdf
+[Leike16]: https://arxiv.org/abs/1602.07905
+[Veness11]: https://www.jair.org/media/3125/live-3125-5397-jair.pdf
+
+</span>
+
+<span class="md" id="qlearn_exp" style="display:none"></span>
+
+<span class="md" id="bayes_exp" style="display:none"></span>
+
+<span class="md" id="aimu_exp" style="display:none"></span>
+
+<span class="md" id="ksa_exp" style="display:none"></span>
+
+<span class="md" id="thompson_exp" style="display:none"></span>
+
+</td>
+</tr>
+</table>
 </div>
-<div class="md" id="bayes_exp" style="display:none">
-# The Bayes Agent - AI\\(\xi\\)
-All Bayes agents have a mixture model of the form
-$$
-\xi(x) = \sum\_{\nu\in\mathcal{M}}w\_{\nu}\nu(x).
-$$
-Given some history of observations \\(h=(x\_1\dots x\_{t-1})\\) and a new observation \\(x\_t\\), we interpet \\(p(x|\nu)=\nu(x\_t|h)\\) and \\(p(\nu|h)=w\_\nu\\), and so we update with Bayes' rule:
-$$
-p(\nu|x\_t) = \frac{p(x|\nu)p(\nu)}{p(x\_t)}\\
-= \frac{\nu(x\_t|h)w\_\nu}{\sum\_{\nu'\in\mathcal{M}}w\_\nu'\nu'(x\_t)}.
-$$
-AI\\(\xi\\) is the Bayes-optimal reinforcement learning agent:
-$$
-a\_{t}^{\text{AI}\xi} = \arg\max\_{a\_t}\sum\_{e\_t}\cdots\max\_{a\_\infty}\sum\_{e\_\infty}\sum\_{k=t}^{\infty}\gamma\_k r\_k \xi(e\_k|ae\_{\lt k}).
-$$
-
-Note that this is not to be confused with AIXI, the Chuck Norris of AI agents, which uses Solomonoff's Universal prior as its belief distribution:
-$$
-\xi^{\text{AIXI}}(e\_k|ae\_{\lt k}) = \sum\_{q\ :\ U(q;a\_{\lt k})=e\_{1:k}}2^{-l(q)}
-$$
-</div>
-
-<div class="md" id="aimu_exp" style="display:none">
-# The Informed Agent - AI\\(\mu\\)
-AI\\(\mu\\) doesn't learn; it is just the expectimax solution. This is the stochastic analogue of minimax for deterministic games:
-$$
-a\_{t}^{\text{AI}\mu} = \arg\max\_{a\_t}\sum\_{e\_t}\cdots\max\_{a\_\infty}\sum\_{e\_\infty}\sum\_{k=t}^{\infty}\gamma\_k r\_k \mu(e\_k|ae\_{\lt k}).
-$$
-</div>
-
-<div class="md" id="ksa_exp" style="display:none">
-# Knowledge Seeking Agents (KSA)
-If we generalise from reinforcement-learning agents to _utility_ agents, we can naturally define several several types of KSA which seek to minimize entropy / maximize information gain.
-
-The \\(d\\)-expected information gain is given by TODO
-</div>
-
-<div class="md" id="thompson_exp" style="display:none">
-# Thompson Sampling
-
-</div>
-</section>
 </body>
 </html>
