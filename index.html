@@ -147,7 +147,27 @@
 
 ---
 
-## Agent-environment interaction
+# Contents
+* [Background](#setup)
+	* [Agent-environment interaction](#agent-env)
+	* [Reinforcement...](#reinforcement)
+	* [...Learning](#learning)
+	* [AI\\(\xi\\)](#aixi)
+	* [Optimality](#optimality)
+* [Agents](#agents)
+	* [Knowledge-seeking agents](#ksa)
+	* [BayesExp](#bexp)
+	* [Thompson Sampling](#ts)
+	* [Optimistic AIXI](#opt-aixi)
+	* [MDL Agent](#mdl)
+	* [DQN](#dqn)
+	* [Compress and Control](#cnc)
+* [API](#api)
+* [References and further reading](#further-reading)
+
+# Background <a name="setup"></a>
+
+## Agent-environment interaction <a name="agent-env"></a>
 
 In the standard [reinforcement learning][RL] (RL) framework, the __agent__ and __environment__ play a turn-based game and interact in cycles. At time/cycle/turn \\(t\\), the agent supplies the environment with an __action__ \\(a\_t\\). The environment then performs some computation and returns a __percept__ \\(e_t\\) to the agent, and the cycle repeats.
 
@@ -176,7 +196,7 @@ Notes:
 * We restrict ourselves to countable percept and action spaces. Although many (but not all) of the important results generalize to continuous spaces, we make this assumption for simplicity.
 * For simplicity, we also assume that the action and percept spaces \\(\mathcal{A}\\) and \\(\mathcal{E}\\) are stationary; i.e. they are time-independent and fixed by the environment.
 
-## Reinforcement...
+## Reinforcement... <a name="reinforcement"></a>
 
 Percepts consist of (__observation__, __reward__) pairs \\(e\_k = \left(o\_k,r\_k\right)\\), with integer-valued rewards such that
 $$
@@ -210,22 +230,22 @@ Using the [distributive property][Distributive] of \\(\max\\) and \\(\sum\\), we
 $$
 V\_{\mu}^{*}=\lim\_{m\to\infty}\max\_{a\_{t}\in\mathcal{A}}\sum\_{e\_{t}\in\mathcal{E}}\cdots\max\_{a\_{m}\in\mathcal{A}}\sum\_{e\_{m}\in\mathcal{E}}\sum\_{k=t}^{m}\gamma\_{k}r\_{k}\prod\_{j=t}^{k}\mu\left(e\_{j}\lvert ae\_{&lt;j}a\_{j}\right).
 $$
-This can be viewed as just a generalization of [minimax][Minimax] to stochastic environments/adversaries. In practice, when planning we approximate this computation with [Monte Carlo tree search][MCTS] (MCTS).
+This can be viewed as just a generalization of [minimax] to stochastic environments/adversaries. In practice, when planning we approximate this computation with [Monte Carlo tree search][MCTS] (MCTS).
 
 We can now introduce our first theoretical [artificial general intelligent][AGI] (AGI) agent: the __informed agent AI__\\(\boldsymbol{\mu}\\). __AI__\\(\boldsymbol{\mu}\\) is simply the (infeasible) \\(\boldsymbol{\mu}\\)__-optimal policy__:
 $$
 \pi^{\text{AI}\mu}\stackrel{.}{=}\arg\max\_{\pi}V\_{\mu}^{\pi}.
 $$
 
-## ...Learning
+## ...Learning <a name="learning"></a>
 
 Clearly we don't know \\(\mu\\) _a priori_ in the general RL setting. Generically, there are two main approaches to learning in the context of RL: __model-based__ and __model-free__. They each make their own sets of assumptions:
-* Model-free (e.g. [Q-Learning][QLearning]) generally assume the environment is a finite-state MDP
+* Model-free (e.g. [Q-Learning]) generally assume the environment is a finite-state MDP
 * Model-based (e.g. __Bayesian learning__) assumes the __realizable case__.
 
 The agents we'll be dealing with are all Bayesian.
 
-## Bayesian reinforcement learning
+## Bayesian reinforcement learning <a name="brl"></a>
 
 Assume the realizable case: the true environment \\(\mu\\) is contained in some countable __model class__ \\(\mathcal{M}\\). Now, constructor a __Bayesian mixture__ over \\(\mathcal{M}\\): a [convex linear combination][Convex] of environments:
 $$
@@ -240,23 +260,25 @@ $$
 w\_\nu\leftarrow\frac{\nu(e\_t)w\_\nu}{\xi(e\_t)}.
 $$
 
-## AI\\(\xi\\) and AIXI
+## AI\\(\xi\\) and AIXI <a name="aixi"></a>
 
 AI\\(\xi\\) is the __Bayes-optimal__ agent. That is, it is the policy that maximizes the \\(\xi\\)-expected return:
 $$
 \pi^{\text{AI}\xi}\stackrel{.}{=}\arg\max\_\pi V^\pi\_\xi.
 $$
-It is a universal, parameter-free Bayesian agent, whose behavior is completely specified by its model class \\(\mathcal{M}\\) and choice of prior \\(\lbrace w\_\nu\rbrace\_{\nu\in\mathcal{M}}\\). AI\\(\xi\\)'s big brother is [AIXI][AIXI], which uses [Solomonoff's universal prior][Solomonoff], which mixes over the model class of all computable probability measures:
+It is a universal, parameter-free Bayesian agent, whose behavior is completely specified by its model class \\(\mathcal{M}\\) and choice of prior \\(\lbrace w\_\nu\rbrace\_{\nu\in\mathcal{M}}\\). AI\\(\xi\\)'s big brother is [AIXI] ([Hutter, 2005]), which uses [Solomonoff's universal prior], which mixes over the model class of all computable probability measures:
 $$
 w\_{\nu} = 2^{-K(\nu)},
 $$
-where \\(K(\nu)\\) is the [Kolmogorov complexity][KC] of \\(\nu\\). AIXI is hence the 'active' generalization of Solomonoff induction, which is the optimal (but incomputable) inductive learner. A computable approximation to AIXI is MC-AIXI-CTW ([Veness et al., 2011][Veness11]), which uses the [Context Tree Weighting][CTW] algorithm to approximate the induction component of AIXI.
+where \\(K(\nu)\\) is the [Kolmogorov complexity] of \\(\nu\\). AIXI is hence the 'active' generalization of Solomonoff induction, which is the optimal (but incomputable) inductive learner. A computable approximation to AIXI is MC-AIXI-CTW ([Veness et al., 2011]), which uses the [Context Tree Weighting][CTW] algorithm to approximate the induction component of AIXI.
 
-## Exploration vs exploitation; optimality
+## Exploration vs exploitation; optimality <a name="optimality"></a>
 
 The most central issue in reinforcement learning is the __exploration-exploitation dilemma__: TODO
 
-## Knowledge-seeking agents
+# Agents <a name="agents"></a>
+
+## Knowledge-seeking agents <a name="ksa"></a>
 
 First generalize to Bayesian __utility agents__ that have, in addition to a belief distribution \\(\xi\\), a utility function
 
@@ -280,11 +302,11 @@ $$
 * KL-KSA:
 TODO
 
-## BayesExp
+## BayesExp <a name="bexp"></a>
 
 TODO
 
-## Thompson Sampling
+## Thompson Sampling <a name="ts"></a>
 
 Define the \\(\varepsilon\\)-effective horizon:
 $$
@@ -292,34 +314,63 @@ H\_{t}^{\gamma}(\varepsilon) \stackrel{.}{=} \min\left\lbrace m\ :\ \sum\_{k=m}^
 $$
 which is the minimum number of cycles ahead one needs to consider in order to accumulate a value of \\((1-\varepsilon)V\_{\nu}^{\pi}\\), for some \\(\varepsilon>0\\). Thompson Sampling ([Leike et al., 2016][Leike16]) has a simple algorithm: every \\(H\_{t}^{\gamma}\\) steps, sample an environment \\(\rho\\) from the posterior belief distribution \\(w\_{\nu}\\), and use the \\(\rho\\)-optimal policy, re-sample, and repeat.
 
-## Optimistic AIXI
+## Optimistic AIXI <a name="opt-aixi"></a>
 
 TODO
 
-## MDL Agent
+## MDL Agent <a name="mdl"></a>
+
+TODO
+
+## Policy Gradients/Deep Q-Learning <a name="dqn"></a>
+
+See [Andrej Karpathy]'s excellent [REINFORCEjs] demo, on which this demo is modelled!
+
+## Compress and Control <a name="cnc"></a>
 
 TODO
 
 ---
 
-## Policy Gradients/Deep Q-Learning
+# API <a name="api"></a>
 
-See [Andrej Karpathy][Karpathy]'s excellent [REINFORCEjs][REINFORCEjs] demo, on which this demo is modelled!
+```
+class Environment {
+	// ...
+	generatePercept() {
+		//
+	}
+	do(action) {
+		//
+	}
+	conditionalDistribution(e) {
+		//
+	}
+}
 
-## Compress and Control
+class Agent {
+	// ...
+	selectAction(percept) {
+		//
+	}
+	update(a,e) {
+		//
+	}
+}
+```
 
-TODO
+---
 
-## Further Reading
+## References & Further Reading <a name="further-reading"></a>
 
 <!-- References -->
 [RL]: https://en.wikipedia.org/wiki/Reinforcement_learning
-[KC]: https://en.wikipedia.org/wiki/Kolmogorov_complexity
-[QLearning]: https://en.wikipedia.org/wiki/Q-learning
+[Kolmogorov complexity]: https://en.wikipedia.org/wiki/Kolmogorov_complexity
+[Q-Learning]: https://en.wikipedia.org/wiki/Q-learning
 [AIXI]: https://en.wikipedia.org/wiki/AIXI
-[Solomonoff]: http://www.scholarpedia.org/article/Algorithmic_probability
+[Solomonoff's universal prior]: http://www.scholarpedia.org/article/Algorithmic_probability
 [VNM]: https://en.wikipedia.org/wiki/Von_Neumann%E2%80%93Morgenstern_utility_theorem
-[Minimax]: https://en.wikipedia.org/wiki/Minimax
+[minimax]: https://en.wikipedia.org/wiki/Minimax
 [Kleene]: https://en.wikipedia.org/wiki/Kleene_star
 [Convex]: https://en.wikipedia.org/wiki/Convex_combination
 [Cromwell]: https://en.wikipedia.org/wiki/Cromwell%27s_rule
@@ -332,12 +383,13 @@ TODO
 [AGI]: https://en.wikipedia.org/wiki/Artificial_general_intelligence
 [CTW]: https://cs.anu.edu.au/courses/comp4620/2015/slides-ctw.pdf
 [TD]: https://en.wikipedia.org/wiki/Temporal_difference_learning
-[Karpathy]: http://cs.stanford.edu/people/karpathy/
+[Andrej Karpathy]: http://cs.stanford.edu/people/karpathy/
 [REINFORCEjs]: http://cs.stanford.edu/people/karpathy/reinforcejs/
 
-[Leike15]: http://jmlr.org/proceedings/papers/v40/Leike15.pdf
-[Leike16]: https://arxiv.org/abs/1602.07905
-[Veness11]: https://www.jair.org/media/3125/live-3125-5397-jair.pdf
+[Hutter, 2005]: http://www.hutter1.net/ai/uaibook.htm
+[Leike & Hutter, 2015]: http://jmlr.org/proceedings/papers/v40/Leike15.pdf
+[Leike et al., 2016]: https://arxiv.org/abs/1602.07905
+[Veness et al., 2011]: https://www.jair.org/media/3125/live-3125-5397-jair.pdf
 
 </span>
 
