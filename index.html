@@ -189,9 +189,12 @@ $$
 V^{\pi}\_{\nu}\left(ae\_{&lt;t}\right)\stackrel{.}{=}\mathbb{E}^{\pi}\_{\nu}\left[\left.\sum\_{k=t}^{\infty}\gamma\_{k}r\_{k}\right|ae\_{&lt;t}\right]
 $$
 
-TODO: write in Bellman (recursive) form.
+This is often more conveniently expressed recursively:
 
-Let \\(\mu\\) be the true environment. The __optimal value__ is the highest value achieved by any policy in this environment:
+$$
+V^{\pi}\_{\nu}\left(ae\_{&lt;t}\right) = \sum\_{a\_t\in\mathcal{A}}\pi(a\_t\lvert ae\_{&lt;t})\sum\_{e\_t\in\mathcal{E}}\nu(e\_t\lvert ae\_{&lt;t}a\_t)\Big[\gamma\_tr\_t+\gamma\_{t+1}V\_{\nu}^{\pi}(ae\_{1:t})\Big],
+$$
+which is often referred to as the [Bellman equation][Bellman]. Now, let \\(\mu\\) be the true environment. The __optimal value__ is the highest value achieved by any policy in this environment:
 
 $$
 V\_{\mu}^{*}\stackrel{.}{=}\max\_{\pi}V\_{\mu}^{\pi}.
@@ -282,6 +285,9 @@ TODO
 
 TODO
 
+## Further Reading
+
+
 <!-- References -->
 [KC]: https://en.wikipedia.org/wiki/Kolmogorov_complexity
 [QLearning]: https://en.wikipedia.org/wiki/Q-learning
@@ -292,6 +298,7 @@ TODO
 [Kleene]: https://en.wikipedia.org/wiki/Kleene_star
 [Convex]: https://en.wikipedia.org/wiki/Convex_combination
 [Cromwell]: https://en.wikipedia.org/wiki/Cromwell%27s_rule
+[Bellman]: https://en.wikipedia.org/wiki/Bellman_equation
 
 [Leike15]: http://jmlr.org/proceedings/papers/v40/Leike15.pdf
 [Veness11]: https://www.jair.org/media/3125/live-3125-5397-jair.pdf
@@ -311,7 +318,6 @@ TODO
 </td>
 </tr>
 </table>
-<hr />
 </div>
 </body>
 </html>
