@@ -250,18 +250,34 @@ It is a universal, parameter-free Bayesian agent, whose behavior is completely s
 $$
 w\_{\nu} = 2^{-K(\nu)},
 $$
-where \\(K(\nu)\\) is the [Kolmogorov complexity][KC] of \\(\nu\\). AIXI is hence the 'active' generalization of Solomonoff induction, which is the optimal (but incomputable) inductive learner. A computable approximation to AIXI is [MC-AIXI-CTW][Veness11], which uses the [Context Tree Weighting][CTW] algorithm to approximate the induction component of AIXI.
+where \\(K(\nu)\\) is the [Kolmogorov complexity][KC] of \\(\nu\\). AIXI is hence the 'active' generalization of Solomonoff induction, which is the optimal (but incomputable) inductive learner. A computable approximation to AIXI is MC-AIXI-CTW ([Veness et al., 2011][Veness11]), which uses the [Context Tree Weighting][CTW] algorithm to approximate the induction component of AIXI.
 
 ## Exploration vs exploitation; optimality
 
 The most central issue in reinforcement learning is the __exploration-exploitation dilemma__: TODO
 
-## Q-Learning
-
-TODO
-
 ## Knowledge-seeking agents
 
+First generalize to Bayesian __utility agents__ that have, in addition to a belief distribution \\(\xi\\), a utility function
+
+$$
+u(e\_t\lvert\lvert a\_t)
+$$
+
+which takes the place of the agent's reward signal. Now, the agent becomes an __expected utility maximizer__, with corresponding value function:
+TODO
+
+Generically, knowledge-seeking agents get utility from gaining knowledge, which in the Bayesian context corresponds to reducing the uncertainty in their posterior belief distribution.
+
+* Square-KSA:
+$$
+u(e\_t\lvert\lvert a\_t) = -\xi(e\_t\lvert ae\_{&lt;t})
+$$
+* Shannon-KSA:
+$$
+u(e\_t\lvert\lvert a\_t) = \log\left(\xi(e\_t\lvert ae\_{&lt;t})\right)
+$$
+* KL-KSA:
 TODO
 
 ## BayesExp
@@ -270,11 +286,23 @@ TODO
 
 ## Thompson Sampling
 
+Define the \\(\varepsilon\\)-effective horizon:
+$$
+H\_{t}^{\gamma}(\varepsilon) \stackrel{.}{=} \min\left\lbrace m\ :\ \sum\_{k=m}^{\infty}\gamma\_{t+k}\leq\varepsilon\right\rbrace,
+$$
+which is the minimum number of cycles ahead one needs to consider in order to accumulate a value of \\((1-\varepsilon)V\_{\nu}^{\pi}\\), for some \\(\varepsilon>0\\). Thompson Sampling ([Leike et al., 2016][Leike16]) has a simple algorithm: every \\(H\_{t}^{\gamma}\\) steps, sample an environment \\(\rho\\) from the posterior belief distribution \\(w\_{\nu}\\), and use the \\(\rho\\)-optimal policy, re-sample, and repeat.
+
 ## Optimistic AIXI
 
 TODO
 
 ## MDL Agent
+
+TODO
+
+---
+
+## Q-Learning
 
 TODO
 
@@ -291,7 +319,6 @@ TODO
 TODO
 
 ## Further Reading
-
 
 <!-- References -->
 [RL]: https://en.wikipedia.org/wiki/Reinforcement_learning
@@ -312,8 +339,10 @@ TODO
 [ALE]: http://www.arcadelearningenvironment.org/
 [AGI]: https://en.wikipedia.org/wiki/Artificial_general_intelligence
 [CTW]: https://cs.anu.edu.au/courses/comp4620/2015/slides-ctw.pdf
+[TD]: https://en.wikipedia.org/wiki/Temporal_difference_learning
 
 [Leike15]: http://jmlr.org/proceedings/papers/v40/Leike15.pdf
+[Leike16]: https://arxiv.org/abs/1602.07905
 [Veness11]: https://www.jair.org/media/3125/live-3125-5397-jair.pdf
 
 </span>
