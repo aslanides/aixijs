@@ -1,5 +1,5 @@
 QUnit.test("Grids",function(assert) {
-	env = new SimpleDispenserGrid(config.environments.dispenser1)
+	var env = new SimpleDispenserGrid(config.environments.dispenser1)
 	assert.equal(env.pos.x,0)
 	assert.equal(env.pos.y,0)
 	var e = env.generatePercept()

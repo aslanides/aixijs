@@ -2,11 +2,11 @@ QUnit.test("ThompsonAgent",function(assert) {
 	var cl = SimpleDispenserGrid
 	var cfg = config.environments.dispenser2
 
-	env = new cl(cfg)
+	var env = new cl(cfg)
 	var options = new Options()
 	options.getEnvParams(env)
 	options.model_class = Gridworld.modelClass(cl,cfg)
-	agent = new ThompsonAgent(options)
+	var agent = new ThompsonAgent(options)
 
 	var e
 	var a
