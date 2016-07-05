@@ -15,7 +15,7 @@ QUnit.test("BayesMixtureUpdates",function(assert) {
     var actions = [0,1,2,3,4]
     for (var i=0;i<1e2;i++) {
         var a = Util.randomChoice(actions)
-        var or = Test.do(env,a)
+        var or = Test.perform(env,a)
         try {
             model.update(a,or)
             assert.deepEqual(env.pos,model.model_class[truth].pos)
@@ -51,17 +51,17 @@ QUnit.test("BayesMixtureSamples",function(assert) {
     var percept
     assert.equal(model.weights[options.mu],1)
     for (var i = 0;i < 100; i++) {
-        percept = Test.do(model,4) // noop
+        percept = Test.perform(model,4) // noop
         assert.equal(percept.rew,config.rewards.move)
     }
-    var percept = Test.do(model,1) // right
+    var percept = Test.perform(model,1) // right
     assert.equal(percept.rew,config.rewards.move)
-	var percept = Test.do(model,3) // down
+	var percept = Test.perform(model,3) // down
     assert.equal(percept.rew,config.rewards.move)
-	var percept = Test.do(model,1) // right
+	var percept = Test.perform(model,1) // right
     assert.equal(percept.rew,config.rewards.chocolate + config.rewards.move)
     for (var i = 0;i < 100; i++) {
-        percept = Test.do(model,4) // noop
+        percept = Test.perform(model,4) // noop
         assert.equal(percept.rew,config.rewards.chocolate + config.rewards.move)
     }
     assert.equal(model.xi(percept),1)
@@ -77,7 +77,7 @@ QUnit.test("BayesMixtureCopy",function(assert) {
     var model = new BayesMixture(options)
 	var idx = Util.sample(model.weights)
 	var rho = model.model_class[idx].copy()
-	rho.do(1)
+	rho.perform(1)
 	assert.equal(rho.pos.x,1)
 	assert.equal(model.model_class[idx].pos.x,0)
 })

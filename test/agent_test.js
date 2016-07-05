@@ -12,7 +12,7 @@ QUnit.test("ThompsonAgent",function(assert) {
 	var a
 	e = env.generatePercept()
 	a = agent.selectAction(e)
-	env.do(a)
+	env.perform(a)
 	e = env.generatePercept()
 	agent.update(a,e)
 

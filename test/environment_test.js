@@ -6,13 +6,13 @@ QUnit.test("Grids",function(assert) {
 	assert.ok(env.conditionalDistribution(e) > 0,"Bad news")
 	var plan = [3,3,1,1,1,1,1,3,3,1,3]
 	for (var a of plan) {
-		env.do(a)
+		env.perform(a)
 		e = env.generatePercept()
 		assert.equal(e.rew,config.rewards.move)
 		assert.ok(env.conditionalDistribution(e) > 0)
 
 	}
-	env.do(3)
+	env.perform(3)
 	e = env.generatePercept()
 	assert.equal(e.rew,config.rewards.chocolate + config.rewards.move)
 	assert.ok(env.conditionalDistribution(e) > 0)
