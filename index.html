@@ -56,9 +56,9 @@
     <img src="assets/robot.png" alt="Roger the robot :)" style="width: 50px; float:left; margin: 0px 15px 15px 0px" />
 	<h1 style="font-size:50px">AIXI<span style="color:#058;">js</span></h1>
 </div>
-<div class="md">
+<span class="md">
 ---
-</div>
+</span>
 <!-- Fork me on github! -->
 <a href="https://github.com/aslanides/aixijs" target="_blank"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
 <!-- Vis -->
@@ -133,6 +133,46 @@
 
 <!-- Explanations -->
 <td colspan=2>
+
+<span class="md" id="dispenser_bayes_exp" style="display:none">
+
+---
+# Bayes Dispenser
+
+<p style="text-align: center"><img src="assets/dispenser-bayes.png" alt="Bayesian Dispenser demo" style="width: 250px"/></p>
+
+In the `DispenserGridworld` environment, there is one  `Dispenser`
+
+<p align="center" id="dispenser"></p>
+
+which probabilistically dispenses a reward of +100. Walking into a `Wall`
+
+<p align="center" id="wall"></p>
+
+results in a penalty of -5. The environment class \\(\mathcal{M}\\) is parametrized by the location of the dispenser:
+$$
+\mathcal{M} = \big\lbrace\nu\ :\ \mathtt{\nu.dispenserpos} = (m,n)\big\rbrace\_{(m,n)=(1,1)}^{(M,N)},
+$$
+
+where \\((M,N)\\) are the dimensions of the grid, and hence \\(\left|\mathcal{M}\right|=MN\\). Usually (unless we are simulating AI\\(\mu\\)), the agent will be initialized with a uniform prior over this model class, i.e.
+$$
+w\_\nu = \frac{1}{MN}\ \forall\ \nu\in\mathcal{M}
+$$
+
+The agent's beliefs \\(\lbrace w\_\nu\rbrace\_{\nu\in\mathcal{M}}\\) are visualized by green shading
+
+<p align="center" id="green"></p>
+
+on each tile. Darker shading corresponds to higher probability. Finally, we have Roger the Robot, who represents our AI agent on the gridworld:
+
+<p align="center"><img src="assets/robot.png" alt="Roger the robot :)" style="width: 40px"/></p>
+
+</span>
+<script>
+	GridVisualization.makeLegend("dispenser",Dispenser)
+	GridVisualization.makeLegend("wall",Wall)
+	GridVisualization.makeLegend("green",Tile,"rgb(64,255,64)")
+</script>
 <span class="md" id="rl">
 
 ---
@@ -152,7 +192,9 @@
 	* [MDL Agent](#mdl)
 	* [DQN](#dqn)
 	* [Compress and Control](#cnc)
-* [JavaScript API](#api)
+* [Implementation](#implementation)
+	* [JavaScript API](#api)
+	* [Runtime](#runtime)
 * [References and further reading](#further-reading)
 
 <a name="setup"></a>
@@ -256,7 +298,7 @@ w\_\nu\leftarrow\frac{\nu(e\_t)w\_\nu}{\xi(e\_t)}.
 $$
 
 <a name="aixi"></a>
-## AI\\(\xi\\) and AIXI
+## AI\\(\xi\\)
 
 AI\\(\xi\\) is the __Bayes-optimal__ agent. That is, it is the policy that maximizes the \\(\xi\\)-expected return:
 $$
@@ -340,16 +382,18 @@ TODO
 
 ---
 
-<a name="api"></a>
-# JavaScript API
+<a name="implementation"></a>
+# Implementation
 
+<a name="api"></a>
+## JavaScript API
 ```
 class Environment {
 	// ...
 	generatePercept() {
 		//
 	}
-	perform(action) {
+	perform(a) {
 		//
 	}
 	conditionalDistribution(e) {
@@ -359,14 +403,38 @@ class Environment {
 
 class Agent {
 	// ...
-	selectAction(percept) {
+	selectAction(e) {
 		//
 	}
 	update(a,e) {
 		//
 	}
 }
+
+class Demo {
+	constructor(env,agent,vis,cycles) {
+		this.agent = agent
+		this.env = env
+        this.trace = new agent.tracer(cycles)
+		var a
+		var e = env.generatePercept()
+        for (var t = 0; t < cycles; t++) {
+			this.trace.log(agent,env,a,e)
+			a = agent.selectAction(e)
+			env.perform(a)
+			e = env.generatePercept()
+			agent.update(a,e)
+        }
+		this.vis = new vis(this.env,this.trace)
+    }
+	// ...
+}
 ```
+
+<a name="runtime"></a>
+## Runtime
+Demos containing Bayesian agents have a time complexity of
+TODO
 
 ---
 
@@ -405,17 +473,6 @@ class Agent {
 [Sutton & Barto, 1998]: https://webdocs.cs.ualberta.ca/~sutton/book/the-book.html
 [Sunehag & Hutter, 2015]: http://jmlr.org/papers/volume16/sunehag15a/sunehag15a.pdf
 </span>
-
-<span class="md" id="qlearn_exp" style="display:none"></span>
-
-<span class="md" id="bayes_exp" style="display:none"></span>
-
-<span class="md" id="aimu_exp" style="display:none"></span>
-
-<span class="md" id="ksa_exp" style="display:none"></span>
-
-<span class="md" id="thompson_exp" style="display:none"></span>
-
 </td>
 </tr>
 </table>
