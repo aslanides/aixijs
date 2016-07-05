@@ -149,14 +149,14 @@ which probabilistically dispenses a reward of +100. Walking into a `Wall`
 
 <p align="center" id="wall"></p>
 
-results in a penalty of -5. The environment class \\(\mathcal{M}\\) is parametrized by the location of the dispenser:
+results in a penalty of -5. This environment is non-episodic, so once the agent finds the `Dispenser`, it should hang around there to collect more reward. The environment class \\(\mathcal{M}\\) is parametrized by the location of the dispenser:
 $$
 \mathcal{M} = \big\lbrace\nu\ :\ \mathtt{\nu.dispenserpos} = (m,n)\big\rbrace\_{(m,n)=(1,1)}^{(M,N)},
 $$
 
 where \\((M,N)\\) are the dimensions of the grid, and hence \\(\left|\mathcal{M}\right|=MN\\). Usually (unless we are simulating AI\\(\mu\\)), the agent will be initialized with a uniform prior over this model class, i.e.
 $$
-w\_\nu = \frac{1}{MN}\ \forall\ \nu\in\mathcal{M}
+w\_\nu = \frac{1}{MN}\ \forall\ \nu\in\mathcal{M}.
 $$
 
 The agent's beliefs \\(\lbrace w\_\nu\rbrace\_{\nu\in\mathcal{M}}\\) are visualized by green shading
@@ -168,10 +168,19 @@ on each tile. Darker shading corresponds to higher probability. Finally, we have
 <p align="center"><img src="assets/robot.png" alt="Roger the robot :)" style="width: 40px"/></p>
 
 </span>
+<span class="md" id="thompson_exp" style="display:none">
+In the case of Thompson sampling, the agent periodically samples an environment \\(\rho\\) from its posterior belief distribution and uses the \\(\rho\\)-optimal policy. The red dot
+
+<p align="center" id="rho"></p>
+represents the position of the dispenser in \\(\rho\\); the Thompson Sampling agent will chase the red dot around.
+</span>
+
 <script>
 	GridVisualization.makeLegend("dispenser",Dispenser)
 	GridVisualization.makeLegend("wall",Wall)
 	GridVisualization.makeLegend("green",Tile,"rgb(64,255,64)")
+	GridVisualization.makeLegend("rho",Tile)
+	GridVisualization.addCircle(d3.select("#rho_svg"),0,0,config.colors.rho)
 </script>
 <span class="md" id="rl">
 
@@ -267,7 +276,7 @@ V\_{\mu}^{*}=\lim\_{m\to\infty}\max\_{a\_{t}\in\mathcal{A}}\sum\_{e\_{t}\in\math
 $$
 This can be viewed as just a generalization of [minimax] to stochastic environments/adversaries. In practice, when planning we approximate this computation with [Monte Carlo tree search] (MCTS).
 
-We can now introduce our first theoretical [artificial general intelligent] (AGI) agent: the __informed agent AI__\\(\boldsymbol{\mu}\\). __AI__\\(\boldsymbol{\mu}\\) is simply the (infeasible) \\(\boldsymbol{\mu}\\)__-optimal policy__:
+We can now introduce our first theoretical [artificial general intelligent] (AGI) agent: the __informed agent AI__\\(\boldsymbol{\mu}\\). AI\\(\mu\\) is simply the (infeasible) \\(\boldsymbol{\mu}\\)__-optimal policy__:
 $$
 \pi^{\text{AI}\mu}\stackrel{.}{=}\arg\max\_{\pi}V\_{\mu}^{\pi}.
 $$
