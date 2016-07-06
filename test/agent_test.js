@@ -1,23 +1,23 @@
 QUnit.test("ThompsonAgent",function(assert) {
-	var cl = SimpleDispenserGrid
-	var cfg = config.environments.dispenser2
+	let cl = SimpleDispenserGrid
+	let cfg = config.environments.dispenser2
 
-	var env = new cl(cfg)
-	var options = new Options()
+	let env = new cl(cfg)
+	let options = new Options()
 	options.getEnvParams(env)
 	options.model_class = Gridworld.modelClass(cl,cfg)
-	var agent = new ThompsonAgent(options)
+	let agent = new ThompsonAgent(options)
 
-	var e
-	var a
+	let e
+	let a
 	e = env.generatePercept()
 	a = agent.selectAction(e)
 	env.perform(a)
 	e = env.generatePercept()
 	agent.update(a,e)
 
-	var x = env.pos.x
-	var y = env.pos.y
+	let x = env.pos.x
+	let y = env.pos.y
 
 	assert.equal(agent.rho.pos.x,x)
 	assert.equal(agent.rho.pos.y,y)

@@ -1,5 +1,5 @@
 QUnit.test("Search",function(assert) {
-    var mock_agent = {
+    let mock_agent = {
 		horizon: 3,
 		UCBweight : 1,
 		max_reward : config.rewards.chocolate + config.rewards.move,
@@ -9,20 +9,20 @@ QUnit.test("Search",function(assert) {
 		utility : e => e.rew,
 	}
 
-	var model = new BayesMixture({
+	let model = new BayesMixture({
 		model_class : Gridworld.modelClass(SimpleDispenserGrid,config.environments.dispenser2),
 		prior_type : "Informed",
 		mu : 1
 	})
 	model.save()
-	var tree = new ExpectimaxTree(mock_agent,model)
-	for (var i = 0; i < 10; i++) {
+	let tree = new ExpectimaxTree(mock_agent,model)
+	for (let i = 0; i < 10; i++) {
 		assert.equal(tree.bestAction(),3)
 	}
 })
 
 QUnit.test("Search",function(assert) {
-    var mock_agent = {
+    let mock_agent = {
 		horizon: 5,
 		UCBweight : 1,
 		max_reward : config.rewards.chocolate + config.rewards.move,
@@ -32,25 +32,25 @@ QUnit.test("Search",function(assert) {
 		utility : e => e.rew,
 	}
 
-	var model = new BayesMixture({
+	let model = new BayesMixture({
 		model_class : Gridworld.modelClass(SimpleDispenserGrid,config.environments.dispenser2),
 		prior_type : "Informed",
 		mu : 1
 	})
-	var tree = new ExpectimaxTree(mock_agent,model)
-	for (var i = 0; i < 10; i++) {
+	let tree = new ExpectimaxTree(mock_agent,model)
+	for (let i = 0; i < 10; i++) {
 		assert.equal(tree.bestAction(),3)
 	}
 
-	var rho = model.model_class[5]
-	var tree2 = new ExpectimaxTree(mock_agent,rho)
-	for (var i = 0; i < 10; i++) {
+	let rho = model.model_class[5]
+	let tree2 = new ExpectimaxTree(mock_agent,rho)
+	for (let i = 0; i < 10; i++) {
 		assert.equal(tree2.bestAction(),1)
 	}
 
-	var rho2 = model.model_class[10]
-	var tree3 = new ExpectimaxTree(mock_agent,rho2)
-	for (var i = 0; i < 10; i++) {
+	let rho2 = model.model_class[10]
+	let tree3 = new ExpectimaxTree(mock_agent,rho2)
+	for (let i = 0; i < 10; i++) {
 		assert.equal(tree3.bestAction(),1)
 	}
 
