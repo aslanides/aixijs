@@ -222,13 +222,13 @@ In the standard [reinforcement learning] (RL) framework, the __agent__ and __env
 
 The actions live in an action space \\(\mathcal{A}\\), and the percepts live in a percept space \\(\mathcal{E}\\). We identify an agent with its __policy__, which in general is a distribution over actions \\(\pi(a\_t\lvert ae\_{&lt;t})\\)
 $$
-\pi\ :\ \left(\mathcal{A}\times\mathcal{E}\right)^*\mapsto\letDelta\mathcal{A},
+\pi\ :\ \left(\mathcal{A}\times\mathcal{E}\right)^*\mapsto\varDelta\mathcal{A},
 $$
 
-where \\(^*\\) is the [Kleene star], and \\(\letDelta \mathcal{X}\\) is the set of probability measures over \\(\mathcal{X}\\). An environment is a distribution over percepts \\(\nu(e\_t\lvert ae\_{&lt;t}a\_t)\\) with
+where \\(^*\\) is the [Kleene star], and \\(\varDelta \mathcal{X}\\) is the set of probability measures over \\(\mathcal{X}\\). An environment is a distribution over percepts \\(\nu(e\_t\lvert ae\_{&lt;t}a\_t)\\) with
 
 $$
-\nu\ :\  \left(\mathcal{A}\times\mathcal{E}\right)^*\times\mathcal{A}\mapsto\letDelta\mathcal{E}.
+\nu\ :\  \left(\mathcal{A}\times\mathcal{E}\right)^*\times\mathcal{A}\mapsto\varDelta\mathcal{E}.
 $$
 
 The agent and environment interaction induces a distribution over __histories__ \\(\nu^\pi\\):
@@ -366,11 +366,11 @@ TODO
 <a name="ts"></a>
 ## Thompson Sampling
 
-Define the \\(\letepsilon\\)-effective horizon:
+Define the \\(\varepsilon\\)-effective horizon:
 $$
-H\_{t}^{\gamma}(\letepsilon) \stackrel{.}{=} \min\left\lbrace m\ :\ \sum\_{k=m}^{\infty}\gamma\_{t+k}\leq\letepsilon\right\rbrace,
+H\_{t}^{\gamma}(\varepsilon) \stackrel{.}{=} \min\left\lbrace m\ :\ \sum\_{k=m}^{\infty}\gamma\_{t+k}\leq\varepsilon\right\rbrace,
 $$
-which is the minimum number of cycles ahead one needs to consider in order to accumulate a value of \\((1-\letepsilon)V\_{\nu}^{\pi}\\), for some \\(\letepsilon>0\\). Thompson Sampling ([Leike et al., 2016]) has a simple algorithm: every \\(H\_{t}^{\gamma}\\) steps, sample an environment \\(\rho\\) from the posterior belief distribution \\(w\_{\nu}\\), and use the \\(\rho\\)-optimal policy, re-sample, and repeat.
+which is the minimum number of cycles ahead one needs to consider in order to accumulate a value of \\((1-\varepsilon)V\_{\nu}^{\pi}\\), for some \\(\varepsilon>0\\). Thompson Sampling ([Leike et al., 2016]) has a simple algorithm: every \\(H\_{t}^{\gamma}\\) steps, sample an environment \\(\rho\\) from the posterior belief distribution \\(w\_{\nu}\\), and use the \\(\rho\\)-optimal policy, re-sample, and repeat.
 
 <a name="opt-aixi"></a>
 ## Optimistic AIXI
