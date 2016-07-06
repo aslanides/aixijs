@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>
         AIXIjs: General reinforcement learning demo
@@ -10,7 +10,6 @@
 	<meta name="author" content="John Aslanides and Sean Lamont">
 	<meta name="keywords" content="artificial intelligence, reinforcement learning, AIXI, gridworld">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 
 	<script type="text/javascript" src="lib/plot.js"></script>
 	<script type="text/javascript" src="lib/tile.js"></script>
@@ -34,20 +33,24 @@
 
 	<script>
 		function renderMarkdown() {
-			$(".md").each(function(x) {
-				$(this).html(marked($(this).html()))
-			})
-			renderJax()
+			$('.md').each(function (x) {
+				$(this).html(marked($(this).html()));
+			});
+
+			renderJax();
 		}
 
 		let jaxrendered = false;
 		function renderJax() {
-			if (jaxrendered) {return}
+			if (jaxrendered) {
+				return;
+			}
+
 			(function () {
-				let script = document.createElement("script");
-				script.type = "text/javascript";
-				script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
-				document.getElementsByTagName("head")[0].appendChild(script);
+				let script = document.createElement('script');
+				script.type = 'text/javascript';
+				script.src  = 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+				document.getElementsByTagName('head')[0].appendChild(script);
 				jaxrendered = true;
 			})();
 		}
@@ -125,7 +128,7 @@
 					<input type="submit" value="Run" onclick="demo.run()">
 				</form>
 				<script>
-					$("#param_form").submit(event => event.preventDefault())
+					$('#param_form').submit(event => event.preventDefault());
 				</script>
 		    </div>
 		</td>
@@ -147,11 +150,11 @@
 
 In the `DispenserGridworld` environment, there is one  `Dispenser`
 
-<p align="center" id="dispenser"></p>
+<p style="text-align:center" id="dispenser"></p>
 
 which probabilistically dispenses a reward of +100. Walking into a `Wall`
 
-<p align="center" id="wall"></p>
+<p style="text-align:center" id="wall"></p>
 
 results in a penalty of -5. This environment is non-episodic, so once the agent finds the `Dispenser`, it should hang around there to collect more reward. The environment class \\(\mathcal{M}\\) is parametrized by the location of the dispenser:
 $$
@@ -165,33 +168,33 @@ $$
 
 The agent's beliefs \\(\lbrace w\_\nu\rbrace\_{\nu\in\mathcal{M}}\\) are visualized by green shading
 
-<p align="center" id="green"></p>
+<p style="text-align:center" id="green"></p>
 
 on each tile. Darker shading corresponds to higher probability. Finally, we have Roger the Robot, who represents our AI agent on the gridworld:
 
-<p align="center"><img src="assets/robot.png" alt="Roger the robot :)" style="width: 40px"/></p>
+<p style="text-align:center"><img src="assets/robot.png" alt="Roger the robot :)" style="width: 40px"/></p>
 
 </span>
 <span class="md" id="thompson_exp" style="display:none">
 In the case of Thompson sampling, the agent periodically samples an environment \\(\rho\\) from its posterior belief distribution and uses the \\(\rho\\)-optimal policy. The red dot
 
-<p align="center" id="rho"></p>
+<p style="text-align:center" id="rho"></p>
 represents the position of the dispenser in \\(\rho\\); the Thompson Sampling agent will chase the red dot around.
 </span>
 
 <script>
-	GridVisualization.makeLegend("dispenser",Dispenser)
-	GridVisualization.makeLegend("wall",Wall)
-	GridVisualization.makeLegend("green",Tile,"rgb(64,255,64)")
-	GridVisualization.makeLegend("rho",Tile)
-	GridVisualization.addCircle(d3.select("#rho_svg"),0,0,config.colors.rho)
+	GridVisualization.makeLegend('dispenser', Dispenser);
+	GridVisualization.makeLegend('wall', Wall);
+	GridVisualization.makeLegend('green', Tile, 'rgb(64,255,64)');
+	GridVisualization.makeLegend('rho', Tile);
+	GridVisualization.addCircle(d3.select('#rho_svg'), 0, 0, config.colors.rho);
 </script>
 <span class="md" id="rl">
 
 ---
 
 # Contents
-* [Background](#setup)
+* [Background](#background)
 	* [Agent-environment interaction](#agent-env)
 	* [Reinforcement...](#reinforcement)
 	* [...Learning](#learning)
@@ -210,10 +213,10 @@ represents the position of the dispenser in \\(\rho\\); the Thompson Sampling ag
 	* [Runtime](#runtime)
 * [References and further reading](#further-reading)
 
-<a name="setup"></a>
+<a id="background"></a>
 # Background
 
-<a name="agent-env"></a>
+<a id="agent-env"></a>
 ## Agent-environment interaction
 
 In the standard [reinforcement learning] (RL) framework, the __agent__ and __environment__ play a turn-based game and interact in cycles ([Sutton & Barto, 1998]). At time/cycle/turn \\(t\\), the agent supplies the environment with an __action__ \\(a\_t\\). The environment then performs some computation and returns a __percept__ \\(e_t\\) to the agent, and the cycle repeats.
@@ -243,7 +246,7 @@ Notes:
 * We restrict ourselves to countable percept and action spaces. Although many (but not all) of the important results generalize to continuous spaces, we make this assumption for simplicity.
 * For simplicity, we also assume that the action and percept spaces \\(\mathcal{A}\\) and \\(\mathcal{E}\\) are stationary; i.e. they are time-independent and fixed by the environment.
 
-<a name="reinforcement"></a>
+<a id="reinforcement"></a>
 ## Reinforcement...
 
 Percepts consist of (__observation__, __reward__) pairs \\(e\_k = \left(o\_k,r\_k\right)\\), with integer-valued rewards such that
@@ -285,7 +288,7 @@ $$
 \pi^{\text{AI}\mu}\stackrel{.}{=}\arg\max\_{\pi}V\_{\mu}^{\pi}.
 $$
 
-<a name="learning"></a>
+<a id="learning"></a>
 ## ...Learning
 
 Clearly we don't know \\(\mu\\) _a priori_ in the general RL setting. Generically, there are two main approaches to learning in the context of RL: __model-based__ and __model-free__. They each make their own sets of assumptions:
@@ -294,7 +297,7 @@ Clearly we don't know \\(\mu\\) _a priori_ in the general RL setting. Genericall
 
 The agents we'll be dealing with are all Bayesian.
 
-<a name="brl"></a>
+<a id="brl"></a>
 ## Bayesian reinforcement learning
 
 Assume the realizable case: the true environment \\(\mu\\) is contained in some countable __model class__ \\(\mathcal{M}\\). Now, constructor a __Bayesian mixture__ over \\(\mathcal{M}\\): a [convex linear combination] of environments:
@@ -310,7 +313,7 @@ $$
 w\_\nu\leftarrow\frac{\nu(e\_t)w\_\nu}{\xi(e\_t)}.
 $$
 
-<a name="aixi"></a>
+<a id="aixi"></a>
 ## AI\\(\xi\\)
 
 AI\\(\xi\\) is the __Bayes-optimal__ agent. That is, it is the policy that maximizes the \\(\xi\\)-expected return:
@@ -323,17 +326,17 @@ w\_{\nu} = 2^{-K(\nu)},
 $$
 where \\(K(\nu)\\) is the [Kolmogorov complexity] of \\(\nu\\). AIXI is hence the 'active' generalization of Solomonoff induction, which is the optimal (but incomputable) inductive learner. A computable approximation to AIXI is MC-AIXI-CTW ([Veness et al., 2011]), which uses the [Context Tree Weighting] (CTW) algorithm to approximate the induction component of AIXI.
 
-<a name="optimality"></a>
+<a id="optimality"></a>
 ## Exploration vs exploitation; optimality
 
 The most central issue in reinforcement learning is the __exploration-exploitation dilemma__: TODO
 
 It is now known that [Pareto optimality] is trivial in general environments, and that AIXI can be made to perform arbitrarily badly with a dogmatic prior ([Leike & Hutter, 2015]).
 
-<a name="agents"></a>
+<a id="agents"></a>
 # Agents
 
-<a name="ksa"></a>
+<a id="ksa"></a>
 ## Knowledge-seeking agents
 
 First generalize to Bayesian __utility agents__ that have, in addition to a belief distribution \\(\xi\\), a utility function
@@ -358,12 +361,12 @@ $$
 * KL-KSA:
 TODO
 
-<a name="bexp"></a>
+<a id="bexp"></a>
 ## BayesExp
 
 TODO
 
-<a name="ts"></a>
+<a id="ts"></a>
 ## Thompson Sampling
 
 Define the \\(\varepsilon\\)-effective horizon:
@@ -372,33 +375,33 @@ H\_{t}^{\gamma}(\varepsilon) \stackrel{.}{=} \min\left\lbrace m\ :\ \sum\_{k=m}^
 $$
 which is the minimum number of cycles ahead one needs to consider in order to accumulate a value of \\((1-\varepsilon)V\_{\nu}^{\pi}\\), for some \\(\varepsilon>0\\). Thompson Sampling ([Leike et al., 2016]) has a simple algorithm: every \\(H\_{t}^{\gamma}\\) steps, sample an environment \\(\rho\\) from the posterior belief distribution \\(w\_{\nu}\\), and use the \\(\rho\\)-optimal policy, re-sample, and repeat.
 
-<a name="opt-aixi"></a>
+<a id="opt-aixi"></a>
 ## Optimistic AIXI
 
 Optimistic AIXI ([Sunehag & Hutter, 2015]).
 TODO
 
-<a name="mdl"></a>
+<a id="mdl"></a>
 ## MDL Agent
 
 TODO
 
-<a name="dqn"></a>
+<a id="dqn"></a>
 ## Policy Gradients/Deep Q-Learning
 
 See [Andrej Karpathy]'s excellent [REINFORCEjs] demo, on which this demo is modelled!
 
-<a name="cnc"></a>
+<a id="cnc"></a>
 ## Compress and Control
 
 TODO
 
 ---
 
-<a name="implementation"></a>
+<a id="implementation"></a>
 # Implementation
 
-<a name="api"></a>
+<a id="api"></a>
 ## JavaScript API
 ```
 class Environment {
@@ -426,14 +429,14 @@ class Agent {
 
 ```
 
-<a name="runtime"></a>
+<a id="runtime"></a>
 ## Runtime
 Demos containing Bayesian agents have a time complexity of
 TODO
 
 ---
 
-<a name="further-reading"></a>
+<a id="further-reading"></a>
 ## References & Further Reading
 
 <!-- References -->
