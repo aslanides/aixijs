@@ -23,6 +23,7 @@
 	<script type="text/javascript" src="lib/util.js"></script>
 	<script type="text/javascript" src="lib/options.js"></script>
 	<script type="text/javascript" src="lib/config.js"></script>
+	<script type="text/javascript" src="lib/ui.js"></script>
 	<script type="text/javascript" src="lib/distribution.js"></script>
 	<script type="text/javascript" src="external/mathjs-3.1.4.min.js"></script>
 	<script type="text/javascript" src="external/jquery-2.2.3.min.js"></script>
@@ -50,7 +51,7 @@
 		}
 	</script>
 </head>
-<body onload="Demo.init();renderMarkdown()">
+<body onload="UI.init();renderMarkdown()">
 <div id="wrap">
 <div class="header">
     <img src="assets/robot.png" alt="Roger the robot :)" style="width: 50px; float:left; margin: 0px 15px 15px 0px" />
@@ -61,6 +62,11 @@
 </span>
 <!-- Fork me on github! -->
 <a href="https://github.com/aslanides/aixijs" target="_blank"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+<script>
+	var demo
+	var ui = new UI()
+</script>
 <!-- Vis -->
 <table>
 	<tr>
@@ -86,7 +92,7 @@
 		        <form id="param_form">
 		            <p class="params" id="p_select" style="display: table-row">
 		                <label for="demo_select">Demo:</label>
-		                <select id="demo_select" name="demo_select" onchange="Demo.setOptions()" required>
+		                <select id="demo_select" name="demo_select" onchange="Demo.new()" required>
 							<option selected disabled hidden style="display: none" value="" label=" "></option>
 						</select>
 		            </p>
@@ -111,14 +117,14 @@
 		                <input type="number" class="params" name="samples" id="samples" min="1" max="10000" step="1" required>
 		            </p>
 					<p class="params" id="p_ucb">
-		                <label title="UCB exploration parameter">UCB Weight:</label>
+		                <label title="UCB exploration parameter">UCB:</label>
 		                <input type="number" class="params" name="ucb" id="ucb" min="0.01" max="10" step="0.01" required>
 		            </p>
 		            <p class="params" id="p_cycles">
 		                <label title="Number of cycles to run the simulation for">Cycles:</label>
 		                <input type="number" class="params" name="cycles" id="cycles" min="1" max="1000000" step="1" required>
 		            </p>
-					<input type="submit" value="Run" onclick="Demo.run(document)">
+					<input type="submit" value="Run" onclick="demo.run()">
 				</form>
 				<script>
 					$("#param_form").submit(event => event.preventDefault())
