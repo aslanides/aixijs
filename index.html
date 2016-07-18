@@ -99,31 +99,31 @@
 		            </p>
 		            <p class="params" id="p_alpha">
 		                <label title="Learning rate">Alpha:</label>
-		                <input type="number" class="params" name="alpha" id="alpha" min="0" max="1" step="0.01" required>
+		                <input type="number" class="params" name="alpha" id="alpha" min="0" max="1" step="0.01">
 		            </p>
 		            <p class="params" id="p_gamma">
 		                <label title="Discount rate (geometric)">Gamma:</label>
-		                <input type="number" class="params" name="gamma" id="gamma" min="0" max="1" step="0.01" required>
+		                <input type="number" class="params" name="gamma" id="gamma" min="0" max="1" step="0.01">
 		            </p>
 		            <p class="params" id="p_epsilon">
 		                <label title="Exploration rate">Epsilon:</label>
-		                <input type="number" class="params" name="epsilon" id="epsilon" min="0" max="1" step="0.01" required>
+		                <input type="number" class="params" name="epsilon" id="epsilon" min="0" max="1" step="0.01">
 		            </p>
 					<p class="params" id="p_horizon">
 		                <label title="Planning horizon">Horizon:</label>
-		                <input type="number" class="params" name="horizon" id="horizon" min="1" max="100" step="1" required>
+		                <input type="number" class="params" name="horizon" id="horizon" min="1" max="100" step="1">
 		            </p>
 					<p class="params" id="p_samples">
 		                <label title="Number of MCTS samples">Samples:</label>
-		                <input type="number" class="params" name="samples" id="samples" min="1" max="10000" step="1" required>
+		                <input type="number" class="params" name="samples" id="samples" min="1" max="10000" step="1">
 		            </p>
 					<p class="params" id="p_ucb">
 		                <label title="UCB exploration parameter">UCB:</label>
-		                <input type="number" class="params" name="ucb" id="ucb" min="0.01" max="10" step="0.01" required>
+		                <input type="number" class="params" name="ucb" id="ucb" min="0.01" max="10" step="0.01">
 		            </p>
 		            <p class="params" id="p_cycles">
 		                <label title="Number of cycles to run the simulation for">Cycles:</label>
-		                <input type="number" class="params" name="cycles" id="cycles" min="1" max="1000000" step="1" required>
+		                <input type="number" class="params" name="cycles" id="cycles" min="1" max="1000000" step="1">
 		            </p>
 					<input type="submit" value="Run" onclick="demo.run()">
 				</form>
