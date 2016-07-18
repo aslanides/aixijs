@@ -1,7 +1,7 @@
 QUnit.test('BayesMixtureUpdates', function (assert) {
 	// given an informed bayes mixture
 	let cfg = config.test.dispenser;
-	let M = Gridworld.modelClass(SimpleDispenserGrid, cfg);
+	let M = Gridworld.makeModelClass(SimpleDispenserGrid, cfg);
 	let truth = 5;
 	let model = new BayesMixture({ modelClass: M, priorType: 'Informed', mu: 5 });
 
