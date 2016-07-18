@@ -156,7 +156,12 @@ which probabilistically dispenses a reward of +100. Walking into a `Wall`
 
 <p style="text-align:center" id="wall"></p>
 
-results in a penalty of -5. This environment is non-episodic, so once the agent finds the `Dispenser`, it should hang around there to collect more reward. The environment class \\(\mathcal{M}\\) is parametrized by the location of the dispenser:
+results in a penalty of -5. Otherwise, moving results in a penalty of -1. The percept space is the set of bit-strings of length 5, i.e. \\(\mathcal{E} = \mathbb{B}^5\\). Each bit corresponds to the nearest tile in the `left`, `right`, `up`, and `down` directions, and the agent's current tile. The bit is 1 if the tile is a `Wall` and 0 otherwise. The action space is given by
+$$
+\mathcal{A} = \lbrace{\mathtt{left,right,up,down,noop}\rbrace}.
+$$
+
+This environment is non-episodic, so once the agent finds the `Dispenser`, it should hang around there to collect more reward. The environment class \\(\mathcal{M}\\) is parametrized by the location of the dispenser:
 $$
 \mathcal{M} = \big\lbrace\nu\ :\ \mathtt{\nu.dispenserpos} = (m,n)\big\rbrace\_{(m,n)=(1,1)}^{(M,N)},
 $$
