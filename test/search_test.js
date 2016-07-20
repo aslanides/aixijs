@@ -10,7 +10,7 @@ QUnit.test('Search', function (assert) {
 	};
 
 	let model = new BayesMixture({
-		modelClass: Gridworld.modelClass(SimpleDispenserGrid, config.environments.dispenser2),
+		modelClass: new SimpleDispenserGrid(config.environments.dispenser2).makeModelClass(),
 		priorType: 'Informed',
 		mu: 1,
 	});
@@ -33,7 +33,7 @@ QUnit.test('Search', function (assert) {
 	};
 
 	let model = new BayesMixture({
-		modelClass: Gridworld.modelClass(SimpleDispenserGrid, config.environments.dispenser2),
+		modelClass: new SimpleDispenserGrid(config.environments.dispenser2).makeModelClass(),
 		priorType: 'Informed',
 		mu: 1,
 	});
