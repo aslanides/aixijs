@@ -28,23 +28,43 @@ QUnit.test('ThompsonAgent', function (assert) {
 });
 
 QUnit.test('ThompsonSearch', function (assert) {
-	let cfg = config.environments.dispenser2;
+	let cfg = config.test.dispenser;
 	let env = new SimpleDispenserGrid(cfg);
 	let options = new Options();
 	options.samples = 400;
+	options.horizon = 2;
 	options.getEnvParams(env);
 	options.modelClass = env.makeModelClass();
 	agent = new ThompsonAgent(options);
 	agent.rho = agent.model.modelClass[1].copy();
+	agent.searchTree = new ExpectimaxTree(agent, agent.rho);
 
 	let e = env.generatePercept();
+	let a;
 	for (let i = 0; i < 100; i++) {
 		agent.T = 1;
-		let a = agent.selectAction(e);
-
-		assert.equal(a, 1);
+		a = agent.selectAction(e);
 		if (a != 1) {
-			break;
+			assert.equal(a, 1);
+			return;
+		}
+	}
+
+	env.perform(a);
+	e = env.generatePercept();
+	agent.update(a, e);
+	assert.equal(agent.searchTree.model, agent.rho);
+	assert.equal(agent.rho.pos.x, 1);
+	assert.equal(agent.rho.pos.y, 0);
+	assert.equal(agent.rho.goal.x, 1);
+	assert.equal(agent.rho.goal.y, 0);
+	for (let i = 0; i < 100; i++) {
+		agent.T = 1;
+		a = agent.selectAction(e);
+		assert.equal(a, 4);
+		if (a != 4) {
+			console.log(agent.searchTree.root.toString(1));
+			return;
 		}
 	}
 });
