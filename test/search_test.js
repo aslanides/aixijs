@@ -17,7 +17,7 @@ QUnit.test('Search', function (assert) {
 	model.save();
 	let tree = new ExpectimaxTree(mockAgent, model);
 	for (let i = 0; i < 10; i++) {
-		assert.equal(tree.bestAction(), 3);
+		assert.equal(tree.bestAction(), 1);
 	}
 });
 
@@ -39,18 +39,18 @@ QUnit.test('Search', function (assert) {
 	});
 	let tree = new ExpectimaxTree(mockAgent, model);
 	for (let i = 0; i < 10; i++) {
-		assert.equal(tree.bestAction(), 3);
+		assert.equal(tree.bestAction(), 1);
 	}
 
 	let rho = model.modelClass[5];
 	let tree2 = new ExpectimaxTree(mockAgent, rho);
 	for (let i = 0; i < 10; i++) {
-		assert.equal(tree2.bestAction(), 1);
+		assert.equal(tree2.bestAction(), 3);
 	}
 
 	let rho2 = model.modelClass[10];
 	let tree3 = new ExpectimaxTree(mockAgent, rho2);
 	for (let i = 0; i < 10; i++) {
-		assert.equal(tree3.bestAction(), 1);
+		assert.equal(tree3.bestAction(), 3);
 	}
 });

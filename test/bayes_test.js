@@ -6,7 +6,7 @@ QUnit.test('BayesMixtureUpdates', function (assert) {
 	let model = new BayesMixture({ modelClass: M, priorType: 'Informed', mu: 5 });
 
 	// and given corresponding ground truth environment
-	cfg.goal_pos = { x: 2, y: 1 };
+	cfg.goal_pos = { x: 1, y: 2 };
 	let env = new SimpleDispenserGrid(cfg);
 
 	// then as we move around and update, our model should be consistent with
@@ -55,11 +55,11 @@ QUnit.test('BayesMixtureSamples', function (assert) {
 		assert.equal(percept.rew, config.rewards.move);
 	}
 
-	percept = Test.perform(model, 1); // right
+	percept = Test.perform(model, 3); // right
 	assert.equal(percept.rew, config.rewards.move);
-	percept = Test.perform(model, 3); // down
+	percept = Test.perform(model, 1); // down
 	assert.equal(percept.rew, config.rewards.move);
-	percept = Test.perform(model, 1); // right
+	percept = Test.perform(model, 3); // right
 	assert.equal(percept.rew, config.rewards.chocolate + config.rewards.move);
 	for (let i = 0; i < 100; i++) {
 		percept = Test.perform(model, 4); // noop
