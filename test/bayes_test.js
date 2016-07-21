@@ -1,12 +1,12 @@
 QUnit.test('BayesMixtureUpdates', function (assert) {
 	// given an informed bayes mixture
 	let cfg = config.test.dispenser;
-	let M = Gridworld.makeModelClass(SimpleDispenserGrid, cfg);
+	let M = new SimpleDispenserGrid(cfg).makeModelClass();
 	let truth = 5;
 	let model = new BayesMixture({ modelClass: M, priorType: 'Informed', mu: 5 });
 
 	// and given corresponding ground truth environment
-	cfg.goal_pos = { x: 2, y: 1 };
+	cfg.goal_pos = { x: 1, y: 2 };
 	let env = new SimpleDispenserGrid(cfg);
 
 	// then as we move around and update, our model should be consistent with
@@ -42,7 +42,7 @@ QUnit.test('BayesMixtureUpdates', function (assert) {
 
 QUnit.test('BayesMixtureSamples', function (assert) {
 	let options = {
-		modelClass: Gridworld.modelClass(SimpleDispenserGrid, config.test.dispenser),
+		modelClass: new SimpleDispenserGrid(config.test.dispenser).makeModelClass(),
 		mu: 5,
 		numActions: 5,
 		priorType: 'Informed',
@@ -55,11 +55,11 @@ QUnit.test('BayesMixtureSamples', function (assert) {
 		assert.equal(percept.rew, config.rewards.move);
 	}
 
-	let percept = Test.perform(model, 1); // right
+	percept = Test.perform(model, 3); // right
 	assert.equal(percept.rew, config.rewards.move);
-	let percept = Test.perform(model, 3); // down
+	percept = Test.perform(model, 1); // down
 	assert.equal(percept.rew, config.rewards.move);
-	let percept = Test.perform(model, 1); // right
+	percept = Test.perform(model, 3); // right
 	assert.equal(percept.rew, config.rewards.chocolate + config.rewards.move);
 	for (let i = 0; i < 100; i++) {
 		percept = Test.perform(model, 4); // noop
@@ -71,7 +71,7 @@ QUnit.test('BayesMixtureSamples', function (assert) {
 
 QUnit.test('BayesMixtureCopy', function (assert) {
 	let options = {
-		modelClass: Gridworld.modelClass(SimpleDispenserGrid, config.environments.dispenser2),
+		modelClass: new SimpleDispenserGrid(config.environments.dispenser2).makeModelClass(),
 		mu: 5,
 		numActions: 5,
 		priorType: 'Informed',

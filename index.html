@@ -99,31 +99,31 @@
 		            </p>
 		            <p class="params" id="p_alpha">
 		                <label title="Learning rate">Alpha:</label>
-		                <input type="number" class="params" name="alpha" id="alpha" min="0" max="1" step="0.01" required>
+		                <input type="number" class="params" name="alpha" id="alpha" min="0" max="1" step="0.01">
 		            </p>
 		            <p class="params" id="p_gamma">
 		                <label title="Discount rate (geometric)">Gamma:</label>
-		                <input type="number" class="params" name="gamma" id="gamma" min="0" max="1" step="0.01" required>
+		                <input type="number" class="params" name="gamma" id="gamma" min="0" max="1" step="0.01">
 		            </p>
 		            <p class="params" id="p_epsilon">
 		                <label title="Exploration rate">Epsilon:</label>
-		                <input type="number" class="params" name="epsilon" id="epsilon" min="0" max="1" step="0.01" required>
+		                <input type="number" class="params" name="epsilon" id="epsilon" min="0" max="1" step="0.01">
 		            </p>
 					<p class="params" id="p_horizon">
 		                <label title="Planning horizon">Horizon:</label>
-		                <input type="number" class="params" name="horizon" id="horizon" min="1" max="100" step="1" required>
+		                <input type="number" class="params" name="horizon" id="horizon" min="1" max="100" step="1">
 		            </p>
 					<p class="params" id="p_samples">
 		                <label title="Number of MCTS samples">Samples:</label>
-		                <input type="number" class="params" name="samples" id="samples" min="1" max="10000" step="1" required>
+		                <input type="number" class="params" name="samples" id="samples" min="1" max="10000" step="1">
 		            </p>
 					<p class="params" id="p_ucb">
 		                <label title="UCB exploration parameter">UCB:</label>
-		                <input type="number" class="params" name="ucb" id="ucb" min="0.01" max="10" step="0.01" required>
+		                <input type="number" class="params" name="ucb" id="ucb" min="0.01" max="10" step="0.01">
 		            </p>
 		            <p class="params" id="p_cycles">
 		                <label title="Number of cycles to run the simulation for">Cycles:</label>
-		                <input type="number" class="params" name="cycles" id="cycles" min="1" max="1000000" step="1" required>
+		                <input type="number" class="params" name="cycles" id="cycles" min="1" max="1000000" step="1">
 		            </p>
 					<input type="submit" value="Run" onclick="demo.run()">
 				</form>
@@ -156,7 +156,12 @@ which probabilistically dispenses a reward of +100. Walking into a `Wall`
 
 <p style="text-align:center" id="wall"></p>
 
-results in a penalty of -5. This environment is non-episodic, so once the agent finds the `Dispenser`, it should hang around there to collect more reward. The environment class \\(\mathcal{M}\\) is parametrized by the location of the dispenser:
+results in a penalty of -5. Otherwise, moving results in a penalty of -1. The percept space is the set of bit-strings of length 5, i.e. \\(\mathcal{E} = \mathbb{B}^5\\). Each bit corresponds to the nearest tile in the `left`, `right`, `up`, and `down` directions, and the agent's current tile. The bit is 1 if the tile is a `Wall` and 0 otherwise. The action space is given by
+$$
+\mathcal{A} = \lbrace{\mathtt{left,right,up,down,noop}\rbrace}.
+$$
+
+This environment is non-episodic, so once the agent finds the `Dispenser`, it should hang around there to collect more reward. The environment class \\(\mathcal{M}\\) is parametrized by the location of the dispenser:
 $$
 \mathcal{M} = \big\lbrace\nu\ :\ \mathtt{\nu.dispenserpos} = (m,n)\big\rbrace\_{(m,n)=(1,1)}^{(M,N)},
 $$
