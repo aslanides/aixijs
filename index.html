@@ -4,12 +4,15 @@
     <title>
         AIXIjs: General reinforcement learning demo
     </title>
-    <link rel="stylesheet" href="style.css">
     <meta charset="UTF-8">
 	<meta name="description" content="A JavaScript demo for general reinforcement learning agents">
 	<meta name="author" content="John Aslanides and Sean Lamont">
 	<meta name="keywords" content="artificial intelligence, reinforcement learning, AIXI, gridworld">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="external/pure-buttons.css">
+	<link rel="stylesheet" href="external/font-awesome-4.6.3/css/font-awesome.min.css">
 
 	<script type="text/javascript" src="lib/plot.js"></script>
 	<script type="text/javascript" src="lib/tile.js"></script>
@@ -85,11 +88,21 @@
 		        <p>
 		            <input type="range" name="slider" id="slider" min="0" value="0" oninput="demo.vis.jumpTo(value)">
 					<br />
-		            <button onclick="demo.vis.jumpTo(0);demo.vis.pause()">|&lt;&lt;</button>
-		            <button onclick="demo.vis.pause()">||</button>
-		            <button onclick="demo.vis.run(300)">&gt;</button>
-		            <button onclick="demo.vis.run(50)">&gt;&gt;</button>
-		            <button onclick="demo.vis.run(1)">&gt;&gt;&gt;</button>
+		            <button class="pure-button"  onclick="demo.vis.reset()">
+						<i class="fa fa-fast-backward"></i>
+					</button>
+		            <button class="pure-button" onclick="demo.vis.pause()">
+						<i class="fa fa-pause"></i>
+					</button>
+		            <button class="pure-button" onclick="demo.vis.run(300)">
+						<i class="fa fa-play"></i>
+					</button>
+		            <button class="pure-button" onclick="demo.vis.run(50)">
+						<i class="fa fa-forward"></i>
+					</button>
+		            <button class="pure-button" onclick="demo.vis.run(1)">
+						<i class="fa fa-fast-forward"></i>
+					</button>
 		        </p>
 		    </div>
 
@@ -131,8 +144,8 @@
 		                <label title="Number of cycles to run the simulation for">Cycles:</label>
 		                <input type="number" class="params" name="cycles" id="cycles" min="1" max="1000000" step="1">
 		            </p>
-					<input type="submit" id="run" value="Run" onclick="demo.run()">
-					<input type="submit" id="cancel" value="Cancel" onclick="demo.stop()" style="display:none">
+					<input type="submit" class="pure-button pure-button-primary" id="run" value="Run" onclick="demo.run()">
+					<input type="submit" class="pure-button pure-button-primary" id="cancel" value="Cancel" onclick="demo.stop()" style="display:none">
 				</form>
 				<script>
 					$('#param_form').submit(event => event.preventDefault());
