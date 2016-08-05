@@ -74,14 +74,14 @@
 	<tr>
 		<td style="width: 40%">
 			<span id="gridvis"></span>
-			<div class="spinner" id="spinz" style="display: none">
+			<div class="spinner" id="loading" style="display: none">
 			  <div class="bounce1"></div>
 			  <div class="bounce2"></div>
 			  <div class="bounce3"></div>
 			</div>
 			<!-- Navigation -->
 		    <div id="navigation" style="display: none">
-		        <h3>Navigation</h3>
+		        <h3>Playback</h3>
 		        <p>
 		            <input type="range" name="slider" id="slider" min="0" value="0" oninput="demo.vis.jumpTo(value)">
 					<br />
@@ -131,7 +131,8 @@
 		                <label title="Number of cycles to run the simulation for">Cycles:</label>
 		                <input type="number" class="params" name="cycles" id="cycles" min="1" max="1000000" step="1">
 		            </p>
-					<input type="submit" value="Run" onclick="demo.run()">
+					<input type="submit" id="run" value="Run" onclick="demo.run()">
+					<input type="submit" id="cancel" value="Cancel" onclick="demo.stop()" style="display:none">
 				</form>
 				<script>
 					$('#param_form').submit(event => event.preventDefault());
