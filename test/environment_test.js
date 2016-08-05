@@ -1,52 +1,19 @@
-QUnit.test("SimpleDispenserGrid",function(assert) {
-	var cfg = Test.config()
-	cfg.freqs=[1]
-	cfg.goal_pos = {x:2,y:1}
-	var e = new SimpleDispenserGrid(cfg)
+QUnit.test('Grids', function (assert) {
+	let env = new SimpleDispenserGrid(config.environments.dispenser1);
+	assert.equal(env.pos.x, 0);
+	assert.equal(env.pos.y, 0);
+	let e = env.generatePercept();
+	assert.ok(env.conditionalDistribution(e) > 0, 'Bad news');
+	let plan = [1, 1, 3, 3, 3, 3, 3, 1, 1, 3, 1];
+	for (let a of plan) {
+		env.perform(a);
+		e = env.generatePercept();
+		assert.equal(e.rew, config.rewards.move);
+		assert.ok(env.conditionalDistribution(e) > 0);
+	}
 
-    // dispenser stuff
-    assert.equal(e.disp[0][0],2)
-    assert.equal(e.disp.length,1)
-
-    // rewards and dynamics
-    e.pos = {x:1,y:1}
-    var percept = Test.do(e,0) // up
-    assert.equal(percept.rew,rewards.wall)
-    percept = Test.do(e,1) // down
-    assert.equal(percept.rew,rewards.chocolate)
-    percept = Test.do(e,4) // noop
-    assert.equal(percept.rew,rewards.chocolate)
-    percept = Test.do(e,1) // down
-    assert.equal(percept.rew,rewards.wall)
-    percept = Test.do(e,4) // noop
-    assert.equal(percept.rew,rewards.chocolate)
-    percept = Test.do(e,2)
-    assert.equal(percept.rew,rewards.wall)
-    percept = Test.do(e,4) // noop
-    assert.equal(percept.rew,rewards.chocolate)
-
-    // save and load
-    e.save()
-    percept = Test.do(e,0)
-    assert.equal(percept.rew,rewards.empty)
-    percept = Test.do(e,4)
-    assert.equal(percept.rew,rewards.empty)
-    e.load()
-    percept = Test.do(e,4)
-    assert.equal(percept.rew,rewards.chocolate)
-    assert.equal(e.pos.x,2)
-})
-
-QUnit.test("conditionalDistribution",function(assert) {
-    var cfg = Test.config()
-    cfg.goal_pos = {x:2,y:1}
-    var env = new SimpleDispenserGrid(cfg)
-    var actions = [0,1,2,3,4]
-    for (var i=0; i<1e3; i++) {
-        var a = Util.randomChoice(actions)
-        env.do(a)
-        var percept = env.generatePercept()
-        var n = env.conditionalDistribution(percept)
-        assert.notEqual(n,0)
-    }
-})
+	env.perform(1);
+	e = env.generatePercept();
+	assert.equal(e.rew, config.rewards.chocolate + config.rewards.move);
+	assert.ok(env.conditionalDistribution(e) > 0);
+});
