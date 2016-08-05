@@ -1,6 +1,6 @@
 class Test {
-    static do(env,a) { //useful helper
-        env.do(a)
-        return env.generatePercept()
-    }
+	static perform(env, a) { //useful helper
+		env.perform(a);
+		return env.generatePercept();
+	}
 }

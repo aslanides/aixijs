@@ -1,57 +1,56 @@
-QUnit.test("Search",function(assert) {
-    var mock_agent = {
+QUnit.test('Search', function (assert) {
+	let mockAgent = {
 		horizon: 3,
-		UCBweight : 1,
-		max_reward : config.rewards.chocolate + config.rewards.move,
-		min_reward : config.rewards.wall + config.rewards.move,
-		num_actions : 5,
-		samples : 800,
-		utility : e => e.rew,
-	}
+		UCBweight: 1,
+		max_reward: config.rewards.chocolate + config.rewards.move,
+		min_reward: config.rewards.wall + config.rewards.move,
+		numActions: 5,
+		samples: 800,
+		utility: e => e.rew,
+	};
 
-	var model = new BayesMixture({
-		model_class : Gridworld.modelClass(SimpleDispenserGrid,config.environments.dispenser2),
-		prior_type : "Informed",
-		mu : 1
-	})
-	model.save()
-	var tree = new ExpectimaxTree(mock_agent,model)
-	for (var i = 0; i < 10; i++) {
-		assert.equal(tree.bestAction(),3)
+	let model = new BayesMixture({
+		modelClass: new SimpleDispenserGrid(config.environments.dispenser2).makeModelClass(),
+		priorType: 'Informed',
+		mu: 1,
+	});
+	model.save();
+	let tree = new ExpectimaxTree(mockAgent, model);
+	for (let i = 0; i < 10; i++) {
+		assert.equal(tree.bestAction(), 1);
 	}
-})
+});
 
-QUnit.test("Search",function(assert) {
-    var mock_agent = {
+QUnit.test('Search', function (assert) {
+	let mockAgent = {
 		horizon: 5,
-		UCBweight : 1,
-		max_reward : config.rewards.chocolate + config.rewards.move,
-		min_reward : config.rewards.wall + config.rewards.move,
-		num_actions : 5,
-		samples : 400,
-		utility : e => e.rew,
+		UCBweight: 1,
+		max_reward: config.rewards.chocolate + config.rewards.move,
+		min_reward: config.rewards.wall + config.rewards.move,
+		numActions: 5,
+		samples: 400,
+		utility: e => e.rew,
+	};
+
+	let model = new BayesMixture({
+		modelClass: new SimpleDispenserGrid(config.environments.dispenser2).makeModelClass(),
+		priorType: 'Informed',
+		mu: 1,
+	});
+	let tree = new ExpectimaxTree(mockAgent, model);
+	for (let i = 0; i < 10; i++) {
+		assert.equal(tree.bestAction(), 1);
 	}
 
-	var model = new BayesMixture({
-		model_class : Gridworld.modelClass(SimpleDispenserGrid,config.environments.dispenser2),
-		prior_type : "Informed",
-		mu : 1
-	})
-	var tree = new ExpectimaxTree(mock_agent,model)
-	for (var i = 0; i < 10; i++) {
-		assert.equal(tree.bestAction(),3)
+	let rho = model.modelClass[5];
+	let tree2 = new ExpectimaxTree(mockAgent, rho);
+	for (let i = 0; i < 10; i++) {
+		assert.equal(tree2.bestAction(), 3);
 	}
 
-	var rho = model.model_class[5]
-	var tree2 = new ExpectimaxTree(mock_agent,rho)
-	for (var i = 0; i < 10; i++) {
-		assert.equal(tree2.bestAction(),1)
+	let rho2 = model.modelClass[10];
+	let tree3 = new ExpectimaxTree(mockAgent, rho2);
+	for (let i = 0; i < 10; i++) {
+		assert.equal(tree3.bestAction(), 3);
 	}
-
-	var rho2 = model.model_class[10]
-	var tree3 = new ExpectimaxTree(mock_agent,rho2)
-	for (var i = 0; i < 10; i++) {
-		assert.equal(tree3.bestAction(),1)
-	}
-
-})
+});

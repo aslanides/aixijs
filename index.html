@@ -1,29 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>
         AIXIjs: General reinforcement learning demo
     </title>
-    <link rel="stylesheet" href="style.css">
     <meta charset="UTF-8">
 	<meta name="description" content="A JavaScript demo for general reinforcement learning agents">
 	<meta name="author" content="John Aslanides and Sean Lamont">
 	<meta name="keywords" content="artificial intelligence, reinforcement learning, AIXI, gridworld">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<script type="text/javascript" src="lib/demo.js"></script>
+	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="external/pure-buttons.css">
+	<link rel="stylesheet" href="external/font-awesome-4.6.3/css/font-awesome.min.css">
+
 	<script type="text/javascript" src="lib/plot.js"></script>
-	<script type="text/javascript" src="lib/environment.js"></script>
 	<script type="text/javascript" src="lib/tile.js"></script>
+	<script type="text/javascript" src="lib/environment.js"></script>
 	<script type="text/javascript" src="lib/agent.js"></script>
-	<script type="text/javascript" src="lib/bayes.js"></script>
+	<script type="text/javascript" src="lib/mixture.js"></script>
 	<script type="text/javascript" src="lib/search.js"></script>
 	<script type="text/javascript" src="lib/trace.js"></script>
 	<script type="text/javascript" src="lib/visualization.js"></script>
 	<script type="text/javascript" src="lib/util.js"></script>
 	<script type="text/javascript" src="lib/options.js"></script>
-	<script type="text/javascript" src="lib/config.js"></script>
 	<script type="text/javascript" src="lib/distribution.js"></script>
+	<script type="text/javascript" src="lib/config.js"></script>
+	<script type="text/javascript" src="lib/ui.js"></script>
+	<script type="text/javascript" src="lib/model.js"></script>
+	<script type="text/javascript" src="lib/demo.js"></script>
+
 	<script type="text/javascript" src="external/mathjs-3.1.4.min.js"></script>
 	<script type="text/javascript" src="external/jquery-2.2.3.min.js"></script>
 	<script type="text/javascript" src="external/d3-3.5.16.min.js"></script>
@@ -31,63 +37,73 @@
 
 	<script>
 		function renderMarkdown() {
-			$(".md").each(function(x) {
-				$(this).html(marked($(this).html()))
-			})
-			renderJax()
+			$('.md').each(function (x) {
+				$(this).html(marked($(this).html()));
+			});
+
+			renderJax();
 		}
 
-		var jaxrendered = false;
+		let jaxrendered = false;
 		function renderJax() {
-			if (jaxrendered) {return}
+			if (jaxrendered) {
+				return;
+			}
+
 			(function () {
-				var script = document.createElement("script");
-				script.type = "text/javascript";
-				script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
-				document.getElementsByTagName("head")[0].appendChild(script);
+				let script = document.createElement('script');
+				script.type = 'text/javascript';
+				script.src  = 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+				document.getElementsByTagName('head')[0].appendChild(script);
 				jaxrendered = true;
 			})();
 		}
 	</script>
 </head>
-<body onload="Demo.init();renderMarkdown()">
+<body onload="UI.init();renderMarkdown()">
 <div id="wrap">
 <div class="header">
     <img src="assets/robot.png" alt="Roger the robot :)" style="width: 50px; float:left; margin: 0px 15px 15px 0px" />
 	<h1 style="font-size:50px">AIXI<span style="color:#058;">js</span></h1>
 </div>
-<div class="md">
+<span class="md">
 ---
-</div>
+</span>
 <!-- Fork me on github! -->
 <a href="https://github.com/aslanides/aixijs" target="_blank"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
 <!-- Vis -->
 <table>
 	<tr>
 		<td style="width: 40%">
 			<span id="gridvis"></span>
+			<div class="spinner" id="loading" style="display: none">
+			  <div class="bounce1"></div>
+			  <div class="bounce2"></div>
+			  <div class="bounce3"></div>
+			</div>
 			<!-- Navigation -->
 		    <div id="navigation" style="display: none">
-		        <h3>Navigation</h3>
+		        <h3>Playback</h3>
 		        <p>
 		            <input type="range" name="slider" id="slider" min="0" value="0" oninput="demo.vis.jumpTo(value)">
 					<br />
-		            <button onclick="demo.vis.jumpTo(0);demo.vis.pause()">|&lt;&lt;</button>
-		            <button onclick="demo.vis.pause()">||</button>
-		            <button onclick="demo.vis.run(300)">&gt;</button>
-		            <button onclick="demo.vis.run(50)">&gt;&gt;</button>
-		            <button onclick="demo.vis.run(1)">&gt;&gt;&gt;</button>
+		            <button class="pure-button"  onclick="demo.vis.reset()">
+						<i class="fa fa-fast-backward"></i>
+					</button>
+		            <button class="pure-button" onclick="demo.vis.pause()">
+						<i class="fa fa-pause"></i>
+					</button>
+		            <button class="pure-button" onclick="demo.vis.run(300)">
+						<i class="fa fa-play"></i>
+					</button>
+		            <button class="pure-button" onclick="demo.vis.run(50)">
+						<i class="fa fa-forward"></i>
+					</button>
+		            <button class="pure-button" onclick="demo.vis.run(1)">
+						<i class="fa fa-fast-forward"></i>
+					</button>
 		        </p>
-		        <form>
-		            <p class="monitor">
-		                <label for="display_time">Cycle</label>
-		                <input class="display" type="text" name="Time" id="display_time" value="" readonly>
-		            </p>
-		            <p class="monitor">
-		                <label for="r_ave">Average Reward</label>
-		                <input class="display" type="text" name="Reward" id="r_ave" value="" readonly>
-		            </p>
-		        </form>
 		    </div>
 
 			<!-- Demo Parameters -->
@@ -96,42 +112,43 @@
 		        <form id="param_form">
 		            <p class="params" id="p_select" style="display: table-row">
 		                <label for="demo_select">Demo:</label>
-		                <select id="demo_select" name="demo_select" onchange="Demo.setOptions()" required>
+		                <select id="demo_select" name="demo_select" onchange="demo.new()" required>
 							<option selected disabled hidden style="display: none" value="" label=" "></option>
 						</select>
 		            </p>
 		            <p class="params" id="p_alpha">
 		                <label title="Learning rate">Alpha:</label>
-		                <input type="number" class="params" name="alpha" id="alpha" min="0" max="1" step="0.01" required>
+		                <input type="number" class="params" name="alpha" id="alpha" min="0" max="1" step="0.01">
 		            </p>
 		            <p class="params" id="p_gamma">
 		                <label title="Discount rate (geometric)">Gamma:</label>
-		                <input type="number" class="params" name="gamma" id="gamma" min="0" max="1" step="0.01" required>
+		                <input type="number" class="params" name="gamma" id="gamma" min="0" max="1" step="0.01">
 		            </p>
 		            <p class="params" id="p_epsilon">
 		                <label title="Exploration rate">Epsilon:</label>
-		                <input type="number" class="params" name="epsilon" id="epsilon" min="0" max="1" step="0.01" required>
+		                <input type="number" class="params" name="epsilon" id="epsilon" min="0" max="1" step="0.01">
 		            </p>
 					<p class="params" id="p_horizon">
 		                <label title="Planning horizon">Horizon:</label>
-		                <input type="number" class="params" name="horizon" id="horizon" min="1" max="100" step="1" required>
+		                <input type="number" class="params" name="horizon" id="horizon" min="1" max="100" step="1">
 		            </p>
 					<p class="params" id="p_samples">
 		                <label title="Number of MCTS samples">Samples:</label>
-		                <input type="number" class="params" name="samples" id="samples" min="1" max="10000" step="1" required>
+		                <input type="number" class="params" name="samples" id="samples" min="1" max="10000" step="1">
 		            </p>
 					<p class="params" id="p_ucb">
-		                <label title="UCB exploration parameter">UCB Weight:</label>
-		                <input type="number" class="params" name="ucb" id="ucb" min="0.01" max="10" step="0.01" required>
+		                <label title="UCB exploration parameter">UCB:</label>
+		                <input type="number" class="params" name="ucb" id="ucb" min="0.01" max="10" step="0.01">
 		            </p>
 		            <p class="params" id="p_cycles">
 		                <label title="Number of cycles to run the simulation for">Cycles:</label>
-		                <input type="number" class="params" name="cycles" id="cycles" min="1" max="1000000" step="1" required>
+		                <input type="number" class="params" name="cycles" id="cycles" min="1" max="1000000" step="1">
 		            </p>
-					<input type="submit" value="Run" onclick="Demo.run(document)">
+					<input type="submit" class="pure-button pure-button-primary" id="run" value="Run" onclick="demo.run()">
+					<input type="submit" class="pure-button pure-button-primary" id="cancel" value="Cancel" onclick="demo.stop()" style="display:none">
 				</form>
 				<script>
-					$("#param_form").submit(event => event.preventDefault())
+					$('#param_form').submit(event => event.preventDefault());
 				</script>
 		    </div>
 		</td>
@@ -143,12 +160,66 @@
 
 <!-- Explanations -->
 <td colspan=2>
+
+<span class="md" id="dispenser_bayes_exp" style="display:none">
+
+---
+# Dispenser class
+
+<p style="text-align: center"><img src="assets/dispenser-bayes.png" alt="Bayesian Dispenser demo" style="width: 250px"/></p>
+
+In the `DispenserGridworld` environment, there is one  `Dispenser`
+
+<p style="text-align:center" id="dispenser"></p>
+
+which probabilistically dispenses a reward of +100. Walking into a `Wall`
+
+<p style="text-align:center" id="wall"></p>
+
+results in a penalty of -5. Otherwise, moving results in a penalty of -1. The percept space is the set of bit-strings of length 5, i.e. \\(\mathcal{E} = \mathbb{B}^5\\). Each bit corresponds to the nearest tile in the `left`, `right`, `up`, and `down` directions, and the agent's current tile. The bit is 1 if the tile is a `Wall` and 0 otherwise. The action space is given by
+$$
+\mathcal{A} = \lbrace{\mathtt{left,right,up,down,noop}\rbrace}.
+$$
+
+This environment is non-episodic, so once the agent finds the `Dispenser`, it should hang around there to collect more reward. The environment class \\(\mathcal{M}\\) is parametrized by the location of the dispenser:
+$$
+\mathcal{M} = \big\lbrace\nu\ :\ \mathtt{\nu.dispenserpos} = (m,n)\big\rbrace\_{(m,n)=(1,1)}^{(M,N)},
+$$
+
+where \\((M,N)\\) are the dimensions of the grid, and hence \\(\left|\mathcal{M}\right|=MN\\). Usually (unless we are simulating AI\\(\mu\\)), the agent will be initialized with a uniform prior over this model class, i.e.
+$$
+w\_\nu = \frac{1}{MN}\ \forall\ \nu\in\mathcal{M}.
+$$
+
+The agent's beliefs \\(\lbrace w\_\nu\rbrace\_{\nu\in\mathcal{M}}\\) are visualized by green shading
+
+<p style="text-align:center" id="green"></p>
+
+on each tile. Darker shading corresponds to higher probability. Finally, we have Roger the Robot, who represents our AI agent on the gridworld:
+
+<p style="text-align:center"><img src="assets/robot.png" alt="Roger the robot :)" style="width: 40px"/></p>
+
+</span>
+<span class="md" id="thompson_exp" style="display:none">
+In the case of Thompson sampling, the agent periodically samples an environment \\(\rho\\) from its posterior belief distribution and uses the \\(\rho\\)-optimal policy. The red dot
+
+<p style="text-align:center" id="rho"></p>
+represents the position of the dispenser in \\(\rho\\); the Thompson Sampling agent will chase the red dot around.
+</span>
+
+<script>
+	GridVisualization.makeLegend('dispenser', Dispenser);
+	GridVisualization.makeLegend('wall', Wall);
+	GridVisualization.makeLegend('green', Tile, 'rgb(64,255,64)');
+	GridVisualization.makeLegend('rho', Tile);
+	GridVisualization.addCircle(d3.select('#rho_svg'), 0, 0, config.colors.rho);
+</script>
 <span class="md" id="rl">
 
 ---
 
 # Contents
-* [Background](#setup)
+* [Background](#background)
 	* [Agent-environment interaction](#agent-env)
 	* [Reinforcement...](#reinforcement)
 	* [...Learning](#learning)
@@ -162,14 +233,18 @@
 	* [MDL Agent](#mdl)
 	* [DQN](#dqn)
 	* [Compress and Control](#cnc)
-* [JavaScript API](#api)
+* [Implementation](#implementation)
+	* [JavaScript API](#api)
+	* [Runtime](#runtime)
 * [References and further reading](#further-reading)
 
-# Background <a name="setup"></a>
+<a id="background"></a>
+# Background
 
-## Agent-environment interaction <a name="agent-env"></a>
+<a id="agent-env"></a>
+## Agent-environment interaction
 
-In the standard [reinforcement learning][RL] (RL) framework, the __agent__ and __environment__ play a turn-based game and interact in cycles. At time/cycle/turn \\(t\\), the agent supplies the environment with an __action__ \\(a\_t\\). The environment then performs some computation and returns a __percept__ \\(e_t\\) to the agent, and the cycle repeats.
+In the standard [reinforcement learning] (RL) framework, the __agent__ and __environment__ play a turn-based game and interact in cycles ([Sutton & Barto, 1998]). At time/cycle/turn \\(t\\), the agent supplies the environment with an __action__ \\(a\_t\\). The environment then performs some computation and returns a __percept__ \\(e_t\\) to the agent, and the cycle repeats.
 
 <p style="text-align: center"><img src="assets/agent-env.png" alt="agent-environment interaction" style="width: 200px"/></p>
 
@@ -178,7 +253,7 @@ $$
 \pi\ :\ \left(\mathcal{A}\times\mathcal{E}\right)^*\mapsto\varDelta\mathcal{A},
 $$
 
-where \\(^*\\) is the [Kleene star][Kleene], and \\(\varDelta \mathcal{X}\\) is the set of probability measures over \\(\mathcal{X}\\). An environment is a distribution over percepts \\(\nu(e\_t\lvert ae\_{&lt;t}a\_t)\\) with
+where \\(^*\\) is the [Kleene star], and \\(\varDelta \mathcal{X}\\) is the set of probability measures over \\(\mathcal{X}\\). An environment is a distribution over percepts \\(\nu(e\_t\lvert ae\_{&lt;t}a\_t)\\) with
 
 $$
 \nu\ :\  \left(\mathcal{A}\times\mathcal{E}\right)^*\times\mathcal{A}\mapsto\varDelta\mathcal{E}.
@@ -189,14 +264,15 @@ The agent and environment interaction induces a distribution over __histories__ 
 $$
 \nu^\pi\left(ae\_{&lt;t}\right) \stackrel{.}{=}\prod\_{k=1}^{t}\pi\left(a\_k\lvert ae\_{&lt;t}\right)\nu\left(e\_k\lvert ae\_{&lt;k}a\_k\right),
 $$
-which is conveniently expressed as a telescoping product by the [chain rule][ChainRule]. In the general setting, the environment is a [partially observable Markov decision process][POMDP] (POMDP). That is, there is some underlying (hidden) state space \\(\mathcal{S}\\), with respect to which the environment's dynamics are Markovian. The agent cannot observe this state directly, but instead receives (incomplete and noisy) percepts through its sensors. Therefore, the agent must learn and make decisions under uncertainty in order to perform well.
+which is conveniently expressed as a telescoping product by the [chain rule]. In the general setting, the environment is a [partially observable Markov decision process][POMDP] (POMDP). That is, there is some underlying (hidden) state space \\(\mathcal{S}\\), with respect to which the environment's dynamics are Markovian. The agent cannot observe this state directly, but instead receives (incomplete and noisy) percepts through its sensors. Therefore, the agent must learn and make decisions under uncertainty in order to perform well.
 
 Notes:
 * We're slightly abusing notation here: environments are _not_ joint distributions over actions and percepts, and so you should read \\(\nu(e\_t\lvert ae\_{&lt;t}a\_t)\\) as shorthand for \\(\nu(e\_t\lvert e\_{&lt;t} \lvert\lvert a_{1:t})\\); that is, a distribution over percepts conditioned on a sequence of past percepts, and in the context of a sequence of past actions given as _inputs_. The same holds for policies, except with actions and percepts reversed.
 * We restrict ourselves to countable percept and action spaces. Although many (but not all) of the important results generalize to continuous spaces, we make this assumption for simplicity.
 * For simplicity, we also assume that the action and percept spaces \\(\mathcal{A}\\) and \\(\mathcal{E}\\) are stationary; i.e. they are time-independent and fixed by the environment.
 
-## Reinforcement... <a name="reinforcement"></a>
+<a id="reinforcement"></a>
+## Reinforcement...
 
 Percepts consist of (__observation__, __reward__) pairs \\(e\_k = \left(o\_k,r\_k\right)\\), with integer-valued rewards such that
 $$
@@ -220,24 +296,25 @@ This is often more conveniently expressed recursively:
 $$
 V^{\pi}\_{\nu}\left(ae\_{&lt;t}\right) = \sum\_{a\_t\in\mathcal{A}}\pi(a\_t\lvert ae\_{&lt;t})\sum\_{e\_t\in\mathcal{E}}\nu(e\_t\lvert ae\_{&lt;t}a\_t)\Big[\gamma\_tr\_t+\gamma\_{t+1}V\_{\nu}^{\pi}(ae\_{1:t})\Big],
 $$
-which is often referred to as the [Bellman equation][Bellman]. Now, let \\(\mu\\) be the true environment. The __optimal value__ is the highest value achieved by any policy in this environment:
+which is often referred to as the [Bellman equation]. Now, let \\(\mu\\) be the true environment. The __optimal value__ is the highest value achieved by any policy in this environment:
 
 $$
 V\_{\mu}^{*}\stackrel{.}{=}\max\_{\pi}V\_{\mu}^{\pi}.
 $$
 
-Using the [distributive property][Distributive] of \\(\max\\) and \\(\sum\\), we can unroll this into the  __expectimax__ expression
+Using the [distributive property] of \\(\max\\) and \\(\sum\\), we can unroll this into the  __expectimax__ expression
 $$
 V\_{\mu}^{*}=\lim\_{m\to\infty}\max\_{a\_{t}\in\mathcal{A}}\sum\_{e\_{t}\in\mathcal{E}}\cdots\max\_{a\_{m}\in\mathcal{A}}\sum\_{e\_{m}\in\mathcal{E}}\sum\_{k=t}^{m}\gamma\_{k}r\_{k}\prod\_{j=t}^{k}\mu\left(e\_{j}\lvert ae\_{&lt;j}a\_{j}\right).
 $$
-This can be viewed as just a generalization of [minimax] to stochastic environments/adversaries. In practice, when planning we approximate this computation with [Monte Carlo tree search][MCTS] (MCTS).
+This can be viewed as just a generalization of [minimax] to stochastic environments/adversaries. In practice, when planning we approximate this computation with [Monte Carlo tree search] (MCTS).
 
-We can now introduce our first theoretical [artificial general intelligent][AGI] (AGI) agent: the __informed agent AI__\\(\boldsymbol{\mu}\\). __AI__\\(\boldsymbol{\mu}\\) is simply the (infeasible) \\(\boldsymbol{\mu}\\)__-optimal policy__:
+We can now introduce our first theoretical [artificial general intelligent] (AGI) agent: the __informed agent AI__\\(\boldsymbol{\mu}\\). AI\\(\mu\\) is simply the (infeasible) \\(\boldsymbol{\mu}\\)__-optimal policy__:
 $$
 \pi^{\text{AI}\mu}\stackrel{.}{=}\arg\max\_{\pi}V\_{\mu}^{\pi}.
 $$
 
-## ...Learning <a name="learning"></a>
+<a id="learning"></a>
+## ...Learning
 
 Clearly we don't know \\(\mu\\) _a priori_ in the general RL setting. Generically, there are two main approaches to learning in the context of RL: __model-based__ and __model-free__. They each make their own sets of assumptions:
 * Model-free (e.g. [Q-Learning]) generally assume the environment is a finite-state MDP
@@ -245,13 +322,14 @@ Clearly we don't know \\(\mu\\) _a priori_ in the general RL setting. Genericall
 
 The agents we'll be dealing with are all Bayesian.
 
-## Bayesian reinforcement learning <a name="brl"></a>
+<a id="brl"></a>
+## Bayesian reinforcement learning
 
-Assume the realizable case: the true environment \\(\mu\\) is contained in some countable __model class__ \\(\mathcal{M}\\). Now, constructor a __Bayesian mixture__ over \\(\mathcal{M}\\): a [convex linear combination][Convex] of environments:
+Assume the realizable case: the true environment \\(\mu\\) is contained in some countable __model class__ \\(\mathcal{M}\\). Now, constructor a __Bayesian mixture__ over \\(\mathcal{M}\\): a [convex linear combination] of environments:
 $$
 \xi\left(e\_t\lvert ae\_{&lt;t}a\_t\right)\stackrel{.}{=}\sum\_{\nu\in\mathcal{M}}w\_\nu \nu\left(e\_t\lvert ae\_{&lt;t}a\_t\right).
 $$
-The weights \\(w\_\nu\equiv\Pr\left(\nu\lvert ae\_{&lt;t}\right)\\) specify the agent's __posterior belief distribution__ over \\(\mathcal{M}\\). By [Cromwell's rule][Cromwell], we require further that the __prior__ weights \\(\Pr(\nu\lvert \epsilon)\\) lie in the interval \\((0,1)\ \forall \nu\in\mathcal{M}\\). Being 'Bayesian' simply means __updating__ these beliefs according to the product rule of probability:
+The weights \\(w\_\nu\equiv\Pr\left(\nu\lvert ae\_{&lt;t}\right)\\) specify the agent's __posterior belief distribution__ over \\(\mathcal{M}\\). By [Cromwell's rule], we require further that the __prior__ weights \\(\Pr(\nu\lvert \epsilon)\\) lie in the interval \\((0,1)\ \forall \nu\in\mathcal{M}\\). Being 'Bayesian' simply means __updating__ these beliefs according to the product rule of probability:
 $$
 \Pr(\nu\lvert e\_t) = \frac{\Pr(e\_t\lvert \nu)\Pr(\nu)}{\Pr(e\_t)},
 $$
@@ -260,7 +338,8 @@ $$
 w\_\nu\leftarrow\frac{\nu(e\_t)w\_\nu}{\xi(e\_t)}.
 $$
 
-## AI\\(\xi\\) and AIXI <a name="aixi"></a>
+<a id="aixi"></a>
+## AI\\(\xi\\)
 
 AI\\(\xi\\) is the __Bayes-optimal__ agent. That is, it is the policy that maximizes the \\(\xi\\)-expected return:
 $$
@@ -270,15 +349,20 @@ It is a universal, parameter-free Bayesian agent, whose behavior is completely s
 $$
 w\_{\nu} = 2^{-K(\nu)},
 $$
-where \\(K(\nu)\\) is the [Kolmogorov complexity] of \\(\nu\\). AIXI is hence the 'active' generalization of Solomonoff induction, which is the optimal (but incomputable) inductive learner. A computable approximation to AIXI is MC-AIXI-CTW ([Veness et al., 2011]), which uses the [Context Tree Weighting][CTW] algorithm to approximate the induction component of AIXI.
+where \\(K(\nu)\\) is the [Kolmogorov complexity] of \\(\nu\\). AIXI is hence the 'active' generalization of Solomonoff induction, which is the optimal (but incomputable) inductive learner. A computable approximation to AIXI is MC-AIXI-CTW ([Veness et al., 2011]), which uses the [Context Tree Weighting] (CTW) algorithm to approximate the induction component of AIXI.
 
-## Exploration vs exploitation; optimality <a name="optimality"></a>
+<a id="optimality"></a>
+## Exploration vs exploitation; optimality
 
 The most central issue in reinforcement learning is the __exploration-exploitation dilemma__: TODO
 
-# Agents <a name="agents"></a>
+It is now known that [Pareto optimality] is trivial in general environments, and that AIXI can be made to perform arbitrarily badly with a dogmatic prior ([Leike & Hutter, 2015]).
 
-## Knowledge-seeking agents <a name="ksa"></a>
+<a id="agents"></a>
+# Agents
+
+<a id="ksa"></a>
+## Knowledge-seeking agents
 
 First generalize to Bayesian __utility agents__ that have, in addition to a belief distribution \\(\xi\\), a utility function
 
@@ -289,7 +373,7 @@ $$
 which takes the place of the agent's reward signal. Now, the agent becomes an __expected utility maximizer__, with corresponding value function:
 TODO
 
-Generically, knowledge-seeking agents get utility from gaining knowledge, which in the Bayesian context corresponds to reducing the uncertainty in their posterior belief distribution.
+Generically, knowledge-seeking agents ([Orseau, 2011]; [Orseau et al., 2013]) get utility from gaining knowledge, which in the Bayesian context corresponds to reducing the uncertainty in their posterior belief distribution.
 
 * Square-KSA:
 $$
@@ -302,45 +386,55 @@ $$
 * KL-KSA:
 TODO
 
-## BayesExp <a name="bexp"></a>
+<a id="bexp"></a>
+## BayesExp
 
 TODO
 
-## Thompson Sampling <a name="ts"></a>
+<a id="ts"></a>
+## Thompson Sampling
 
 Define the \\(\varepsilon\\)-effective horizon:
 $$
 H\_{t}^{\gamma}(\varepsilon) \stackrel{.}{=} \min\left\lbrace m\ :\ \sum\_{k=m}^{\infty}\gamma\_{t+k}\leq\varepsilon\right\rbrace,
 $$
-which is the minimum number of cycles ahead one needs to consider in order to accumulate a value of \\((1-\varepsilon)V\_{\nu}^{\pi}\\), for some \\(\varepsilon>0\\). Thompson Sampling ([Leike et al., 2016][Leike16]) has a simple algorithm: every \\(H\_{t}^{\gamma}\\) steps, sample an environment \\(\rho\\) from the posterior belief distribution \\(w\_{\nu}\\), and use the \\(\rho\\)-optimal policy, re-sample, and repeat.
+which is the minimum number of cycles ahead one needs to consider in order to accumulate a value of \\((1-\varepsilon)V\_{\nu}^{\pi}\\), for some \\(\varepsilon>0\\). Thompson Sampling ([Leike et al., 2016]) has a simple algorithm: every \\(H\_{t}^{\gamma}\\) steps, sample an environment \\(\rho\\) from the posterior belief distribution \\(w\_{\nu}\\), and use the \\(\rho\\)-optimal policy, re-sample, and repeat.
 
-## Optimistic AIXI <a name="opt-aixi"></a>
+<a id="opt-aixi"></a>
+## Optimistic AIXI
+
+Optimistic AIXI ([Sunehag & Hutter, 2015]).
+TODO
+
+<a id="mdl"></a>
+## MDL Agent
 
 TODO
 
-## MDL Agent <a name="mdl"></a>
-
-TODO
-
-## Policy Gradients/Deep Q-Learning <a name="dqn"></a>
+<a id="dqn"></a>
+## Policy Gradients/Deep Q-Learning
 
 See [Andrej Karpathy]'s excellent [REINFORCEjs] demo, on which this demo is modelled!
 
-## Compress and Control <a name="cnc"></a>
+<a id="cnc"></a>
+## Compress and Control
 
 TODO
 
 ---
 
-# JavaScript API <a name="api"></a>
+<a id="implementation"></a>
+# Implementation
 
+<a id="api"></a>
+## JavaScript API
 ```
 class Environment {
 	// ...
 	generatePercept() {
 		//
 	}
-	do(action) {
+	perform(a) {
 		//
 	}
 	conditionalDistribution(e) {
@@ -350,39 +444,46 @@ class Environment {
 
 class Agent {
 	// ...
-	selectAction(percept) {
+	selectAction(e) {
 		//
 	}
 	update(a,e) {
 		//
 	}
 }
+
 ```
+
+<a id="runtime"></a>
+## Runtime
+Demos containing Bayesian agents have a time complexity of
+TODO
 
 ---
 
-## References & Further Reading <a name="further-reading"></a>
+<a id="further-reading"></a>
+## References & Further Reading
 
 <!-- References -->
-[RL]: https://en.wikipedia.org/wiki/Reinforcement_learning
+[reinforcement learning]: https://en.wikipedia.org/wiki/Reinforcement_learning
 [Kolmogorov complexity]: https://en.wikipedia.org/wiki/Kolmogorov_complexity
 [Q-Learning]: https://en.wikipedia.org/wiki/Q-learning
 [AIXI]: https://en.wikipedia.org/wiki/AIXI
 [Solomonoff's universal prior]: http://www.scholarpedia.org/article/Algorithmic_probability
 [VNM]: https://en.wikipedia.org/wiki/Von_Neumann%E2%80%93Morgenstern_utility_theorem
 [minimax]: https://en.wikipedia.org/wiki/Minimax
-[Kleene]: https://en.wikipedia.org/wiki/Kleene_star
-[Convex]: https://en.wikipedia.org/wiki/Convex_combination
-[Cromwell]: https://en.wikipedia.org/wiki/Cromwell%27s_rule
-[Bellman]: https://en.wikipedia.org/wiki/Bellman_equation
-[MCTS]: https://en.wikipedia.org/wiki/Monte_Carlo_tree_search
-[Distributive]: https://en.wikipedia.org/wiki/Distributive_property
+[Kleene star]: https://en.wikipedia.org/wiki/Kleene_star
+[convex linear combination]: https://en.wikipedia.org/wiki/Convex_combination
+[Cromwell's rule]: https://en.wikipedia.org/wiki/Cromwell%27s_rule
+[Bellman equation]: https://en.wikipedia.org/wiki/Bellman_equation
+[Monte Carlo tree search]: https://en.wikipedia.org/wiki/Monte_Carlo_tree_search
+[distributive property]: https://en.wikipedia.org/wiki/Distributive_property
 [POMDP]: https://en.wikipedia.org/wiki/Partially_observable_Markov_decision_process
-[ChainRule]: https://en.wikipedia.org/wiki/Chain_rule_(probability)
+[chain rule]: https://en.wikipedia.org/wiki/Chain_rule_(probability)
 [ALE]: http://www.arcadelearningenvironment.org/
-[AGI]: https://en.wikipedia.org/wiki/Artificial_general_intelligence
-[CTW]: https://cs.anu.edu.au/courses/comp4620/2015/slides-ctw.pdf
-[TD]: https://en.wikipedia.org/wiki/Temporal_difference_learning
+[artificial general intelligent]: https://en.wikipedia.org/wiki/Artificial_general_intelligence
+[Context Tree Weighting]: https://cs.anu.edu.au/courses/comp4620/2015/slides-ctw.pdf
+[Pareto optimality]: https://en.wikipedia.org/wiki/Pareto_efficiency
 [Andrej Karpathy]: http://cs.stanford.edu/people/karpathy/
 [REINFORCEjs]: http://cs.stanford.edu/people/karpathy/reinforcejs/
 
@@ -390,19 +491,11 @@ class Agent {
 [Leike & Hutter, 2015]: http://jmlr.org/proceedings/papers/v40/Leike15.pdf
 [Leike et al., 2016]: https://arxiv.org/abs/1602.07905
 [Veness et al., 2011]: https://www.jair.org/media/3125/live-3125-5397-jair.pdf
-
+[Orseau, 2011]: http://www.agroparistech.fr/mmip/maths/laurent_orseau/papers/orseau-ALT-2011-knowledge-seeking.pdf
+[Orseau et al., 2013]: http://www.hutter1.net/publ/ksaprob.pdf
+[Sutton & Barto, 1998]: https://webdocs.cs.ualberta.ca/~sutton/book/the-book.html
+[Sunehag & Hutter, 2015]: http://jmlr.org/papers/volume16/sunehag15a/sunehag15a.pdf
 </span>
-
-<span class="md" id="qlearn_exp" style="display:none"></span>
-
-<span class="md" id="bayes_exp" style="display:none"></span>
-
-<span class="md" id="aimu_exp" style="display:none"></span>
-
-<span class="md" id="ksa_exp" style="display:none"></span>
-
-<span class="md" id="thompson_exp" style="display:none"></span>
-
 </td>
 </tr>
 </table>
