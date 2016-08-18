@@ -1,13 +1,14 @@
-QUnit.test('GridModel', function (assert) {
-	let cfg = config.environments.dispenser2;
-	let model = new BetaModel(cfg);
-	model.perform(1);
-	assert.equal(model.env.pos, model.env.grid[1][0]);
-	for (let i = 0; i < 100; i++) {
-		let e = model.generatePercept();
-		model.perform(4);
-		let p = model.conditionalDistribution(e);
-		model.update(4, e);
-	}
+QUnit.test('DirichletModel', function (assert) {
+	cfg = config.environments.dispenser2;
+	env = new SimpleDispenserGrid(cfg);
+	model = new DirichletModel(cfg);
+
+	let a = 1;
+	env.perform(a);
+	let e = env.generatePercept();
+
+	model.update(a, e);
+	assert.equal(model.pos.x, env.pos.x);
+	assert.equal(model.pos.y, env.pos.y);
 
 });
