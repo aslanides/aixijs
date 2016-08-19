@@ -19,6 +19,7 @@
 	<script type="text/javascript" src="lib/environment.js"></script>
 	<script type="text/javascript" src="lib/agent.js"></script>
 	<script type="text/javascript" src="lib/mixture.js"></script>
+	<script type="text/javascript" src="lib/ctw.js"></script>
 	<script type="text/javascript" src="lib/search.js"></script>
 	<script type="text/javascript" src="lib/trace.js"></script>
 	<script type="text/javascript" src="lib/visualization.js"></script>
@@ -27,7 +28,7 @@
 	<script type="text/javascript" src="lib/distribution.js"></script>
 	<script type="text/javascript" src="lib/config.js"></script>
 	<script type="text/javascript" src="lib/ui.js"></script>
-	<script type="text/javascript" src="lib/model.js"></script>
+	<script type="text/javascript" src="lib/dirichlet.js"></script>
 	<script type="text/javascript" src="lib/demo.js"></script>
 
 	<script type="text/javascript" src="external/mathjs-3.1.4.min.js"></script>
@@ -138,7 +139,7 @@
 		            </p>
 					<p class="params" id="p_ucb">
 		                <label title="UCT exploration parameter">UCT parameter:</label>
-		                <input type="number" class="params" name="ucb" id="ucb" min="0.01" max="10" step="0.01">
+		                <input type="number" class="params" name="ucb" id="ucb" min="0.01" max="100" step="0.01">
 		            </p>
 		            <p class="params" id="p_cycles">
 		                <label title="Number of time steps to run the simulation for">Time steps:</label>
