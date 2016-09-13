@@ -19,6 +19,7 @@
 	<script type="text/javascript" src="lib/environment.js"></script>
 	<script type="text/javascript" src="lib/agent.js"></script>
 	<script type="text/javascript" src="lib/mixture.js"></script>
+	<script type="text/javascript" src="lib/ctw.js"></script>
 	<script type="text/javascript" src="lib/search.js"></script>
 	<script type="text/javascript" src="lib/trace.js"></script>
 	<script type="text/javascript" src="lib/visualization.js"></script>
@@ -27,7 +28,7 @@
 	<script type="text/javascript" src="lib/distribution.js"></script>
 	<script type="text/javascript" src="lib/config.js"></script>
 	<script type="text/javascript" src="lib/ui.js"></script>
-	<script type="text/javascript" src="lib/model.js"></script>
+	<script type="text/javascript" src="lib/dirichlet.js"></script>
 	<script type="text/javascript" src="lib/demo.js"></script>
 
 	<script type="text/javascript" src="external/mathjs-3.1.4.min.js"></script>
@@ -129,19 +130,19 @@
 		                <input type="number" class="params" name="epsilon" id="epsilon" min="0" max="1" step="0.01">
 		            </p>
 					<p class="params" id="p_horizon">
-		                <label title="Planning horizon">Horizon:</label>
+		                <label title="MCTS planning horizon">MCTS horizon:</label>
 		                <input type="number" class="params" name="horizon" id="horizon" min="1" max="100" step="1">
 		            </p>
 					<p class="params" id="p_samples">
-		                <label title="Number of MCTS samples">Samples:</label>
+		                <label title="Number of MCTS samples">MCTS Samples:</label>
 		                <input type="number" class="params" name="samples" id="samples" min="1" max="10000" step="1">
 		            </p>
 					<p class="params" id="p_ucb">
-		                <label title="UCB exploration parameter">UCB:</label>
-		                <input type="number" class="params" name="ucb" id="ucb" min="0.01" max="10" step="0.01">
+		                <label title="UCT exploration parameter">UCT parameter:</label>
+		                <input type="number" class="params" name="ucb" id="ucb" min="0.01" max="100" step="0.01">
 		            </p>
 		            <p class="params" id="p_cycles">
-		                <label title="Number of cycles to run the simulation for">Cycles:</label>
+		                <label title="Number of time steps to run the simulation for">Time steps:</label>
 		                <input type="number" class="params" name="cycles" id="cycles" min="1" max="1000000" step="1">
 		            </p>
 					<input type="submit" class="pure-button pure-button-primary" id="run" value="Run" onclick="demo.run()">

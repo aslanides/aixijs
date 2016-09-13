@@ -37,7 +37,7 @@ QUnit.test('ThompsonSearch', function (assert) {
 	options.modelClass = env.makeModelClass();
 	agent = new ThompsonAgent(options);
 	agent.rho = agent.model.modelClass[1].copy();
-	agent.searchTree = new ExpectimaxTree(agent, agent.rho);
+	agent.planner = new ExpectimaxTree(agent, agent.rho);
 
 	let e = env.generatePercept();
 	let a;
@@ -53,7 +53,7 @@ QUnit.test('ThompsonSearch', function (assert) {
 	env.perform(a);
 	e = env.generatePercept();
 	agent.update(a, e);
-	assert.equal(agent.searchTree.model, agent.rho);
+	assert.equal(agent.planner.model, agent.rho);
 	assert.equal(agent.rho.pos.x, 1);
 	assert.equal(agent.rho.pos.y, 0);
 	assert.equal(agent.rho.goal.x, 1);
@@ -63,7 +63,7 @@ QUnit.test('ThompsonSearch', function (assert) {
 		a = agent.selectAction(e);
 		assert.equal(a, 4);
 		if (a != 4) {
-			console.log(agent.searchTree.root.toString(1));
+			console.log(agent.planner.root.toString(1));
 			return;
 		}
 	}
