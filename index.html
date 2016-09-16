@@ -11,8 +11,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	<link rel="stylesheet" href="style.css">
-	<link rel="stylesheet" href="external/pure-buttons.css">
-	<link rel="stylesheet" href="external/font-awesome-4.6.3/css/font-awesome.min.css">
+  <link rel="stylesheet" href="external/bootstrap.min.css">
+  <link rel="stylesheet" href="external/bootstrap-theme.min.css">
 
 	<script type="text/javascript" src="lib/plot.js"></script>
 	<script type="text/javascript" src="lib/tile.js"></script>
@@ -39,7 +39,7 @@
 	<script type="text/javascript" src="external/mathjs-3.1.4.min.js"></script>
 	<script type="text/javascript" src="external/jquery-2.2.3.min.js"></script>
 	<script type="text/javascript" src="external/d3-3.5.16.min.js"></script>
-	<script type="text/javascript" src="external/marked-0.3.5.js"></script>
+	<script type="text/javascript" src="external/marked-0.3.6.min.js"></script>
 
 	<script>
 		function renderMarkdown() {
@@ -94,20 +94,20 @@
 		        <p>
 		            <input type="range" name="slider" id="slider" min="0" value="0" oninput="demo.vis.jumpTo(value)">
 					<br />
-		            <button class="pure-button"  onclick="demo.vis.reset()">
-						<i class="fa fa-fast-backward"></i>
+		            <button class="btn btn-default"  onclick="demo.vis.reset()">
+						<span class="glyphicon glyphicon-fast-backward"></span>
 					</button>
-		            <button class="pure-button" onclick="demo.vis.pause()">
-						<i class="fa fa-pause"></i>
+		            <button class="btn btn-default" onclick="demo.vis.pause()">
+						<span class="glyphicon glyphicon-pause"></span>
 					</button>
-		            <button class="pure-button" onclick="demo.vis.run(300)">
-						<i class="fa fa-play"></i>
+		            <button class="btn btn-default" onclick="demo.vis.run(300)">
+						<span class="glyphicon glyphicon-play"></span>
 					</button>
-		            <button class="pure-button" onclick="demo.vis.run(50)">
-						<i class="fa fa-forward"></i>
+		            <button class="btn btn-default" onclick="demo.vis.run(50)">
+						<span class="glyphicon glyphicon-forward"></span>
 					</button>
-		            <button class="pure-button" onclick="demo.vis.run(1)">
-						<i class="fa fa-fast-forward"></i>
+		            <button class="btn btn-default" onclick="demo.vis.run(1)">
+						<span class="glyphicon glyphicon-fast-forward"></span>
 					</button>
 		        </p>
 		    </div>
@@ -123,7 +123,7 @@
 						</select>
 		            </p>
 		            <p class="params" id="p_alpha">
-		                <label title="Learning rate">Alpha:</label>
+		                <label title="Learning raate">Alpha:</label>
 		                <input type="number" class="params" name="alpha" id="alpha" min="0" max="1" step="0.01">
 		            </p>
 		            <p class="params" id="p_gamma">
@@ -134,15 +134,15 @@
 		                <label title="Exploration rate">Epsilon:</label>
 		                <input type="number" class="params" name="epsilon" id="epsilon" min="0" max="1" step="0.01">
 		            </p>
-					<p class="params" id="p_horizon">
+					      <p class="params" id="p_horizon">
 		                <label title="MCTS planning horizon">MCTS horizon:</label>
 		                <input type="number" class="params" name="horizon" id="horizon" min="1" max="100" step="1">
 		            </p>
-					<p class="params" id="p_samples">
+					      <p class="params" id="p_samples">
 		                <label title="Number of MCTS samples">MCTS Samples:</label>
 		                <input type="number" class="params" name="samples" id="samples" min="1" max="10000" step="1">
 		            </p>
-					<p class="params" id="p_ucb">
+					      <p class="params" id="p_ucb">
 		                <label title="UCT exploration parameter">UCT parameter:</label>
 		                <input type="number" class="params" name="ucb" id="ucb" min="0.01" max="100" step="0.01">
 		            </p>
@@ -150,8 +150,13 @@
 		                <label title="Number of time steps to run the simulation for">Time steps:</label>
 		                <input type="number" class="params" name="cycles" id="cycles" min="1" max="1000000" step="1">
 		            </p>
-					<input type="submit" class="pure-button pure-button-primary" id="run" value="Run" onclick="demo.run()">
-					<input type="submit" class="pure-button pure-button-primary" id="cancel" value="Cancel" onclick="demo.stop()" style="display:none">
+                <p class="params" id="p_opponent">
+		                <label title="Opponent for iterated prisoner's dilemma">Opponent</label>
+                    <select id="opponent_select" name="opponent_select">
+                    </select>
+		            </p>
+					<input type="submit" class="btn btn-primary" id="run" value="Run" onclick="demo.run()">
+					<input type="submit" class="btn btn-primary" id="cancel" value="Cancel" onclick="demo.stop()" style="display:none">
 				</form>
 				<script>
 					$('#param_form').submit(event => event.preventDefault());
@@ -163,6 +168,20 @@
 		</td>
 	</tr>
 	<tr>
+
+    <div class="row">
+      <div class="col-sm-6 col-md-4">
+        <div class="thumbnail">
+          <img src="http://www.engraversnetwork.com/files/placeholder.jpg" alt="...">
+          <div class="caption">
+            <h3>Thumbnail label</h3>
+            <p>...</p>
+            <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
 
 <!-- Explanations -->
 <td colspan=2>
@@ -213,6 +232,13 @@ In the case of Thompson sampling, the agent periodically samples an environment 
 represents the position of the dispenser in \\(\rho\\); the Thompson Sampling agent will chase the red dot around.
 </span>
 
+<span class="md" id="ksa_exp" style="display:none">
+In the case of Thompson sampling, the agent periodically samples an environment \\(\rho\\) from its posterior belief distribution and uses the \\(\rho\\)-optimal policy. The red dot
+
+<p style="text-align:center" id="rho"></p>
+represents the position of the dispenser in \\(\rho\\); the Thompson Sampling agent will chase the red dot around.
+</span>
+
 <script>
 	GridVisualization.makeLegend('dispenser', Dispenser);
 	GridVisualization.makeLegend('wall', Wall);
@@ -250,7 +276,7 @@ represents the position of the dispenser in \\(\rho\\); the Thompson Sampling ag
 <a id="agent-env"></a>
 ## Agent-environment interaction
 
-In the standard [reinforcement learning] (RL) framework, the __agent__ and __environment__ play a turn-based game and interact in cycles ([Sutton & Barto, 1998]). At time/cycle/turn \\(t\\), the agent supplies the environment with an __action__ \\(a\_t\\). The environment then performs some computation and returns a __percept__ \\(e_t\\) to the agent, and the cycle repeats.
+In the standard [reinforcement learning] (RL) framework, the __agent__ and __environment__ play a turn-based game and interact in cycles ([Sutton &amp; Barto, 1998]). At time/cycle/turn \\(t\\), the agent supplies the environment with an __action__ \\(a\_t\\). The environment then performs some computation and returns a __percept__ \\(e_t\\) to the agent, and the cycle repeats.
 
 <p style="text-align: center"><img src="assets/agent-env.png" alt="agent-environment interaction" style="width: 200px"/></p>
 
@@ -362,7 +388,7 @@ where \\(K(\nu)\\) is the [Kolmogorov complexity] of \\(\nu\\). AIXI is hence th
 
 The most central issue in reinforcement learning is the __exploration-exploitation dilemma__: TODO
 
-It is now known that [Pareto optimality] is trivial in general environments, and that AIXI can be made to perform arbitrarily badly with a dogmatic prior ([Leike & Hutter, 2015]).
+It is now known that [Pareto optimality] is trivial in general environments, and that AIXI can be made to perform arbitrarily badly with a dogmatic prior ([Leike &amp; Hutter, 2015]).
 
 <a id="agents"></a>
 # Agents
@@ -404,12 +430,12 @@ Define the \\(\varepsilon\\)-effective horizon:
 $$
 H\_{t}^{\gamma}(\varepsilon) \stackrel{.}{=} \min\left\lbrace m\ :\ \sum\_{k=m}^{\infty}\gamma\_{t+k}\leq\varepsilon\right\rbrace,
 $$
-which is the minimum number of cycles ahead one needs to consider in order to accumulate a value of \\((1-\varepsilon)V\_{\nu}^{\pi}\\), for some \\(\varepsilon>0\\). Thompson Sampling ([Leike et al., 2016]) has a simple algorithm: every \\(H\_{t}^{\gamma}\\) steps, sample an environment \\(\rho\\) from the posterior belief distribution \\(w\_{\nu}\\), and use the \\(\rho\\)-optimal policy, re-sample, and repeat.
+which is the minimum number of cycles ahead one needs to consider in order to accumulate a value of \\((1-\varepsilon)V\_{\nu}^{\pi}\\), for some \\(\varepsilon&gt;0\\). Thompson Sampling ([Leike et al., 2016]) has a simple algorithm: every \\(H\_{t}^{\gamma}\\) steps, sample an environment \\(\rho\\) from the posterior belief distribution \\(w\_{\nu}\\), and use the \\(\rho\\)-optimal policy, re-sample, and repeat.
 
 <a id="opt-aixi"></a>
 ## Optimistic AIXI
 
-Optimistic AIXI ([Sunehag & Hutter, 2015]).
+Optimistic AIXI ([Sunehag &amp; Hutter, 2015]).
 TODO
 
 <a id="mdl"></a>
@@ -468,7 +494,7 @@ TODO
 ---
 
 <a id="further-reading"></a>
-## References & Further Reading
+## References &amp; Further Reading
 
 <!-- References -->
 [reinforcement learning]: https://en.wikipedia.org/wiki/Reinforcement_learning
@@ -494,13 +520,13 @@ TODO
 [REINFORCEjs]: http://cs.stanford.edu/people/karpathy/reinforcejs/
 
 [Hutter, 2005]: http://www.hutter1.net/ai/uaibook.htm
-[Leike & Hutter, 2015]: http://jmlr.org/proceedings/papers/v40/Leike15.pdf
+[Leike &amp; Hutter, 2015]: http://jmlr.org/proceedings/papers/v40/Leike15.pdf
 [Leike et al., 2016]: https://arxiv.org/abs/1602.07905
 [Veness et al., 2011]: https://www.jair.org/media/3125/live-3125-5397-jair.pdf
 [Orseau, 2011]: http://www.agroparistech.fr/mmip/maths/laurent_orseau/papers/orseau-ALT-2011-knowledge-seeking.pdf
 [Orseau et al., 2013]: http://www.hutter1.net/publ/ksaprob.pdf
-[Sutton & Barto, 1998]: https://webdocs.cs.ualberta.ca/~sutton/book/the-book.html
-[Sunehag & Hutter, 2015]: http://jmlr.org/papers/volume16/sunehag15a/sunehag15a.pdf
+[Sutton &amp; Barto, 1998]: https://webdocs.cs.ualberta.ca/~sutton/book/the-book.html
+[Sunehag &amp; Hutter, 2015]: http://jmlr.org/papers/volume16/sunehag15a/sunehag15a.pdf
 </span>
 </td>
 </tr>
