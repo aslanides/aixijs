@@ -16,13 +16,13 @@
 
 	<script type="text/javascript" src="lib/plot.js"></script>
 	<script type="text/javascript" src="lib/tile.js"></script>
+  <script type="text/javascript" src="lib/pd_agents.js"></script>
 	<script type="text/javascript" src="lib/environment.js"></script>
   <script type="text/javascript" src="lib/matrix.js"></script>
   <script type="text/javascript" src="lib/net.js"></script>
   <script type="text/javascript" src="lib/graph.js"></script>
   <script type="text/javascript" src="lib/solver.js"></script>
 	<script type="text/javascript" src="lib/agent.js"></script>
-  <script type="text/javascript" src="lib/pd_agents.js"></script>
 	<script type="text/javascript" src="lib/mixture.js"></script>
 	<script type="text/javascript" src="lib/ctw.js"></script>
 	<script type="text/javascript" src="lib/search.js"></script>
@@ -230,7 +230,7 @@ represents the position of the dispenser in \\(\rho\\); the Thompson Sampling ag
 	GridVisualization.makeLegend('wall', Wall);
 	GridVisualization.makeLegend('green', Tile, 'rgb(64,255,64)');
 	GridVisualization.makeLegend('rho', Tile);
-	GridVisualization.addCircle(d3.select('#rho_svg'), 0, 0, config.colors.rho);
+	GridVisualization.addCircle(d3.select('#rho_svg'), 0, 0, GridVisualization.colors.rho);
 </script>
 <span class="md" id="rl">
 
