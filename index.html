@@ -31,9 +31,9 @@
 	<script type="text/javascript" src="lib/util.js"></script>
 	<script type="text/javascript" src="lib/options.js"></script>
 	<script type="text/javascript" src="lib/distribution.js"></script>
-	<script type="text/javascript" src="lib/config.js"></script>
 	<script type="text/javascript" src="lib/ui.js"></script>
 	<script type="text/javascript" src="lib/dirichlet.js"></script>
+  <script type="text/javascript" src="lib/config.js"></script>
 	<script type="text/javascript" src="lib/demo.js"></script>
 
 	<script type="text/javascript" src="external/mathjs-3.1.4.min.js"></script>
@@ -154,6 +154,14 @@
 		                <label title="Opponent for iterated prisoner's dilemma">Opponent</label>
                     <select id="opponent_select" name="opponent_select">
                     </select>
+		            </p>
+                <p class="params" id="p_dispensers">
+		                <label title="Dispenser settings">Dispenser:</label>
+		                <input type="number" class="params" name="freq" id="freq" min="0" max="1" step="0.01">
+		            </p>
+                <p class="params" id="p_dimensions">
+		                <label title="Gridworld dimensions">Gridworld:</label>
+		                <input type="number" class="params" name="dim" id="dim" min="3" max="12" step="1">
 		            </p>
 					<input type="submit" class="btn btn-primary" id="run" value="Run" onclick="demo.run()">
 					<input type="submit" class="btn btn-primary" id="cancel" value="Cancel" onclick="demo.stop()" style="display:none">
