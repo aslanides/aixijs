@@ -78,7 +78,7 @@ label {
     padding-right: 10px;
 }
 
-input.params {
+input.param {
     display: table-cell;
     width: 60px;
 }

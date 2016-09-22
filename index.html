@@ -16,13 +16,13 @@
 
 	<script type="text/javascript" src="lib/plot.js"></script>
 	<script type="text/javascript" src="lib/tile.js"></script>
+  <script type="text/javascript" src="lib/pd_agents.js"></script>
 	<script type="text/javascript" src="lib/environment.js"></script>
   <script type="text/javascript" src="lib/matrix.js"></script>
   <script type="text/javascript" src="lib/net.js"></script>
   <script type="text/javascript" src="lib/graph.js"></script>
   <script type="text/javascript" src="lib/solver.js"></script>
 	<script type="text/javascript" src="lib/agent.js"></script>
-  <script type="text/javascript" src="lib/pd_agents.js"></script>
 	<script type="text/javascript" src="lib/mixture.js"></script>
 	<script type="text/javascript" src="lib/ctw.js"></script>
 	<script type="text/javascript" src="lib/search.js"></script>
@@ -31,9 +31,9 @@
 	<script type="text/javascript" src="lib/util.js"></script>
 	<script type="text/javascript" src="lib/options.js"></script>
 	<script type="text/javascript" src="lib/distribution.js"></script>
-	<script type="text/javascript" src="lib/config.js"></script>
 	<script type="text/javascript" src="lib/ui.js"></script>
 	<script type="text/javascript" src="lib/dirichlet.js"></script>
+  <script type="text/javascript" src="lib/config.js"></script>
 	<script type="text/javascript" src="lib/demo.js"></script>
 
 	<script type="text/javascript" src="external/mathjs-3.1.4.min.js"></script>
@@ -116,7 +116,7 @@
 		    <div id="setup">
 		        <h3>Setup</h3>
 		        <form id="param_form">
-		            <p class="params" id="p_select" style="display: table-row">
+		            <p class="lol" id="p_select" style="display: table-row">
 		                <label for="demo_select">Demo:</label>
 		                <select id="demo_select" name="demo_select" onchange="demo.new()" required>
 							<option selected disabled hidden style="display: none" value="" label=" "></option>
@@ -124,39 +124,47 @@
 		            </p>
 		            <p class="params" id="p_alpha">
 		                <label title="Learning raate">Alpha:</label>
-		                <input type="number" class="params" name="alpha" id="alpha" min="0" max="1" step="0.01">
+		                <input type="number" class="param" name="alpha" id="alpha" min="0" max="1" step="0.01">
 		            </p>
 		            <p class="params" id="p_gamma">
 		                <label title="Discount rate (geometric)">Gamma:</label>
-		                <input type="number" class="params" name="gamma" id="gamma" min="0" max="1" step="0.01">
+		                <input type="number" class="param" name="gamma" id="gamma" min="0" max="1" step="0.01">
 		            </p>
 		            <p class="params" id="p_epsilon">
 		                <label title="Exploration rate">Epsilon:</label>
-		                <input type="number" class="params" name="epsilon" id="epsilon" min="0" max="1" step="0.01">
+		                <input type="number" class="param" name="epsilon" id="epsilon" min="0" max="1" step="0.01">
 		            </p>
 					      <p class="params" id="p_horizon">
 		                <label title="MCTS planning horizon">MCTS horizon:</label>
-		                <input type="number" class="params" name="horizon" id="horizon" min="1" max="100" step="1">
+		                <input type="number" class="param" name="horizon" id="horizon" min="1" max="100" step="1">
 		            </p>
 					      <p class="params" id="p_samples">
 		                <label title="Number of MCTS samples">MCTS Samples:</label>
-		                <input type="number" class="params" name="samples" id="samples" min="1" max="10000" step="1">
+		                <input type="number" class="param" name="samples" id="samples" min="1" max="10000" step="1">
 		            </p>
 					      <p class="params" id="p_ucb">
 		                <label title="UCT exploration parameter">UCT parameter:</label>
-		                <input type="number" class="params" name="ucb" id="ucb" min="0.01" max="100" step="0.01">
+		                <input type="number" class="param" name="ucb" id="ucb" min="0.01" max="100" step="0.01">
 		            </p>
 		            <p class="params" id="p_cycles">
 		                <label title="Number of time steps to run the simulation for">Time steps:</label>
-		                <input type="number" class="params" name="cycles" id="cycles" min="1" max="1000000" step="1">
+		                <input type="number" class="param" name="cycles" id="cycles" min="1" max="1000000" step="1">
 		            </p>
                 <p class="params" id="p_opponent">
 		                <label title="Opponent for iterated prisoner's dilemma">Opponent</label>
                     <select id="opponent_select" name="opponent_select">
                     </select>
 		            </p>
+                <p class="params" id="p_freq">
+		                <label title="Dispenser settings">Dispenser:</label>
+		                <input type="number" class="param" name="freq" id="freq" min="0" max="1" step="0.01">
+		            </p>
+                <p class="params" id="p_N">
+		                <label title="Gridworld dimensions">Gridworld:</label>
+		                <input type="number" class="param" name="N" id="N" min="3" max="15" step="1">
+		            </p>
 					<input type="submit" class="btn btn-primary" id="run" value="Run" onclick="demo.run()">
-					<input type="submit" class="btn btn-primary" id="cancel" value="Cancel" onclick="demo.stop()" style="display:none">
+					<input type="submit" class="btn btn-primary" id="cancel" value="Stop" onclick="demo.stop()" style="display:none">
 				</form>
 				<script>
 					$('#param_form').submit(event => event.preventDefault());
@@ -237,8 +245,6 @@
 ---
 # Dispenser class
 
-<p style="text-align: center"><img src="assets/dispenser-bayes.png" alt="Bayesian Dispenser demo" style="width: 250px"/></p>
-
 In the `DispenserGridworld` environment, there is one  `Dispenser`
 
 <p style="text-align:center" id="dispenser"></p>
@@ -290,7 +296,7 @@ represents the position of the dispenser in \\(\rho\\); the Thompson Sampling ag
 	GridVisualization.makeLegend('wall', Wall);
 	GridVisualization.makeLegend('green', Tile, 'rgb(64,255,64)');
 	GridVisualization.makeLegend('rho', Tile);
-	GridVisualization.addCircle(d3.select('#rho_svg'), 0, 0, config.colors.rho);
+	GridVisualization.addCircle(d3.select('#rho_svg'), 0, 0, GridVisualization.colors.rho);
 </script>
 <span class="md" id="rl">
 
