@@ -130,15 +130,9 @@
 		    </div>
 
 			<!-- Demo Parameters -->
-		    <div id="setup">
+		    <div id="setup" style="display:none">
 		        <h3>Setup</h3>
 		        <form id="param_form">
-		            <p class="lol" id="p_select" style="display: table-row">
-		                <label for="demo_select">Demo:</label>
-		                <select id="demo_select" name="demo_select" onchange="demo.new()" required>
-							<option selected disabled hidden style="display: none" value="" label=" "></option>
-						</select>
-		            </p>
 		            <p class="params" id="p_alpha">
 		                <label title="Learning raate">Alpha:</label>
 		                <input type="number" class="param" name="alpha" id="alpha" min="0" max="1" step="0.01">
@@ -182,6 +176,7 @@
 		            </p>
 					<input type="submit" class="btn btn-primary" id="run" value="Run" onclick="demo.run()">
 					<input type="submit" class="btn btn-primary" id="cancel" value="Stop" onclick="demo.stop()" style="display:none">
+          <input type="submit" class="btn btn-default" id="back" value="Back" onclick="demo.reset()">
 				</form>
 				<script>
 					$('#param_form').submit(event => event.preventDefault());
@@ -193,53 +188,56 @@
 		</td>
 	</tr>
 	<tr>
-
-<div class="container">
-
+<div class="container" id='picker'>
+  <a href='#' onclick="demo.new(demos.aixi)">
       <div class="col-md-2 thumbnail">
           <img src="assets/thumbs/aixi.png" alt="...">
           <div class="caption">
             <h3>MC-AIXI</h3>
             <p>Monte Carlo AIXI on a known Gridworld. </p>
-            <p><a href="#" class="btn btn-primary" role="button">Run</a>
           </div>
       </div>
+    </a>
 
+    <a href='#' onclick="demo.new(demos.aixi_dirichlet)">
       <div class="col-md-2 thumbnail">
           <img src="assets/thumbs/aixi-dirichlet.png" alt="...">
           <div class="caption">
             <h3>MC-AIXI-Dirichlet</h3>
             <p>AIXI with a Dirichlet model on an unknown Gridworld. </p>
-            <p><a href="#" class="btn btn-primary" role="button">Run</a>
           </div>
       </div>
+    </a>
 
+    <a href='#' onclick="demo.new(demos.KLKSA_dirichlet)">
       <div class="col-md-2 thumbnail">
           <img src="assets/thumbs/ksa-dirichlet.png" alt="...">
           <div class="caption">
             <h3>KL-KSA</h3>
             <p>KL-KSA on an unknown Gridworld. </p>
-            <p><a href="#" class="btn btn-primary" role="button">Run</a>
           </div>
       </div>
+    </a>
 
+<a href='#' onclick="demo.new(demos.thompson)">
       <div class="col-md-2 thumbnail">
           <img src="assets/thumbs/thompson.png" alt="...">
           <div class="caption">
             <h3>Thompson sampling</h3>
             <p>Thompson sampling on a known Gridworld. </p>
-            <p><a href="#" class="btn btn-primary" role="button">Run</a>
           </div>
       </div>
+    </a>
 
+<a href='#' onclick="demo.new(demos.shKSA_dirichlet)">
       <div class="col-md-2 thumbnail">
           <img src="assets/thumbs/shannon.png" alt="...">
           <div class="caption">
             <h3>Shannon-KSA</h3>
             <p>Shannon-KSA on an unknown Gridworld. </p>
-            <p><a href="#" class="btn btn-primary" role="button">Run</a>
           </div>
       </div>
+    </a>
 
 </div>
 
