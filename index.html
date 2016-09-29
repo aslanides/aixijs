@@ -81,13 +81,11 @@
 				return;
 			}
 
-			(function () {
-				let script = document.createElement('script');
-				script.type = 'text/javascript';
-				script.src  = 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
-				document.getElementsByTagName('head')[0].appendChild(script);
-				jaxrendered = true;
-			})();
+			let script = document.createElement('script');
+			script.type = 'text/javascript';
+			script.src  = 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+			document.getElementsByTagName('head')[0].appendChild(script);
+			jaxrendered = true;
 		}
 	</script>
 </head>
@@ -196,69 +194,7 @@
 		</td>
 	</tr>
 	<tr>
-<div class="container" id='picker'>
-  <a href='#' onclick="demo.new(demos.aixi)">
-      <div class="col-md-2 thumbnail">
-          <img src="assets/thumbs/aixi.png" alt="...">
-          <div class="caption">
-            <h3>MC-AIXI</h3>
-            <p>Monte Carlo AIXI on a known Gridworld. </p>
-          </div>
-      </div>
-    </a>
-
-    <a href='#' onclick="demo.new(demos.aixi_dirichlet)">
-      <div class="col-md-2 thumbnail">
-          <img src="assets/thumbs/aixi-dirichlet.png" alt="...">
-          <div class="caption">
-            <h3>MC-AIXI-Dirichlet</h3>
-            <p>AIXI with a Dirichlet model on an unknown Gridworld. </p>
-          </div>
-      </div>
-    </a>
-
-
-    <a href='#' onclick="demo.new(demos.shKSA)">
-      <div class="col-md-2 thumbnail">
-          <img src="assets/thumbs/aixi.png" alt="...">
-          <div class="caption">
-            <h3>Shannon-KSA</h3>
-            <p>Shannon-KSA. </p>
-          </div>
-      </div>
-    </a>
-
-    <a href='#' onclick="demo.new(demos.KLKSA_dirichlet)">
-      <div class="col-md-2 thumbnail">
-          <img src="assets/thumbs/ksa-dirichlet.png" alt="...">
-          <div class="caption">
-            <h3>KL-KSA</h3>
-            <p>KL-KSA on an unknown Gridworld. </p>
-          </div>
-      </div>
-    </a>
-
-<a href='#' onclick="demo.new(demos.thompson)">
-      <div class="col-md-2 thumbnail">
-          <img src="assets/thumbs/thompson.png" alt="...">
-          <div class="caption">
-            <h3>Thompson sampling</h3>
-            <p>Thompson sampling on a known Gridworld. </p>
-          </div>
-      </div>
-    </a>
-
-<a href='#' onclick="demo.new(demos.shKSA_dirichlet)">
-      <div class="col-md-2 thumbnail">
-          <img src="assets/thumbs/shannon.png" alt="...">
-          <div class="caption">
-            <h3>Shannon-KSA</h3>
-            <p>Shannon-KSA on an unknown Gridworld. </p>
-          </div>
-      </div>
-    </a>
-
-</div>
+<div class="container" id='picker'></div>
 
 <!-- Explanations -->
 <td colspan=2>
