@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>
+        AIXIjs: General reinforcement learning demo
+    </title>
+    <meta charset="UTF-8">
+	<meta name="description" content="A JavaScript demo for general reinforcement learning agents">
+	<meta name="author" content="John Aslanides and Sean Lamont">
+	<meta name="keywords" content="artificial intelligence, reinforcement learning, AIXI, gridworld">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="external/bootstrap.min.css">
+  <link rel="stylesheet" href="external/bootstrap-theme.min.css">
+
+  <script type="text/javascript" src="lib/util/util.js"></script>
+  <script type="text/javascript" src="lib/util/distribution.js"></script>
+  <script type="text/javascript" src="lib/util/discount.js"></script>
+  <script type="text/javascript" src="lib/util/qtable.js"></script>
+
+  <script type="text/javascript" src="lib/environments/environment.js"></script>
+  <script type="text/javascript" src="lib/environments/bandit.js"></script>
+  <script type="text/javascript" src="lib/environments/gridworld.js"></script>
+  <script type="text/javascript" src="lib/environments/mdp.js"></script>
+  <script type="text/javascript" src="lib/environments/prisoners.js"></script>
+  <script type="text/javascript" src="lib/environments/puckworld.js"></script>
+  <script type="text/javascript" src="lib/environments/time.js"></script>
+
+  <script type="text/javascript" src="lib/models/mixture.js"></script>
+  <script type="text/javascript" src="lib/models/dirichlet.js"></script>
+  <script type="text/javascript" src="lib/models/ctw.js"></script>
+  <script type="text/javascript" src="lib/models/neural/matrix.js"></script>
+  <script type="text/javascript" src="lib/models/neural/net.js"></script>
+  <script type="text/javascript" src="lib/models/neural/graph.js"></script>
+  <script type="text/javascript" src="lib/models/neural/solver.js"></script>
+
+  <script type="text/javascript" src="lib/planners/mcts.js"></script>
+
+  <script type="text/javascript" src="lib/agents/agent.js"></script>
+  <script type="text/javascript" src="lib/agents/bayes.js"></script>
+  <script type="text/javascript" src="lib/agents/ksa.js"></script>
+  <script type="text/javascript" src="lib/agents/mdl.js"></script>
+  <script type="text/javascript" src="lib/agents/bayesexp.js"></script>
+  <script type="text/javascript" src="lib/agents/thompson.js"></script>
+  <script type="text/javascript" src="lib/agents/dqn.js"></script>
+  <script type="text/javascript" src="lib/agents/tabular.js"></script>
+
+  <script type="text/javascript" src="lib/vis/visualization.js"></script>
+  <script type="text/javascript" src="lib/vis/plot.js"></script>
+  <script type="text/javascript" src="lib/vis/banditvis.js"></script>
+  <script type="text/javascript" src="lib/vis/mdpvis.js"></script>
+  <script type="text/javascript" src="lib/vis/gridvis.js"></script>
+  <script type="text/javascript" src="lib/vis/puckworldvis.js"></script>
+  <script type="text/javascript" src="lib/vis/timevis.js"></script>
+
+  <script type="text/javascript" src="lib/trace.js"></script>
+  <script type="text/javascript" src="lib/options.js"></script>
+  <script type="text/javascript" src="lib/config.js"></script>
+
+  <script type="text/javascript" src="lib/ui.js"></script>
+  <script type="text/javascript" src="lib/demo.js"></script>
+
+	<script type="text/javascript" src="external/mathjs-3.1.4.min.js"></script>
+	<script type="text/javascript" src="external/jquery-2.2.3.min.js"></script>
+	<script type="text/javascript" src="external/d3-3.5.16.min.js"></script>
+	<script type="text/javascript" src="external/marked-0.3.6.min.js"></script>
+  <script type="text/javascript" src="external/seedrandom-2.4.0.min.js"></script>
+
+	<script>
+		function renderMarkdown() {
+			$('.md').each(function (x) {
+				$(this).html(marked($(this).html()));
+			});
+
+			renderJax();
+		}
+
+		let jaxrendered = false;
+		function renderJax() {
+			if (jaxrendered) {
+				return;
+			}
+
+			let script = document.createElement('script');
+			script.type = 'text/javascript';
+			script.src  = 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+			document.getElementsByTagName('head')[0].appendChild(script);
+			jaxrendered = true;
+		}
+	</script>
+</head>
+<body onload="UI.init();renderMarkdown()">
+<div id="wrap">
+<div class="header">
+    <img src="assets/robot.png" alt="Roger the robot :)" style="width: 50px; float:left; margin: 0px 15px 15px 0px" />
+	<h1 style="font-size:50px">AIXI<span style="color:#058;">js</span></h1>
+  <ul class="nav nav-pills">
+    <li role="presentation"><a href="index.html">About</a></li>
+    <li role="presentation" class="active"><a href="demo.html">Demos!</a></li>
+  </ul>
+</div>
+
+<span class="md">
+---
+</span>
+<!-- Fork me on github! -->
+<a href="https://github.com/aslanides/aixijs" target="_blank"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+<!-- Vis -->
+<table>
+	<tr>
+		<td style="width: 40%">
+			<span id="gridvis"></span>
+			<div class="spinner" id="loading" style="display: none">
+			  <div class="bounce1"></div>
+			  <div class="bounce2"></div>
+			  <div class="bounce3"></div>
+			</div>
+			<!-- Navigation -->
+		    <div id="navigation" style="display: none">
+		        <h3>Playback</h3>
+		        <p>
+		            <input type="range" name="slider" id="slider" min="0" value="0" oninput="demo.vis.jumpTo(value)">
+					<br />
+		            <button class="btn btn-default"  onclick="demo.vis.reset()">
+						<span class="glyphicon glyphicon-fast-backward"></span>
+					</button>
+		            <button class="btn btn-default" onclick="demo.vis.pause()">
+						<span class="glyphicon glyphicon-pause"></span>
+					</button>
+		            <button class="btn btn-default" onclick="demo.vis.run(300)">
+						<span class="glyphicon glyphicon-play"></span>
+					</button>
+		            <button class="btn btn-default" onclick="demo.vis.run(50)">
+						<span class="glyphicon glyphicon-forward"></span>
+					</button>
+		            <button class="btn btn-default" onclick="demo.vis.run(1)">
+						<span class="glyphicon glyphicon-fast-forward"></span>
+					</button>
+		        </p>
+		    </div>
+
+			<!-- Demo Parameters -->
+		    <div id="setup" style="display:none">
+		        <h3 id='setup_label'>Setup: </h3>
+		        <form id="param_form">
+      					<div id='env'></div>
+      					<div id='agent'></div>
+					<input type="submit" class="btn btn-primary" id="run" value="Run" onclick="demo.run()">
+					<input type="submit" class="btn btn-primary" id="cancel" value="Stop" onclick="demo.stop()" style="display:none">
+          <input type="submit" class="btn btn-default" id="back" value="Back" onclick="demo.reset()">
+				</form>
+				<script>
+					$('#param_form').submit(event => event.preventDefault());
+				</script>
+		    </div>
+		</td>
+		<td style="vertical-align: top">
+			<span id="plots"></span>
+		</td>
+	</tr>
+	<tr>
+<div class="container" id='picker'></div>
+
+<!-- Explanations -->
+<td colspan=2>
+
+<span class="md" id="dispenser_bayes_exp" style="display:none">
+
+---
+# Dispenser Gridworld
+
+In this environment, there is one `Dispenser`
+
+<p style="text-align:center" id="dispenser"></p>
+
+which probabilistically dispenses a reward of +100. Walking into a `Wall`
+
+<p style="text-align:center" id="wall"></p>
+
+results in a penalty of -5. Otherwise, moving results in a penalty of -1. The percept space is the set of bit-strings of length 5, i.e. \\(\mathcal{E} = \mathbb{B}^5\\). Each bit corresponds to the nearest tile in the `left`, `right`, `up`, and `down` directions, and the agent's current tile. The bit is 1 if the tile is a `Wall` and 0 otherwise. The action space is given by
+$$
+\mathcal{A} = \lbrace{\mathtt{left,right,up,down,noop}\rbrace}.
+$$
+
+This environment is non-episodic, so once the agent finds the `Dispenser`, it should hang around there to collect more reward. The environment class \\(\mathcal{M}\\) is parametrized by the location of the dispenser:
+$$
+\mathcal{M} = \big\lbrace\nu\ :\ \mathtt{\nu.dispenserpos} = (m,n)\big\rbrace\_{(m,n)=(1,1)}^{(M,N)},
+$$
+
+where \\((M,N)\\) are the dimensions of the grid, and hence \\(\left|\mathcal{M}\right|=MN\\). Usually (unless we are simulating AI\\(\mu\\)), the agent will be initialized with a uniform prior over this model class, i.e.
+$$
+w\_\nu = \frac{1}{MN}\ \forall\ \nu\in\mathcal{M}.
+$$
+
+The agent's beliefs \\(\lbrace w\_\nu\rbrace\_{\nu\in\mathcal{M}}\\) are visualized by green shading
+
+<p style="text-align:center" id="green"></p>
+
+on each tile. Darker shading corresponds to higher probability. Finally, we have Roger the Robot, who represents our AI agent on the gridworld:
+
+<p style="text-align:center"><img src="assets/robot.png" alt="Roger the robot :)" style="width: 40px"/></p>
+
+</span>
+<span class="md" id="thompson_exp" style="display:none">
+In the case of Thompson sampling, the agent periodically samples an environment \\(\rho\\) from its posterior belief distribution and uses the \\(\rho\\)-optimal policy. The red dot
+
+<p style="text-align:center" id="rho"></p>
+represents the position of the dispenser in \\(\rho\\); the Thompson Sampling agent will chase the red dot around.
+</span>
+
+<span class="md" id="ksa_exp" style="display:none">
+In the case of Thompson sampling, the agent periodically samples an environment \\(\rho\\) from its posterior belief distribution and uses the \\(\rho\\)-optimal policy. The red dot
+
+<p style="text-align:center" id="rho"></p>
+represents the position of the dispenser in \\(\rho\\); the Thompson Sampling agent will chase the red dot around.
+</span>
+
+<script>
+	GridVisualization.makeLegend('dispenser', Dispenser);
+	GridVisualization.makeLegend('wall', Wall);
+	GridVisualization.makeLegend('green', Tile, 'rgb(64,255,64)');
+	GridVisualization.makeLegend('rho', Tile);
+	GridVisualization.addCircle(d3.select('#rho_svg'), 0, 0, GridVisualization.colors.rho);
+</script>
+</td>
+</tr>
+</table>
+</div>
+</body>
+</html>
