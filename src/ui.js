@@ -73,8 +73,8 @@ class UI {
 
 				let label = this.doc.createElement('label');
 				label.for = field;
-				label.innerText = `${level}.${field}:`;
-				label.title = glossary[field];
+				label.innerText = `${level}.${glossary[field].label}:`;
+				label.title = glossary[field].description;
 
 				p.appendChild(label);
 				p.appendChild(input);

@@ -1,11 +1,32 @@
 const glossary = {
-	N: 'Dimensions of gridworld',
-	freq: 'Frequency that the dispenser dispenses rewards',
-	cycles: 'Number of cycles to run the simulation for (you can stop the simulation early)',
-	gamma: 'Geometric discount rate',
-	ucb: 'Upper Confidence Bound parameter for MCTS planning',
-	samples: 'Number of samples to use in MCTS',
-	horizon: `Agent's planning horizon`,
+	N: {
+		label: 'N',
+		description: 'Dimensions of gridworld',
+	},
+	freq: {
+		label: 'Theta',
+		description: 'Frequency that the dispenser dispenses rewards',
+	},
+	cycles: {
+		label: 'Cycles',
+		description: 'Number of cycles to run the simulation for (you can stop the simulation early)',
+	},
+	gamma: {
+		label: 'Gamma',
+		description: 'Geometric discount rate',
+	},
+	ucb: {
+		label: 'UCB',
+		description: 'Upper Confidence Bound parameter for Monte-carlo Tree Search planning',
+	},
+	samples: {
+		label: 'MCTS Samples',
+		description: 'Number of samples to use in Monte-Carlo Tree Search',
+	},
+	horizon: {
+		label: 'Horizon',
+		description: `Agent's planning horizon`,
+	},
 };
 
 const configs = {
