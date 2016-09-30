@@ -22,7 +22,7 @@ There are a number of demos pre-made and ready to go; look at `lib/demo.js` for 
 
 ```javascript
 let config = { /* ... */ }; // environment config; see lib/config.js for examples
-let env = new DispenserGrid(config); // construct environment
+let env = new Gridworld(config); // construct environment
 let options = new Options(); // defaults to sensible values, but we can change them
 options.getEnvParams(env); // get things like num actions, etc from environment
 options.cycles = 200; // run simulation for 200 cycles
