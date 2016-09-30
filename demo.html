@@ -165,7 +165,7 @@
 <!-- Explanations -->
 <td colspan=2>
 
-<span class="md" id="dispenser_bayes_exp" style="display:none">
+<span class="md" id="dispenser_exp" style="display:none">
 
 ---
 # Dispenser Gridworld
@@ -174,7 +174,7 @@ In this environment, there are one or more `Dispensers`
 
 <p style="text-align:center" id="dispenser"></p>
 
-which probabilistically dispenses a reward of +100; they are \\(\text{Bern}\left(\theta\right)\\) processes, and you can change the \\(\theta\\) by modifying the `freq` parameter. Walking into a `Wall`
+which probabilistically dispenses a reward of +100; they are \\(\text{Bernoulli}\left(\theta\right)\\) processes, and you can change the \\(\theta\\) by modifying the `freq` parameter. Walking into a `Wall`
 
 <p style="text-align:center" id="wall"></p>
 
@@ -183,30 +183,43 @@ $$
 \mathcal{A} = \lbrace{\mathtt{left,right,up,down,noop}\rbrace}.
 $$
 
-This environment is non-episodic, so once the agent finds the `Dispenser`, it should hang around there to collect more reward. The environment class \\(\mathcal{M}\\) is parametrized by the location of the dispenser:
-$$
-\mathcal{M} = \big\lbrace\nu\ :\ \mathtt{\nu.dispenserpos} = (m,n)\big\rbrace\_{(m,n)=(1,1)}^{(N,N)},
-$$
-
-where \\(N\\) is the size of the grid, (it is always square) and hence \\(\left|\mathcal{M}\right|=MN\\). Usually (unless we are simulating AI\\(\mu\\)), the agent will be initialized with a uniform prior over this model class, i.e.
-$$
-w\_\nu = \frac{1}{N^2}\ \forall\ \nu\in\mathcal{M}.
-$$
-
-The agent's beliefs \\(\lbrace w\_\nu\rbrace\_{\nu\in\mathcal{M}}\\) are visualized by green shading
-
-<p style="text-align:center" id="green"></p>
-
-on each tile. Darker shading corresponds to higher probability. Finally, we have Roger the Robot, who represents our AI agent on the gridworld:
+This environment is non-episodic, so once the agent finds the `Dispenser`, it should hang around there to collect more reward. Finally, we have Roger the Robot, who represents our AI agent on the gridworld.
 
 <p style="text-align:center"><img src="assets/robot.png" alt="Roger the robot :)" style="width: 40px"/></p>
 
 </span>
+
+<span class="md" id="mixture_exp" style="display:none">
+  # Bayes mixture model class
+
+  The environment class \\(\mathcal{M}\\) is parametrized by the location of the dispenser:
+  $$
+  \mathcal{M} = \big\lbrace\nu\ :\ \mathtt{\nu.dispenserpos} = (m,n)\big\rbrace\_{(m,n)=(1,1)}^{(N,N)},
+  $$
+
+  where \\(N\\) is the size of the grid, (it is always square) and hence \\(\left|\mathcal{M}\right|=N^2\\). Usually (unless we are simulating AI\\(\mu\\)), the agent will be initialized with a uniform prior over this model class, i.e.
+  $$
+  w\_\nu = \frac{1}{N^2}\ \forall\ \nu\in\mathcal{M}.
+  $$
+
+  The agent's beliefs \\(\lbrace w\_\nu\rbrace\_{\nu\in\mathcal{M}}\\) are visualized by green shading
+
+  <p style="text-align:center" id="green"></p>
+
+  on each tile. Darker shading corresponds to higher probability. The percepts in this environment are mostly deterministic, with the exception of the rewards from the dispenser, which are sampled from a Bernoulli process. Hence, depending on the value of \\(\theta\\), the agent will be able to gradually falsify the hypothesis of whether some tile contains a dispenser or not.
+</span>
+
 <span class="md" id="thompson_exp" style="display:none">
 In the cases of Thompson sampling and the MDL agent, the agent periodically chooses an environment \\(\rho\\) from its posterior belief distribution (according to some criterion)) and then uses the \\(\rho\\)-optimal policy for some period of time. The red dot
 
 <p style="text-align:center" id="rho"></p>
 represents the position of the dispenser in \\(\rho\\); the agent should chase the red dot around.
+</span>
+
+<span class="md" id="dirichlet_exp" style="display:none">
+# Factorized Dirichlet model class
+
+The Dirichlet model class is not represented as a mixture. It is a simple model that assumes that the environment distribution factorizes, i.e. that each tile is independent.
 </span>
 
 <script>

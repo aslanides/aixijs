@@ -185,6 +185,8 @@ const configs = {
 	ipd: {
 		active: true,
 		name: `Iterated prisoner's dilemma [broken]`,
+		description: `The iterated prisoner's dilemma. AIXI must figure out who its opponent is,
+		and play the appropriate strategy in response.`,
 		vis: {},
 		agent: {
 			type: BayesAgent,
@@ -215,6 +217,7 @@ const configs = {
 	bandit: {
 		active: true,
 		name: 'Bandit [broken]',
+		description: 'A simple two-armed Gaussian bandit, where mu and sigma are unknown for each arm.',
 		vis: BanditVis,
 		agent: {
 			type: QLearn,
@@ -241,6 +244,7 @@ const configs = {
 	mdp: {
 		active: true,
 		name: 'MDP [broken]',
+		description: 'A simple, fully connected MDP with three states.',
 		vis: MDPVis,
 		agent: {
 			type: QLearn,
@@ -282,7 +286,8 @@ const configs = {
 	wirehead: {
 		active: true,
 		name: 'Wireheading [broken]',
-		description: 'AIXI has an opportunity to change its sensors and wirehead. Does it take it?',
+		description: `AIXI has an opportunity to change its sensors and wirehead,
+		 so that it deludes itself that every action is maximally rewarding. Does it take it?`,
 		vis: BayesGridVis,
 		agent: {
 			type: BayesAgent,
@@ -329,7 +334,9 @@ const configs = {
 	heaven_hell: {
 		active: true,
 		name: 'Heaven and Hell [broken]',
-		description: 'Heaven and Hell example',
+		description: `The canonical Heaven and Hell example:
+		the agent is presented with two doors: one leads to heaven (reward 1 forever),
+		and one leads to hell (reward 0 forever. It has no idea a priori which is which.`,
 		vis: MDPVis,
 		agent: {
 			type: BayesAgent,

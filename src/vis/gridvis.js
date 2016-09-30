@@ -256,7 +256,7 @@ class BayesGridVis extends GridVisualization {
 	}
 }
 
-BayesGridVis.exps = ['dispenser_bayes'];
+BayesGridVis.exps = ['dispenser', 'mixture'];
 
 class DirichletVis extends BayesGridVis {
 	constructor(env, trace, ui) {
@@ -279,6 +279,8 @@ class DirichletVis extends BayesGridVis {
 	}
 }
 
+DirichletVis.exps = ['dispenser', 'dirichlet'];
+
 class ThompsonVis extends BayesGridVis {
 	constructor(env, trace, ui) {
 		super(env, trace, ui);
@@ -294,4 +296,4 @@ class ThompsonVis extends BayesGridVis {
 	}
 }
 
-BayesGridVis.exps = ['dispenser_bayes', 'thompson'];
+ThompsonVis.exps = ['dispenser', 'thompson'];
