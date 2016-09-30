@@ -399,6 +399,15 @@ class WireheadingGrid extends Gridworld {
 
 		return 0;
 	}
+
+	save() {
+		super.save();
+		// TODO this.saved_conditionalDistribution =
+	}
+
+	load() {
+		super.load();
+	}
 }
 
 class EpisodicGrid extends Gridworld {
