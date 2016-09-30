@@ -18,10 +18,10 @@ See the [main site](http://aslanides.github.io/aixijs) for more background, docu
 Note: AIXIjs uses some features from ECMAScript 2015 (ES6). It *should* work on recent versions of Firefox, Safari, Edge, and Chrome, but it's only really been tested on Chrome, so that's what I recommend using.
 
 ## API
-There are a number of demos pre-made and ready to go; look at `lib/demo.js` for examples. If you want to roll your own demo, here's an example of how to get a basic simulation working, with AIXI on a Dispenser Gridworld:
+There are a number of demos pre-made and ready to go; look at `src/demo.js` for examples. If you want to roll your own demo, here's an example of how to get a basic simulation working, with AIXI on a Dispenser Gridworld:
 
 ```javascript
-let config = { /* ... */ }; // environment config; see lib/config.js for examples
+let config = { /* ... */ }; // environment config; see src/config.js for examples
 let env = new Gridworld(config); // construct environment
 let options = new Options(); // defaults to sensible values, but we can change them
 options.getEnvParams(env); // get things like num actions, etc from environment

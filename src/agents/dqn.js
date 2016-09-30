@@ -39,7 +39,7 @@ class DQN extends Agent {
 		this.a1 = null;
 
 		this.tderror = 0;
-		$.getJSON('lib/dqn.json', data =>
+		$.getJSON('src/dqn.json', data =>
 			this.fromJSON(data)
 		);
 	}
