@@ -50,12 +50,18 @@ class GridVisualization extends Visualization {
 			.attr('width', d)
 			.attr('stroke', 'black')
 			.attr('stroke-width', 2);
-		if (t.constructor != Chocolate &&
-			t.constructor != Dispenser) {
-			r.attr('fill', t.color);
-		} else {
+		if (t.constructor == Dispenser) {
+			svg.append('image')
+			.attr('xlink:href', 'assets/chocolate.png')
+			.attr('x', t.x * d)
+			.attr('y', t.y * d)
+			.attr('width', d)
+			.attr('height', d);
+		} else if (t.constructor == Chocolate) {
 			r.attr('fill', GridVisualization.colors.empty);
 			GridVisualization.addCircle(svg, t.x, t.y, t.color, '', t.freq);
+		} else {
+			r.attr('fill', t.color);
 		}
 
 		if (color) {
