@@ -55,7 +55,6 @@
   <script type="text/javascript" src="lib/vis/timevis.js"></script>
 
   <script type="text/javascript" src="lib/trace.js"></script>
-  <script type="text/javascript" src="lib/options.js"></script>
   <script type="text/javascript" src="lib/config.js"></script>
 
   <script type="text/javascript" src="lib/ui.js"></script>
@@ -171,27 +170,27 @@
 ---
 # Dispenser Gridworld
 
-In this environment, there is one `Dispenser`
+In this environment, there are one or more `Dispensers`
 
 <p style="text-align:center" id="dispenser"></p>
 
-which probabilistically dispenses a reward of +100. Walking into a `Wall`
+which probabilistically dispenses a reward of +100; they are \\(\text{Bern}\left(\theta\right)\\) processes, and you can change the \\(\theta\\) by modifying the `freq` parameter. Walking into a `Wall`
 
 <p style="text-align:center" id="wall"></p>
 
-results in a penalty of -5. Otherwise, moving results in a penalty of -1. The percept space is the set of bit-strings of length 5, i.e. \\(\mathcal{E} = \mathbb{B}^5\\). Each bit corresponds to the nearest tile in the `left`, `right`, `up`, and `down` directions, and the agent's current tile. The bit is 1 if the tile is a `Wall` and 0 otherwise. The action space is given by
+results in a penalty of -5. Otherwise, moving results in a penalty of -1. The percept space is the set of bit-strings of length 4, i.e. \\(\mathcal{E} = \mathbb{B}^4\\). Each bit corresponds to the nearest tile in the `left`, `right`, `up`, and `down` directions, and is 1 if the adjacent tile is a `Wall` and 0 otherwise. The edges of the grid are implicitly `Walls`. The agent can move in the four cardinal directions, or sit still:
 $$
 \mathcal{A} = \lbrace{\mathtt{left,right,up,down,noop}\rbrace}.
 $$
 
 This environment is non-episodic, so once the agent finds the `Dispenser`, it should hang around there to collect more reward. The environment class \\(\mathcal{M}\\) is parametrized by the location of the dispenser:
 $$
-\mathcal{M} = \big\lbrace\nu\ :\ \mathtt{\nu.dispenserpos} = (m,n)\big\rbrace\_{(m,n)=(1,1)}^{(M,N)},
+\mathcal{M} = \big\lbrace\nu\ :\ \mathtt{\nu.dispenserpos} = (m,n)\big\rbrace\_{(m,n)=(1,1)}^{(N,N)},
 $$
 
-where \\((M,N)\\) are the dimensions of the grid, and hence \\(\left|\mathcal{M}\right|=MN\\). Usually (unless we are simulating AI\\(\mu\\)), the agent will be initialized with a uniform prior over this model class, i.e.
+where \\(N\\) is the size of the grid, (it is always square) and hence \\(\left|\mathcal{M}\right|=MN\\). Usually (unless we are simulating AI\\(\mu\\)), the agent will be initialized with a uniform prior over this model class, i.e.
 $$
-w\_\nu = \frac{1}{MN}\ \forall\ \nu\in\mathcal{M}.
+w\_\nu = \frac{1}{N^2}\ \forall\ \nu\in\mathcal{M}.
 $$
 
 The agent's beliefs \\(\lbrace w\_\nu\rbrace\_{\nu\in\mathcal{M}}\\) are visualized by green shading
@@ -204,17 +203,10 @@ on each tile. Darker shading corresponds to higher probability. Finally, we have
 
 </span>
 <span class="md" id="thompson_exp" style="display:none">
-In the case of Thompson sampling, the agent periodically samples an environment \\(\rho\\) from its posterior belief distribution and uses the \\(\rho\\)-optimal policy. The red dot
+In the cases of Thompson sampling and the MDL agent, the agent periodically chooses an environment \\(\rho\\) from its posterior belief distribution (according to some criterion)) and then uses the \\(\rho\\)-optimal policy for some period of time. The red dot
 
 <p style="text-align:center" id="rho"></p>
-represents the position of the dispenser in \\(\rho\\); the Thompson Sampling agent will chase the red dot around.
-</span>
-
-<span class="md" id="ksa_exp" style="display:none">
-In the case of Thompson sampling, the agent periodically samples an environment \\(\rho\\) from its posterior belief distribution and uses the \\(\rho\\)-optimal policy. The red dot
-
-<p style="text-align:center" id="rho"></p>
-represents the position of the dispenser in \\(\rho\\); the Thompson Sampling agent will chase the red dot around.
+represents the position of the dispenser in \\(\rho\\); the agent should chase the red dot around.
 </span>
 
 <script>
