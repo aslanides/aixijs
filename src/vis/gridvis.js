@@ -233,7 +233,7 @@ class BayesGridVis extends GridVisualization {
 					let b = Math.floor(c.b);
 					col = `rgb(${r},${g},${b})`;
 				} else {
-					col = GridVisualization.colors.wall;
+					col = tile.color;
 				}
 
 				rectangle.attr('fill', col);
@@ -242,7 +242,8 @@ class BayesGridVis extends GridVisualization {
 	}
 
 	posteriorColor(tile, time) {
-		if (tile.color == GridVisualization.colors.wall) {
+		if (tile.color == GridVisualization.colors.wall ||
+			tile.color == GridVisualization.colors.modifier) {
 			return null;
 		}
 

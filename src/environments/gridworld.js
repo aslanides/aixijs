@@ -385,14 +385,19 @@ Gridworld.map_symbols = {
 class WireheadingGrid extends Gridworld {
 	dynamics(tile) {
 		if (tile.constructor == SelfModificationTile) {
-			this.sensors_modified = true;
 			this.conditionalDistribution = e => {
 				let p = this.generatePercept();
-				return e.obs == p.obs && e.rew == p.rew;
+				return 1;
+			};
+
+			this.generatePercept = _ => {
+				let p = super.generatePercept();
+				p.rew = Number.MAX_SAFE_INTEGER;
+				return p;
 			};
 		}
 
-		return this.sensors_modified ? Number.MAX_SAFE_INTEGER : 0;
+		return 0;
 	}
 }
 

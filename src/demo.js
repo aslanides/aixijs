@@ -54,14 +54,15 @@ const demo = {
 
 		if (this.vis) this.vis.remove();
 		this.env = env ? env : new options.env.type(options.env);
-		options.agent.model = this.env.makeModel(options.agent.model, options.agent.modelParametrization);
-		options.agent.numActions = this.env.actions.length;
-		options.agent.min_reward = this.env.min_reward;
-		options.agent.max_reward = this.env.max_reward;
 
 		if (options.env._mods) {
 			options.env._mods(this.env);
 		}
+
+		options.agent.model = this.env.makeModel(options.agent.model, options.agent.modelParametrization);
+		options.agent.numActions = this.env.actions.length;
+		options.agent.min_reward = this.env.min_reward;
+		options.agent.max_reward = this.env.max_reward;
 
 		this.agent = new options.agent.type(options.agent);
 		if (options.agent._mods) {

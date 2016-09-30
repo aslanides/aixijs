@@ -296,13 +296,13 @@ const configs = {
 			type: WireheadingGrid,
 			_mods: function (env) {
 				let pos = Gridworld.proposeGoal(env.options.N);
-				let t = env.grid[pos.y][pos.x];
+				let t = env.grid[pos.x][pos.y];
 				if (t.expanded) {
-					t = new SelfModificationTile(t.y, t.x);
-					env.grid[pos.y][pos.x] = t;
+					t = new SelfModificationTile(t.x, t.y);
+					env.grid[pos.x][pos.y] = t;
 					env.options.map[pos.x][pos.y] = 'M';
 				} else {
-					this.mods(env);
+					this._mods(env);
 				}
 
 				env.generateConnexions();
@@ -311,7 +311,7 @@ const configs = {
 	},
 	dogmatic_prior: {
 		active: true,
-		name: 'AIXI with a dogmatic prior',
+		name: 'Dogmatic prior',
 		description: `AIXI is given a prior that says it is surrounded by traps with high probability.
 		It is too scared to do anything as a result and never overcomes the bias of its prior.`,
 		vis: BayesGridVis,
@@ -398,7 +398,7 @@ const configs = {
 			samples: 1000,
 			cycles: 2e2,
 			/*
-			mods: function(agent) {
+			_mods: function(agent) {
 				let discountChanges = [];
 				let discounts = [];
 
