@@ -387,7 +387,7 @@ class WireheadingGrid extends Gridworld {
 		if (tile.constructor == SelfModificationTile) {
 			this.conditionalDistribution = e => {
 				let p = this.generatePercept();
-				return 1;
+				return p.obs == e.obs && p.rew == e.rew;
 			};
 
 			this.generatePercept = _ => {
@@ -402,11 +402,14 @@ class WireheadingGrid extends Gridworld {
 
 	save() {
 		super.save();
-		// TODO this.saved_conditionalDistribution =
+		this.saved_conditionalDistribution = this.conditionalDistribution;
+		this.saved_generatePercept = this.generatePercept;
 	}
 
 	load() {
 		super.load();
+		this.conditionalDistribution = this.saved_conditionalDistribution;
+		this.generatePercept = this.saved_generatePercept;
 	}
 }
 
