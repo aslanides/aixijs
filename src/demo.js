@@ -178,7 +178,8 @@ const demo = {
 			let env = null;
 			this.new(config);
 			for (let i = 0; i < runs; i++) {
-				console.log(`Running ${config.agent.name} on ${config.env.name}: run ${i + 1} of ${runs}...`);
+				console.log(`Running ${config.agent.type.name} on ${config.env.type.name}:`
+					+ ` run ${i + 1} of ${runs}...`);
 				if (i > 0) {
 					env = new env.constructor(env.options);
 					Gridworld.isSolvable(env); // TODO fix hack
@@ -192,7 +193,7 @@ const demo = {
 					rewards: Util.arrayCopy(this.trace.averageReward),
 					explored: Util.arrayCopy(this.trace.explored),
 					options: Util.deepCopy(this.config),
-					agent: this.config.agent.name,
+					agent: this.config.agent.type.name,
 					cycles: this.trace.iter,
 					runtime: this.trace.runtime,
 					samples: this.agent.samples,
