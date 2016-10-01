@@ -17,7 +17,7 @@ class Gridworld extends Environment {
 		this.numActions = this.actions.length;
 		this.reward = -1; // fix name conflict
 		this.noop = 4;
-		this.visits = 1;
+		this.visits = 0;
 
 		this.min_reward = Gridworld.rewards.wall + Gridworld.rewards.move;
 		this.max_reward = Gridworld.rewards.chocolate + Gridworld.rewards.move;
