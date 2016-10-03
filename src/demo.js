@@ -204,7 +204,7 @@ const demo = {
 				});
 			}
 
-			results[config.agent.name] = logs;
+			results[config.agent.type.name] = logs;
 		}
 
 		console.log('Done!');
