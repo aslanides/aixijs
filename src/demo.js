@@ -170,6 +170,8 @@ const demo = {
 	},
 
 	experiment(dems, runs, seed) {
+		this.experiment_number ? this.experiment_number++ : this.experiment_number = 1;
+
 		results = {};
 		seed = seed || 'aixi';
 		for (let config of dems) {
@@ -182,7 +184,10 @@ const demo = {
 					+ ` run ${i + 1} of ${runs}...`);
 				if (i > 0) {
 					env = new env.constructor(env.options);
-					Gridworld.isSolvable(env); // TODO fix hack
+					if (env.constructor == Gridworld) {
+						Gridworld.isSolvable(env);
+					}
+
 					this.run(true, env);
 				} else {
 					this.run(true);
@@ -215,7 +220,7 @@ const demo = {
 		let a = document.createElement('a');
 		a.download = 'results.json';
 		a.href = URL.createObjectURL(blob);
-		a.textContent = 'Download results.json';
+		a.textContent = `Download results${this.experiment_number}.json`;
 		document.body.appendChild(a);
 
 		return results;
