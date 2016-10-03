@@ -58,5 +58,3 @@ class CustomDiscount extends Discount{
 		return dfr => vector[dfr];
 	}
 }
-
-//Note: We use fixed lifetime for all discounts anyway, but with d_t = [[t < m]] = gamma ^t if t < m
