@@ -142,8 +142,7 @@ class UI {
 	static init() {
 		let $picker = $('#picker');
 		let i = 0;
-		let row = document.createElement('div');
-		row.className = 'row';
+		let row = null;
 		for (let d in configs) {
 			if (i % 5 == 0) {
 				row = document.createElement('div');
@@ -151,12 +150,12 @@ class UI {
 				picker.appendChild(row);
 			}
 
-			i++;
-
 			let config = configs[d];
 			if (!config.active) {
 				continue;
 			}
+
+			i++;
 
 			let a = document.createElement('a');
 			a.href = '#';
@@ -180,7 +179,9 @@ class UI {
 			let para = document.createElement('p');
 			para.innerText = config.description;
 			caption.appendChild(para);
-			a.appendChild(caption);
+			div.appendChild(caption);
+			console.log(d);
+			console.log(i);
 		}
 	}
 }
