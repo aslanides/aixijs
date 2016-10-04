@@ -78,6 +78,7 @@ const configs = {
 			type: ThompsonAgent,
 			horizon: 15,
 			samples: 2500,
+			ucb: 1,
 		},
 		env: {
 			type: Gridworld,
