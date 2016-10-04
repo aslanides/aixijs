@@ -163,7 +163,7 @@ class UI {
 			row.appendChild(a);
 
 			let div = document.createElement('div');
-			div.className = 'col-md-2 thumbnail';
+			div.className = 'col-xs-2 thumbnail';
 			a.appendChild(div);
 
 			let img = document.createElement('img');
@@ -180,8 +180,6 @@ class UI {
 			para.innerText = config.description;
 			caption.appendChild(para);
 			div.appendChild(caption);
-			console.log(d);
-			console.log(i);
 		}
 	}
 }
