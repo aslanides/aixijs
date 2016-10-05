@@ -14,7 +14,7 @@ class ExpectimaxTree {
 			this.prune = this.reset;
 		}
 
-		this.reset(agent);
+		this.reset();
 	}
 
 	getValueEstimate() {
@@ -84,7 +84,8 @@ class ExpectimaxTree {
 		return reward;
 	}
 
-	reset(agent) {
+	reset() {
+		let agent = this.agent;
 		this.rew_range = agent.discount(0, agent.t) * (agent.max_reward - agent.min_reward);
 		this.root = new DecisionNode(null, this);
 		this.sampled = false;

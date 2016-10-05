@@ -24,7 +24,7 @@ class BayesAgent extends Agent {
 
 	selectAction(e) {
 		if (this.information_gain) {
-			this.planner.reset(this);
+			this.planner.reset();
 		} else {
 			this.planner.prune(this.last_action, e);
 		}
