@@ -398,6 +398,7 @@ const configs = {
 			horizon: 10,
 			samples: 1000,
 			cycles: 2e2,
+			ucb: 0.03,
 			/*
 			_mods: function(agent) {
 				let discountChanges = [];

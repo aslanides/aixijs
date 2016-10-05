@@ -27,6 +27,7 @@ class TIVis extends Visualization {
 		}
 
 		this.margin = 50;
+		this.text_margin = 20;
 		let xMax = 0;
 		let yMax = 0;
 		for (let i = 0; i < this.pos_array.length; i++) {
@@ -90,11 +91,11 @@ class TIVis extends Visualization {
 		}
 
 		this.plan_vis = [];
-		for (let i = 0; i < this.plan_trace[this.time + 2].length - 3; i++) {
+		for (let i = 0; i < this.plan_trace[this.time + 2].length; i++) {
 			let planIter = this.svg.append('text')
 				.text(this.plan_trace[this.time + 3][i])  //index off, needs to be a time step higher
 				.attr('y', this.height + 80)
-				.attr('x', this.margin * i);
+				.attr('x', this.text_margin * (i + 1));
 
 			this.plan_vis.push(planIter);
 		}
