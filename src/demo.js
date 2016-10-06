@@ -209,7 +209,7 @@ const demo = {
 				});
 			}
 
-			results[config.agent.type.name] = logs;
+			results[config.name] = logs;
 		}
 
 		console.log('Done!');
