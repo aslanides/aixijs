@@ -22,9 +22,7 @@ class DirichletMDP {
 	}
 
 	update(a, e) {
-		let bitvec = Util.zeros(this.numStates);
-		bitvec[e.obs] = 1;
-		this.transitions[this.state][a].update(bitvec);
+		this.transitions[this.state][a].update(e.obs);
 		this.rewards[this.state][a] = e.rew;
 	}
 

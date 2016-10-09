@@ -58,7 +58,8 @@ class DirichletGrid {
 		}
 
 		this.perform(4);
-		this.grid[0][0].update([1, 1, 0]);
+		this.pos.update(0);
+		this.pos.update(1);
 	}
 
 	generatePercept() {
@@ -166,10 +167,11 @@ class DirichletGrid {
 			}
 
 			if (oBits[i]) {
-				n.update([0, 0, 1]);
+				n.update(2); // wall
 			} else {
 				if (n.pr.alphas[0] == 0 && n.pr.alphas[1] == 0) {
-					n.update([1, 1, 0]);
+					n.update(0);
+					n.update(1);
 				}
 			}
 
@@ -183,9 +185,9 @@ class DirichletGrid {
 		let rew = r - Gridworld.rewards.move;
 
 		if (rew == Gridworld.rewards.empty) {
-			s.update([1, 0, 0]);
+			s.update(0);
 		} else if (rew == Gridworld.rewards.chocolate) {
-			s.update([0, 1, 0]);
+			s.update(1);
 		}
 
 		this.params[s.x][s.y] = s.pr.alphas;
@@ -247,8 +249,8 @@ class DirichletTile {
 		return this.children[idx];
 	}
 
-	update(bitvec) {
-		this.pr.update(bitvec);
+	update(cls) {
+		this.pr.update(cls);
 	}
 
 	prob(i) {

@@ -142,13 +142,8 @@ class Dirichlet {
 		return means;
 	}
 
-	update(bitvec) {
-		for (let i = 0; i < this.K; i++) {
-			let c = bitvec[i];
-			if (c) {
-				this.alphas[i] += c;
-				this.alphaSum += c;
-			}
-		}
+	update(cls) { // for performance, only one obs at a time now
+		this.alphas[cls]++;
+		this.alphaSum++;
 	}
 }
