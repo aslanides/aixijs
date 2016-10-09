@@ -1,4 +1,4 @@
-class DirichletModel {
+class DirichletGrid {
 	constructor(N) {
 		this.actions = Gridworld.actions;
 		this.A = this.actions.length;

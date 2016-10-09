@@ -49,7 +49,7 @@ const configs = {
 		vis: DirichletVis,
 		agent: {
 			type: BayesAgent,
-			model: DirichletModel,
+			model: DirichletGrid,
 			cycles: 100,
 			tracer: DirichletTrace,
 		},
@@ -123,7 +123,7 @@ const configs = {
 		vis: DirichletVis,
 		agent: {
 			type: KullbackLeiblerKSA,
-			model: DirichletModel,
+			model: DirichletGrid,
 			tracer: DirichletTrace,
 			cycles: 100,
 		},
@@ -138,7 +138,7 @@ const configs = {
 		vis: DirichletVis,
 		agent: {
 			type: ShannonKSA,
-			model: DirichletModel,
+			model: DirichletGrid,
 			tracer: DirichletTrace,
 			cycles: 100,
 		},
@@ -151,7 +151,7 @@ const configs = {
 		vis: DirichletVis,
 		agent: {
 			type: SquareKSA,
-			model: DirichletModel,
+			model: DirichletGrid,
 			tracer: DirichletTrace,
 			cycles: 100,
 		},

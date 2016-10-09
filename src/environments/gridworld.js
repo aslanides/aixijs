@@ -265,8 +265,8 @@ class Gridworld extends Environment {
 
 	makeModel(model, parametrization) {
 
-		if (model == DirichletModel) {
-			return new DirichletModel(this.options.N);
+		if (model == DirichletGrid) {
+			return new DirichletGrid(this.options.N);
 		}
 
 		let modelClass = [];

@@ -4,6 +4,12 @@ class Discount {
 	}
 }
 
+/* TODO
+Discount.params = [
+	{},
+];
+*/
+
 class MatrixDiscount {
 	constructor(params) {
 		let discounts = Util.arrayCopy(params.discounts);
