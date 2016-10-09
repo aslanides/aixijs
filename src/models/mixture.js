@@ -11,7 +11,7 @@ class BayesMixture {
 
 	xi(e) {
 		let s = 0;
-		for (let i = 0; i < this.C; i++) {
+		for (let i = 0, C = this.C; i < C; i++) {
 			if (this.weights[i] == 0) {
 				continue;
 			}
@@ -30,7 +30,7 @@ class BayesMixture {
 
 	bayesUpdate(a, e) {
 		let xi = 0;
-		for (let i = 0; i < this.C; i++) {
+		for (let i = 0, C = this.C; i < C; i++) {
 			if (this.weights[i] == 0) {
 				continue;
 			}
@@ -41,13 +41,13 @@ class BayesMixture {
 
 		Util.assert(xi != 0, `Cromwell violation: xi(${e.obs},${e.rew}) = 0`);
 
-		for (let i = 0; i < this.C; i++) {
+		for (let i = 0, C = this.C; i < C; i++) {
 			this.weights[i] /= xi;
 		}
 	}
 
 	perform(a) {
-		for (let i = 0; i < this.C; i++) {
+		for (let i = 0, C = this.C; i < C; i++) {
 			if (this.weights[i] == 0) {
 				continue;
 			}
@@ -63,14 +63,14 @@ class BayesMixture {
 
 	save() {
 		this.saved_weights = [...this.weights];
-		for (let i = 0; i < this.C; i++) {
+		for (let i = 0, C = this.C; i < C; i++) {
 			this.modelClass[i].save();
 		}
 	}
 
 	load() {
 		this.weights = [...this.saved_weights];
-		for (let i = 0; i < this.C; i++) {
+		for (let i = 0, C = this.C; i < C; i++) {
 			this.modelClass[i].load();
 		}
 	}

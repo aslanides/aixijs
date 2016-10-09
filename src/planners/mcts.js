@@ -132,7 +132,7 @@ class DecisionNode {
 			this.n_children++;
 		} else {
 			let max = Number.NEGATIVE_INFINITY;
-			for (let action = 0; action < tree.numActions; action++) {
+			for (let action = 0, A = tree.numActions; action < A; action++) {
 				let child = this.getChild(action);
 				let normalization = tree.horizon * tree.rew_range;
 				let value = child.mean / normalization + tree.ucb *
