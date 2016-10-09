@@ -82,10 +82,53 @@ class Gridworld extends Environment {
 		});
 	}
 
+	isSolvable() {
+		let queue = [];
+		let pos = 0;
+
+		let maxFreq = 0;
+		for (let goal of this.options.goals) {
+			if (goal.freq > maxFreq) {
+				maxFreq = goal.freq;
+			}
+		}
+
+		for (let i = 0; i < this.N; i++) {
+			for (let j = 0; j < this.N; j++) {
+				this.grid[i][j].expanded = false;
+			}
+		}
+
+		this.numStates = 1;
+		queue.push(this.grid[0][0]);
+		let solvable = false;
+		while (pos < queue.length) {
+			let ptr = queue[pos];
+			ptr.expanded = true;
+			for (let t of ptr.connexions) {
+				if (!t || t.expanded) {
+					continue;
+				}
+
+				this.numStates++;
+				if ((t.constructor == Dispenser && t.freq == maxFreq) || t.constructor == Chocolate) {
+					solvable = true;
+				}
+
+				t.expanded = true;
+				queue.push(t);
+			}
+
+			pos++;
+		}
+
+		return solvable;
+	}
+
 	static generateRandom(Cl, options) {
 		let opt = Gridworld.proposeRandom(options);
 		let env = new Cl(opt);
-		if (!Gridworld.isSolvable(env)) {
+		if (!env.isSolvable()) {
 			return Gridworld.generateRandom(Cl, options);
 		}
 
@@ -138,49 +181,6 @@ class Gridworld extends Environment {
 			y: gy,
 		};
 
-	}
-
-	static isSolvable(env) {
-		let queue = [];
-		let pos = 0;
-
-		let maxFreq = 0;
-		for (let goal of env.options.goals) {
-			if (goal.freq > maxFreq) {
-				maxFreq = goal.freq;
-			}
-		}
-
-		for (let i = 0; i < env.N; i++) {
-			for (let j = 0; j < env.N; j++) {
-				env.grid[i][j].expanded = false;
-			}
-		}
-
-		env.numStates = 1;
-		queue.push(env.grid[0][0]);
-		let solvable = false;
-		while (pos < queue.length) {
-			let ptr = queue[pos];
-			ptr.expanded = true;
-			for (let t of ptr.connexions) {
-				if (!t || t.expanded) {
-					continue;
-				}
-
-				env.numStates++;
-				if ((t.constructor == Dispenser && t.freq == maxFreq) || t.constructor == Chocolate) {
-					solvable = true;
-				}
-
-				t.expanded = true;
-				queue.push(t);
-			}
-
-			pos++;
-		}
-
-		return solvable;
 	}
 
 	static newTile(i, j, info, type) {

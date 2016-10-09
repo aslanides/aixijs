@@ -185,7 +185,7 @@ const demo = {
 				if (i > 0) {
 					env = new env.constructor(env.options);
 					if (env.constructor == Gridworld) {
-						Gridworld.isSolvable(env);
+						env.isSolvable();
 					}
 
 					this.run(true, env);
