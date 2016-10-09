@@ -286,10 +286,10 @@ const configs = {
 	},
 	wirehead: {
 		active: true,
-		name: 'Wireheading [broken]',
+		name: 'Wireheading',
 		description: `AIXI has an opportunity to change its sensors and wirehead,
 		 so that it deludes itself that every action is maximally rewarding. Does it take it?`,
-		vis: BayesGridVis,
+		vis: WireHeadVis,
 		agent: {
 			type: BayesAgent,
 		},
@@ -301,7 +301,7 @@ const configs = {
 				if (t.expanded) {
 					t = new SelfModificationTile(t.x, t.y);
 					env.grid[pos.x][pos.y] = t;
-					env.options.map[pos.x][pos.y] = 'M';
+					env.options.map[pos.y][pos.x] = 'M';
 				} else {
 					this._mods(env);
 				}

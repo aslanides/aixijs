@@ -395,9 +395,18 @@ class WireheadingGrid extends Gridworld {
 				p.rew = Number.MAX_SAFE_INTEGER;
 				return p;
 			};
+
+			this.wireheaded = true;
 		}
 
 		return 0;
+	}
+
+	getState() {
+		let s = super.getState();
+		s.wireheaded = this.wireheaded;
+
+		return s;
 	}
 
 	save() {

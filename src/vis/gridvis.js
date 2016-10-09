@@ -303,4 +303,21 @@ class ThompsonVis extends BayesGridVis {
 	}
 }
 
+class WireHeadVis extends BayesGridVis {
+	updateAgent() {
+		super.updateAgent();
+		if (this.pos_trace[this.time].wireheaded) {
+			for (let i = 0; i < this.N; i++) {
+				for (let j = 0; j < this.N; j++) {
+					let r = this.rectangles[i][j];
+					let col = r[0][0].getAttribute('fill');
+					let rgb = col.replace(/[^\d,]/g, '').split(',');
+					rgb[0] += 20;
+					r.attr('fill', `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`);
+				}
+			}
+		}
+	}
+}
+
 ThompsonVis.exps = ['dispenser', 'thompson'];
