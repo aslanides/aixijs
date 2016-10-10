@@ -256,6 +256,8 @@ class BayesGridVis extends GridVisualization {
 		}
 
 		let trap = tile.constructor == Trap;
+		// TODO visualize direct from agent mixture model!
+
 		let p = this.model_trace[time][tile.y * this.N + tile.x];
 		return {
 			g: 255 - 100 * trap,

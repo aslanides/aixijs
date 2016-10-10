@@ -358,8 +358,13 @@ const configs = {
 			cycles: 100,
 			_mods: function (agent) {
 				for (let m of agent.model.modelClass) {
-					if (m.grid[0][1].constructor != Wall) m.grid[0][1] = new Trap(1, 0);
-					if (m.grid[1][0].constructor != Wall) m.grid[1][0] = new Trap(0, 1);
+					for (let d of [[0, 1], [1, 0]]) {
+						let t = m.grid[d[0]][d[1]];
+						if (t.constructor != Wall && t.constructor != Dispenser) {
+							m.grid[d[0]][d[1]] = new Trap(d[0], d[1]);
+						}
+					}
+
 					m.generateConnexions();
 				}
 			},
