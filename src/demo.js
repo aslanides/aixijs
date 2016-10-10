@@ -64,6 +64,8 @@ const demo = {
 		options.agent.min_reward = this.env.min_reward;
 		options.agent.max_reward = this.env.max_reward;
 
+		options.agent.discountParam = options.agent.discountParam || { gamma: 0.99 };
+
 		this.agent = new options.agent.type(options.agent);
 		if (options.agent._mods) {
 			options.agent._mods(this.agent);
