@@ -87,6 +87,15 @@ class ThompsonTrace extends BayesTrace {
 	}
 }
 
+class MDLTrace extends ThompsonTrace {
+	logModel(agent) {
+		super.logModel(agent);
+		if (this.iter == 0) {
+			this.mappings = agent.mappings;
+		}
+	}
+}
+
 class DirichletTrace extends BayesTrace {
 	constructor(t) {
 		super(t);
