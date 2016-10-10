@@ -3,7 +3,7 @@ class Agent {
 		this.numActions = options.numActions;
 		this.tracer = Trace;
 		this.t = 0;
-		this.discount = new options.discount(options.discountParams);
+		this.discount = new options.discount(options.discountParam);
 		this.last_action = null;
 	}
 

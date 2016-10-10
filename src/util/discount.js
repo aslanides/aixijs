@@ -38,16 +38,16 @@ class GeometricDiscount {
 
 class HyperbolicDiscount {
 	constructor(params) {
-		let kappa = params.kappa;
 		let beta = params.beta;
-		return dfr => (1 / Math.pow(1 + kappa * dfr, beta));
+		let kappa = params.kappa;
+		return dfr => Math.pow(1 + kappa * dfr, -beta);
 	}
 }
 
 class PowerDiscount {
 	constructor(params) {
 		let beta = params.beta;
-		return (dfr, t) => Math.pow(t, -1 * beta);
+		return (dfr, t) => Math.pow(dfr + t, -beta);
 	}
 }
 

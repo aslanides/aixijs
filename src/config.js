@@ -430,23 +430,27 @@ const configs = {
 			samples: 1000,
 			cycles: 2e2,
 			ucb: 0.03,
-			/*
-			_mods: function(agent) {
-				let discountChanges = [];
-				let discounts = [];
-
-				// discount 6 ahead to plan for high reward, then change
-				// mind right before to discount only 1, contradicting the previous plan
-				for (let i = 0; i < this.cycles; i++) {
-					discountChanges[i] = i;
-					if (i % 5 == 0) {
-						discounts.push(new ConstantHorizonDiscount(1));
-					} else discounts.push(new ConstantHorizonDiscount(this.horizon));
-				}
-
-				agent.discount = new MatrixDiscount(discounts, discountChanges);
+			discounts: {
+				GeometricDiscount,
+				HyperbolicDiscount,
+				PowerDiscount,
+				ConstantHorizonDiscount,
 			},
-			*/
+			discountParams: {
+				GeometricDiscount: {
+					gamma: 0.99,
+				},
+				HyperbolicDiscount: {
+					beta: 1.5,
+					kappa: 1,
+				},
+				PowerDiscount: {
+					beta: 1.5,
+				},
+				ConstantHorizonDiscount: {
+					horizon: 5,
+				},
+			},
 		},
 		env: {
 			type: TimeInconsistentEnv,

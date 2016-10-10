@@ -45,6 +45,7 @@ class UI {
 				if (field == 'type' ||
 						field == 'model' ||
 						field == 'discount' ||
+						field == 'discountParams' ||
 						field == 'tracer' ||
 						field == 'modelParametrization' ||
 						field == 'opponent' ||
@@ -52,6 +53,46 @@ class UI {
 						field == 'transitions' ||
 						field == 'rewards' ||
 						field[0] == '_') {
+					continue;
+				}
+
+				// TODO use a handler idiom here; this function is huge
+				// probably the worst code i've written in my life
+
+				if (field == 'discounts') {
+					let p = this.doc.createElement('p');
+					let select = this.doc.createElement('select');
+					select.id = 'discount-select';
+					for (let name in options.discounts) {
+						let discount = options.discounts[name];
+						let opt = this.doc.createElement('option');
+						opt.value = discount.name;
+						opt.text = discount.name;
+						select.add(opt);
+					}
+
+					let label = this.doc.createElement('label');
+					label.for = 'discount-select';
+					label.innerText = 'Discount: ';
+
+					p.appendChild(label);
+					p.appendChild(select);
+					p.name = field;
+					div.appendChild(p);
+
+					select.onchange = function () {
+						for (let i = div.children.length - 1; i >= 0; i--) {
+							let p = div.children[i];
+							if (p.children[0].innerText.startsWith('agent.discount')) {
+								div.removeChild(p);
+							}
+						}
+
+						fixerino(options.discountParams[select.value], 'agent.discount', div);
+					};
+
+					fixerino(options.discountParams.GeometricDiscount, 'agent.discount', div);
+
 					continue;
 				}
 
@@ -98,7 +139,6 @@ class UI {
 				input.step = '0.01';
 
 				let label = this.doc.createElement('label');
-				label.for = field;
 				try {
 					label.innerText = `${level}.${glossary[field].label}:`;
 					label.title = glossary[field].description;
@@ -142,6 +182,19 @@ class UI {
 
 				if (p.name == 'agents') {
 					options.agent.type = options.agent.agents[p.children[1].value];
+					continue;
+				}
+
+				if (p.name == 'discounts') {
+					options.agent.discount = options.agent.discounts[p.children[1].value];
+					let dp = {};
+					for (let p of div.children) {
+						if (p.children[0].innerText.startsWith('agent.discount')) {
+							dp[p.children[1].name] = p.children[1].value;
+						}
+					}
+
+					options.agent.discountParam = dp;
 					continue;
 				}
 
