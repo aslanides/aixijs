@@ -3,11 +3,11 @@ class MDP extends Environment {
 		super(options);
 		this.numActions = options.numActions;
 		this.numStates = options.numStates;
-		this.initial_state = options._initial_state;
+
 		this.noop = 0;
-		this.min_reward = options.min_reward;
-		this.max_reward = options.max_reward;
 		this.state = 0;
+		this.last_state = 0;
+		this.last_action = 0;
 
 		this.transitions = options.transitions;
 		this.rewards = options.rewards;
@@ -33,6 +33,8 @@ class MDP extends Environment {
 		let s = this.state;
 		let P = this.transitions[a][s];
 		let s_ = Util.sample(P);
+		this.last_state = s;
+		this.last_action = a;
 		this.state = s_;
 		this.reward = this.rewards[s][a];
 	}
@@ -49,7 +51,13 @@ class MDP extends Environment {
 	}
 
 	conditionalDistribution(e) {
-		return 1; // TODO fix
+		let s = this.last_state;
+		let a = this.last_action;
+		if (e.rew != this.rewards[s][a]) {
+			return 0;
+		}
+
+		return this.transitions[a][s][e.obs];
 	}
 
 	makeModel(type, parametrization) {
@@ -74,4 +82,8 @@ class MDP extends Environment {
 	load() {
 		this.state = this.saved_state;
 	}
+}
+
+class HeavenHell extends MDP {
+	// TODO build model class
 }

@@ -18,7 +18,7 @@ class DirichletMDP {
 			}
 		}
 
-		this.state = options.initial_state;
+		this.state = 0;
 	}
 
 	update(a, e) {

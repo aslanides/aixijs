@@ -374,37 +374,32 @@ const configs = {
 		description: `The canonical Heaven and Hell example:
 		the agent is presented with two doors: one leads to heaven (reward 1 forever),
 		and one leads to hell (reward 0 forever. It has no idea a priori which is which.`,
-		vis: MDPVis,
+		vis: MDP2Vis,
 		agent: {
 			type: BayesAgent,
 			cycles: 10,
+			modelParametrization: 'mu',
 		},
 		env: {
-			type: BasicMDP,
-			_initial_state: 0,
-			_states: [
-				{
-					pos: { x: 80, y: 80 },
-					actions:
-					[
-						{ probabilities: [0, 1, 0], rewards: [0, 1, 0] },
-						{ probabilities: [0, 0, 1], rewards: [0, 0, 0] },
-					],
-				},
-				{
-					pos: { x: 160, y: 160 },
-					actions:
-					[
-						{ probabilities: [0, 1, 0], rewards: [0, 1, 0] },
-					],
-				},
-				{
-					pos: { x: 300, y: 160 },
-					actions:
-					[
-						{ probabilities: [0, 0, 1], rewards: [0, 0, 1] },
-					],
-				},
+			type: MDP,
+			numStates: 3,
+			numActions: 2,
+			transitions: [
+				[
+					[0, 1, 0],
+					[0, 1, 0],
+					[0, 0, 1],
+				],
+				[
+					[0, 0, 1],
+					[0, 1, 0],
+					[0, 0, 1],
+				],
+			],
+			rewards: [
+				[0, 1],
+				[0, 0],
+				[1, 1],
 			],
 		},
 	},
