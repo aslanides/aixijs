@@ -53,6 +53,30 @@ class UI {
 					continue;
 				}
 
+				if (field == 'agents') {
+					// make dropdown to pick agent
+					let p = this.doc.createElement('p');
+					let select = this.doc.createElement('select');
+					select.id = 'agent-select';
+					for (let name in options.agents) {
+						let agent = options.agents[name];
+						let opt = this.doc.createElement('option');
+						opt.value = agent.name;
+						opt.text = agent.name;
+						select.add(opt);
+					}
+
+					let label = this.doc.createElement('label');
+					label.for = 'agent-select';
+					label.innerText = `Agent: `;
+
+					p.appendChild(label);
+					p.appendChild(select);
+					p.name = field;
+					div.appendChild(p);
+					continue;
+				}
+
 				if (typeof options[field] == 'object') {
 					fixerino(options[field], level, div);
 					continue;
@@ -113,6 +137,12 @@ class UI {
 			let div = this.getElementById(opt);
 			for (let p of div.children) {
 				let rofl = this.getElementById(p.name);
+
+				if (p.name == 'agents') {
+					options.agent.type = options.agent.agents[p.children[1].value];
+					continue;
+				}
+
 				matchOpt(options[opt], p.name, parseFloat(rofl.value));
 			}
 		}
