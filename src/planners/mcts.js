@@ -73,7 +73,7 @@ class ExpectimaxTree {
 
 	rollout(horizon, dfr) {
 		let reward = 0;
-		for (let i = dfr; i < horizon; i++) {
+		for (let i = dfr; i <= horizon; i++) {
 			let action = Math.floor(Math.random() * this.numActions);
 			this.model.perform(action);
 			let e = this.model.generatePercept();
