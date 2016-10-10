@@ -457,96 +457,6 @@ const configs = {
 			type: TimeInconsistentEnv,
 		},
 	},
-	time2: {
-		active: true,
-		name: 'Time inconsistency2',
-		description: `A simple environment in which AImu can be made time-inconsistent by
-		 certain choices of discount functions.`,
-		vis: MDPVis,
-		agent: {
-			type: BayesAgent,
-			model: BayesMixture,
-			modelParametrization: 'mu',
-		},
-		env: {
-			type: BasicMDP,
-			_initial_state: 0,
-			min_reward: 0,
-			max_reward: 1000,
-			_states: [
-				{
-					pos: { x: 80, y: 80 },
-					actions:
-					[
-						{ probabilities: [1, 0, 0, 0, 0, 0, 0],
-							rewards: [4, 0, 0, 0, 0, 0, 0], },
-						{ probabilities: [0, 1, 0, 0, 0, 0, 0],
-							rewards: [0, 0, 0, 0, 0, 0, 0], },
-					],
-				},
-				{
-					pos: { x: 140, y: 80 },
-					actions:
-					[
-						{ probabilities: [1, 0, 0, 0, 0, 0, 0],
-							rewards: [4, 0, 0, 0, 0, 0, 0], },
-						{ probabilities: [0, 0, 1, 0, 0, 0, 0],
-							rewards: [0, 0, 0, 0, 0, 0, 0], },
-					],
-				},
-				{
-					pos: { x: 200, y: 80 },
-					actions:
-					[
-						{ probabilities: [1, 0, 0, 0, 0, 0, 0],
-							rewards: [4, 0, 0, 0, 0, 0, 0], },
-						{ probabilities: [0, 0, 0, 1, 0, 0, 0],
-							rewards: [0, 0, 0, 0, 0, 0, 0], },
-					],
-				},
-				{
-					pos: { x: 260, y: 80 },
-					actions:
-					[
-						{ probabilities: [1, 0, 0, 0, 0, 0, 0],
-							rewards: [4, 0, 0, 0, 0, 0, 0], },
-						{ probabilities: [0, 0, 0, 0, 1, 0, 0],
-							rewards: [0, 0, 0, 0, 0, 0, 0], },
-					],
-				},
-				{
-					pos: { x: 320, y: 80 },
-					actions:
-					[
-						{ probabilities: [1, 0, 0, 0, 0, 0, 0],
-							rewards: [4, 0, 0, 0, 0, 0, 0], },
-						{ probabilities: [0, 0, 0, 0, 0, 1, 0],
-							rewards: [0, 0, 0, 0, 0, 0, 0], },
-					],
-				},
-				{
-					pos: { x: 380, y: 80 },
-					actions:
-					[
-						{ probabilities: [1, 0, 0, 0, 0, 0, 0],
-							rewards: [4, 0, 0, 0, 0, 0, 0], },
-						{ probabilities: [0, 0, 0, 0, 0, 0, 1],
-							rewards: [0, 0, 0, 0, 0, 0, 0], },
-					],
-				},
-				{
-					pos: { x: 380, y: 80 },
-					actions:
-					[
-						{ probabilities: [1, 0, 0, 0, 0, 0, 0],
-							rewards: [4, 0, 0, 0, 0, 0, 0], },
-						{ probabilities: [1, 0, 0, 0, 0, 0, 0],
-							rewards: [1000, 0, 0, 0, 0, 0, 0], },
-					],
-				},
-			],
-		},
-	},
 	mdp2: {
 		active: true,
 		name: 'MDP2',
@@ -555,6 +465,10 @@ const configs = {
 			type: BayesAgent,
 			model: BayesMixture,
 			modelParametrization: 'mu',
+			ucb: 0.03,
+			_mods: function (agent) {
+				agent.planner = new ExpectimaxTree(agent, agent.model, true);
+			},
 		},
 		env: {
 			type: MDP,
