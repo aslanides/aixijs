@@ -49,6 +49,8 @@ class UI {
 						field == 'modelParametrization' ||
 						field == 'opponent' ||
 						field == 'dist' ||
+						field == 'transitions' ||
+						field == 'rewards' ||
 						field[0] == '_') {
 					continue;
 				}
