@@ -5,6 +5,27 @@ class MDP2Vis extends Visualization {
 		this.width = 400;
 		this.height = this.width;
 
+		let S = env.numStates;
+		let A = env.numActions;
+		let P = env.transitions;
+
+		let graph = {};
+		graph.nodes = [];
+		graph.edges = [];
+
+		for (let s = 0; s < S; s++) {
+			graph.nodes.push({ id: s });
+			for (let a = 0; a < A; a++) {
+				for (let s_ = 0; s_ < S; s_++) {
+					if (P[a][s][s_] == 0) {
+						continue;
+					}
+
+					graph.edges.push({ source: s, target: s_, a: a, p: P[a][s][s_] });
+				}
+			}
+		}
+
 		this.svg
 			.attr('width', this.width + 2 * this.margin)
 			.attr('height', this.height + 2 * this.margin);

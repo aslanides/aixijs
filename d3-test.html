@@ -20,7 +20,7 @@ let graph = {
 		{ id: 'Napoleon' },
 		{ id: 'Gangsta' },
 	],
-	links: [
+	edges: [
 		{ source: 'Napoleon', target: 'Myriel', value: 1 },
 		{ source: 'Myriel', target: 'Gangsta', value: 1 },
 		{ source: 'Myriel', target: 'Myriel', value: 1 },
@@ -29,23 +29,23 @@ let graph = {
 
 let nodes = graph.nodes;
 let nodeById = d3.map(nodes, d => d.id);
-let links = graph.links;
+let edges = graph.edges;
 let bilinks = [];
 
-links.forEach(link => {
-	let s = link.source = nodeById.get(link.source);
-	let t = link.target = nodeById.get(link.target);
+edges.forEach(edge => {
+	let s = edge.source = nodeById.get(edge.source);
+	let t = edge.target = nodeById.get(edge.target);
 	let i = {}; // intermediate node
 	nodes.push(i);
 	if (s == t) {
 		j = {};
 		nodes.push(j);
-		links.push({ source: s, target: i }, { source: i, target: j }, { source: j, target: t });
+		edges.push({ source: s, target: i }, { source: i, target: j }, { source: j, target: t });
 		bilinks.push([s, i, j, s]);
 		return;
 	}
 
-	links.push({ source: s, target: i }, { source: i, target: t });
+	edges.push({ source: s, target: i }, { source: i, target: t });
 	bilinks.push([s, i, t]);
 });
 
@@ -77,7 +77,7 @@ simulation.nodes(nodes)
 	.on('tick', ticked);
 
 simulation.force('link')
-	.links(links);
+	.links(edges);
 
 function ticked() {
 	link.attr('d', positionLink);
