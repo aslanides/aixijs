@@ -43,8 +43,8 @@ const demo = {
 		}
 	},
 
-	run(noupdate, env) {
-		this.noupdate = noupdate;
+	run(novis, env) {
+		this.novis = novis;
 
 		// new: class defaults -> config -> ui
 		// run: ui -> options -> env/agent
@@ -91,11 +91,6 @@ const demo = {
 
 		let callback = _ => {
 			this.ui.end();
-			if (options.vis) {
-				this.vis = new options.vis(this.env, this.trace, this.ui);
-				this.vis.reset();
-			}
-
 			this.cancel = false;
 			let frames = this.trace.iter;
 			let second = Util.roundTo((performance.now() - this.t0) / 1000, 4);
@@ -103,6 +98,11 @@ const demo = {
 			this.trace.runtime = second;
 			this.trace.fps = fps;
 			console.log(`${frames} cycles, ${second} seconds (${fps} fps)`);
+
+			if (!this.novis && options.vis) {
+				this.vis = new options.vis(this.env, this.trace, this.ui);
+				this.vis.reset();
+			}
 		};
 
 		this.ui.start();
@@ -130,7 +130,7 @@ const demo = {
 		};
 
 		let loop;
-		if (this.noupdate) {
+		if (this.novis) {
 			loop = _ => {
 				while (true) {
 					if (trace.iter >= trace.t || this.cancel) {
