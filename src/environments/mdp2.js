@@ -53,11 +53,13 @@ class MDP extends Environment {
 	conditionalDistribution(e) {
 		let s = this.last_state;
 		let a = this.last_action;
+		let s_ = e.obs;
+
 		if (e.rew != this.rewards[s][a]) {
 			return 0;
 		}
 
-		return this.transitions[a][s][e.obs];
+		return this.transitions[a][s][s_]; // :D
 	}
 
 	makeModel(type, parametrization) {
