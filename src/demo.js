@@ -218,9 +218,9 @@ const demo = {
 		let blob = new Blob([json], { type: 'application/json' });
 
 		let a = document.createElement('a');
-		a.download = 'results.json';
+		a.download = `results-${this.experiment_number}.json`;
 		a.href = URL.createObjectURL(blob);
-		a.textContent = `Download results${this.experiment_number}.json`;
+		a.textContent = `Download results-${this.experiment_number}.json`;
 		document.body.appendChild(a);
 
 		return results;

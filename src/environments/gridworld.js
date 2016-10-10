@@ -227,6 +227,7 @@ class Gridworld extends Environment {
 	}
 
 	dynamics(tile) {
+		tile.dynamics();
 		return 0;
 	}
 
@@ -331,18 +332,23 @@ class Gridworld extends Environment {
 
 	conditionalDistribution(e) {
 		let p = this.generatePercept();
+		let s = this.pos;
+		if (s.constructor == NoiseTile) {
+			return e.rew == p.rew ? s.prob : 0;
+		}
+
 		if (e.obs != p.obs) {
 			// observations are deterministic
 			return 0;
-		} else if (!this.pos.goal) {
+		} else if (!s.goal) {
 			// all tiles except the goal are deterministic
 			return e.rew == p.rew ? 1 : 0;
 		} else {
 			let rew = e.rew - Gridworld.rewards.move;
 			if (rew == Gridworld.rewards.chocolate) {
-				return this.pos.freq;
+				return s.freq;
 			} else if (rew == Gridworld.rewards.empty) {
-				return 1 - this.pos.freq;
+				return 1 - s.freq;
 			} else {
 				return rew == Gridworld.rewards.wall && this.wall_hit;
 			}
@@ -387,7 +393,7 @@ class WireheadingGrid extends Gridworld {
 		if (tile.constructor == SelfModificationTile) {
 			this.conditionalDistribution = e => {
 				let p = this.generatePercept();
-				return p.obs == e.obs && p.rew == e.rew;
+				return p.rew == e.rew;
 			};
 
 			this.generatePercept = _ => {
@@ -449,6 +455,7 @@ class Tile {
 		this.obs = null; // gets filled out on construction
 		this.symbol = 0; // what it looks like from afar
 		this.connexions = new Array();
+		this.dynamics = _ => {};
 	}
 }
 
@@ -497,5 +504,17 @@ class SelfModificationTile extends Tile {
 	constructor(x, y) {
 		super(x, y);
 		this.color = GridVisualization.colors.modifier;
+	}
+}
+
+class NoiseTile extends Tile {
+	constructor(x, y) {
+		super(x, y);
+		this.numObs = Math.pow(2, 2);
+		this.prob = 1 / this.numObs;
+		this.color = GridVisualization.colors.noise;
+		this.dynamics = function () {
+			this.obs = Util.randi(0, this.numObs);
+		};
 	}
 }

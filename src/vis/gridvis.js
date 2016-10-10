@@ -99,7 +99,6 @@ GridVisualization.colors = {
 		chocolate: 'yellow',
 		dispenser: 'orange',
 		agent: 'blue',
-		sign: 'red',
 		trap: 'pink',
 		rho: 'red',
 		modifier: 'blue',
@@ -248,9 +247,18 @@ class BayesGridVis extends GridVisualization {
 	}
 
 	posteriorColor(tile, time) {
-		if (tile.color == GridVisualization.colors.wall ||
-			tile.color == GridVisualization.colors.modifier) {
+		let tc = tile.constructor;
+		if (tc == Wall ||
+				tc == SelfModificationTile) {
 			return null;
+		}
+
+		if (tc == NoiseTile) {
+			return {
+				r: 255 * Math.random(),
+				g: 255 * Math.random(),
+				b: 255 * Math.random(),
+			};
 		}
 
 		let trap = tile.constructor == Trap;

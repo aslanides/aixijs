@@ -42,6 +42,18 @@ const configs = {
 			type: Gridworld,
 		},
 	},
+	aimu: {
+		name: 'MC-AIMU',
+		description: 'Monte Carlo AIMU on a known Gridworld.',
+		vis: BayesGridVis,
+		agent: {
+			type: BayesAgent,
+			modelParametrization: 'mu',
+		},
+		env: {
+			type: Gridworld,
+		},
+	},
 	aixi_dirichlet: {
 		active: true,
 		name: 'MC-AIXI-Dirichlet',
@@ -102,6 +114,28 @@ const configs = {
 		},
 		env: {
 			type: Gridworld,
+		},
+	},
+	hooked_on_noise: {
+		active: true,
+		name: 'Hooked on noise',
+		description: 'Entropy-seeking agents get hooked on white noise and stop exploring.',
+		vis: BayesGridVis,
+		agent: {
+			type: SquareKSA,
+			_mods: function (agent) {
+				for (let nu of agent.model.modelClass) {
+					nu.grid[0][1] = new NoiseTile(0, 1);
+					nu.generateConnexions();
+				}
+			},
+		},
+		env: {
+			type: Gridworld,
+			_mods: function (env) {
+				env.grid[0][1] = new NoiseTile(0, 1);
+				env.generateConnexions();
+			},
 		},
 	},
 	klksa: {
