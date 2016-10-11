@@ -169,16 +169,87 @@
 <!-- Explanations -->
 <td colspan=2>
 
+<span class="md">
+---
+</span>
+
+<span class="md" id="aixi_exp" style="display:none">
+# Monte Carlo AIXI
+
+TODO: AIXI vs AI\\(\xi\\) and MCTS
+</span>
+
+<span class="md" id="thompson_exp" style="display:none">
+# Thompson Sampling
+
+The Thompson sampling policy \\(\pi\_T\\) is: every _effective horizon_ \\(H\\), sample an environment \\(\rho\\) from the posterior \\(w(\cdot\lvert ae\_{&lt;t})\\) and follow the \\(\rho\\)-optimal policy for \\(H\\) time steps. For the Gridworld dispenser class parametrized by dispenser location, the red dot
+
+<p style="text-align:center" id="rho"></p>
+represents the position of the dispenser in \\(\rho\\); the \\(\rho\\)-optimal policy is to walk toward (and stay around) the dispenser. This means that the agent should chase the red dot around.
+
+Thompson sampling is asymptotically optimal (Leike et al., 2015), unlike AIXI. This is essentially because Thompson sampling commits you to a fixed policy for a period, giving you the chance to learn and explore better than by random exploration or even by being greedy with respect to \\(V^{\pi}\_{\xi}\\).
+</span>
+
+<span class="md" id="mdl_exp" style="display:none">
+# Minimum Description Length (MDL) agent
+
+TODO
+
+</span>
+
+<span class="md" id="wirehead_exp" style="display:none">
+# Wireheading
+
+This demo shows AIXI in a standard gridworld with a Dispenser as usual, but with one addition: a blue tile,
+
+<p style="text-align:center" id="wirehead"></p>
+
+which, if AIXI goes there, allows it to take control of its sensors and change its reward signal to be the maximum number it can represent, which in JavaScript is given by `Number.MAX_SAFE_INTEGER`, which has a value of \\(9007199254740991\\) -- much better than the measly \\(100\\) reward, which is the most it can hope for under 'normal' conditions. We color the whole gridworld in yellow and black
+
+<p style="text-align:center"><img src="assets/thumbs/wirehead.png" width="200"/></p>
+
+to signify that the agent has taken this action and that its sensors have now been modified. After this self-modification, the agent will no longer perform the task that the original reward system was designed to incentivize; instead, it will randomly walk, since every action is equally (and maximally) rewarding. A superintelligent reinforcement learner would go further, and take actions to ensure its survival and the continuation of the reward signal (TODO cite Tom). The purpose of this demo is to demonstrate that for a reinforcement learner, there's nothing to motivate the agent to follow the 'rules' and receive only the reward signal that its creators have set up for it, rather than simply  doing whatever it takes to maximize the reward signal -- this is the essence of wireheading.
+
+</span>
+
+<span class="md" id="noise_exp" style="display:none">
+# Hooked on Noise
+
+This demo is designed to contrast between the Entropy-seeking agents, `SquareKSA` and `ShannonKSA`, and the Knowledge-seeking agent, `KullbackLeiblerKSA`. This gridworld is setup as normal, except that near the top corner is a `Noisy` tile, that generates random observations and no reward (it flashes in various colors in the visualization). The entropy-seeking agents, which are effective knowledge-seeking agents only in _deterministic_ environments, fail completely in this stochastic environment; they get hooked on the noise and fail to explore. In contrast, the KL-KSA agent ignores the `Noisy` tile and explores the environment normally.
+
+To see why this is the case, [recall](index.html#ksa) that for Bayesian agents with a mixture model \\(\xi(\cdot)=\sum\_{\nu\in\mathcal{M}}w\_{\nu}\nu(\cdot)\\) over some model class \\(\mathcal{M}\\), the utility function of the `SquareKSA` is given by
+
+$$
+u\left(e\_{t})\lvert ae\_{&lt;t}\right) = -\xi\left(e\_t\lvert ae\_{&lt;t}\right),
+$$
+
+and the utility function of the `ShannonKSA` is given by
+
+$$
+u\left(e\_{t})\lvert ae\_{&lt;t}\right) = -\log\xi\left(e\_t\lvert ae\_{&lt;t}\right).
+$$
+
+In other words, these agents prefer to see percepts that are assigned low probability by their model \\(\xi\\). This works for mixtures over deterministic environments because in this case for each \\(\nu\in\mathcal{M}\\), for _any_ observed percept \\(e\\), \\(\nu(e) = 1\\), and so \\(\xi(e) &lt; 1\\) implies \\(w\_{\nu} < 1\\) for at least one \\(\nu\in\mathcal{M}\\), which means the agent is attracted to percepts about which its model is _uncertain_. In other words, for deterministic environments, any stochasticity in the model must come from uncertainty, and not from noise. If the model class includes stochastic environments, then the constraint \\(\nu(e) = 1\\) is relaxed, and now stochasticity in the model can originate from noise _or_ uncertainty or _both_; `SquareKSA` and `ShannonKSA` can't tell whether it's coming from the beliefs \\(w\\) or from noise in the environments themselves, and so they get confused and can get 'trapped' watching white noise on a de-tuned television.
+
+In contrast, the utility function of the `KullbackLeiblerKSA` is dependent not on \\(\xi\\), but only on the difference in entropy between the posterior belief \\(w(\nu\lvert e)\\) and the prior belief \\(w(\nu)\\):
+
+$$
+u\left(e\_{t})\lvert ae\_{&lt;t}\right) = \text{Ent}(w) - \text{Ent}(w\lvert e\_t).
+$$
+
+This way, the KL-KSA only cares about changes in its beliefs, and so will seek out experiences that reduce the entropy in its posterior -- or, in other words, that result in a net increase in the amount of information contained in its beliefs.
+
+</span>
+
 <span class="md" id="dispenser_exp" style="display:none">
 
----
 # Dispenser Gridworld
 
 In this environment, there are one or more `Dispensers`
 
 <p style="text-align:center" id="dispenser"></p>
 
-which probabilistically dispenses a reward of +100; they are \\(\text{Bernoulli}\left(\theta\right)\\) processes, and you can change the \\(\theta\\) by modifying the `freq` parameter. Walking into a `Wall`
+which probabilistically dispenses a reward of +100; they are \\(\text{Bernoulli}\left(\theta\right)\\) processes, and you can change the value of \\(\theta\\) by modifying the `freq` parameter. Walking into a `Wall`
 
 <p style="text-align:center" id="wall"></p>
 
@@ -213,24 +284,19 @@ This environment is non-episodic, so once the agent finds the `Dispenser`, it sh
   on each tile. Darker shading corresponds to higher probability. The percepts in this environment are mostly deterministic, with the exception of the rewards from the dispenser, which are sampled from a Bernoulli process. Hence, depending on the value of \\(\theta\\), the agent will be able to gradually falsify the hypothesis of whether some tile contains a dispenser or not.
 </span>
 
-<span class="md" id="thompson_exp" style="display:none">
-In the cases of Thompson sampling and the MDL agent, the agent periodically chooses an environment \\(\rho\\) from its posterior belief distribution (according to some criterion)) and then uses the \\(\rho\\)-optimal policy for some period of time. The red dot
-
-<p style="text-align:center" id="rho"></p>
-represents the position of the dispenser in \\(\rho\\); the agent should chase the red dot around.
-</span>
-
 <span class="md" id="dirichlet_exp" style="display:none">
 # Factorized Dirichlet model class
 
 The Dirichlet model class is not represented as a mixture. It is a simple model that assumes that the environment distribution factorizes, i.e. that each tile is independent.
 </span>
 
+
 <script>
 	GridVisualization.makeLegend('dispenser', Dispenser);
 	GridVisualization.makeLegend('wall', Wall);
 	GridVisualization.makeLegend('green', Tile, 'rgb(64,255,64)');
 	GridVisualization.makeLegend('rho', Tile);
+	GridVisualization.makeLegend('wirehead', SelfModificationTile);
 	GridVisualization.addCircle(d3.select('#rho_svg'), 0, 0, GridVisualization.colors.rho);
 </script>
 </td>

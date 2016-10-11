@@ -13,12 +13,10 @@ class UI {
 	}
 
 	showExplanation(exp) {
-		let mds = this.getElementsByClassName('md');
-		for (let md of mds) {
-			if (md.id == exp + '_exp') {
-				md.style.display = 'block';
-			}
-		}
+		let md = this.doc.getElementById(`${exp}_exp`);
+		try {
+			md.style.display = 'block';
+		} catch (e) {}
 	}
 
 	clearExplanations() {

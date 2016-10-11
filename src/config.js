@@ -121,7 +121,7 @@ const configs = {
 		name: 'Hooked on noise',
 		description: `Entropy-seeking agents get hooked on white noise and stop exploring,
 		while the knowledge-seeking agent ignores it.`,
-		vis: BayesGridVis,
+		vis: HookedOnNoiseVis,
 		agent: {
 			agents: { SquareKSA, ShannonKSA, KullbackLeiblerKSA },
 			type: SquareKSA,

@@ -256,6 +256,7 @@ class BayesGridVis extends GridVisualization {
 		}
 
 		let trap = tile.constructor == Trap;
+
 		// TODO visualize direct from agent mixture model!
 
 		let p = this.model_trace[time][tile.y * this.N + tile.x];
@@ -267,7 +268,7 @@ class BayesGridVis extends GridVisualization {
 	}
 }
 
-BayesGridVis.exps = ['dispenser', 'mixture'];
+BayesGridVis.exps = ['aixi', 'dispenser', 'mixture'];
 
 class DirichletVis extends BayesGridVis {
 	constructor(env, trace, ui) {
@@ -307,6 +308,8 @@ class ThompsonVis extends BayesGridVis {
 	}
 }
 
+ThompsonVis.exps = ['dispenser', 'mixture', 'thompson'];
+
 class MDLVis extends ThompsonVis {
 	constructor(env, trace, ui) {
 		super(env, trace, ui);
@@ -344,6 +347,8 @@ class MDLVis extends ThompsonVis {
 	}
 }
 
+MDLVis.exps = ['dispenser', 'mixture', 'mdl'];
+
 class WireHeadVis extends BayesGridVis {
 	updateAgent() {
 		super.updateAgent();
@@ -361,4 +366,8 @@ class WireHeadVis extends BayesGridVis {
 	}
 }
 
-ThompsonVis.exps = ['dispenser', 'thompson'];
+WireHeadVis.exps = ['wirehead', 'mixture', 'dispenser'];
+
+class HookedOnNoiseVis extends BayesGridVis {}
+
+HookedOnNoiseVis.exps = ['dispenser', 'mixture', 'noise'];
