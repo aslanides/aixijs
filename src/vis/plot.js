@@ -22,8 +22,8 @@ class Plot {
 			.append('g')
 			.attr('transform', `translate(${this.margin.left},${this.margin.top})`);
 
-		this.x = d3.scale.linear().range([0, this.width]);
-		this.y = d3.scale.linear().range([this.height, 0]);
+		this.x = d3.scaleLinear().range([0, this.width]);
+		this.y = d3.scaleLinear().range([this.height, 0]);
 
 		this.x.domain([0, trace.t]);
 		if (data.length > 0) {
@@ -35,7 +35,7 @@ class Plot {
 		}
 
 		this.y.domain([this.min, this.max]);
-		this.valueline = d3.svg.line()
+		this.valueline = d3.line()
 			.x((d, i) => this.x(i + 1))
 			.y(d => this.y(d));
 
@@ -104,7 +104,7 @@ class Plot {
 	}
 
 	static clearAll() {
-		let plots = d3.select('#plots')[0][0];
+		let plots = d3.select('#plots')._groups[0][0];
 		while (plots.children.length > 0) {
 			d3.select('#' + plots.children[0].id).remove();
 		}

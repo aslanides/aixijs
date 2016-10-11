@@ -466,12 +466,12 @@ const configs = {
 		name: 'MDP2',
 		vis: MDP2Vis,
 		agent: {
-			type: BayesAgent,
+			type: Agent,
 			model: BayesMixture,
 			modelParametrization: 'mu',
 			ucb: 0.03,
 			_mods: function (agent) {
-				agent.planner = new ExpectimaxTree(agent, agent.model, true);
+				//agent.planner = new ExpectimaxTree(agent, agent.model, true);
 			},
 		},
 		env: {
