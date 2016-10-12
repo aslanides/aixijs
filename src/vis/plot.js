@@ -39,11 +39,8 @@ class Plot {
 			.x((d, i) => this.x(i + 1))
 			.y(d => this.y(d));
 
-		this.xAxis = d3.svg.axis().scale(this.x)
-			.orient('bottom').ticks(5);
-
-		this.yAxis = d3.svg.axis().scale(this.y)
-			.orient('left').ticks(5);
+		this.xAxis = d3.axisBottom(this.x).ticks(5);
+		this.yAxis = d3.axisLeft(this.y).ticks(5);
 
 		let color = (function* () {
 			let idx = 0;
