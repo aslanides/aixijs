@@ -176,7 +176,15 @@
 <span class="md" id="aixi_exp" style="display:none">
 # Monte Carlo AIXI
 
-TODO: AIXI vs AI\\(\xi\\) and MCTS
+This demo should give you the flavor of the environments and models that we're using. We use the standard Bayesian agent that has a mixture model
+
+$$
+\xi(e)=\sum\_{\nu\in\mathcal{M}}w\_{\nu}\nu(e)
+$$
+
+over different gridworlds contained in the model class \\(\mathcal{M}\\). Compared to the Context tree model class (of [MC-AIXI-CTW](https://arxiv.org/abs/0909.0801) fame), this model class has a lot of _domain knowledge_. To see how we parametrize the gridworlds and set up the model class, see below.
+
+For planning, we use \\(\rho\\)UCT, a generalization of the UCT algorithm (TODO cite), which uses Monte Carlo tree search to estimate the value \\(V^{*}\_{\xi}\\) up to some horizon \\(m\\). 
 </span>
 
 <span class="md" id="thompson_exp" style="display:none">
@@ -243,7 +251,7 @@ This way, the KL-KSA only cares about changes in its beliefs, and so will seek o
 
 <span class="md" id="dispenser_exp" style="display:none">
 
-# Dispenser Gridworld
+# Gridworld
 
 In this environment, there are one or more `Dispensers`
 
