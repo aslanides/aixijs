@@ -176,6 +176,7 @@ const demo = {
 
 		results = {};
 		seed = seed || 'aixi';
+		let num = 1;
 		for (let config of dems) {
 			Math.seedrandom(seed);
 			logs = [];
@@ -211,7 +212,12 @@ const demo = {
 				});
 			}
 
-			results[config.name] = logs;
+			if (config.name in results) {
+				results[`${config.name}-${num}`] = logs;
+				num++;
+			} else {
+				results[config.name] = logs;
+			}
 		}
 
 		console.log('Done!');
