@@ -50,6 +50,7 @@ class UI {
 						field == 'dist' ||
 						field == 'transitions' ||
 						field == 'rewards' ||
+						field == 'groups' ||
 						field[0] == '_') {
 					continue;
 				}

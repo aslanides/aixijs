@@ -3,6 +3,7 @@ class MDP extends Environment {
 		super(options);
 		this.numActions = options.numActions;
 		this.numStates = options.numStates;
+		this.groups = options.groups;
 
 		this.noop = 0;
 		this.state = 0;

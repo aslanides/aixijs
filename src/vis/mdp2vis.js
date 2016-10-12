@@ -17,7 +17,7 @@ class MDP2Vis extends Visualization {
 		graph.edges = [];
 
 		for (let s = 0; s < S; s++) {
-			graph.nodes.push({ id: s });
+			graph.nodes.push({ id: s, group: env.groups[s] });
 			for (let a = 0; a < A; a++) {
 				for (let s_ = 0; s_ < S; s_++) {
 					if (P[a][s][s_] == 0) {
@@ -91,15 +91,13 @@ class MDP2Vis extends Visualization {
 			.text(d => d.id);
 
 		let simulation = d3.forceSimulation()
-			.force('link', d3.forceLink().distance(150).strength(.1))
-			.force('charge', d3.forceManyBody().strength(-50))
-			.force('center', d3.forceCenter(width / 2, height / 2));
+			//.force('link', d3.forceLink(edges).distance(50).strength(.1))
+			.force('collide', d3.forceCollide(30).strength(0.2))
+			.force('centerX', d3.forceX(width / 2).strength(.1))
+			.force('centerY', d3.forceY(height / 2).strength(1));
 
 		simulation.nodes(nodes)
 			.on('tick', ticked);
-
-		simulation.force('link')
-			.links(edges);
 
 		function ticked() {
 			link.attr('d', positionLink);
