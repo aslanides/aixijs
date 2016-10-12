@@ -5,6 +5,9 @@ class MDP2Vis extends Visualization {
 		this.width = 400;
 		this.height = this.width;
 
+		let width = this.width;
+		let height = this.height;
+
 		let S = env.numStates;
 		let A = env.numActions;
 		let P = env.transitions;
@@ -26,6 +29,7 @@ class MDP2Vis extends Visualization {
 			}
 		}
 
+		let color = d3.scaleOrdinal(d3.schemeCategory10);
 		this.svg
 			.attr('width', this.width + 2 * this.margin)
 			.attr('height', this.height + 2 * this.margin);
@@ -35,30 +39,45 @@ class MDP2Vis extends Visualization {
 		let bilinks = [];
 		let svg = this.svg;
 
+		svg.append('defs').selectAll('marker')
+		.data(['end'])
+		.enter().append('marker')
+		.attr('id', 'arrowhead')
+		.attr('viewBox', '0 -5 10 10')
+		.attr('refX', 15)
+		.attr('refY', -1.5)
+		.attr('markerWidth', 6)
+		.attr('markerHeight', 6)
+		.attr('orient', 'auto')
+		.append('path')
+		.attr('d', 'M0,-5L10,0L0,5');
+
 		edges.forEach(edge => {
 			let s = edge.source = nodeById.get(edge.source);
 			let t = edge.target = nodeById.get(edge.target);
-			let i = {}; // intermediate node
+			let i = { a: edge.a }; // intermediate node
 			nodes.push(i);
 			if (s == t) {
-				let j = {};
+				let j = { a: edge.a };
 				nodes.push(j);
-				edges.push({ source: s, target: i }, { source: i, target: j }, { source: j, target: t });
+				edges.push({ source: s, target: i, a: edge.a }, { source: i, target: j, a: edge.a }, { source: j, target: t, a: edge.a });
 				bilinks.push([s, i, j, s]);
 				return;
 			}
 
-			edges.push({ source: s, target: i }, { source: i, target: t });
+			edges.push({ source: s, target: i, a: edge.a }, { source: i, target: t, a: edge.a });
 			bilinks.push([s, i, t]);
 		});
 
 		let link = svg.selectAll('.link')
 			.data(bilinks)
 			.enter().append('path')
-			.attr('class', 'link');
+			.attr('fill', 'none')
+			.style('stroke', d => color(d[1].a))
+			.attr('marker-end', _ => `url(#arrowhead)`);
 
 		let node = svg.selectAll('.node')
-			.data(nodes.filter(d => d.id))
+			.data(nodes.filter(d => d.id != undefined))
 			.enter().append('circle')
 			.attr('class', 'node')
 			.attr('r', 30)
@@ -72,8 +91,8 @@ class MDP2Vis extends Visualization {
 			.text(d => d.id);
 
 		let simulation = d3.forceSimulation()
-			.force('link', d3.forceLink().distance(100).strength(0.1))
-			.force('charge', d3.forceManyBody())
+			.force('link', d3.forceLink().distance(150).strength(.1))
+			.force('charge', d3.forceManyBody().strength(-50))
 			.force('center', d3.forceCenter(width / 2, height / 2));
 
 		simulation.nodes(nodes)
@@ -119,11 +138,13 @@ class MDP2Vis extends Visualization {
 			d.fx = null;
 			d.fy = null;
 		}
+
+		this.nodes = nodes;
+		this.edges = edges;
+
 	}
 
 	updateEnv() {
-		let x = (this.pos_trace[this.time] + 1) * this.d;
-		d3.select('#cpos')
-			.attr('cx', x);
+
 	}
 }
