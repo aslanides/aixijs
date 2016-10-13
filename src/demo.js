@@ -41,6 +41,12 @@ const demo = {
 		for (let exp of config.vis.exps) {
 			this.ui.showExplanation(exp);
 		}
+
+		if (!config.exps) return;
+
+		for (let exp of config.exps) {
+			this.ui.showExplanation(exp);
+		}
 	},
 
 	run(novis, env) {

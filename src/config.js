@@ -126,6 +126,7 @@ const configs = {
 		description: `Compare the behavior of the Square, Shannon, and
 		Kullback-Leibler knowledge-seeking agents.`,
 		vis: BayesGridVis,
+		exps: ['ksa'],
 		agent: {
 			type: SquareKSA,
 			agents: { SquareKSA, ShannonKSA, KullbackLeiblerKSA },
@@ -140,6 +141,7 @@ const configs = {
 		description: `Compare the behavior of the Square, Shannon, and
 		 Kullback-Leibler KSA using a Dirichlet model.`,
 		vis: DirichletVis,
+		exps: ['ksa_dirichlet'],
 		agent: {
 			type: SquareKSA,
 			agents: { SquareKSA, ShannonKSA, KullbackLeiblerKSA },
@@ -250,7 +252,7 @@ const configs = {
 	},
 	ipd: {
 		active: true,
-		name: `Iterated prisoner's dilemma [broken]`,
+		name: `Iterated prisoner's dilemma [no vis]`,
 		description: `The iterated prisoner's dilemma. AIXI must figure out who its opponent is,
 		and play the appropriate strategy in response.`,
 		vis: {},
@@ -282,7 +284,7 @@ const configs = {
 	},
 	bandit: {
 		active: true,
-		name: 'Bandit [broken]',
+		name: 'Bandit [no vis]',
 		description: 'A simple two-armed Gaussian bandit, where mu and sigma are unknown for each arm.',
 		vis: BanditVis,
 		agent: {
