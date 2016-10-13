@@ -7,14 +7,13 @@ class MDLAgent extends BayesAgent {
 			this.model.modelClass[i].idx = i;
 		}
 
-		let len = model => {
-			let lm = model.options.toString().length;
-			let li = (model.idx >>> 0).toString(2).length;
+		let len = model => JSON.stringify(model.options).length;
 
-			return lm + li;
-		};
+		this.model.modelClass.sort((m, n) => {
+			let d = len(m) - len(n);
+			return d || m.idx - n.idx;
+		});
 
-		this.model.modelClass.sort((m, n) => len(m) - len(n));
 		let w = [...this.model.weights];
 		for (let i = 0; i < C; i++) {
 			let m = this.model.modelClass[i];
@@ -26,6 +25,8 @@ class MDLAgent extends BayesAgent {
 		this.rho = this.model.modelClass[this.idx].copy();
 		this.rho.bayesUpdate = function () {};
 
+		this.planner = new ExpectimaxTree(this, this.rho);
+
 		this.mappings = [];
 		for (let i = 0; i < C; i++) {
 			this.mappings[i] = this.model.modelClass[i].idx;
@@ -35,6 +36,7 @@ class MDLAgent extends BayesAgent {
 
 	update(a, e) {
 		super.update(a, e);
+		this.rho.perform(a);
 		if (this.model.weights[this.idx] != 0) {
 			return;
 		}

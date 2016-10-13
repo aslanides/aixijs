@@ -201,7 +201,22 @@ Thompson sampling is asymptotically optimal (Leike et al., 2015), unlike AIXI. T
 <span class="md" id="mdl_exp" style="display:none">
 # Minimum Description Length (MDL) agent
 
-In contrast to AIXI, which mixes over all plausible environments and weights them by their complexity, the MDL agent simply uses the policy that is optimal in the simplest unfalsified environment.
+In contrast to AIXI, which mixes over all plausible environments and weights them by their complexity, the MDL agent simply uses the policy that is optimal in the simplest unfalsified environment. That is, its policy is
+
+$$
+\pi\_{\text{MDL}}=\arg\max\_{a\in\mathcal{A}}V^{*}\_{\rho},
+$$
+where
+$$
+\rho = \arg\min\_{\nu\in\mathcal{M}\ :\ w\_\nu &gt; 0} K(\nu).
+$$
+
+Here \\(K(\cdot)\\) is some complexity measure that approximates the Kolmogorov complexity from above. It is trivial to see that the MDL agent will fail completely in a stochastic environment, since it can never completely falsify (\\(w\_\nu\to 0\\) an environment if it assigns non-zero probability to all percepts. Even if only a small subset of the percept space \\(\mathcal{E}\\) is noisy, if there are two or more environments that are only disambiguated (one falsified while the other confirmed) by percepts in this set, then the MDL agent will never disambiguate them and will be stuck (in general) with a suboptimal policy \\(\pi^{\star}\_{\rho}\\) with \\(V^{\star}\_{\rho} < V^{\star}\_{\mu}\\).
+
+Similarly to Thompson sampling, for the Gridworld dispenser class parametrized by dispenser location, the red dot
+
+<p style="text-align:center" id="mdl"></p>
+represents the position of the dispenser in \\(\rho\\); the \\(\rho\\)-optimal policy is to walk toward (and stay around) the dispenser. This means that the agent should chase the red dot around.
 
 </span>
 
@@ -244,7 +259,7 @@ $$
 r\_i\sum\_{k=t}^{t+N}\gamma\_{k}^{t} < \gamma\_{t+N}r\_b,
 $$
 
-then \\(\pi\_{\rightsquigarrow}\\) is optimal, and \\(\pi\_{\rightarrow}\\) is optimal otherwise. Informally, the agent has to make the slow, hard slog of repeatedly taking action \\(\rightsquigarrow\\) with no (or low) immediate reward \\(r\_0\\) for some long period of time \\(N\\) before getting the big pay-off \\(r\_b\\). At all points during its journey, it is tempted away by the instant gratification \\(r\_i\\), at the cost of losing all its progress towards \\(s\_N\\). 
+then \\(\pi\_{\rightsquigarrow}\\) is optimal, and \\(\pi\_{\rightarrow}\\) is optimal otherwise. Informally, the agent has to make the slow, hard slog of repeatedly taking action \\(\rightsquigarrow\\) with no (or low) immediate reward \\(r\_0\\) for some long period of time \\(N\\) before getting the big pay-off \\(r\_b\\). At all points during its journey, it is tempted away by the instant gratification \\(r\_i\\), at the cost of losing all its progress towards \\(s\_N\\).
 
 </span>
 
@@ -338,17 +353,19 @@ This environment is non-episodic, so once the agent finds the `Dispenser`, it sh
 <span class="md" id="dirichlet_exp" style="display:none">
 # Factorized Dirichlet model class
 
-The Dirichlet model class is not represented as a mixture. It is a simple model that assumes that the environment distribution factorizes, i.e. that each tile is independent.
+The Dirichlet model class is not represented as a mixture. Instead, it is a simple model that assumes that the environment distribution factorizes, i.e. that each tile is independent.
 </span>
 
 
 <script>
-	GridVisualization.makeLegend('dispenser', Dispenser);
-	GridVisualization.makeLegend('wall', Wall);
-	GridVisualization.makeLegend('green', Tile, 'rgb(64,255,64)');
-	GridVisualization.makeLegend('rho', Tile);
-	GridVisualization.makeLegend('wirehead', SelfModificationTile);
-	GridVisualization.addCircle(d3.select('#rho_svg'), 0, 0, GridVisualization.colors.rho);
+  GridVisualization.makeLegend('dispenser', Dispenser);
+  GridVisualization.makeLegend('wall', Wall);
+  GridVisualization.makeLegend('green', Tile, 'rgb(64,255,64)');
+  GridVisualization.makeLegend('rho', Tile);
+  GridVisualization.makeLegend('mdl', Tile);
+  GridVisualization.makeLegend('wirehead', SelfModificationTile);
+  GridVisualization.addCircle(d3.select('#rho_svg'), 0, 0, GridVisualization.colors.rho);
+  GridVisualization.addCircle(d3.select('#mdl_svg'), 0, 0, GridVisualization.colors.rho);
 </script>
 </td>
 </tr>

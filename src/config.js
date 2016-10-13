@@ -225,11 +225,12 @@ const configs = {
 	},
 	mdl: {
 		active: true,
-		name: 'MDL [broken]',
-		description: `Tor's Minimum Description Length agent.`,
-		vis: ThompsonVis,
+		name: 'MDL Agent',
+		description: `The MDL agent runs with the simplest hypothesis it knows, until it is falsified.`,
+		vis: MDLVis,
 		agent: {
 			type: MDLAgent,
+			ucb: 0.5,
 		},
 		env: {
 			type: Gridworld,
@@ -239,9 +240,9 @@ const configs = {
 		active: true,
 		name: 'BayesExp',
 		description: 'Bayesian agent with bursts of directed exploration.',
-		vis: BayesGridVis,
+		vis: BayesExpVis,
 		agent: {
-			type: MDLAgent,
+			type: BayesExp,
 		},
 		env: {
 			type: Gridworld,

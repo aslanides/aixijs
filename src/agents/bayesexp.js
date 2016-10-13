@@ -8,6 +8,7 @@ class BayesExp extends BayesAgent {
 		this.IGAgent.model = this.bayesAgent.model;
 		this.model = this.bayesAgent.model;
 		this.planner = new ExpectimaxTree(this, this.model, true);
+		this.trace = BayesExpTrace;
 	}
 
 	selectAction(e) {

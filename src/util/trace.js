@@ -112,3 +112,15 @@ class DirichletTrace extends BayesTrace {
 		this.params.push(param);
 	}
 }
+
+class BayesExpTrace extends BayesTrace {
+	constructor(t) {
+		super(t);
+		this.exploration_phases = [];
+	}
+
+	logModel(agent) {
+		super.logModel(agent);
+		this.exploration_phases.push(agent.explore);
+	}
+}

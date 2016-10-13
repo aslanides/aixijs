@@ -310,44 +310,16 @@ class ThompsonVis extends BayesGridVis {
 
 ThompsonVis.exps = ['dispenser', 'mixture', 'thompson'];
 
-class MDLVis extends ThompsonVis {
-	constructor(env, trace, ui) {
-		super(env, trace, ui);
-		this.mappings = trace.mappings;
-	}
-
-	posteriorColor(tile, time) {
-		// TODO fix, gross copy-paste from BayesVis
-		let tc = tile.constructor;
-		if (tc == Wall ||
-				tc == SelfModificationTile) {
-			return null;
-		}
-
-		if (tc == NoiseTile) {
-			return {
-				r: 255 * Math.random(),
-				g: 255 * Math.random(),
-				b: 255 * Math.random(),
-			};
-		}
-
-		let trap = tile.constructor == Trap;
-
-		// TODO here be the difference laddy
-		let idx = this.mappings[tile.y * this.N + tile.x];
-		let p = this.model_trace[time][idx];
-
-		//
-		return {
-			g: 255 - 100 * trap,
-			r: 255 - p * this.color_normalization,
-			b: 255 - p * this.color_normalization - 100 * trap,
-		};
-	}
-}
+class MDLVis extends ThompsonVis {}
 
 MDLVis.exps = ['dispenser', 'mixture', 'mdl'];
+
+class BayesExpVis extends BayesGridVis {
+	// TODO flag to show when agent is in explore mode or not
+	// use trace.exploration_phases
+}
+
+BayesExpVis.exps = ['dispenser', 'mixture', 'bayesexp'];
 
 class WireHeadVis extends BayesGridVis {
 	updateAgent() {
