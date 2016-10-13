@@ -140,6 +140,7 @@ class Gridworld extends Environment {
 		let opt = Util.deepCopy(options);
 		let N = options.N;
 		let trapProb = options.trapProb || 0;
+		let wallProb = options.wallProb || 0.4;
 		opt.map = [];
 		for (let i = 0; i < N; i++) {
 			opt.map[i] = new Array(N);
@@ -151,7 +152,7 @@ class Gridworld extends Environment {
 				let r = Math.random();
 				if (r < trapProb) {
 					opt.map[i][j] = Gridworld.map_symbols.trap;
-				} else if (r < 0.4) {
+				} else if (r < wallProb) {
 					opt.map[i][j] = Gridworld.map_symbols.wall;
 				} else {
 					opt.map[i][j] = Gridworld.map_symbols.empty;

@@ -96,26 +96,6 @@ const configs = {
 			type: Gridworld,
 		},
 	},
-	shksa: {
-		name: 'Shannon KSA',
-		vis: BayesGridVis,
-		agent: {
-			type: ShannonKSA,
-		},
-		env: {
-			type: Gridworld,
-		},
-	},
-	sqksa: {
-		name: 'Square KSA',
-		vis: BayesGridVis,
-		agent: {
-			type: SquareKSA,
-		},
-		env: {
-			type: Gridworld,
-		},
-	},
 	hooked_on_noise: {
 		active: true,
 		name: 'Hooked on noise',
@@ -140,8 +120,55 @@ const configs = {
 			},
 		},
 	},
-	klksa: {
+	ksa: {
 		active: true,
+		name: 'Knowledge-seeking agents',
+		description: `Compare the behavior of the Square, Shannon, and
+		Kullback-Leibler knowledge-seeking agents.`,
+		vis: BayesGridVis,
+		agent: {
+			type: SquareKSA,
+			agents: { SquareKSA, ShannonKSA, KullbackLeiblerKSA },
+		},
+		env: {
+			type: Gridworld,
+		},
+	},
+	ksa_dirichlet: {
+		active: true,
+		name: 'KSA-Dirichlet',
+		description: `Compare the behavior of the Square, Shannon, and
+		 Kullback-Leibler KSA using a Dirichlet model.`,
+		vis: BayesGridVis,
+		agent: {
+			type: SquareKSA,
+			agents: { SquareKSA, ShannonKSA, KullbackLeiblerKSA },
+		},
+		env: {
+			type: Gridworld,
+		},
+	},
+	shksa: {
+		name: 'Shannon KSA',
+		vis: BayesGridVis,
+		agent: {
+			type: ShannonKSA,
+		},
+		env: {
+			type: Gridworld,
+		},
+	},
+	sqksa: {
+		name: 'Square KSA',
+		vis: BayesGridVis,
+		agent: {
+			type: SquareKSA,
+		},
+		env: {
+			type: Gridworld,
+		},
+	},
+	klksa: {
 		name: 'Knowledge-seeking agent',
 		description: 'Kullback-Leibler KSA on a known Gridworld.',
 		vis: BayesGridVis,
@@ -153,7 +180,6 @@ const configs = {
 		},
 	},
 	klksa_dirichlet: {
-		active: true,
 		name: 'KSA-Dirichlet',
 		description: 'Kullback-Leibler KSA on an unknown Gridworld.',
 		vis: DirichletVis,
@@ -168,7 +194,6 @@ const configs = {
 		},
 	},
 	shksa_dirichlet: {
-		active: true,
 		name: 'Entropy-seeking agent',
 		description: 'Shannon KSA on an unknown Gridworld.',
 		vis: DirichletVis,
