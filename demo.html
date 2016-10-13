@@ -184,7 +184,7 @@ $$
 
 over different gridworlds contained in the model class \\(\mathcal{M}\\). Compared to the Context tree model class (of [MC-AIXI-CTW](https://arxiv.org/abs/0909.0801) fame), this model class has a lot of _domain knowledge_. To see how we parametrize the gridworlds and set up the model class, see below.
 
-For planning, we use \\(\rho\\)UCT, a generalization of the UCT algorithm (TODO cite), which uses Monte Carlo tree search to estimate the value \\(V^{*}\_{\xi}\\) up to some horizon \\(m\\). 
+For planning, we use \\(\rho\\)UCT, a generalization of the UCT algorithm (TODO cite), which uses Monte Carlo tree search to estimate the value \\(V^{*}\_{\xi}\\) up to some horizon \\(m\\).
 </span>
 
 <span class="md" id="thompson_exp" style="display:none">
@@ -201,7 +201,50 @@ Thompson sampling is asymptotically optimal (Leike et al., 2015), unlike AIXI. T
 <span class="md" id="mdl_exp" style="display:none">
 # Minimum Description Length (MDL) agent
 
-TODO
+In contrast to AIXI, which mixes over all plausible environments and weights them by their complexity, the MDL agent simply uses the policy that is optimal in the simplest unfalsified environment.
+
+</span>
+
+<span class="md" id="time_inconsistent_exp" style="display:none">
+
+# Time inconsistency
+
+Recall that our agents all use discount functions of some form, for two reasons:
+* so that in theoretical analysis, the expected sum of future rewards (to infinity) doesn't diverge, and
+* so that the agent doesn't procrastinate. Not discounting is essentially equivalent to the belief that the agent will live forever (Martin et al., 2016). Given all of eternity to collect reward, why be in a hurry to start now?
+
+Recall the definition of the (discounted) return, given a policy \\(\pi\\) in environment \\(\nu\\), at time \\(t\\):
+
+$$
+R\_{\nu}^{\nu}(t)=\sum\_{k=t}^{\infty}\gamma\_{k}^{t}r\_k,
+$$
+where the \\(r\_k\\) are the (in general, stochastic) rewards that eventuate from playing out policy \\(\pi\\) in environment \\(\nu\\). Note that we follow Lattimore &amp; Hutter (2013) and allow the discount function \\(\gamma\\) to depend not only on the look-ahead timestep \\(k\\), but the agent's age, \\(t\\). This allows for a more general class of discount functions that change over the agent's lifetime.
+
+_Time-inconsistency_ refers to the phenomenon in which, at some time \\(t\\), one _plans_ to take some action \\(a\\) at time some later time \\(\tau &gt; t\\), but when that time arrives, end up taking a different action \\(a'\\).
+
+It is a well-known result from decision theory that hyperbolic discounting
+$$
+\gamma\_{k}^{t} = \frac{1}{(1+\alpha k)^{\beta}},
+$$
+for \\(\beta &gt; 1\\) leads to time-inconsistent behavior, while the (familiar, and standard in the RL literature) geometric discount
+$$
+\gamma_{k}^{t} = \gamma^{k},
+$$
+where \\(\gamma &lt; 1\\) is time-consistent.
+
+# Demo setup
+
+In this demo, we pit AI\\(\mu\\) against the chain environment, which is a finite-state MDP given by
+
+<center>![chain environment](assets/chain-env.png)</center>
+
+Here, there are \\(|\mathcal{S}| = (N+1\\) states, and two actions, \\(\mathcal{A}=\lbrace\rightarrow,\rightsquigarrow\rbrace\\). All state transitions and rewards are deterministic, and there are three rewards, \\(r\_0 &lt; r\_i\ll r\_b\\). For sufficiently large \\(r\_b\\), the optimal policy is to take \\(\rightsquigarrow\\) at all times and receive the (delayed, but large) reward \\(r\_b\\) every \\(N\\) time steps, and forego the tempting immediate reward \\(r\_i\\). More formally, if, for some time step \\(t\\),
+
+$$
+r\_i\sum\_{k=t}^{t+N}\gamma\_{k}^{t} < \gamma\_{t+N}r\_b,
+$$
+
+then \\(\pi\_{\rightsquigarrow}\\) is optimal, and \\(\pi\_{\rightarrow}\\) is optimal otherwise. Informally, the agent has to make the slow, hard slog of repeatedly taking action \\(\rightsquigarrow\\) with no (or low) immediate reward \\(r\_0\\) for some long period of time \\(N\\) before getting the big pay-off \\(r\_b\\). At all points during its journey, it is tempted away by the instant gratification \\(r\_i\\), at the cost of losing all its progress towards \\(s\_N\\). 
 
 </span>
 

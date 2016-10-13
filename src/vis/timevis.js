@@ -118,3 +118,5 @@ class TIVis extends Visualization {
 			.attr('cy', y);
 	}
 }
+
+TIVis.exps = ['time_inconsistent'];

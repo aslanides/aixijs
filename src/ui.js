@@ -51,6 +51,8 @@ class UI {
 						field == 'transitions' ||
 						field == 'rewards' ||
 						field == 'groups' ||
+						field == 'numStates' ||
+						field == 'numActions' ||
 						field[0] == '_') {
 					continue;
 				}
