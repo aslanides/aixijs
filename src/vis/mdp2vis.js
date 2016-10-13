@@ -57,15 +57,16 @@ class MDP2Vis extends Visualization {
 			let t = edge.target = nodeById.get(edge.target);
 			let i = { a: edge.a }; // intermediate node
 			nodes.push(i);
+
 			if (s == t) {
 				let j = { a: edge.a };
 				nodes.push(j);
-				edges.push({ source: s, target: i, a: edge.a }, { source: i, target: j, a: edge.a }, { source: j, target: t, a: edge.a });
+				edges.push({ source: s, target: i }, { source: i, target: j }, { source: j, target: t });
 				bilinks.push([s, i, j, s]);
 				return;
 			}
 
-			edges.push({ source: s, target: i, a: edge.a }, { source: i, target: t, a: edge.a });
+			edges.push({ source: s, target: i }, { source: i, target: t });
 			bilinks.push([s, i, t]);
 		});
 
@@ -91,10 +92,8 @@ class MDP2Vis extends Visualization {
 			.text(d => d.id);
 
 		let simulation = d3.forceSimulation()
-			//.force('link', d3.forceLink(edges).distance(50).strength(.1))
-			.force('collide', d3.forceCollide(30).strength(0.2))
-			.force('centerX', d3.forceX(width / 2).strength(.1))
-			.force('centerY', d3.forceY(height / 2).strength(1));
+			.force('center', d3.forceCenter(width / 2, height / 2))
+			.force('charge', d3.forceManyBody().strength(-50));
 
 		simulation.nodes(nodes)
 			.on('tick', ticked);
@@ -143,6 +142,6 @@ class MDP2Vis extends Visualization {
 	}
 
 	updateEnv() {
-
+		return;
 	}
 }
