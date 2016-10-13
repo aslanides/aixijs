@@ -139,10 +139,13 @@ const configs = {
 		name: 'KSA-Dirichlet',
 		description: `Compare the behavior of the Square, Shannon, and
 		 Kullback-Leibler KSA using a Dirichlet model.`,
-		vis: BayesGridVis,
+		vis: DirichletVis,
 		agent: {
 			type: SquareKSA,
 			agents: { SquareKSA, ShannonKSA, KullbackLeiblerKSA },
+			model: DirichletGrid,
+			tracer: DirichletTrace,
+			cycles: 100,
 		},
 		env: {
 			type: Gridworld,

@@ -6,12 +6,14 @@ Agents implemented so far:
 - Bayes (AIXI)
 - KSA (Square, Shannon, and Kullback-Leibler)
 - Thompson Sampling
+- MDL Agent
+- BayesExp
 - (Tabular) QLearning/SARSA
 
 Environments implemented:
-- Bandit
-- FSMDP
-- Gridworld
+- Bandits
+- Finite-state MDPs
+- Gridworld POMPDs
 
 See the [main site](http://aslanides.github.io/aixijs) for more background, documentation, references, and demos.
 
@@ -23,9 +25,7 @@ There are a number of demos pre-made and ready to go; look at `src/demo.js` for 
 ```javascript
 let config = { /* ... */ }; // environment config; see src/config.js for examples
 let env = new Gridworld(config); // construct environment
-let options = new Options(); // defaults to sensible values, but we can change them
-options.getEnvParams(env); // get things like num actions, etc from environment
-options.cycles = 200; // run simulation for 200 cycles
+let options = { /* ... */ }; // agent options; see src/config.js for examples
 let agent = new BayesAgent(options); // construct agent
 let trace = new BayesTrace(); // accumulator for performance and history
 
@@ -55,7 +55,4 @@ GPL.
 	- Show last action taken by agent in grid worlds
 - **UI**
     - Make play/pause a toggle button
-	- Add option for user to play environment
-- **Demos**
-    - Implement all the showcase environments/demos!
-- See github issues for major TODOs.
+		- Add option for user to play environment
