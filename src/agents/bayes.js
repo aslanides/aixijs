@@ -39,7 +39,7 @@ class BayesAgent extends Agent {
 BayesAgent.params = [
 	{ field: 'horizon', value: 6 },
 	{ field: 'samples', value: 600 },
-	{ field: 'ucb', value: 0.01 },
+	{ field: 'ucb', value: 0.5 },
 	{ field: 'model', value: BayesMixture },
 	{ field: 'modelParametrization', value: 'goal' },
 ];
