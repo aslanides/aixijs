@@ -198,12 +198,18 @@ represents the position of the dispenser in \\(\rho\\); the \\(\rho\\)-optimal p
 Thompson sampling is asymptotically optimal (Leike et al., 2015), unlike AIXI. This is essentially because Thompson sampling commits you to a fixed policy for a period, giving you the chance to learn and explore better than by random exploration or even by being greedy with respect to \\(V^{\pi}\_{\xi}\\).
 </span>
 
-<span class="md" id="ksa" style="display:none">
+<span class="md" id="ksa_exp" style="display:none">
 
 </span>
 
-<span class="md" id="ksa_dirichlet" style="display:none">
+<span class="md" id="ksa_dirichlet_exp" style="display:none">
 
+</span>
+
+<span class="md" id="dogmatic_exp" style="display:none">
+# Dogmatic priors
+
+Like all Bayesians, AIXI's behavior and learning depends on the choice of its prior. It turns out (Leike &amp; Hutter, 2015) that there are circumstances under which a Bayesian reinforcement learner can _never_ overcome the bias of its priors. In this demo, AIXI belives that the squares adjacent to it are traps, with high (99%) probability. The reality is that it's in just a normal, friendly gridworld with no traps. It is too afraid to try anything, and never learns that in fact its beliefs were wrong. 
 </span>
 
 <span class="md" id="mdl_exp" style="display:none">
