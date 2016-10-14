@@ -7,11 +7,13 @@ class BayesAgent extends Agent {
 		this.max_reward = options.max_reward;
 		this.min_reward = options.min_reward;
 
+		let planCaching = options.plan_caching || true;
+
 		// TODO assert options OK
 		this.information_gain = 0;
 		this.tracer = options.tracer || BayesTrace;
 		this.model = options.model;
-		this.planner = new ExpectimaxTree(this, this.model);
+		this.planner = new ExpectimaxTree(this, this.model, !planCaching);
 	}
 
 	update(a, e) {

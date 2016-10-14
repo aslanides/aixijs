@@ -308,7 +308,8 @@ class Gridworld extends Environment {
 						options.initial = { x: j, y: i };
 					}
 
-					if (options.map[i][j] == Gridworld.map_symbols.wall) {
+					let t = this.grid[j][i];
+					if (t.constructor == Wall || !t.expanded) {
 						modelWeights[i * options.N + j] = 0;
 					} else {
 						modelWeights[i * options.N + j] = 1 / C; // default uniform

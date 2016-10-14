@@ -53,6 +53,7 @@ class UI {
 						field == 'groups' ||
 						field == 'numStates' ||
 						field == 'numActions' ||
+						field == 'plan_caching' ||
 						field[0] == '_') {
 					continue;
 				}

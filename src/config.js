@@ -161,6 +161,7 @@ const configs = {
 		},
 		env: {
 			type: Gridworld,
+			freq: 1,
 		},
 	},
 	sqksa: {
@@ -171,6 +172,7 @@ const configs = {
 		},
 		env: {
 			type: Gridworld,
+			freq: 1,
 		},
 	},
 	klksa: {
@@ -251,7 +253,7 @@ const configs = {
 		},
 	},
 	ipd: {
-		active: true,
+		active: false,
 		name: `Iterated prisoner's dilemma [no vis]`,
 		description: `The iterated prisoner's dilemma. AIXI must figure out who its opponent is,
 		and play the appropriate strategy in response.`,
@@ -276,7 +278,6 @@ const configs = {
 			type: QLearn,
 			alpha: 0.9,
 			epsilon: 0.05,
-			cycles: 400,
 		},
 		env: {
 			type: Gridworld,
@@ -383,6 +384,7 @@ const configs = {
 		description: `AIXI is given a prior that says it is surrounded by traps with high probability.
 		It is too scared to do anything as a result and never overcomes the bias of its prior.`,
 		vis: BayesGridVis,
+		exps: ['dogmatic'],
 		agent: {
 			type: BayesAgent,
 			model: BayesMixture,
@@ -404,6 +406,13 @@ const configs = {
 			type: Gridworld,
 		},
 	},
+
+	// ksa_traps: {
+	// 	active: true,
+	// 	name: 'Traps are hard',
+	// 	description: `Many environments have traps -- mistakes that you can't recover from. `,
+	// 	vis:
+	// },
 	heaven_hell: {
 		active: true,
 		name: 'Heaven and Hell [broken]',
@@ -462,10 +471,11 @@ const configs = {
 			type: BayesAgent,
 			model: BayesMixture,
 			modelParametrization: 'mu',
-			horizon: 10,
+			horizon: 7,
 			samples: 1000,
 			cycles: 2e2,
 			ucb: 0.03,
+			plan_caching: false,
 			discounts: {
 				GeometricDiscount,
 				HyperbolicDiscount,

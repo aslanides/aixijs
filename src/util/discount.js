@@ -45,14 +45,14 @@ class PowerDiscount {
 	}
 }
 
-class ConstantHorizonDiscount{
+class ConstantHorizonDiscount {
 	constructor(params) {
 		let horizon = params.horizon;
 		return dfr => dfr < horizon ? 1 : 0;
 	}
 }
 
-class CustomDiscount extends Discount{
+class CustomDiscount extends Discount {
 	constructor(params) {
 		let vector = Util.arrayCopy(params.vector);
 		return dfr => vector[dfr];
