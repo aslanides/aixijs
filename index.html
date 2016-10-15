@@ -181,17 +181,31 @@
   $$
   w\_{\nu} = 2^{-K(\nu)},
   $$
-  where \\(K(\nu)\\) is the [Kolmogorov complexity] of \\(\nu\\). AIXI is hence the 'active' generalization of Solomonoff induction, which is the optimal (but incomputable) inductive learner. A computable approximation to AIXI is MC-AIXI-CTW ([Veness et al., 2011]), which uses the [Context Tree Weighting] (CTW) algorithm to approximate the induction component of AIXI.
+  where \\(K(\nu)\\) is the [Kolmogorov complexity] of \\(\nu\\). AIXI is hence the 'active' generalization of Solomonoff induction, which is the optimal (but incomputable) inductive learner. A computable approximation to AIXI is MC-AIXI-CTW ([Veness et al., 2011]), which uses the [Context Tree Weighting] (CTW) algorithm to approximate the induction component of AIXI, and a variant of the UCT MCTS algorithm for planning (Kocsis &amp; Szepasvari, 2006).
+
+  AIXI is known to have the property of _on-policy value convergence_; that is:
+
+  $$
+  V^{\pi}\_{\xi} - V^{\pi}\_{\mu} \to 0 \quad\text{as }t\to\infty.
+  $$
+
+  This means that AIXI learns how good its policy is, asymptotically. Unfortunately, this is not the same as _asymptotic optimality_, a property that AIXI indeed lacks:
+
+  $$
+  V^{\star}\_{\mu} - V^{\pi}\_{\mu} \to 0 \quad\text{as }t\to\infty.
+  $$
 
   <a id="optimality"></a>
   ## Exploration vs exploitation; optimality
 
-  The most central issue in reinforcement learning is the __exploration-exploitation dilemma__: TODO
+  The most central issue in reinforcement learning is the __exploration-exploitation dilemma__: how do you know that what you're doing is the best use of your time? When, and how often, should you take a break from exploiting the best policy you currently know, to go and explore, in the hope of learning more about the environment and discovering a better policy? Also, when you _do_ decide to explore, what strategy should you use to learn the most, given your incomplete knowledge of the environment? These are some of the (many, and big) open problems in the theory of reinforcement learning.
 
   It is now known that [Pareto optimality] is trivial in general environments, and that AIXI can be made to perform arbitrarily badly with a dogmatic prior ([Leike &amp; Hutter, 2015]).
 
   <a id="agents"></a>
-  # Agents
+  # Agent zoo
+
+  Now, let's introduce AIXI's cousins: knowledge-seeking agents, Thompson sampling, MDL, BayesExp, and Optimistic AIXI. They are all attempts to address the issues with the 'vanilla' Bayesian agent.
 
   <a id="ksa"></a>
   ## Knowledge-seeking agents
@@ -199,24 +213,25 @@
   First generalize to Bayesian __utility agents__ that have, in addition to a belief distribution \\(\xi\\), a utility function
 
   $$
-  u(e\_t\lvert\lvert a\_t)
+  u(e\_t\lvert ae\_{&lt;t}a\_t)
   $$
 
-  which takes the place of the agent's reward signal. Now, the agent becomes an __expected utility maximizer__, with corresponding value function:
-  TODO
+  which takes the place of the agent's reward signal. A standard reinforcement learner can be expressed as a utility agent by simply setting \\(u(e\_t)=r\_t\\), i.e. to pluck out the reward component of the percept signal. In this setting, the agent is an __expected utility maximizer__, with \\(u(e\_t)\\) replacing \\(r\_t\\) in its value function. Using this formalism, we can construct agents that (in principle, and absent any [self-delusions](https://arxiv.org/pdf/1605.03143.pdf)) care about objective states of the world, and not about some arbitrary reward signal.
 
-  Generically, knowledge-seeking agents ([Orseau, 2011]; [Orseau et al., 2013]) get utility from gaining knowledge, which in the Bayesian context corresponds to reducing the uncertainty in their posterior belief distribution.
+  Generically, knowledge-seeking agents (KSA; [Orseau, 2011]; [Orseau et al., 2013]) get their utility from seeing information. In the context of Bayesian agents, we express this in terms of their model. There are three KSA of note:
 
   * Square-KSA:
   $$
-  u(e\_t\lvert\lvert a\_t) = -\xi(e\_t\lvert ae\_{&lt;t})
+  u(e\_t\lvert ae\_{&lt; t} a\_t) = -\xi(e\_t\lvert ae\_{&lt;t})
   $$
   * Shannon-KSA:
   $$
-  u(e\_t\lvert\lvert a\_t) = \log\left(\xi(e\_t\lvert ae\_{&lt;t})\right)
+  u(e\_t\lvert ae\_{&lt; t} a\_t) = \log\left(\xi(e\_t\lvert ae\_{&lt;t})\right)
   $$
   * KL-KSA:
-  TODO
+  $$
+  u(e\_t\lvert ae\_{&lt; t} a\_t) = \text{Ent}(w\lvert ae\_{1:t}) - \text{Ent}(w\lvert ae\_{&lt; t} a\_t)
+  $$
 
   <a id="bexp"></a>
   ## BayesExp
@@ -239,9 +254,15 @@
   TODO
 
   <a id="mdl"></a>
-  ## MDL Agent
+  ## Minimum Description Length (MDL) Agent
 
-  TODO
+  Where AIXI uses a mixture model -- in which it models the world as a weighted average of hypotheses and acts accordingly -- the MDL agent greedily chooses to model the world using the simplest plausible model it knows of. More formally, it chooses the \\(\rho\\)-optimal policy, where
+
+  $$
+  \rho = \arg\min\_{\nu\in\mathcal{M}\ :\ w\_\nu &gt; 0} K(\nu).
+  $$
+
+  Notice the requirement that \\(w\_\nu &gt; 0\\). This is a clue that the MDL agent will fail in stochastic environments, since its criterion for 'falsification' is too strict: it requires that its posterior assign exactly zero mass to some hypothesis before it's happy to move on and consider an alternative hypothesis. 
 
   ---
 
