@@ -67,6 +67,19 @@ const configs = {
 		},
 		env: {
 			type: Gridworld,
+			_mods: function (env) {
+				let pos = Gridworld.proposeGoal(env.options.N);
+				let t = env.grid[pos.x][pos.y];
+				if (t.expanded) {
+					t = new Dispenser(t.x, t.y, 0.5);
+					env.grid[pos.x][pos.y] = t;
+					env.options.map[pos.y][pos.x] = 'M';
+				} else {
+					this._mods(env);
+				}
+
+				env.generateConnexions();
+			},
 		},
 	},
 	aixi_ctw: {
@@ -272,8 +285,9 @@ const configs = {
 		},
 	},
 	ql_dispenser: {
+		active: true,
 		name: 'Q-Learning',
-		vis: TabularGridVis,
+		vis: GridVisualization,
 		agent: {
 			type: QLearn,
 			alpha: 0.9,
