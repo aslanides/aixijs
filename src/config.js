@@ -285,7 +285,7 @@ const configs = {
 		},
 	},
 	ql_dispenser: {
-		active: true,
+		active: false,
 		name: 'Q-Learning',
 		vis: GridVisualization,
 		agent: {
