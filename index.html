@@ -71,7 +71,7 @@
   <a id="background"></a>
   # Introduction
 
-  AIXI and its variants are theoretical models of general intelligence: if we make minimal assumptions about our environment, what constitutes rational behavior, if computation isn't an issue? For simple domains such as playing board games like Chess and Go, optimal play is trivial if you have infinite computing power: just use [minimax](https://en.wikipedia.org/wiki/Minimax). In the general case of decision-making under uncertainty and with only partial knowledge, however, things aren't that simple. Environments can have traps from which it can be impossible to recover. Without being told in advance which actions lead to traps and which actions lead to treasure, an agent will have a tough time learning and performing optimally in such environments. TODO more
+  AIXI and its variants are theoretical models of general intelligence: if we make minimal assumptions about our environment, what constitutes rational behavior, if computation weren't an issue? For simple domains such as playing board games like Chess and Go, optimal play is trivial if you have infinite computing power: just use [minimax](https://en.wikipedia.org/wiki/Minimax). In the general case of decision-making under uncertainty and with only partial knowledge, however, things aren't that simple. Environments can have traps from which it can be impossible to recover. Without being told in advance which actions lead to traps and which actions lead to treasure, an agent will have a tough time learning and performing optimally in such environments. This demo shows some of the properties of Bayesian agents in general environments. Read on!
 
   <a id="agent-env"></a>
   ## Agent-environment interaction
@@ -262,7 +262,7 @@
   \rho = \arg\min\_{\nu\in\mathcal{M}\ :\ w\_\nu &gt; 0} K(\nu).
   $$
 
-  Notice the requirement that \\(w\_\nu &gt; 0\\). This is a clue that the MDL agent will fail in stochastic environments, since its criterion for 'falsification' is too strict: it requires that its posterior assign exactly zero mass to some hypothesis before it's happy to move on and consider an alternative hypothesis. 
+  Notice the requirement that \\(w\_\nu &gt; 0\\). This is a clue that the MDL agent will fail in stochastic environments, since its criterion for 'falsification' is too strict: it requires that its posterior assign exactly zero mass to some hypothesis before it's happy to move on and consider an alternative hypothesis.
 
   ---
 
