@@ -174,7 +174,6 @@ const configs = {
 		},
 		env: {
 			type: Gridworld,
-			freq: 1,
 		},
 	},
 	sqksa: {
@@ -185,7 +184,6 @@ const configs = {
 		},
 		env: {
 			type: Gridworld,
-			freq: 1,
 		},
 	},
 	klksa: {
@@ -251,6 +249,7 @@ const configs = {
 		},
 		env: {
 			type: Gridworld,
+			goals: [{ freq: 1 }],
 		},
 	},
 	bayesexp: {
