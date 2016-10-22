@@ -267,7 +267,7 @@ class Gridworld extends Environment {
 
 	makeModel(model, parametrization) {
 		if (model == QTable) {
-			return new QTable(10, this.numActions);
+			return new QTable(100, this.numActions);
 		}
 
 		if (model == DirichletGrid) {
