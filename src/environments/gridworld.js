@@ -26,9 +26,6 @@ class Gridworld extends Environment {
 			this.grid[i] = new Array(this.N);
 			for (let j = 0; j < this.N; j++) {
 				this.grid[i][j] = Gridworld.newTile(i, j, options, options.map[j][i]);
-				if (this.grid[i][j].constructor != Wall) {
-					this.openTiles++;
-				}
 			}
 		}
 
