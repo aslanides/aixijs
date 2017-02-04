@@ -3,6 +3,7 @@ class TabularAgent extends Agent {
 		super(options);
 		this.epsilon = options.epsilon;
 		this.alpha = options.alpha;
+		this.gamma = options.gamma;
 		this.lifetime = 0;
 		this.Q = options.model;
 		this.tracer = TabularTrace;

@@ -8,7 +8,7 @@ class QTable {
 	get(obs, action) {
 		let val = this.map.get(obs * this.numActions + action);
 		if (val == undefined) {
-			return this.intialQ;
+			return this.initialQ;
 		}
 
 		return val;
