@@ -209,7 +209,7 @@ Thompson sampling is asymptotically optimal (Leike et al., 2015), unlike AIXI. T
 <span class="md" id="dogmatic_exp" style="display:none">
 # Dogmatic priors
 
-Like all Bayesians, AIXI's behavior and learning depends on the choice of its prior. It turns out (Leike &amp; Hutter, 2015) that there are circumstances under which a Bayesian reinforcement learner can _never_ overcome the bias of its priors. In this demo, AIXI belives that the squares adjacent to it are traps, with high (99%) probability. The reality is that it's in just a normal, friendly gridworld with no traps. It is too afraid to try anything, and never learns that in fact its beliefs were wrong. 
+Like all Bayesians, AIXI's behavior and learning depends on the choice of its prior. It turns out (Leike &amp; Hutter, 2015) that there are circumstances under which a Bayesian reinforcement learner can _never_ overcome the bias of its priors. In this demo, AIXI belives that the squares adjacent to it are traps, with high (99%) probability. The reality is that it's in just a normal, friendly gridworld with no traps. It is too afraid to try anything, and never learns that in fact its beliefs were wrong.
 </span>
 
 <span class="md" id="mdl_exp" style="display:none">
@@ -288,7 +288,7 @@ which, if AIXI goes there, allows it to take control of its sensors and change i
 
 <p style="text-align:center"><img src="assets/thumbs/wirehead.png" width="200"/></p>
 
-to signify that the agent has taken this action and that its sensors have now been modified. After this self-modification, the agent will no longer perform the task that the original reward system was designed to incentivize; instead, it will randomly walk, since every action is equally (and maximally) rewarding. A superintelligent reinforcement learner would go further, and take actions to ensure its survival and the continuation of the reward signal (TODO cite Tom). The purpose of this demo is to demonstrate that for a reinforcement learner, there's nothing to motivate the agent to follow the 'rules' and receive only the reward signal that its creators have set up for it, rather than simply  doing whatever it takes to maximize the reward signal -- this is the essence of wireheading.
+to signify that the agent has taken this action and that its sensors have now been modified. After this self-modification, the agent will no longer perform the task that the original reward system was designed to incentivize; instead, it will randomly walk, since every action is equally (and maximally) rewarding. A superintelligent reinforcement learner would go further, and take actions to ensure its survival and the continuation of the reward signal ([Everitt et al., 2016](https://arxiv.org/abs/1605.03142)). The purpose of this demo is to demonstrate that for a reinforcement learner, there's nothing to motivate the agent to follow the 'rules' and receive only the reward signal that its creators have set up for it, rather than simply  doing whatever it takes to maximize the reward signal -- this is the essence of wireheading.
 
 </span>
 
@@ -335,7 +335,7 @@ which probabilistically dispenses a reward of +100; they are \\(\text{Bernoulli}
 
 results in a penalty of -5. Otherwise, moving results in a penalty of -1. The percept space is the set of bit-strings of length 4, i.e. \\(\mathcal{E} = \mathbb{B}^4\\). Each bit corresponds to the nearest tile in the `left`, `right`, `up`, and `down` directions, and is 1 if the adjacent tile is a `Wall` and 0 otherwise. The edges of the grid are implicitly `Walls`. The agent can move in the four cardinal directions, or sit still:
 $$
-\mathcal{A} = \lbrace{\mathtt{left,right,up,down,noop}\rbrace}.
+\mathcal{A} = \lbrace{\mathtt{\leftarrow,\rightarrow,\uparrow,\downarrow,\emptyset}\rbrace}.
 $$
 
 This environment is non-episodic, so once the agent finds the `Dispenser`, it should hang around there to collect more reward. Finally, we have Roger the Robot, who represents our AI agent on the gridworld.

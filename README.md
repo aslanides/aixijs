@@ -2,7 +2,7 @@
 AIXIjs is a JavaScript demo for running General Reinforcement Learning (RL) agents in the browser. In particular, it provides a general and extensible framework for running experiments on Bayesian RL agents in general (partially observable, non-Markov, non-ergodic) environments.
 
 ## Features
-Agents implemented so far:
+Agents implemented:
 - Bayes (AIXI)
 - KSA (Square, Shannon, and Kullback-Leibler)
 - Thompson Sampling
@@ -15,7 +15,7 @@ Environments implemented:
 - Finite-state MDPs
 - Gridworld POMPDs
 
-See the [main site](http://aslanides.github.io/aixijs) for more background, documentation, references, and demos.
+See the [main site](http://aslanides.io/aixijs) for more background, documentation, references, and demos.
 
 Note: AIXIjs uses some features from ECMAScript 2015 (ES6). It *should* work on recent versions of Firefox, Safari, Edge, and Chrome, but it's only really been tested on Chrome, so that's what I recommend using.
 
