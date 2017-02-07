@@ -297,7 +297,7 @@ const configs = {
 		},
 	},
 	bandit: {
-		active: true,
+		active: false,
 		name: 'Bandit [no vis]',
 		description: 'A simple two-armed Gaussian bandit, where mu and sigma are unknown for each arm.',
 		vis: BanditVis,
@@ -324,7 +324,7 @@ const configs = {
 		},
 	},
 	mdp: {
-		active: true,
+		active: false,
 		name: 'MDP [broken]',
 		description: 'A simple, fully connected MDP with three states.',
 		vis: MDPVis,
@@ -427,7 +427,7 @@ const configs = {
 	// 	vis:
 	// },
 	heaven_hell: {
-		active: true,
+		active: false,
 		name: 'Heaven and Hell [broken]',
 		description: `The canonical Heaven and Hell example:
 		the agent is presented with two doors: one leads to heaven (reward 1 forever),
@@ -516,7 +516,7 @@ const configs = {
 		},
 	},
 	mdp2: {
-		active: true,
+		active: false,
 		name: 'MDP2',
 		vis: MDP2Vis,
 		agent: {
