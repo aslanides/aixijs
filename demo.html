@@ -184,7 +184,11 @@ $$
 
 over different gridworlds contained in the model class \\(\mathcal{M}\\). Compared to the Context tree model class (of [MC-AIXI-CTW](https://arxiv.org/abs/0909.0801) fame), this model class has a lot of _domain knowledge_. To see how we parametrize the gridworlds and set up the model class, see below.
 
-For planning, we use \\(\rho\\)UCT, a generalization of the UCT algorithm (TODO cite), which uses Monte Carlo tree search to estimate the value \\(V^{*}\_{\xi}\\) up to some horizon \\(m\\).
+For planning, we use \\(\rho\\)UCT, a generalization of the UCT algorithm ([Kocsis &amp; Szepesvári, 2006](http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.102.1296)), which uses [Monte Carlo tree search](https://en.wikipedia.org/wiki/Monte_Carlo_tree_search) to estimate the value \\(V^{*}\_{\xi}\\) up to some horizon \\(m\\). That is, we use Monte Carlo sampling to approximate the expectimax expression
+
+$$
+V\_\xi^{\star}\left(ae\_{&lt;t}\right) = \max\_{a\_t}\sum\_{e\_t}\cdots\max\_{a\_{t+m}}\sum\_{e\_{t+m}}\sum\_{k=t}^{t+m}\gamma\_k^tr\_k\prod\_{j=t}^k\xi\left(e\_j\lvert ae\_{&lt;j}a\_j\right).
+$$
 </span>
 
 <span class="md" id="thompson_exp" style="display:none">
