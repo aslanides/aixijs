@@ -71,7 +71,7 @@
   <a id="background"></a>
   # Introduction
 
-  AIXI and its variants are theoretical models of general intelligence: if we make minimal assumptions about our environment, what constitutes rational behavior, if computation weren't an issue? For simple domains such as playing board games like Chess and Go, optimal play is trivial if you have infinite computing power: just use [minimax](https://en.wikipedia.org/wiki/Minimax). In the general case of decision-making under uncertainty and with only partial knowledge, however, things aren't that simple. Environments can have traps from which it can be impossible to recover. Without being told in advance which actions lead to traps and which actions lead to treasure, an agent will have a tough time learning and performing optimally in such environments. This demo shows some of the properties of Bayesian agents in general environments. Read on!
+  [AIXI] ([Hutter, 2005]) and its variants are theoretical models of general intelligence: if we make minimal assumptions about our environment, what constitutes rational behavior, if computation weren't an issue? For simple domains such as playing board games like Chess and Go, optimal play is trivial if you have infinite computing power: just use [minimax](https://en.wikipedia.org/wiki/Minimax). In the general case of decision-making under uncertainty and with only partial knowledge, however, things aren't that simple. Environments can have traps from which it can be impossible to recover. Without being told in advance which actions lead to traps and which actions lead to treasure, an agent will have a tough time learning and performing optimally in such environments. This demo shows some of the properties of Bayesian agents in general environments. Read on!
 
   <a id="agent-env"></a>
   ## Agent-environment interaction
@@ -210,7 +210,7 @@
   <a id="ksa"></a>
   ## Knowledge-seeking agents
 
-  First generalize to Bayesian __utility agents__ that have, in addition to a belief distribution \\(\xi\\), a utility function
+  First generalize our Bayesian reinforcement learner to a Bayesian __utility agent__ that has, in addition to a belief distribution \\(\xi\\), a utility function
 
   $$
   u(e\_t\lvert ae\_{&lt;t}a\_t)
@@ -218,7 +218,7 @@
 
   which takes the place of the agent's reward signal. A standard reinforcement learner can be expressed as a utility agent by simply setting \\(u(e\_t)=r\_t\\), i.e. to pluck out the reward component of the percept signal. In this setting, the agent is an __expected utility maximizer__, with \\(u(e\_t)\\) replacing \\(r\_t\\) in its value function. Using this formalism, we can construct agents that (in principle, and absent any [self-delusions](https://arxiv.org/pdf/1605.03143.pdf)) care about objective states of the world, and not about some arbitrary reward signal.
 
-  Generically, knowledge-seeking agents (KSA; [Orseau, 2011]; [Orseau et al., 2013]) get their utility from seeing information. In the context of Bayesian agents, we express this in terms of their model. There are three KSA of note:
+  Generically, knowledge-seeking agents (KSA; [Orseau, 2011]; [Orseau et al., 2013]) get their utility from seeing information. In the context of Bayesian agents, we express this in terms of information-theoretic changes to their model. There are three KSA of note:
 
   * Square-KSA:
   $$
@@ -245,7 +245,7 @@
   $$
   H\_{t}^{\gamma}(\varepsilon) \stackrel{.}{=} \min\left\lbrace m\ :\ \sum\_{k=m}^{\infty}\gamma\_{t+k}\leq\varepsilon\right\rbrace,
   $$
-  which is the minimum number of cycles ahead one needs to consider in order to accumulate a value of \\((1-\varepsilon)V\_{\nu}^{\pi}\\), for some \\(\varepsilon&gt;0\\). Thompson Sampling ([Leike et al., 2016]) has a simple algorithm: every \\(H\_{t}^{\gamma}\\) steps, sample an environment \\(\rho\\) from the posterior belief distribution \\(w\_{\nu}\\), and use the \\(\rho\\)-optimal policy, re-sample, and repeat.
+  which is the minimum number of cycles ahead one needs to plan in order to account for a value of \\((1-\varepsilon)V\_{\nu}^{\pi}\\), for some \\(\varepsilon&gt;0\\). [Thompson Sampling] has been used as an exploration scheme in bandits, and more recently in MDPs. When generalized to POMDPs ([Leike et al., 2016]), Thompson sampling has a simple algorithm: every \\(H\_{t}^{\gamma}\\) steps, sample an environment \\(\rho\\) from the posterior belief distribution \\(w\_{\nu}\\), and use the \\(\rho\\)-optimal policy, re-sample, and repeat.
 
   <a id="opt-aixi"></a>
   ## Optimistic AIXI
@@ -291,6 +291,8 @@
   [Pareto optimality]: https://en.wikipedia.org/wiki/Pareto_efficiency
   [Andrej Karpathy]: http://cs.stanford.edu/people/karpathy/
   [REINFORCEjs]: http://cs.stanford.edu/people/karpathy/reinforcejs/
+  [Thompson Sampling]: https://en.wikipedia.org/wiki/Thompson_sampling
+
 
   [Hutter, 2005]: http://www.hutter1.net/ai/uaibook.htm
   [Leike &amp; Hutter, 2015]: http://jmlr.org/proceedings/papers/v40/Leike15.pdf
