@@ -28,7 +28,7 @@ class GridVisualization extends Visualization {
 			.attr('xlink:href', 'assets/robot.svg')
 			.attr('x', 0)
 			.attr('y', 0)
-			.attr('width', this.d)
+			//.attr('width', this.d)
 			.attr('height', this.d)
 			.attr('id', 'agent');
 	}
@@ -37,7 +37,7 @@ class GridVisualization extends Visualization {
 		let x = this.pos_trace[this.time].x;
 		let y = this.pos_trace[this.time].y;
 		d3.select('#agent')
-			.attr('x', x * this.d)
+			.attr('x', (x + 0.2) * this.d)
 			.attr('y', y * this.d);
 	}
 
