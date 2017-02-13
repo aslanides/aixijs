@@ -63,9 +63,7 @@
 	* [Knowledge-seeking agents](#ksa)
 	* [BayesExp](#bexp)
 	* [Thompson Sampling](#ts)
-	* [Optimistic AIXI](#opt-aixi)
 	* [MDL Agent](#mdl)
-* [References and further reading](#further-reading)
 
 <a id="background"></a>
 # Introduction
@@ -185,15 +183,25 @@ $$
 <a id="aixi"></a>
 ## AI\\(\xi\\)
 
-AI\\(\xi\\) is the __Bayes-optimal__ agent. That is, it is the policy that maximizes the \\(\xi\\)-expected return:
+AI\\(\xi\\) is the __Bayes-optimal__ agent. That is, it is the policy that maximizes the \\(\xi\\)-expected return; it is a deterministic policy, given by
+
 $$
-\pi^{\text{AI}\xi}\stackrel{.}{=}\arg\max\_\pi V^\pi\_\xi.
+\begin{align}
+\pi^{\text{AI}\xi} & = \arg\max\_\pi V^\pi\_\xi \\\\
+& =  \arg\lim\_{m\to\infty}\max\_{a\_{t}\in\mathcal{A}}\sum\_{e\_{t}\in\mathcal{E}}\cdots\max\_{a\_{m}\in\mathcal{A}}\sum\_{e\_{m}\in\mathcal{E}}\sum\_{k=t}^{m}\gamma\_{k}r\_{k}\prod\_{j=t}^{k}\sum\_{\nu\in\mathcal{M}}w\_\nu\nu\left(e\_{j}\lvert ae\_{&lt;j}a\_{j}\right).
+\end{align}
 $$
+
 It is a universal, parameter-free Bayesian agent, whose behavior is completely specified by its model class \\(\mathcal{M}\\) and choice of prior \\(\lbrace w\_\nu\rbrace\_{\nu\in\mathcal{M}}\\). AI\\(\xi\\)'s big brother is [AIXI] ([Hutter, 2005]), which uses [Solomonoff's universal prior], which mixes over the model class of all computable probability measures:
 $$
 w\_{\nu} = 2^{-K(\nu)},
 $$
-where \\(K(\nu)\\) is the [Kolmogorov complexity] of \\(\nu\\). AIXI is hence the 'active' generalization of Solomonoff induction, which is the optimal (but incomputable) inductive learner. A computable approximation to AIXI is MC-AIXI-CTW ([Veness et al., 2011]), which uses the [Context Tree Weighting] (CTW) algorithm to approximate the induction component of AIXI, and a variant of the UCT MCTS algorithm for planning ([Kocsis &amp; Szepasvari, 2006]).
+where \\(K(\nu)\\) is the [Kolmogorov complexity] of \\(\nu\\). AIXI is hence the 'active' generalization of Solomonoff induction, which is the optimal (but incomputable) inductive learner. AIXI is more commonly written using the formulation of environments as _programs_:
+$$
+a^{\text{AIXI}}\_{t} = \arg\lim\_{m\to\infty}\max\_{a\_{t}\in\mathcal{A}}\sum\_{e\_{t}\in\mathcal{E}}\cdots\max\_{a\_{m}\in\mathcal{A}}\sum\_{e\_{m}\in\mathcal{E}}\sum\_{k=t}^{m}\gamma\_{k}r\_{k}\sum\_{q\ :\ U(q;a\_{&lt;k})=e\_{&lt;k}\*}2^{-l(q)},
+$$
+where \\(U\\) is a Universal Turing Machine, and \\(x\*\\) is an infinite string beginning with \\(x\\).
+A computable approximation to AIXI is MC-AIXI-CTW ([Veness et al., 2011]), which uses the [Context Tree Weighting] (CTW) algorithm to approximate the induction component of AIXI, and a variant of the UCT MCTS algorithm for planning ([Kocsis &amp; Szepasvari, 2006]).
 
 AIXI is known to have the property of _on-policy value convergence_; that is:
 
@@ -222,7 +230,7 @@ Now, let's introduce AIXI's cousins: knowledge-seeking agents, Thompson sampling
 <a id="ksa"></a>
 ## Knowledge-seeking agents
 
-The exploration approach one takes is often critical to one's success in an unknown environment. A principled exploration method for Bayesian agents is by knowledge- or information-seeking. Here, we present the knowledge-seeking agents (KSA) first introduced in [Orseau, 2011] and [Orseau, 2013].
+The exploration approach one takes is often critical to one's success in an unknown environment. A principled exploration method for Bayesian agents is by knowledge- or information-seeking. Here, we present the knowledge-seeking agents (KSA) first introduced in [Orseau, 2011] and [Orseau et al., 2013].
 
 First, we generalize our Bayesian reinforcement learner to a Bayesian __utility agent__ that has, in addition to a belief distribution \\(\xi\\), a utility function
 
@@ -247,32 +255,36 @@ $$
 u(e\_t\lvert ae\_{&lt; t} a\_t) = \text{Ent}(w\lvert ae\_{1:t}) - \text{Ent}(w\lvert ae\_{&lt;, t} a\_t).
 $$
 
-These utility functions are so-named because, when we take their \\(\xi\\)-expected value, we get the square- and Shannon-entropies of \\(\xi\\), and the \\(\xi\\)-expected Kullback-Leibler divergence (Lattimore, 2013). Note that these agents differ from AIXI only in their utility functions; they are Bayesian learners, and plan by computing the expectimax expression introduced previously.
+These utility functions are so-named because, when we take their \\(\xi\\)-expected value, we get the square- and Shannon-entropies of \\(\xi\\), and the \\(\xi\\)-expected Kullback-Leibler divergence (Lattimore, 2013). Note that these agents differ from AIXI only in their utility functions; they are Bayesian learners, and plan by computing the expectimax expression introduced previously, but substituting \\(u(\cdot\lvert \cdot)\\) for \\(r\\). The value function for a utility agent with utility function \\(u\\) is
+
+$$
+V\_{\xi,u}^{\*} = \arg\lim\_{m\to\infty}\max\_{a\_{t}\in\mathcal{A}}\sum\_{e\_{t}\in\mathcal{E}}\cdots\max\_{a\_{m}\in\mathcal{A}}\sum\_{e\_{m}\in\mathcal{E}}\sum\_{k=t}^{m}\gamma\_{k}u(e\_t\lvert ae\_{&lt;k})\prod\_{j=t}^{k}\xi\left(e\_{j}\lvert ae\_{&lt;j}a\_{j}\right).
+$$
+
+For the particular case of the KL-KSA, we write its value function as \\(V\_{\xi,\text{IG}}^{\*}\\).
 
 <a id="bexp"></a>
 ## BayesExp
 
-TODO w/ screen of algorithm
+It turns out that the Bayes agent, AI\\(\xi\\) is not asymptotically optimal in general essentially because one can construct environments in which it fails to explore enough ([Orseau, 2010]). A natural way to extend AI\\(\xi\\) so as to remedy this is to add in bursts of exploration (for an effective horizon -- defined below), when the \\(\xi\\)-expected information gain exceeds some threshold. Thus, we mix the exploratory advantages of knowledge-seeking, at the cost of introducing another parameter (the exploration threshold).
+
+![BayesExp algorithm](assets/bayesexp.png)
 
 <a id="ts"></a>
 ## Thompson Sampling
 
-Define the \\(\varepsilon\\)-effective horizon:
+First, define the \\(\varepsilon\\)-effective horizon:
 $$
 H\_{t}^{\gamma}(\varepsilon) \stackrel{.}{=} \min\left\lbrace m\ :\ \sum\_{k=m}^{\infty}\gamma\_{t+k}\leq\varepsilon\right\rbrace,
 $$
 which is the minimum number of cycles ahead one needs to plan in order to account for a value of \\((1-\varepsilon)V\_{\nu}^{\pi}\\), for some \\(\varepsilon&gt;0\\). [Thompson Sampling] has been used as an exploration scheme in bandits, and more recently in MDPs. When generalized to POMDPs ([Leike et al., 2016]), Thompson sampling has a simple algorithm: every \\(H\_{t}^{\gamma}\\) steps, sample an environment \\(\rho\\) from the posterior belief distribution \\(w\_{\nu}\\), and use the \\(\rho\\)-optimal policy, re-sample, and repeat.
 
-<a id="opt-aixi"></a>
-## Optimistic AIXI
-
-Optimistic AIXI ([Sunehag &amp; Hutter, 2015]).
-TODO
+![Thompson sampling algorithm](assets/thompson.png)
 
 <a id="mdl"></a>
 ## Minimum Description Length (MDL) Agent
 
-Where AIXI uses a mixture model -- in which it models the world as a weighted average of hypotheses and acts accordingly -- the MDL agent greedily chooses to model the world using the simplest plausible model it knows of. More formally, it chooses the \\(\rho\\)-optimal policy, where
+Where AIXI uses a mixture model -- in which it models the world as a weighted average of hypotheses and acts accordingly -- the MDL agent greedily chooses to model the world using the simplest plausible model it knows of. More formally, it chooses the \\(\rho\\)-optimal policy, where \\(\rho\\) is the simplest so-far unfalsified environment.
 
 $$
 \rho = \arg\min\_{\nu\in\mathcal{M}\ :\ w\_\nu &gt; 0} K(\nu).
@@ -280,10 +292,11 @@ $$
 
 Notice the requirement that \\(w\_\nu &gt; 0\\). This is a clue that the MDL agent will fail in stochastic environments, since its criterion for 'falsification' is too strict: it requires that its posterior assign exactly zero mass to some hypothesis before it's happy to move on and consider an alternative hypothesis.
 
----
+Of course, in practice (that is, for the purposes of our demos), we can't compute the Kolmogorov complexity of our environment models, so we come up with some other ordering \\(\preceq\\) over \\(\mathcal{M}\\) to approximate it.
 
-<a id="further-reading"></a>
-## References &amp; Further Reading
+![MDL algorithm](assets/mdl.png)
+
+---
 
 <!-- References -->
 [reinforcement learning]: https://en.wikipedia.org/wiki/Reinforcement_learning
@@ -323,6 +336,7 @@ Notice the requirement that \\(w\_\nu &gt; 0\\). This is a clue that the MDL age
 [Veness et al., 2011]: https://www.jair.org/media/3125/live-3125-5397-jair.pdf
 [Orseau, 2011]: http://www.agroparistech.fr/mmip/maths/laurent_orseau/papers/orseau-ALT-2011-knowledge-seeking.pdf
 [Orseau et al., 2013]: http://www.hutter1.net/publ/ksaprob.pdf
+[Orseau, 2010]: http://link.springer.com/chapter/10.1007/978-3-642-16108-7_28
 [Sutton &amp; Barto, 1998]: https://webdocs.cs.ualberta.ca/~sutton/book/the-book.html
 [Sunehag &amp; Hutter, 2015]: http://jmlr.org/papers/volume16/sunehag15a/sunehag15a.pdf
   </span>
