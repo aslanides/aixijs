@@ -124,7 +124,7 @@ class DecisionNode {
 		return this.children[a];
 	}
 
-	selectAction(tree) {
+	selectAction(tree, dfr) {
 		let a;
 		if (this.n_children != tree.numActions) {
 			a = this.U[this.n_children];
@@ -134,7 +134,7 @@ class DecisionNode {
 			let max = Number.NEGATIVE_INFINITY;
 			for (let action = 0, A = tree.numActions; action < A; action++) {
 				let child = this.getChild(action);
-				let normalization = tree.horizon * tree.rew_range;
+				let normalization = (tree.horizon - dfr + 1) * tree.rew_range;
 				let value = child.mean / normalization + tree.ucb *
 					Math.sqrt(Math.log2(this.visits) / child.visits);
 				if (value > max) {
@@ -154,7 +154,7 @@ class DecisionNode {
 		} else if (this.visits == 0) {
 			reward = tree.rollout(tree.horizon, dfr);
 		} else {
-			let action = this.selectAction(tree);
+			let action = this.selectAction(tree, dfr);
 			reward = this.getChild(action).sample(tree, dfr);
 		}
 
