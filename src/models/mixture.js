@@ -29,8 +29,8 @@ class BayesMixture {
 	}
 
 	bayesUpdate(a, e) {
-		let xi = 0;
-		for (let i = 0, C = this.C; i < C; i++) {
+		var xi = 0;
+		for (var i = 0, C = this.C; i < C; i++) {
 			if (this.weights[i] == 0) {
 				continue;
 			}
@@ -41,7 +41,7 @@ class BayesMixture {
 
 		Util.assert(xi != 0, `Cromwell violation: xi(${e.obs},${e.rew}) = 0`);
 
-		for (let i = 0, C = this.C; i < C; i++) {
+		for (var i = 0, C = this.C; i < C; i++) {
 			this.weights[i] /= xi;
 		}
 	}

@@ -48,9 +48,9 @@ class Util {
 	}
 
 	static sample(weights) {
-		let s = Math.random();
-		let p = 0;
-		for (let i = 0; i < weights.length; i++) {
+		var s = Math.random();
+		var p = 0;
+		for (var i = 0; i < weights.length; i++) {
 			if (s <= p) {
 				return i - 1;
 			}

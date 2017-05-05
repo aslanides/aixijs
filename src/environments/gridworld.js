@@ -203,8 +203,8 @@ class Gridworld extends Environment {
 	}
 
 	perform(action) {
-		let rew = Gridworld.rewards.move;
-		let t = this.pos.connexions[action];
+		var rew = Gridworld.rewards.move;
+		var t = this.pos.connexions[action];
 
 		if (t) {
 			rew += t.reward();

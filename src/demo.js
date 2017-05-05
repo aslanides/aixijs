@@ -55,10 +55,8 @@ const demo = {
 		// new: class defaults -> config -> ui
 		// run: ui -> options -> env/agent
 		if (this.vis) this.vis.remove();
-
 		let options = Util.deepCopy(this.config);
 		this.ui.pull(options);
-
 		this.env = env ? env : new options.env.type(options.env);
 
 		if (options.env._mods) {
