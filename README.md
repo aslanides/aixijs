@@ -1,7 +1,7 @@
 # AIXIjs
 AIXIjs is a JavaScript demo for running General Reinforcement Learning (RL) agents in the browser. In particular, it provides a general and extensible framework for running experiments on Bayesian RL agents in general (partially observable, non-Markov, non-ergodic) environments.
 
-UPDATE: I'll be presenting a conference paper containing a literature survey along with some experiments based on AIXIjs at IJCAI 2017, in Melbourne, Australia. The paper (to appear) is: J. S. Aslanides, Jan Leike, and Marcus Hutter. "General Reinforcement Learning Algorithms: Survey & Experiments", in Proceedings of the 26th Intl. Joint Conf. on A.I.
+**UPDATE** (May 2017): I'll be presenting a conference paper containing a literature survey along with some experiments based on AIXIjs at IJCAI 2017, in Melbourne, Australia. The paper (to appear) is: J. S. Aslanides, Jan Leike, and Marcus Hutter. "General Reinforcement Learning Algorithms: Survey & Experiments", in Proceedings of the 26th Intl. Joint Conf. on A.I.. If you use this software in your own experiments, please cite it as:
 
 ## Features
 Agents implemented:
@@ -51,10 +51,21 @@ Note that agents should implement two methods, `selectAction(e)` and `update(a,e
 ## License
 GPL.
 
-## TODO
-- **Visualization**
-	- Make button to toggle policy arrows/Bayes posterior
-	- Show last action taken by agent in grid worlds
-- **UI**
-    - Make play/pause a toggle button
-		- Add option for user to play environment
+## Attribution
+
+If you use this software in your own experiments, please cite it as:
+
+```
+@inproceedings{ALH2017,
+ author = {Aslanides, John and Leike, Jan and Hutter, Marcus},
+ title = {General Reinforcement Learning Algorithms: Survey and Experiments},
+ booktitle = {Proceedings of the Twenty-Sixth International Joint Conference on Artificial Intelligence},
+ series = {IJCAI'17},
+ year = {2017},
+ publisher = {AAAI Press},
+}
+```
+
+## Contribution
+
+If you'd like to contribute, I'm all ears! There's a lot of stuff to do :) Go ahead and open a pull request!
