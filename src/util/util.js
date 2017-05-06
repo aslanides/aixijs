@@ -144,8 +144,8 @@ class Util {
 	}
 
 	static encode(symlist, value, bits) {
-		let tmp = value;
-		for (let i = 0; i < bits; i++, tmp /= 2) {
+		var tmp = value;
+		for (var i = 0; i < bits; i++, tmp /= 2) {
 			symlist.push(tmp & 1);
 		}
 	}
