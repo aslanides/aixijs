@@ -1,7 +1,9 @@
 # AIXIjs
 AIXIjs is a JavaScript demo for running General Reinforcement Learning (RL) agents in the browser. In particular, it provides a general and extensible framework for running experiments on Bayesian RL agents in general (partially observable, non-Markov, non-ergodic) environments.
 
-**UPDATE** (May 2017): I'll be presenting a conference paper containing a literature survey along with some experiments based on AIXIjs at IJCAI 2017, in Melbourne, Australia. The paper (to appear) is: J. S. Aslanides, Jan Leike, and Marcus Hutter. "General Reinforcement Learning Algorithms: Survey & Experiments", in Proceedings of the 26th Intl. Joint Conf. on A.I.. If you use this software in your own experiments, please cite it as:
+**UPDATE** (May 2017): I'll be presenting a conference paper containing a literature survey along with some experiments based on AIXIjs at IJCAI 2017, in Melbourne, Australia. The paper (to appear) is: J. S. Aslanides, Jan Leike, and Marcus Hutter. "General Reinforcement Learning Algorithms: Survey & Experiments", in Proceedings of the 26th Intl. Joint Conf. on A.I..
+
+![](assets/aixi.gif) ![](assets/ksa.gif)
 
 ## Features
 Agents implemented:
@@ -35,7 +37,7 @@ let a = null; // action
 let e = env.generatePercept() // percept
 
 // main loop
-for (let t = 0; t < options.cycles; t++) {
+for (let t = 0; t < options.cycles; t+s+) {
 	trace.log(agent, env, a, e); // log info to trace
 	a = agent.selectAction(e); // agent computes its policy and selects an action
 	env.perform(a); // pass this action to the environment and compute dynamics
@@ -48,10 +50,18 @@ for (let t = 0; t < options.cycles; t++) {
 
 Note that agents should implement two methods, `selectAction(e)` and `update(a,e)`. Environments should implement `generatePercept()`, `perform(a)`, and `conditionalDistribution(e)`.
 
+## How to run experiments
+
+I've provided a helper function `demo.experiment(...configs,runs)` to make it easy to do numerous runs with different configs, and serialize the results to JSON. To run experiments, bring up the console in Chrome (Ctrl+Shift+I on Linux), and run something like:
+
+![Experiment](/assets/experiment.png)
+
+After the experiments  download link for `results.json` will appear at the bottom of the DOM. See `src/demo.js:209` for details about the structure of the serialization. There's an iPython notebook in `experiments/analysis.ipynb` that should help get you started in producing plots etc.
+
 ## License
 GPL.
 
-## Attribution
+## How to cite
 
 If you use this software in your own experiments, please cite it as:
 
