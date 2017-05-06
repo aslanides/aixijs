@@ -2,7 +2,7 @@ class Bandit extends Environment {
 	constructor(options) {
 		super(options);
 		this.actions = [];
-		for (let param of options._params) {
+		for (var param of options._params) {
 			this.actions.push(new options.dist(param));
 		}
 

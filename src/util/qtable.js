@@ -6,7 +6,7 @@ class QTable {
 	}
 
 	get(obs, action) {
-		let val = this.map.get(obs * this.numActions + action);
+		var val = this.map.get(obs * this.numActions + action);
 		if (val == undefined) {
 			return this.initialQ;
 		}
@@ -19,8 +19,8 @@ class QTable {
 	}
 
 	copy() {
-		let res = new QTable();
-		for (let [key, value] of this.map) {
+		var res = new QTable();
+		for (var [key, value] of this.map) {
 			res.map.set(key, value);
 		}
 

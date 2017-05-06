@@ -14,8 +14,8 @@ class IteratedPrisonersDilemma extends Environment {
 
 	perform(a) {
 		Util.assert(a == 0 || a == 1, `Bad action: ${a}`);
-		let b = this.opponent.selectAction();
-		let r = this.payouts[b][a];
+		var b = this.opponent.selectAction();
+		var r = this.payouts[b][a];
 		this.a = a;
 		this.b = b;
 
@@ -31,9 +31,9 @@ class IteratedPrisonersDilemma extends Environment {
 	}
 
 	conditionalDistribution(e) {
-		let r = e.rew;
-		let o = e.obs;
-		let p = this.opponent.pr(o);
+		var r = e.rew;
+		var o = e.obs;
+		var p = this.opponent.pr(o);
 		return p;
 	}
 
@@ -57,17 +57,17 @@ class IteratedPrisonersDilemma extends Environment {
 	}
 
 	makeModel(kind) {
-		let opponents = IteratedPrisonersDilemma.opponents;
-		let modelClass = [];
-		let opt = Util.deepCopy(this.options);
-		for (let op in IteratedPrisonersDilemma.opponents) {
+		var opponents = IteratedPrisonersDilemma.opponents;
+		var modelClass = [];
+		var opt = Util.deepCopy(this.options);
+		for (var op in IteratedPrisonersDilemma.opponents) {
 			opt.opponent = IteratedPrisonersDilemma.opponents[op];
 			modelClass.push(new this.constructor(opt));
 		}
 
-		let C = modelClass.length;
-		let modelWeights = Util.zeros(C);
-		for (let i = 0; i < C; i++) {
+		var C = modelClass.length;
+		var modelWeights = Util.zeros(C);
+		for (var i = 0; i < C; i++) {
 			modelWeights[i] = 1 / C;
 		}
 
@@ -216,7 +216,7 @@ class Pavlov extends PDAgent {
 	}
 
 	selectAction() {
-		let b = Math.random() < 0.5 ? 1 : 0;
+		var b = Math.random() < 0.5 ? 1 : 0;
 		if (this.last_a) {
 			b = this.last_b;
 		}
@@ -267,7 +267,7 @@ class Adaptive extends PDAgent {
 			return this.opening[this.T];
 		}
 
-		let b = this.payout_totals[0] / this.nd > this.payout_totals[1] / this.nc ? 0 : 1;
+		var b = this.payout_totals[0] / this.nd > this.payout_totals[1] / this.nc ? 0 : 1;
 		this.last_b = b;
 		return b;
 	}

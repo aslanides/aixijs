@@ -47,8 +47,8 @@ class Normal {
 	}
 
 	sample() {
-		let theta = 2 * Math.PI * Math.random();
-		let r = this.sigma * Math.sqrt(-2 * Math.log(1 - Math.random()));
+		var theta = 2 * Math.PI * Math.random();
+		var r = this.sigma * Math.sqrt(-2 * Math.log(1 - Math.random()));
 		return this.mu + r * Math.cos(theta);
 	}
 
@@ -58,11 +58,11 @@ class Normal {
 	}
 
 	data() {
-		let xmin = this.mu - 4 * this.sigma;
-		let xmax = this.mu + 4 * this.sigma;
-		let dx = (xmax - xmin) / 10000;
-		let dat = [];
-		for (let x = xmin; x < xmax; x += dx) {
+		var xmin = this.mu - 4 * this.sigma;
+		var xmax = this.mu + 4 * this.sigma;
+		var dx = (xmax - xmin) / 10000;
+		var dat = [];
+		for (var x = xmin; x < xmax; x += dx) {
 			dat.push({ x: x, y: this.prob(x) });
 		}
 
@@ -77,8 +77,8 @@ class Beta {
 	}
 
 	prob(p) {
-		let f = math.factorial;
-		let beta = f(this.alpha) * f(this.beta) / f(this.alpha + this.beta);
+		var f = math.factorial;
+		var beta = f(this.alpha) * f(this.beta) / f(this.alpha + this.beta);
 		return math.pow(p, this.alpha - 1) * math.pow(1 - p, this.beta - 1) / beta;
 	}
 
@@ -106,14 +106,14 @@ class Dirichlet {
 	prob(pvec) {
 		Util.assert(pvec.length == this.K);
 		Util.assert(Util.sum(pvec) == 1);
-		let beta = 1;
-		for (let i = 0; i < this.K; i++) {
+		var beta = 1;
+		for (var i = 0; i < this.K; i++) {
 			beta *= math.factorial(this.alphas[i]);
 		}
 
 		beta /= math.factorial(Util.sum(this.alphas));
 		out = beta;
-		for (let i = 0; i < this.K; i++) {
+		for (var i = 0; i < this.K; i++) {
 			out *= math.pow(pvec[i], this.alphas[i] - 1);
 		}
 
@@ -134,8 +134,8 @@ class Dirichlet {
 	}
 
 	means() {
-		let means = [];
-		for (let i = 0; i < this.K; i++) {
+		var means = [];
+		for (var i = 0; i < this.K; i++) {
 			means.push(this.mean(i));
 		}
 

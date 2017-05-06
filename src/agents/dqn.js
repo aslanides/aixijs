@@ -62,25 +62,25 @@ class DQN extends Agent {
 	}
 
 	forwardQ(s, backprop) {
-		let net = this.net;
-		let G = new Graph(backprop);
-		let a1mat = G.add(G.mul(net.edges[0], s), net.biases[0]);
-		let h1mat = G.tanh(a1mat);
-		let a2mat = G.add(G.mul(net.edges[1], h1mat), net.biases[1]);
+		var net = this.net;
+		var G = new Graph(backprop);
+		var a1mat = G.add(G.mul(net.edges[0], s), net.biases[0]);
+		var h1mat = G.tanh(a1mat);
+		var a2mat = G.add(G.mul(net.edges[1], h1mat), net.biases[1]);
 		this.G = G; // back this up. Kind of hacky isn't it
 		return a2mat;
 	}
 
 	selectAction(e) {
-		let s = new Matrix(this.ns, 1);
+		var s = new Matrix(this.ns, 1);
 		s.setFrom(e.obs);
 
 		// epsilon greedy
-		let a = null;
+		var a = null;
 		if (Math.random() < this.epsilon) {
 			a = Util.randi(0, this.na);
 		} else {
-			let out = this.forwardQ(s, false);
+			var out = this.forwardQ(s, false);
 			a = Util.argmax(out.w, (w, a) => w[a], this.numActions);
 		}
 
@@ -112,9 +112,9 @@ class DQN extends Agent {
 		}
 
 		// sample some additional experience from replay memory and learn from it
-		for (let k = 0; k < this.steps_per_iter; k++) {
-			let ri = Util.randi(0, this.exp.length); // todo: priority sweeps?
-			let e = this.exp[ri];
+		for (var k = 0; k < this.steps_per_iter; k++) {
+			var ri = Util.randi(0, this.exp.length); // todo: priority sweeps?
+			var e = this.exp[ri];
 			this.learnFromTuple(e[0], e[1], e[2], e[3], e[4]);
 		}
 
@@ -126,14 +126,14 @@ class DQN extends Agent {
 		// want: Q(s,a) = r + gamma * max_a' Q(s',a')
 
 		// compute the target Q value
-		let tmat = this.forwardQ(s1, false);
-		let qmax = r0 + this.gamma * tmat.w[Util.argmax(tmat.w, (w, a) => w[a], this.numActions)];
+		var tmat = this.forwardQ(s1, false);
+		var qmax = r0 + this.gamma * tmat.w[Util.argmax(tmat.w, (w, a) => w[a], this.numActions)];
 
 		// now predict
-		let pred = this.forwardQ(s0, true);
+		var pred = this.forwardQ(s0, true);
 
-		let tderror = pred.w[a0] - qmax;
-		let clamp = this.tderror_clamp;
+		var tderror = pred.w[a0] - qmax;
+		var clamp = this.tderror_clamp;
 		if (Math.abs(tderror) > clamp) {  // huber loss to robustify
 			if (tderror > clamp) tderror = clamp;
 			if (tderror < -clamp) tderror = -clamp;

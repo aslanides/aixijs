@@ -13,7 +13,7 @@ class BayesExp extends BayesAgent {
 
 	selectAction(e) {
 		if (this.t % this.horizon == 0) {
-			let V = this.IGAgent.planner.getValueEstimate();
+			var V = this.IGAgent.planner.getValueEstimate();
 			this.explore = V > this.epsilon;
 		}
 

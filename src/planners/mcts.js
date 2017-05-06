@@ -20,7 +20,7 @@ class ExpectimaxTree {
 	getValueEstimate() {
 		if (!this.sampled) {
 			this.model.save();
-			for (let iter = 0; iter < this.samples; iter++) {
+			for (var iter = 0; iter < this.samples; iter++) {
 				this.root.sample(this, 0);
 				this.model.load();
 			}
@@ -35,30 +35,30 @@ class ExpectimaxTree {
 		this.getValueEstimate();
 
 		return Util.argmax(this.root, (n, a) => {
-			let child = n.getChild(a);
+			var child = n.getChild(a);
 			return child ? child.mean : 0;
 		}, this.numActions);
 	}
 
 	getPlan() {
-		let current = this.root;
-		let ret = [];
+		var current = this.root;
+		var ret = [];
 		while (current) {
-			let a = Util.argmax(current, (n, a) => {
-				let child = n.getChild(a);
+			var a = Util.argmax(current, (n, a) => {
+				var child = n.getChild(a);
 				return child ? child.mean : 0;
 			}, this.numActions);
 
 			ret.push(a);
-			let chanceNode = current.getChild(a);
+			var chanceNode = current.getChild(a);
 
 			if (!chanceNode) {
 				return ret;
 			}
 
-			let child = null;
-			let maxVisits = 0;
-			for (let [key, val] of chanceNode.children) {
+			var child = null;
+			var maxVisits = 0;
+			for (var [key, val] of chanceNode.children) {
 				if (val.visits > maxVisits) {
 					child = val; //No tie-breaking for now
 					maxVisits = val.visits;
@@ -85,14 +85,14 @@ class ExpectimaxTree {
 	}
 
 	reset() {
-		let agent = this.agent;
+		var agent = this.agent;
 		this.rew_range = agent.discount(0, agent.t) * (agent.max_reward - agent.min_reward);
 		this.root = new DecisionNode(null, this);
 		this.sampled = false;
 	}
 
 	prune(a, e) {
-		let cn = this.root.getChild(a);
+		var cn = this.root.getChild(a);
 		if (!cn) {
 			return this.reset();
 		}
@@ -125,17 +125,17 @@ class DecisionNode {
 	}
 
 	selectAction(tree, dfr) {
-		let a;
+		var a;
 		if (this.n_children != tree.numActions) {
 			a = this.U[this.n_children];
 			this.addChild(a);
 			this.n_children++;
 		} else {
-			let max = Number.NEGATIVE_INFINITY;
-			for (let action = 0, A = tree.numActions; action < A; action++) {
-				let child = this.getChild(action);
-				let normalization = (tree.horizon - dfr + 1) * tree.rew_range;
-				let value = child.mean / normalization + tree.ucb *
+			var max = Number.NEGATIVE_INFINITY;
+			for (var action = 0, A = tree.numActions; action < A; action++) {
+				var child = this.getChild(action);
+				var normalization = (tree.horizon - dfr + 1) * tree.rew_range;
+				var value = child.mean / normalization + tree.ucb *
 					Math.sqrt(Math.log2(this.visits) / child.visits);
 				if (value > max) {
 					max = value;
@@ -148,13 +148,13 @@ class DecisionNode {
 	}
 
 	sample(tree, dfr) {
-		let reward = 0;
+		var reward = 0;
 		if (dfr > tree.horizon) {
 			return 0;
 		} else if (this.visits == 0) {
 			reward = tree.rollout(tree.horizon, dfr);
 		} else {
-			let action = this.selectAction(tree, dfr);
+			var action = this.selectAction(tree, dfr);
 			reward = this.getChild(action).sample(tree, dfr);
 		}
 
@@ -181,12 +181,12 @@ class ChanceNode  {
 	}
 
 	sample(tree, dfr) {
-		let reward = 0;
+		var reward = 0;
 		if (dfr > tree.horizon) {
 			return reward;
 		} else {
 			tree.model.perform(this.action);
-			let e = tree.model.generatePercept();
+			var e = tree.model.generatePercept();
 			tree.model.bayesUpdate(this.action, e);
 			if (!this.getChild(e, tree)) {
 				this.addChild(e, tree);

@@ -21,7 +21,7 @@ class Puckworld extends Environment {
 	}
 
 	getState() {
-		let obs = [
+		var obs = [
 			this.ppx - 0.5,
 			this.ppy - 0.5,
 			this.pvx * 10,
@@ -42,7 +42,7 @@ class Puckworld extends Environment {
 		this.pvy *= 0.95;
 
 		// agent action influences puck velocity
-		let accel = 0.002;
+		var accel = 0.002;
 		if (a === 0) this.pvx -= accel;
 		if (a === 1) this.pvx += accel;
 		if (a === 2) this.pvy -= accel;
@@ -76,22 +76,22 @@ class Puckworld extends Environment {
 		}
 
 		// compute distances
-		let dx = this.ppx - this.tx;
-		let dy = this.ppy - this.ty;
-		let d1 = Math.sqrt(dx * dx + dy * dy);
+		var dx = this.ppx - this.tx;
+		var dy = this.ppy - this.ty;
+		var d1 = Math.sqrt(dx * dx + dy * dy);
 
 		dx = this.ppx - this.tx2;
 		dy = this.ppy - this.ty2;
-		let d2 = Math.sqrt(dx * dx + dy * dy);
+		var d2 = Math.sqrt(dx * dx + dy * dy);
 
-		let dxnorm = dx / d2;
-		let dynorm = dy / d2;
-		let speed = 0.001;
+		var dxnorm = dx / d2;
+		var dynorm = dy / d2;
+		var speed = 0.001;
 		this.tx2 += speed * dxnorm;
 		this.ty2 += speed * dynorm;
 
 		// compute reward
-		let r = -d1; // want to go close to green
+		var r = -d1; // want to go close to green
 		if (d2 < this.BADRAD) {
 			// but if we're too close to red that's bad
 			r += 2 * (d2 - this.BADRAD) / this.BADRAD;

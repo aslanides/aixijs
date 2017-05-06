@@ -5,21 +5,21 @@ class MDP2Vis extends Visualization {
 		this.width = 400;
 		this.height = this.width;
 
-		let width = this.width;
-		let height = this.height;
+		var width = this.width;
+		var height = this.height;
 
-		let S = env.numStates;
-		let A = env.numActions;
-		let P = env.transitions;
+		var S = env.numStates;
+		var A = env.numActions;
+		var P = env.transitions;
 
-		let graph = {};
+		var graph = {};
 		graph.nodes = [];
 		graph.edges = [];
 
-		for (let s = 0; s < S; s++) {
+		for (var s = 0; s < S; s++) {
 			graph.nodes.push({ id: s, group: env.groups[s] });
-			for (let a = 0; a < A; a++) {
-				for (let s_ = 0; s_ < S; s_++) {
+			for (var a = 0; a < A; a++) {
+				for (var s_ = 0; s_ < S; s_++) {
 					if (P[a][s][s_] == 0) {
 						continue;
 					}
@@ -29,17 +29,17 @@ class MDP2Vis extends Visualization {
 			}
 		}
 
-		let color = d3.scaleOrdinal(d3.schemeCategory10);
+		var color = d3.scaleOrdinal(d3.schemeCategory10);
 		this.svg
 			.attr('width', this.width + 2 * this.margin)
 			.attr('height', this.height + 2 * this.margin);
-		let nodes = graph.nodes;
-		let nodeById = d3.map(nodes, d => d.id);
-		let links = graph.edges;
-		let bilinks = [];
-		let svg = this.svg;
+		var nodes = graph.nodes;
+		var nodeById = d3.map(nodes, d => d.id);
+		var links = graph.edges;
+		var bilinks = [];
+		var svg = this.svg;
 
-		let simulation = d3.forceSimulation()
+		var simulation = d3.forceSimulation()
 		.force('link', d3.forceLink().distance(100).strength(0.1))
 			.force('center', d3.forceCenter(width / 2, height / 2))
 			.force('charge', d3.forceManyBody().strength(-50));

@@ -6,13 +6,13 @@ class DirichletMDP {
 		this.params = new Array();
 		this.saved_params = new Array();
 		this.rewards = new Array(); // deterministic rewards for now
-		for (let s = 0; s < this.numStates; s++) {
+		for (var s = 0; s < this.numStates; s++) {
 			this.transitions.push(new Array());
 			this.params.push(new Array());
 			this.saved_params.push(new Array());
 			this.rewards.push(Util.zeros(this.numActions));
-			for (let a = 0; a < this.numActions; a++) {
-				let alphas = Util.zeros(this.numStates);
+			for (var a = 0; a < this.numActions; a++) {
+				var alphas = Util.zeros(this.numStates);
 				this.params[s].push(alphas);
 				this.transitions[s].push(new Dirichlet(alphas));
 			}
@@ -34,14 +34,14 @@ class DirichletMDP {
 	}
 
 	perform(a) {
-		let P = this.transitions[this.state][a].means();
+		var P = this.transitions[this.state][a].means();
 		this.state = Util.sample(P);
 		this.last_action = a;
 	}
 
 	save() {
-		for (let s = 0; s < this.numStates; s++) {
-			for (let a = 0; a < this.numActions; a++) {
+		for (var s = 0; s < this.numStates; s++) {
+			for (var a = 0; a < this.numActions; a++) {
 				this.saved_params[s][a] = Util.arrayCopy(this.params[s][a]);
 			}
 		}
@@ -52,8 +52,8 @@ class DirichletMDP {
 	}
 
 	load() {
-		for (let s = 0; s < this.numStates; s++) {
-			for (let a = 0; a < this.numActions; a++) {
+		for (var s = 0; s < this.numStates; s++) {
+			for (var a = 0; a < this.numActions; a++) {
 				this.params[s][a] = Util.arrayCopy(this.saved_params[s][a]);
 				this.transitions[s][a].alphas = this.params[s][a];
 				this.transitions[s][a].alphaSum = Util.sum(this.params[s][a]);

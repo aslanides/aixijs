@@ -13,15 +13,15 @@ class UI {
 	}
 
 	showExplanation(exp) {
-		let md = this.doc.getElementById(`${exp}_exp`);
+		var md = this.doc.getElementById(`${exp}_exp`);
 		try {
 			md.style.display = 'block';
 		} catch (e) {}
 	}
 
 	clearExplanations() {
-		let mds = this.getElementsByClassName('md');
-		for (let md of mds) {
+		var mds = this.getElementsByClassName('md');
+		for (var md of mds) {
 			if (md.id.endsWith('_exp')) {
 				md.style.display = 'none';
 			}
@@ -29,8 +29,8 @@ class UI {
 	}
 
 	clear() {
-		for (let opt of ['env', 'agent']) {
-			let div = this.getElementById(opt);
+		for (var opt of ['env', 'agent']) {
+			var div = this.getElementById(opt);
 			while (div.firstChild) {
 				div.removeChild(div.firstChild);
 			}
@@ -38,8 +38,8 @@ class UI {
 	}
 
 	push(config) {
-		let fixerino = (options, level, div) => {
-			for (let field in options) {
+		var fixerino = (options, level, div) => {
+			for (var field in options) {
 				if (field == 'type' ||
 						field == 'model' ||
 						field == 'discount' ||
@@ -62,18 +62,18 @@ class UI {
 				// probably the worst code i've written in my life
 
 				if (field == 'discounts') {
-					let p = this.doc.createElement('p');
-					let select = this.doc.createElement('select');
+					var p = this.doc.createElement('p');
+					var select = this.doc.createElement('select');
 					select.id = 'discount-select';
-					for (let name in options.discounts) {
-						let discount = options.discounts[name];
-						let opt = this.doc.createElement('option');
+					for (var name in options.discounts) {
+						var discount = options.discounts[name];
+						var opt = this.doc.createElement('option');
 						opt.value = discount.name;
 						opt.text = discount.name;
 						select.add(opt);
 					}
 
-					let label = this.doc.createElement('label');
+					var label = this.doc.createElement('label');
 					label.for = 'discount-select';
 					label.innerText = 'Discount: ';
 
@@ -83,8 +83,8 @@ class UI {
 					div.appendChild(p);
 
 					select.onchange = function () {
-						for (let i = div.children.length - 1; i >= 0; i--) {
-							let p = div.children[i];
+						for (var i = div.children.length - 1; i >= 0; i--) {
+							var p = div.children[i];
 							if (p.children[0].innerText.startsWith('agent.discount')) {
 								div.removeChild(p);
 							}
@@ -100,18 +100,18 @@ class UI {
 
 				if (field == 'agents') {
 					// make dropdown to pick agent
-					let p = this.doc.createElement('p');
-					let select = this.doc.createElement('select');
+					var p = this.doc.createElement('p');
+					var select = this.doc.createElement('select');
 					select.id = 'agent-select';
-					for (let name in options.agents) {
-						let agent = options.agents[name];
-						let opt = this.doc.createElement('option');
+					for (var name in options.agents) {
+						var agent = options.agents[name];
+						var opt = this.doc.createElement('option');
 						opt.value = agent.name;
 						opt.text = agent.name;
 						select.add(opt);
 					}
 
-					let label = this.doc.createElement('label');
+					var label = this.doc.createElement('label');
 					label.for = 'agent-select';
 					label.innerText = `Agent: `;
 
@@ -127,8 +127,8 @@ class UI {
 					continue;
 				}
 
-				let p = this.doc.createElement('p');
-				let input = this.doc.createElement('input');
+				var p = this.doc.createElement('p');
+				var input = this.doc.createElement('input');
 
 				input.type = 'number';
 				input.className = 'param';
@@ -140,7 +140,7 @@ class UI {
 				input.max = Number.POSITIVE_INFINITY;
 				input.step = '0.01';
 
-				let label = this.doc.createElement('label');
+				var label = this.doc.createElement('label');
 				try {
 					label.innerText = `${level}.${glossary[field].label}:`;
 					label.title = glossary[field].description;
@@ -156,16 +156,16 @@ class UI {
 			}
 		};
 
-		for (let opt of ['env', 'agent']) {
-			let div = this.getElementById(opt);
-			let options = config[opt];
+		for (var opt of ['env', 'agent']) {
+			var div = this.getElementById(opt);
+			var options = config[opt];
 			fixerino(options, opt, div);
 		}
 	}
 
 	pull(options) {
-		let matchOpt = (options, f, v) => {
-			for (let field in options) {
+		var matchOpt = (options, f, v) => {
+			for (var field in options) {
 				if (field == f) {
 					options[field] = v;
 					return;
@@ -177,10 +177,10 @@ class UI {
 			}
 		};
 
-		for (let opt of ['env', 'agent']) {
-			let div = this.getElementById(opt);
-			for (let p of div.children) {
-				let rofl = this.getElementById(p.name);
+		for (var opt of ['env', 'agent']) {
+			var div = this.getElementById(opt);
+			for (var p of div.children) {
+				var rofl = this.getElementById(p.name);
 
 				if (p.name == 'agents') {
 					options.agent.type = options.agent.agents[p.children[1].value];
@@ -189,8 +189,8 @@ class UI {
 
 				if (p.name == 'discounts') {
 					options.agent.discount = options.agent.discounts[p.children[1].value];
-					let dp = {};
-					for (let p of div.children) {
+					var dp = {};
+					for (var p of div.children) {
 						if (p.children[0].innerText.startsWith('agent.discount')) {
 							dp[p.children[1].name] = p.children[1].value;
 						}
@@ -232,43 +232,43 @@ class UI {
 	}
 
 	static init() {
-		let $picker = $('#picker');
-		let i = 0;
-		let row = null;
-		for (let d in configs) {
+		var $picker = $('#picker');
+		var i = 0;
+		var row = null;
+		for (var d in configs) {
 			if (i % 5 == 0) {
 				row = document.createElement('div');
 				row.className = 'row';
 				picker.appendChild(row);
 			}
 
-			let config = configs[d];
+			var config = configs[d];
 			if (!config.active) {
 				continue;
 			}
 
 			i++;
 
-			let a = document.createElement('a');
+			var a = document.createElement('a');
 			a.href = '#';
 			a.onclick = _ => demo.new(config);
 			row.appendChild(a);
 
-			let div = document.createElement('div');
+			var div = document.createElement('div');
 			div.className = 'col-xs-2 thumbnail';
 			a.appendChild(div);
 
-			let img = document.createElement('img');
+			var img = document.createElement('img');
 			img.src = `assets/thumbs/${d}.png`;
 			img.alt = '...';
 			div.appendChild(img);
 
-			let caption = document.createElement('div');
+			var caption = document.createElement('div');
 			caption.className = 'caption';
-			let h3 = document.createElement('h3');
+			var h3 = document.createElement('h3');
 			h3.innerText = config.name;
 			caption.appendChild(h3);
-			let para = document.createElement('p');
+			var para = document.createElement('p');
 			para.innerText = config.description;
 			caption.appendChild(para);
 			div.appendChild(caption);

@@ -3,8 +3,8 @@ class BanditVis extends Visualization {
 		super(trace, ui);
 		this.a_trace[0] = 0;
 		this.dists = env.actions;
-		let data = [];
-		for (let arm of env.actions) {
+		var data = [];
+		for (var arm of env.actions) {
 			data.push(arm.data());
 		}
 
@@ -31,8 +31,8 @@ class BanditPlot extends Plot {
 	}
 
 	update(time) {
-		let rew = this.rew_inc[time];
-		let a = this.a_trace[time];
+		var rew = this.rew_inc[time];
+		var a = this.a_trace[time];
 
 		this.tooltip.select('circle.y')
 			.attr('transform',

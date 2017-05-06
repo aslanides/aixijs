@@ -6,10 +6,10 @@ class Discount {
 
 class MatrixDiscount {
 	constructor(params) {
-		let discounts = Util.arrayCopy(params.discounts);
-		let times = Util.arrayCopy(params.discountChanges);
-		let idx = 0;
-		let current = discounts[idx];
+		var discounts = Util.arrayCopy(params.discounts);
+		var times = Util.arrayCopy(params.discountChanges);
+		var idx = 0;
+		var current = discounts[idx];
 		idx++;
 
 		return (dfr, t) => {
@@ -25,36 +25,36 @@ class MatrixDiscount {
 
 class GeometricDiscount {
 	constructor(params) {
-		let gamma = params.gamma;
+		var gamma = params.gamma;
 		return dfr => Math.pow(gamma, dfr);
 	}
 }
 
 class HyperbolicDiscount {
 	constructor(params) {
-		let beta = params.beta;
-		let kappa = params.kappa;
+		var beta = params.beta;
+		var kappa = params.kappa;
 		return dfr => Math.pow(1 + kappa * dfr, -beta);
 	}
 }
 
 class PowerDiscount {
 	constructor(params) {
-		let beta = params.beta;
+		var beta = params.beta;
 		return (dfr, t) => Math.pow(dfr + t, -beta);
 	}
 }
 
 class ConstantHorizonDiscount {
 	constructor(params) {
-		let horizon = params.horizon;
+		var horizon = params.horizon;
 		return dfr => dfr < horizon ? 1 : 0;
 	}
 }
 
 class CustomDiscount extends Discount {
 	constructor(params) {
-		let vector = Util.arrayCopy(params.vector);
+		var vector = Util.arrayCopy(params.vector);
 		return dfr => vector[dfr];
 	}
 }

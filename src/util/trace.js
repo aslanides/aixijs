@@ -82,7 +82,7 @@ class ThompsonTrace extends BayesTrace {
 
 	logModel(agent) {
 		super.logModel(agent);
-		let goal = agent.rho.goals[0];
+		var goal = agent.rho.goals[0];
 		this.rhos.push({ x: goal.x, y: goal.y });
 	}
 }
@@ -104,8 +104,8 @@ class DirichletTrace extends BayesTrace {
 
 	logModel(agent) {
 		super.logModel(agent);
-		let param = [];
-		for (let i = 0; i < agent.model.N; i++) {
+		var param = [];
+		for (var i = 0; i < agent.model.N; i++) {
 			param.push(Util.arrayCopy(agent.model.params[i]));
 		}
 

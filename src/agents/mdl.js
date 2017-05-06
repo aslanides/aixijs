@@ -2,21 +2,21 @@ class MDLAgent extends BayesAgent {
 	constructor(options) {
 		super(options);
 		this.tracer = MDLTrace;
-		let C = this.model.modelClass.length;
-		for (let i = 0; i < C; i++) {
+		var C = this.model.modelClass.length;
+		for (var i = 0; i < C; i++) {
 			this.model.modelClass[i].idx = i;
 		}
 
-		let len = model => JSON.stringify(model.options).length;
+		var len = model => JSON.stringify(model.options).length;
 
 		this.model.modelClass.sort((m, n) => {
-			let d = len(m) - len(n);
+			var d = len(m) - len(n);
 			return d || m.idx - n.idx;
 		});
 
-		let w = [...this.model.weights];
-		for (let i = 0; i < C; i++) {
-			let m = this.model.modelClass[i];
+		var w = [...this.model.weights];
+		for (var i = 0; i < C; i++) {
+			var m = this.model.modelClass[i];
 			w[i] = this.model.weights[m.idx];
 		}
 
@@ -28,7 +28,7 @@ class MDLAgent extends BayesAgent {
 		this.planner = new ExpectimaxTree(this, this.rho);
 
 		this.mappings = [];
-		for (let i = 0; i < C; i++) {
+		for (var i = 0; i < C; i++) {
 			this.mappings[i] = this.model.modelClass[i].idx;
 		}
 

@@ -8,7 +8,7 @@ class PuckworldVis extends Visualization {
 
 		this.rew_trace = Util.cumToInc(this.rew_trace);
 
-		let svg = d3.select('#gridvis').append('svg')
+		var svg = d3.select('#gridvis').append('svg')
 			.attr('id', 'vis_svg')
 			.attr('width', this.W)
 			.attr('height', this.H)
@@ -74,16 +74,16 @@ class PuckworldVis extends Visualization {
 	updateEnv() {
 		// reflect puck world state on screen
 
-		let state = this.pos_trace[this.time];
-		let a = this.a_trace[this.time];
-		let rew = this.rew_trace[this.time];
+		var state = this.pos_trace[this.time];
+		var a = this.a_trace[this.time];
+		var rew = this.rew_trace[this.time];
 
-		let ppx = state[0] + 0.5;
-		let ppy = state[1] + 0.5;
-		let tx = state[4] + ppx;
-		let ty = state[5] + ppy;
-		let tx2 = state[6] + ppx;
-		let ty2 = state[7] + ppy;
+		var ppx = state[0] + 0.5;
+		var ppy = state[1] + 0.5;
+		var tx = state[4] + ppx;
+		var ty = state[5] + ppy;
+		var tx2 = state[6] + ppx;
+		var ty2 = state[7] + ppy;
 
 		this.d3agent.attr('cx', ppx * this.W).attr('cy', ppy * this.H);
 		this.d3target.attr('cx', tx * this.W).attr('cy', ty * this.H);
@@ -92,7 +92,7 @@ class PuckworldVis extends Visualization {
 			.attr('r', this.BADRAD * this.H);
 		this.d3line.attr('x1', ppx * this.W).attr('y1', ppy * this.H).attr('x2', ppx * this.W)
 			.attr('y2', ppy * this.H);
-		let af = 20;
+		var af = 20;
 		this.d3line.attr('visibility', a === 4 ? 'hidden' : 'visible');
 		if (a === 0) {
 			this.d3line.attr('x2', ppx * this.W - af);
@@ -111,11 +111,11 @@ class PuckworldVis extends Visualization {
 		}
 
 		// color agent by reward
-		let vv = rew + 0.5;
-		let ms = 255.0;
-		let r;
-		let g;
-		let b;
+		var vv = rew + 0.5;
+		var ms = 255.0;
+		var r;
+		var g;
+		var b;
 		if (vv > 0) {
 			g = 255; r = 255 - vv * ms; b = 255 - vv * ms;
 		}
@@ -124,7 +124,7 @@ class PuckworldVis extends Visualization {
 			g = 255 + vv * ms; r = 255; b = 255 + vv * ms;
 		}
 
-		let vcol = 'rgb(' + Math.floor(r) + ',' + Math.floor(g) + ',' + Math.floor(b) + ')';
+		var vcol = 'rgb(' + Math.floor(r) + ',' + Math.floor(g) + ',' + Math.floor(b) + ')';
 		this.d3agent.attr('fill', vcol);
 	}
 }

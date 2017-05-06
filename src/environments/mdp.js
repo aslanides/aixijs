@@ -23,9 +23,9 @@ class BasicMDP extends Environment {
 
 	perform(action) {
 		if (this.current.actions.length > action) {
-			let old = this.current;
-			let weights = old.actions[action].probabilities;
-			let stateIndex =  Util.sample(weights);
+			var old = this.current;
+			var weights = old.actions[action].probabilities;
+			var stateIndex =  Util.sample(weights);
 			this.current = this.states[stateIndex];
 			this.reward = old.actions[action].rewards[stateIndex];
 		} else {
@@ -50,9 +50,9 @@ class BasicMDP extends Environment {
 
 	makeModel(type, parametrization) {
 		if (parametrization == 'mu') {
-			let options = Util.deepCopy(this.options);
-			let modelClass = [new this.constructor(options)];
-			let weights = [1];
+			var options = Util.deepCopy(this.options);
+			var modelClass = [new this.constructor(options)];
+			var weights = [1];
 			return new BayesMixture(modelClass, weights);
 		}
 
