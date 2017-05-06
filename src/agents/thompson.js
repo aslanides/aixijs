@@ -6,7 +6,7 @@ class ThompsonAgent extends BayesAgent {
 	}
 
 	thompsonSample() {
-		var idx = Util.sample(this.model.weights);
+		let idx = Util.sample(this.model.weights);
 		this.rho = this.model.modelClass[idx].copy();
 		this.rho.bayesUpdate = function () {};
 

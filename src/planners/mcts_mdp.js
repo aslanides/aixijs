@@ -18,7 +18,7 @@ class MDPExpectimaxTree {
 
 		this.numStates = model.numStates;
 		this.Q = [];
-		for (var s = 0; s < this.numStates; s++) {
+		for (let s = 0; s < this.numStates; s++) {
 			this.Q.push(Util.zeros(this.numActions));
 		}
 
@@ -28,7 +28,7 @@ class MDPExpectimaxTree {
 	getValueEstimate() {
 		if (!this.sampled) {
 			this.model.save();
-			for (var iter = 0; iter < this.samples; iter++) {
+			for (let iter = 0; iter < this.samples; iter++) {
 				this.root.sample(this, 0);
 				this.model.load();
 			}
@@ -43,30 +43,30 @@ class MDPExpectimaxTree {
 		this.getValueEstimate();
 
 		return Util.argmax(this.root, (n, a) => {
-			var child = n.getChild(a);
+			let child = n.getChild(a);
 			return child ? child.mean : 0;
 		}, this.numActions);
 	}
 
 	getPlan() {
-		var current = this.root;
-		var ret = [];
+		let current = this.root;
+		let ret = [];
 		while (current) {
-			var a = Util.argmax(current, (n, a) => {
-				var child = n.getChild(a);
+			let a = Util.argmax(current, (n, a) => {
+				let child = n.getChild(a);
 				return child ? child.mean : 0;
 			}, this.numActions);
 
 			ret.push(a);
-			var chanceNode = current.getChild(a);
+			let chanceNode = current.getChild(a);
 
 			if (!chanceNode) {
 				return ret;
 			}
 
-			var child = null;
-			var maxVisits = 0;
-			for (var [key, val] of chanceNode.children) {
+			let child = null;
+			let maxVisits = 0;
+			for (let [key, val] of chanceNode.children) {
 				if (val.visits > maxVisits) {
 					child = val; //No tie-breaking for now
 					maxVisits = val.visits;
@@ -80,11 +80,11 @@ class MDPExpectimaxTree {
 	}
 
 	rollout(horizon, dfr) {
-		var reward = 0;
-		for (var i = dfr; i < horizon; i++) {
-			var action = Math.floor(Math.random() * this.numActions);
+		let reward = 0;
+		for (let i = dfr; i < horizon; i++) {
+			let action = Math.floor(Math.random() * this.numActions);
 			this.model.perform(action);
-			var e = this.model.generatePercept();
+			let e = this.model.generatePercept();
 			this.model.bayesUpdate(action, e);
 			reward += this.agent.reward(e, i);
 		}
@@ -93,14 +93,14 @@ class MDPExpectimaxTree {
 	}
 
 	reset() {
-		var agent = this.agent;
+		let agent = this.agent;
 		this.rew_range = agent.discount(0, agent.t) * (agent.max_reward - agent.min_reward);
 		this.root = new DecisionNode(null, this);
 		this.sampled = false;
 	}
 
 	prune(a, e) {
-		var cn = this.root.getChild(a);
+		let cn = this.root.getChild(a);
 		if (!cn) {
 			return this.reset();
 		}
@@ -133,17 +133,17 @@ class DecisionNode {
 	}
 
 	selectAction(tree) {
-		var a;
+		let a;
 		if (this.n_children != tree.numActions) {
 			a = this.U[this.n_children];
 			this.addChild(a);
 			this.n_children++;
 		} else {
-			var max = Number.NEGATIVE_INFINITY;
-			for (var action = 0, A = tree.numActions; action < A; action++) {
-				var child = this.getChild(action);
-				var normalization = tree.horizon * tree.rew_range;
-				var value = child.mean / normalization + tree.ucb *
+			let max = Number.NEGATIVE_INFINITY;
+			for (let action = 0, A = tree.numActions; action < A; action++) {
+				let child = this.getChild(action);
+				let normalization = tree.horizon * tree.rew_range;
+				let value = child.mean / normalization + tree.ucb *
 					Math.sqrt(Math.log2(this.visits) / child.visits);
 				if (value > max) {
 					max = value;
@@ -156,13 +156,13 @@ class DecisionNode {
 	}
 
 	sample(tree, dfr) {
-		var reward = 0;
+		let reward = 0;
 		if (dfr > tree.horizon) {
 			return 0;
 		} else if (this.visits == 0) {
 			reward = tree.rollout(tree.horizon, dfr);
 		} else {
-			var action = this.selectAction(tree);
+			let action = this.selectAction(tree);
 			reward = this.getChild(action).sample(tree, dfr);
 		}
 
@@ -189,12 +189,12 @@ class ChanceNode  {
 	}
 
 	sample(tree, dfr) {
-		var reward = 0;
+		let reward = 0;
 		if (dfr > tree.horizon) {
 			return reward;
 		} else {
 			tree.model.perform(this.action);
-			var e = tree.model.generatePercept();
+			let e = tree.model.generatePercept();
 			tree.model.bayesUpdate(this.action, e);
 			if (!this.getChild(e, tree)) {
 				this.addChild(e, tree);

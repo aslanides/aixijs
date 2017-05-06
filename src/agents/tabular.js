@@ -21,8 +21,8 @@ class TabularAgent extends Agent {
 
 	update(a, e) {
 		super.update(a, e);
-		var old = this.Q.get(this.last_o, a);
-		var Q = old +
+		let old = this.Q.get(this.last_o, a);
+		let Q = old +
 			this.alpha * (
 				e.rew + this.gamma * this.Q.get(e.obs, this.TDUpdate(e)) - old
 			);

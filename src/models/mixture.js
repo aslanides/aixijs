@@ -10,8 +10,8 @@ class BayesMixture {
 	}
 
 	xi(e) {
-		var s = 0;
-		for (var i = 0, C = this.C; i < C; i++) {
+		let s = 0;
+		for (let i = 0, C = this.C; i < C; i++) {
 			if (this.weights[i] == 0) {
 				continue;
 			}
@@ -47,7 +47,7 @@ class BayesMixture {
 	}
 
 	perform(a) {
-		for (var i = 0, C = this.C; i < C; i++) {
+		for (let i = 0, C = this.C; i < C; i++) {
 			if (this.weights[i] == 0) {
 				continue;
 			}
@@ -57,20 +57,20 @@ class BayesMixture {
 	}
 
 	generatePercept() {
-		var nu = Util.sample(this.weights);
+		let nu = Util.sample(this.weights);
 		return this.modelClass[nu].generatePercept();
 	}
 
 	save() {
 		this.saved_weights = [...this.weights];
-		for (var i = 0, C = this.C; i < C; i++) {
+		for (let i = 0, C = this.C; i < C; i++) {
 			this.modelClass[i].save();
 		}
 	}
 
 	load() {
 		this.weights = [...this.saved_weights];
-		for (var i = 0, C = this.C; i < C; i++) {
+		for (let i = 0, C = this.C; i < C; i++) {
 			this.modelClass[i].load();
 		}
 	}

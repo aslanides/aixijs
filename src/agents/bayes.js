@@ -7,7 +7,7 @@ class BayesAgent extends Agent {
 		this.max_reward = options.max_reward;
 		this.min_reward = options.min_reward;
 
-		var planCaching = options.plan_caching || true;
+		let planCaching = options.plan_caching || true;
 
 		// TODO assert options OK
 		this.information_gain = 0;
@@ -31,7 +31,7 @@ class BayesAgent extends Agent {
 			this.planner.prune(this.last_action, e);
 		}
 
-		var a = this.planner.bestAction();
+		let a = this.planner.bestAction();
 		this.plan = this.planner.getPlan();
 
 		return a;

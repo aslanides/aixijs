@@ -6,7 +6,7 @@ class Plot {
 
 		this.key = key;
 		this.data = trace[key];
-		var data = this.data;
+		let data = this.data;
 
 		this.margin = { top: 50, right: 70, bottom: 30, left: 70 };
 		this.width = 500 - this.margin.left - this.margin.right;
@@ -42,10 +42,10 @@ class Plot {
 		this.xAxis = d3.axisBottom(this.x).ticks(5);
 		this.yAxis = d3.axisLeft(this.y).ticks(5);
 
-		var color = (function* () {
-			var idx = 0;
-			var colors = ['steel-blue', 'red', 'green', 'black', 'grey', 'yellow'];
-			var l = colors.length;
+		let color = (function* () {
+			let idx = 0;
+			let colors = ['steel-blue', 'red', 'green', 'black', 'grey', 'yellow'];
+			let l = colors.length;
 			while (true) {
 				yield colors[idx++ % l];
 			}
@@ -83,7 +83,7 @@ class Plot {
 	}
 
 	dataUpdate(trace) {
-		var v = trace[this.key][trace.iter - 1];
+		let v = trace[this.key][trace.iter - 1];
 		if (v > this.max) {
 			this.max = v;
 		} else if (v < this.min) {
@@ -101,7 +101,7 @@ class Plot {
 	}
 
 	static clearAll() {
-		var plots = d3.select('#plots')._groups[0][0];
+		let plots = d3.select('#plots')._groups[0][0];
 		while (plots.children.length > 0) {
 			d3.select('#' + plots.children[0].id).remove();
 		}
@@ -144,14 +144,14 @@ class TooltipPlot extends Plot {
 	}
 
 	update(time) {
-		var y = Util.roundTo(this.data[time], 2);
+		let y = Util.roundTo(this.data[time], 2);
 		this.tooltip.select('circle.y')
 			.attr('transform',
 			`translate(${this.x(time)},${this.y(y)})`);
 		this.tooltip.style('display', null);
 
-		for (var i = 1; i < 5; i++) {
-			var text = 't: ' + (time + 1);
+		for (let i = 1; i < 5; i++) {
+			let text = 't: ' + (time + 1);
 			if (i == 2) {
 				text = this.value + ': ' + y;
 			}

@@ -2,7 +2,7 @@ class Gridworld extends Environment {
 	constructor(options) {
 		super(options);
 		if (!options.randomized) {
-			var Cl = this.constructor;
+			let Cl = this.constructor;
 			options.randomized = true;
 			return Gridworld.generateRandom(Cl, options);
 		}
@@ -22,18 +22,18 @@ class Gridworld extends Environment {
 		this.min_reward = Gridworld.rewards.wall + Gridworld.rewards.move;
 		this.max_reward = Gridworld.rewards.chocolate + Gridworld.rewards.move;
 
-		for (var i = 0; i < this.N; i++) {
+		for (let i = 0; i < this.N; i++) {
 			this.grid[i] = new Array(this.N);
-			for (var j = 0; j < this.N; j++) {
+			for (let j = 0; j < this.N; j++) {
 				this.grid[i][j] = Gridworld.newTile(i, j, options, options.map[j][i]);
 			}
 		}
 
 		if (options.goals) {
 			this.goals = [];
-			for (var goal of options.goals) {
-				var type = goal.type || Gridworld.map_symbols.dispenser;
-				var g = Gridworld.newTile(goal.x, goal.y, goal.freq, type);
+			for (let goal of options.goals) {
+				let type = goal.type || Gridworld.map_symbols.dispenser;
+				let g = Gridworld.newTile(goal.x, goal.y, goal.freq, type);
 				g.goal = true;
 				this.grid[goal.x][goal.y] = g;
 				this.goals.push(g);
@@ -50,14 +50,14 @@ class Gridworld extends Environment {
 	}
 
 	generateConnexions() {
-		var grid = this.grid;
-		var actions = this.actions;
+		let grid = this.grid;
+		let actions = this.actions;
 		grid.forEach((row, idx) => {
 			row.forEach((tile, jdx) => {
-				var str = '';
-				for (var a = 0; a < this.numActions; a++) {
-					var i = actions[a][0];
-					var j = actions[a][1];
+				let str = '';
+				for (let a = 0; a < this.numActions; a++) {
+					let i = actions[a][0];
+					let j = actions[a][1];
 					if (!grid[idx + i] ||
 						!grid[idx + i][jdx + j] ||
 						grid[idx + i][jdx + j].constructor == Wall) {
@@ -80,29 +80,29 @@ class Gridworld extends Environment {
 	}
 
 	isSolvable() {
-		var queue = [];
-		var pos = 0;
+		let queue = [];
+		let pos = 0;
 
-		var maxFreq = 0;
-		for (var goal of this.options.goals) {
+		let maxFreq = 0;
+		for (let goal of this.options.goals) {
 			if (goal.freq > maxFreq) {
 				maxFreq = goal.freq;
 			}
 		}
 
-		for (var i = 0; i < this.N; i++) {
-			for (var j = 0; j < this.N; j++) {
+		for (let i = 0; i < this.N; i++) {
+			for (let j = 0; j < this.N; j++) {
 				this.grid[i][j].expanded = false;
 			}
 		}
 
 		this.numStates = 1;
 		queue.push(this.grid[0][0]);
-		var solvable = false;
+		let solvable = false;
 		while (pos < queue.length) {
-			var ptr = queue[pos];
+			let ptr = queue[pos];
 			ptr.expanded = true;
-			for (var t of ptr.connexions) {
+			for (let t of ptr.connexions) {
 				if (!t || t.expanded) {
 					continue;
 				}
@@ -123,8 +123,8 @@ class Gridworld extends Environment {
 	}
 
 	static generateRandom(Cl, options) {
-		var opt = Gridworld.proposeRandom(options);
-		var env = new Cl(opt);
+		let opt = Gridworld.proposeRandom(options);
+		let env = new Cl(opt);
 		if (!env.isSolvable()) {
 			return Gridworld.generateRandom(Cl, options);
 		}
@@ -134,19 +134,19 @@ class Gridworld extends Environment {
 	}
 
 	static proposeRandom(options) {
-		var opt = Util.deepCopy(options);
-		var N = options.N;
-		var trapProb = options.trapProb || 0;
-		var wallProb = options.wallProb || 0.4;
+		let opt = Util.deepCopy(options);
+		let N = options.N;
+		let trapProb = options.trapProb || 0;
+		let wallProb = options.wallProb || 0.4;
 		opt.map = [];
-		for (var i = 0; i < N; i++) {
+		for (let i = 0; i < N; i++) {
 			opt.map[i] = new Array(N);
-			for (var j = 0; j < N; j++) {
+			for (let j = 0; j < N; j++) {
 				if (i == 0 && j == 0) {
 					opt.map[i][j] = Gridworld.map_symbols.empty;
 				}
 
-				var r = Math.random();
+				let r = Math.random();
 				if (r < trapProb) {
 					opt.map[i][j] = Gridworld.map_symbols.trap;
 				} else if (r < wallProb) {
@@ -157,8 +157,8 @@ class Gridworld extends Environment {
 			}
 		}
 
-		for (var goal of opt.goals) {
-			var g = Gridworld.proposeGoal(N);
+		for (let goal of opt.goals) {
+			let g = Gridworld.proposeGoal(N);
 			goal.x = g.x;
 			goal.y = g.y;
 			opt.map[g.y][g.x] = Gridworld.map_symbols.empty;
@@ -168,8 +168,8 @@ class Gridworld extends Environment {
 	}
 
 	static proposeGoal(N) {
-		var gx = Util.randi(0, N);
-		var gy = Util.randi(0, N);
+		let gx = Util.randi(0, N);
+		let gy = Util.randi(0, N);
 		if (gx + gy < N / 2) {
 			return Gridworld.proposeGoal(N);
 		}
@@ -182,7 +182,7 @@ class Gridworld extends Environment {
 	}
 
 	static newTile(i, j, info, type) {
-		var tile;
+		let tile;
 		if (type == Gridworld.map_symbols.empty) {
 			tile = new Tile(i, j);
 		} else if (type == Gridworld.map_symbols.wall) {
@@ -251,7 +251,7 @@ class Gridworld extends Environment {
 	}
 
 	copy() {
-		var res = new this.constructor(this.options);
+		let res = new this.constructor(this.options);
 		res.pos = res.grid[this.pos.x][this.pos.y];
 		res.reward = this.reward;
 
@@ -271,18 +271,18 @@ class Gridworld extends Environment {
 			return new DirichletGrid(this.options.N);
 		}
 
-		var modelClass = [];
-		var modelWeights = [];
-		var options = Util.deepCopy(this.options);
+		let modelClass = [];
+		let modelWeights = [];
+		let options = Util.deepCopy(this.options);
 
 		if (parametrization == 'mu') {
 			modelClass.push(new this.constructor(options));
 			modelWeights = [1];
 		} else if (parametrization == 'maze') {
 			options.randomized = false;
-			for (var n = 4; n < this.options.N; n++) {
+			for (let n = 4; n < this.options.N; n++) {
 				options.N = n;
-				for (var k = 0; k < n; k++) {
+				for (let k = 0; k < n; k++) {
 					modelClass.push(Gridworld.generateRandom(this.constructor, options));
 					modelWeights.push(1);
 				}
@@ -291,11 +291,11 @@ class Gridworld extends Environment {
 			modelClass.push(new this.constructor(this.options));
 			modelWeights.push(1);
 		} else {
-			var C = options.N * options.N;
+			let C = options.N * options.N;
 			modelWeights = Util.zeros(C);
 
-			for (var i = 0; i < options.N; i++) {
-				for (var j = 0; j < options.N; j++) {
+			for (let i = 0; i < options.N; i++) {
+				for (let j = 0; j < options.N; j++) {
 					if (parametrization == 'goal') {
 						options.goals = [
 							{
@@ -308,14 +308,14 @@ class Gridworld extends Environment {
 						options.initial = { x: j, y: i };
 					}
 
-					var t = this.grid[j][i];
+					let t = this.grid[j][i];
 					if (t.constructor == Wall || !t.expanded) {
 						modelWeights[i * options.N + j] = 0;
 					} else {
 						modelWeights[i * options.N + j] = 1 / C; // default uniform
 					}
 
-					var m = new this.constructor(options);
+					let m = new this.constructor(options);
 
 					modelClass.push(m);
 				}
@@ -323,9 +323,9 @@ class Gridworld extends Environment {
 		}
 
 		// ensure prior is normalised
-		var C = modelWeights.length;
-		var s = Util.sum(modelWeights);
-		for (var i = 0; i < C; i++) {
+		let C = modelWeights.length;
+		let s = Util.sum(modelWeights);
+		for (let i = 0; i < C; i++) {
 			modelWeights[i] /= s;
 		}
 
@@ -333,8 +333,8 @@ class Gridworld extends Environment {
 	}
 
 	conditionalDistribution(e) {
-		var p = this.generatePercept();
-		var s = this.pos;
+		let p = this.generatePercept();
+		let s = this.pos;
 		if (s.constructor == NoiseTile) {
 			return e.rew == p.rew ? s.prob : 0;
 		}
@@ -346,7 +346,7 @@ class Gridworld extends Environment {
 			// all tiles except the goal are deterministic
 			return e.rew == p.rew ? 1 : 0;
 		} else {
-			var rew = e.rew - Gridworld.rewards.move;
+			let rew = e.rew - Gridworld.rewards.move;
 			if (rew == Gridworld.rewards.chocolate) {
 				return s.freq;
 			} else if (rew == Gridworld.rewards.empty) {
@@ -394,12 +394,12 @@ class WireheadingGrid extends Gridworld {
 	dynamics(tile) {
 		if (tile.constructor == SelfModificationTile) {
 			this.conditionalDistribution = e => {
-				var p = this.generatePercept();
+				let p = this.generatePercept();
 				return p.rew == e.rew;
 			};
 
 			this.generatePercept = _ => {
-				var p = super.generatePercept();
+				let p = super.generatePercept();
 				p.rew = Number.MAX_SAFE_INTEGER;
 				return p;
 			};
@@ -411,7 +411,7 @@ class WireheadingGrid extends Gridworld {
 	}
 
 	getState() {
-		var s = super.getState();
+		let s = super.getState();
 		s.wireheaded = this.wireheaded;
 
 		return s;
@@ -432,7 +432,7 @@ class WireheadingGrid extends Gridworld {
 
 class EpisodicGrid extends Gridworld {
 	conditionalDistribution(e) {
-		var p = this.generatePercept();
+		let p = this.generatePercept();
 		return (e.obs == p.obs && e.rew == p.rew) ? 1 : 0;
 	}
 

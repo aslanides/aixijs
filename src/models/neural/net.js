@@ -12,8 +12,8 @@ class Net {
 	}
 
 	copy() {
-		var newNet = new Net();
-		for (var i = 0; i < this.layers; i++) {
+		let newNet = new Net();
+		for (let i = 0; i < this.layers; i++) {
 			newNet.addLayer(this.edges[i].copy(), this.biases[i].copy());
 		}
 
@@ -21,17 +21,17 @@ class Net {
 	}
 
 	update(alpha) {
-		for (var i = 0; i < this.layers; i++) {
+		for (let i = 0; i < this.layers; i++) {
 			this.edges[i].update(alpha);
 			this.biases[i].update(alpha); // surely not?
 		}
 	}
 
 	toJSON() {
-		var j = {};
+		let j = {};
 		j.edges = [];
 		j.biases = [];
-		for (var i = 0; i < this.layers; i++) {
+		for (let i = 0; i < this.layers; i++) {
 			j.biases.push(this.edges[i].toJSON());
 			j.biases.push(this.biases[i].toJSON());
 		}
@@ -40,7 +40,7 @@ class Net {
 	}
 
 	fromJSON(j) {
-		for (var i = 0; i < j.edges.length; i++) {
+		for (let i = 0; i < j.edges.length; i++) {
 			this.addLayer(new Matrix(1, 1), new Matrix(1, 1));
 			this.edges[i].fromJSON(j.edges[i]);
 			this.biases[i].fromJSON(j.biases[i]);
@@ -48,29 +48,29 @@ class Net {
 	}
 
 	zeroGrads() {
-		for (var i = 0; i < this.layers; i++) {
+		for (let i = 0; i < this.layers; i++) {
 			this.edges[i].gradFillConst(0);
 		}
 	}
 
 	flattenGrads() {
-		var n = 0;
-		for (var i = 0; i < this.layers; i++) {
+		let n = 0;
+		for (let i = 0; i < this.layers; i++) {
 			n += this.edges[i].dw.length;
 			n += this.biases[i].dw.length;
 		}
 
-		var g = new Matrix(n, 1);
-		var idx = 0;
-		for (var i = 0; i < this.layers; i++) {
-			var mat = this.edges[i];
-			for (var i = 0, m = mat.dw.length; i < m; i++) {
+		let g = new Matrix(n, 1);
+		let idx = 0;
+		for (let i = 0; i < this.layers; i++) {
+			let mat = this.edges[i];
+			for (let i = 0, m = mat.dw.length; i < m; i++) {
 				g.w[idx] = mat.dw[i];
 				idx++;
 			}
 
 			mat = this.biases[i];
-			for (var i = 0, m = mat.dw.length; i < m; i++) {
+			for (let i = 0, m = mat.dw.length; i < m; i++) {
 				g.w[idx] = mat.dw[i];
 				idx++;
 			}

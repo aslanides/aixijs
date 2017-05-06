@@ -25,9 +25,9 @@ class Util {
 	}
 
 	static prod(arr) {
-		var p = 0;
-		var n = arr.length;
-		for (var i = 0; i < n; i++) {
+		let p = 0;
+		let n = arr.length;
+		for (let i = 0; i < n; i++) {
 			p *= arr[i];
 		}
 
@@ -43,7 +43,7 @@ class Util {
 	}
 
 	static roundTo(x, figs) {
-		var tmp = Math.pow(10, figs);
+		let tmp = Math.pow(10, figs);
 		return Math.round(x * tmp) / tmp;
 	}
 
@@ -63,11 +63,11 @@ class Util {
 
 	static KLDivergence(p, q) {
 		Util.assert(p.length == q.length, 'KL: p & q are different lengths');
-		var n = p.length;
-		var sp = Util.sum(p);
-		var sq = Util.sum(q);
-		var s = 0;
-		for (var i = 0; i < n; i++) {
+		let n = p.length;
+		let sp = Util.sum(p);
+		let sq = Util.sum(q);
+		let s = 0;
+		for (let i = 0; i < n; i++) {
 			if (p[i] == 0 || q[i] == 0) {
 				continue;
 			}
@@ -79,9 +79,9 @@ class Util {
 	}
 
 	static entropy(p) {
-		var s = 0;
-		var n = p.length;
-		for (var i = 0; i < n; i++) {
+		let s = 0;
+		let n = p.length;
+		for (let i = 0; i < n; i++) {
 			if (p[i] == 0) {
 				continue;
 			}
@@ -93,7 +93,7 @@ class Util {
 	}
 
 	static logProgress(t, T) {
-		var prog = (t + 1) / T * 100;
+		let prog = (t + 1) / T * 100;
 		if (prog % 10 == 0) {
 			console.clear();
 			console.log(`Progress: ${prog}%`);
@@ -101,7 +101,7 @@ class Util {
 	}
 
 	static softMax(lst, j) {
-		var s = 0;
+		let s = 0;
 		lst.forEach(x => {
 			s += Math.pow(Math.E, x);
 		});
@@ -109,14 +109,14 @@ class Util {
 	}
 
 	static randInts(n) {
-		var arr = new Array(n);
-		for (var i = 0; i < n; i++) {
+		let arr = new Array(n);
+		for (let i = 0; i < n; i++) {
 			arr[i] = i;
 		}
 
-		var max = n - 1;
-		var r;
-		var swap;
+		let max = n - 1;
+		let r;
+		let swap;
 		while (max > 0) {
 			r = Math.floor(Math.random() * max);
 			swap = arr[r];
@@ -129,10 +129,10 @@ class Util {
 	}
 
 	static cumToInc(arr) {
-		var T = arr.length;
-		var inc = new Array(T);
+		let T = arr.length;
+		let inc = new Array(T);
 		inc[0] = 0;
-		for (var i = 1; i < T; i++) {
+		for (let i = 1; i < T; i++) {
 			inc[i] = arr[i] - arr[i - 1];
 		}
 
@@ -151,9 +151,9 @@ class Util {
 	}
 
 	static decode(symlist, bits) {
-		var value = 0;
-		var n = symlist.length;
-		for (var i = 0; i < bits; i++) {
+		let value = 0;
+		let n = symlist.length;
+		for (let i = 0; i < bits; i++) {
 			value = symlist[n - i - 1] + 2 * value;
 		}
 
@@ -175,11 +175,11 @@ class Util {
 			return val;
 		}
 
-		var u = 2 * Math.random() - 1;
-		var v = 2 * Math.random() - 1;
-		var r = u * u + v * v;
+		let u = 2 * Math.random() - 1;
+		let v = 2 * Math.random() - 1;
+		let r = u * u + v * v;
 		if (r == 0 || r > 1) return Util.gaussRandom();
-		var c = Math.sqrt(-2 * Math.log(r) / r);
+		let c = Math.sqrt(-2 * Math.log(r) / r);
 		val = v * c; // cache this
 		retval = true;
 		return u * c;
@@ -198,10 +198,10 @@ class Util {
 	}
 
 	static argmax(obj, accessor, numActions) {
-		var max = Number.NEGATIVE_INFINITY;
-		var ties = [];
-		for (var a = 0; a < numActions; a++) {
-			var val = accessor(obj, a);
+		let max = Number.NEGATIVE_INFINITY;
+		let ties = [];
+		for (let a = 0; a < numActions; a++) {
+			let val = accessor(obj, a);
 			if (val < max) {
 				continue;
 			} else if (val > max) {

@@ -4,18 +4,18 @@ class MDPVis extends Visualization {
 		this.time = 0;
 		this.current_state_no = env.options._initial_state; // TODO fix.
 		this.states = [];
-		for (var i = 0; i < env.states.length; i++) {
+		for (let i = 0; i < env.states.length; i++) {
 			this.states[i] = env.options._states[i];
 		}
 
 		//TODO fix magic numbers (maybe base canvas size on state locations)
 
 		this.margin = 50;
-		var xMax = 0;
-		var yMax = 0;
-		for (var i = 0; i < this.states.length; i++) {
-			var x = this.states[i].pos.x;
-			var y = this.states[i].pos.y;
+		let xMax = 0;
+		let yMax = 0;
+		for (let i = 0; i < this.states.length; i++) {
+			let x = this.states[i].pos.x;
+			let y = this.states[i].pos.y;
 			if (x > xMax) {
 				xMax = x;
 			}
@@ -29,9 +29,9 @@ class MDPVis extends Visualization {
 			.attr('width', xMax + this.margin)
 			.attr('height', yMax + this.margin);
 
-		for (var i = 0; i < this.states.length; i++) {
-			var x = this.states[i].pos.x;
-			var y = this.states[i].pos.y;
+		for (let i = 0; i < this.states.length; i++) {
+			let x = this.states[i].pos.x;
+			let y = this.states[i].pos.y;
 			this.svg.append('circle')
 				.attr('cx', x)
 				.attr('cy', y)
@@ -52,7 +52,7 @@ class MDPVis extends Visualization {
 		//Function to move elements to back of canvas,taken from http://bl.ocks.org/eesur/4e0a69d57d3bfc8a82c2
 		d3.selection.prototype.moveToBack = function () {
 			return this.each(function () {
-				var firstChild = this.parentNode.firstChild;
+				let firstChild = this.parentNode.firstChild;
 				if (firstChild) {
 					this.parentNode.insertBefore(this, firstChild);
 				}
@@ -60,40 +60,40 @@ class MDPVis extends Visualization {
 		};
 
 		//Draw transition lines
-		for (var i = 0; i < this.states.length; i++) {
-			var state = this.states[i];
+		for (let i = 0; i < this.states.length; i++) {
+			let state = this.states[i];
 
 			//Initial path position
-			var x1 = state.pos.x;
-			var y1 = state.pos.y;
-			var m = `${x1},${y1}`;
+			let x1 = state.pos.x;
+			let y1 = state.pos.y;
+			let m = `${x1},${y1}`;
 
 			//Go through each action in this state
-			for (var j = 0; j < state.actions.length; j++) {
+			for (let j = 0; j < state.actions.length; j++) {
 
 				//TODO logic for how to show how likely this action is (init here, update in updateAgent
 				//Random colour for now
-				var r = Math.random() * 256;
-				var g = Math.random() * 256;
-				var b = Math.random() * 256;
-				var fill = `rgb(${Math.floor(r)},${Math.floor(g)},${Math.floor(b)})`;
-				var transitions = state.actions[j].probabilities;
+				let r = Math.random() * 256;
+				let g = Math.random() * 256;
+				let b = Math.random() * 256;
+				let fill = `rgb(${Math.floor(r)},${Math.floor(g)},${Math.floor(b)})`;
+				let transitions = state.actions[j].probabilities;
 
 				//Loop through all possible transitions for the action
-				for (var h = 0; h < transitions.length; h++) {
-					var newState = this.states[h];
-					var x2 = newState.pos.x;
-					var y2 = newState.pos.y;
-					var prob = transitions[h];
+				for (let h = 0; h < transitions.length; h++) {
+					let newState = this.states[h];
+					let x2 = newState.pos.x;
+					let y2 = newState.pos.y;
+					let prob = transitions[h];
 
 					//Change thickness based on transition probability
-					var thickness = `${prob * 8}`;
+					let thickness = `${prob * 8}`;
 
 					//If same state, move pos2 to make line a curve
-					var xMidpoint = (x2 + x1) / 2;
-					var yMidpoint = (y2 + y1) / 2;
-					var xQ = 0;
-					var yQ = 0;
+					let xMidpoint = (x2 + x1) / 2;
+					let yMidpoint = (y2 + y1) / 2;
+					let xQ = 0;
+					let yQ = 0;
 
 					//For same state
 					if (h == i) {
@@ -116,8 +116,8 @@ class MDPVis extends Visualization {
 							yQ = y1 + k * j;
 						}
 					} else {
-						var pathGrad = (y2 - y1) / (x2 - x1);
-						var normalGrad =  Math.pow(-1, j) / pathGrad;
+						let pathGrad = (y2 - y1) / (x2 - x1);
+						let normalGrad =  Math.pow(-1, j) / pathGrad;
 
 						//Scaling factor
 						//TODO: k is hoisted to function scope. this is almost certainly a bug
@@ -126,8 +126,8 @@ class MDPVis extends Visualization {
 						yQ = (k * j * normalGrad + yMidpoint);
 					}
 
-					var pt = `${x2},${y2}`;
-					var q = `${xQ},${yQ}`;
+					let pt = `${x2},${y2}`;
+					let q = `${xQ},${yQ}`;
 					this.svg.append('path')
 						.attr('d', `M${m}Q${q} ${pt}`)
 						.style('stroke', fill)
@@ -146,8 +146,8 @@ class MDPVis extends Visualization {
 
 	updateEnv() {
 		//Change location of agent circle to centre of new state
-		var x = this.states[this.pos_trace[this.time]].pos.x;
-		var y = this.states[this.pos_trace[this.time]].pos.y;
+		let x = this.states[this.pos_trace[this.time]].pos.x;
+		let y = this.states[this.pos_trace[this.time]].pos.y;
 		d3.select('#cpos')
 			.attr('cx', x)
 			.attr('cy', y);

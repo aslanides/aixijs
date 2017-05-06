@@ -16,9 +16,9 @@ class MDP extends Environment {
 		this.min_reward = Number.POSITIVE_INFINITY;
 		this.max_reward = Number.NEGATIVE_INFINITY;
 
-		var R = this.rewards;
-		for (var s = 0; s < this.numStates; s++) {
-			for (var a = 0; a < this.numActions; a++) {
+		let R = this.rewards;
+		for (let s = 0; s < this.numStates; s++) {
+			for (let a = 0; a < this.numActions; a++) {
 				if (R[s][a] < this.min_reward) {
 					this.min_reward = R[s][a];
 				}
@@ -31,9 +31,9 @@ class MDP extends Environment {
 	}
 
 	perform(a) {
-		var s = this.state;
-		var P = this.transitions[a][s];
-		var s_ = Util.sample(P);
+		let s = this.state;
+		let P = this.transitions[a][s];
+		let s_ = Util.sample(P);
 		this.last_state = s;
 		this.last_action = a;
 		this.state = s_;
@@ -52,9 +52,9 @@ class MDP extends Environment {
 	}
 
 	conditionalDistribution(e) {
-		var s = this.last_state;
-		var a = this.last_action;
-		var s_ = e.obs;
+		let s = this.last_state;
+		let a = this.last_action;
+		let s_ = e.obs;
 
 		if (e.rew != this.rewards[s][a]) {
 			return 0;
@@ -65,9 +65,9 @@ class MDP extends Environment {
 
 	makeModel(type, parametrization) {
 		if (parametrization == 'mu') {
-			var options = Util.deepCopy(this.options);
-			var modelClass = [new this.constructor(options)];
-			var weights = [1];
+			let options = Util.deepCopy(this.options);
+			let modelClass = [new this.constructor(options)];
+			let weights = [1];
 			return new BayesMixture(modelClass, weights);
 		}
 

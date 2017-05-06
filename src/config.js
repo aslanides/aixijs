@@ -68,8 +68,8 @@ const configs = {
 		env: {
 			type: Gridworld,
 			_mods: function (env) {
-				var pos = Gridworld.proposeGoal(env.options.N);
-				var t = env.grid[pos.x][pos.y];
+				let pos = Gridworld.proposeGoal(env.options.N);
+				let t = env.grid[pos.x][pos.y];
 				if (t.expanded) {
 					t = new Dispenser(t.x, t.y, 0.5);
 					env.grid[pos.x][pos.y] = t;
@@ -119,7 +119,7 @@ const configs = {
 			agents: { SquareKSA, ShannonKSA, KullbackLeiblerKSA },
 			type: SquareKSA,
 			_mods: function (agent) {
-				for (var nu of agent.model.modelClass) {
+				for (let nu of agent.model.modelClass) {
 					nu.grid[0][1] = new NoiseTile(0, 1);
 					nu.generateConnexions();
 				}
@@ -377,8 +377,8 @@ const configs = {
 		env: {
 			type: WireheadingGrid,
 			_mods: function (env) {
-				var pos = Gridworld.proposeGoal(env.options.N);
-				var t = env.grid[pos.x][pos.y];
+				let pos = Gridworld.proposeGoal(env.options.N);
+				let t = env.grid[pos.x][pos.y];
 				if (t.expanded) {
 					t = new SelfModificationTile(t.x, t.y);
 					env.grid[pos.x][pos.y] = t;
@@ -403,9 +403,9 @@ const configs = {
 			model: BayesMixture,
 			cycles: 100,
 			_mods: function (agent) {
-				for (var m of agent.model.modelClass) {
-					for (var d of [[0, 1], [1, 0]]) {
-						var t = m.grid[d[0]][d[1]];
+				for (let m of agent.model.modelClass) {
+					for (let d of [[0, 1], [1, 0]]) {
+						let t = m.grid[d[0]][d[1]];
 						if (t.constructor != Wall && t.constructor != Dispenser) {
 							m.grid[d[0]][d[1]] = new Trap(d[0], d[1]);
 						}

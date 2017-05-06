@@ -9,10 +9,10 @@ class DirichletGrid {
 		this.weight_queue = new Queue()
 		this.param_queue = new Queue()
 
-		for (var idx = 0; idx < this.N; idx++) {
-			var gridrow = [];
-			var prow = [];
-			for (var jdx = 0; jdx < this.N; jdx++) {
+		for (let idx = 0; idx < this.N; idx++) {
+			let gridrow = [];
+			let prow = [];
+			for (let jdx = 0; jdx < this.N; jdx++) {
 				gridrow.push(new DirichletTile(idx, jdx));
 				prow.push(gridrow[jdx].pr.alphas);
 			}
@@ -24,7 +24,7 @@ class DirichletGrid {
 		this.saved_params = [];
 
 		this.weights = Util.zeros(this.N * this.N);
-		for (var i = 0; i < this.N * this.N; i++) {
+		for (let i = 0; i < this.N * this.N; i++) {
 			this.weights[i] = this.grid[0][0].prob(1); // Haldane prior
 		}
 
@@ -37,17 +37,17 @@ class DirichletGrid {
 
 		this.pos = this.grid[0][0];
 
-		for (var i = 0; i < this.N; i++) {
-			for (var j = 0; j < this.N; j++) {
-				var t = this.grid[i][j];
-				var ne = [];
-				for (var dir of this.actions) {
+		for (let i = 0; i < this.N; i++) {
+			for (let j = 0; j < this.N; j++) {
+				let t = this.grid[i][j];
+				let ne = [];
+				for (let dir of this.actions) {
 					if (dir[0] == 0 && dir[1] == 0) {
 						continue; // don't return self
 					}
 
-					var newx = t.x + dir[0];
-					var newy = t.y + dir[1];
+					let newx = t.x + dir[0];
+					let newy = t.y + dir[1];
 					if (newx < 0 || newy < 0 || newx >= this.N || newy >= this.N) {
 						ne.push(this.wall);
 						continue;
@@ -70,17 +70,17 @@ class DirichletGrid {
 	}
 
 	xi(e) {
-		var o = e.obs;
-		var r = e.rew;
-		var oBits = [];
+		let o = e.obs;
+		let r = e.rew;
+		let oBits = [];
 		Util.encode(oBits, o, this.A - 1);
 		oBits.reverse();
 
-		var s = this.pos;
+		let s = this.pos;
 
-		var p = 1;
-		var ne = s.neighbors;
-		for (var i = 0; i < this.A - 1; i++) {
+		let p = 1;
+		let ne = s.neighbors;
+		for (let i = 0; i < this.A - 1; i++) {
 			if (oBits[i]) {
 				p *= ne[i].prob(2); // wall
 			} else {
@@ -88,7 +88,7 @@ class DirichletGrid {
 			}
 		}
 
-		var rew = r - Gridworld.rewards.move;
+		let rew = r - Gridworld.rewards.move;
 		if (rew == Gridworld.rewards.chocolate) {
 			p *= s.prob(1);
 		} else if (rew == Gridworld.rewards.empty) {
@@ -99,33 +99,33 @@ class DirichletGrid {
 	}
 
 	perform(a) {
-		var s = this.pos;
+		let s = this.pos;
 
-		var samples = [];
-		for (var i = 0; i < s.neighbors.length; i++) {
+		let samples = [];
+		for (let i = 0; i < s.neighbors.length; i++) {
 			samples.push(s.neighbors[i].sample());
 		}
 
-		var t = samples[a];
+		let t = samples[a];
 
-		var str = '';
-		for (var sam of samples) {
+		let str = '';
+		for (let sam of samples) {
 			str += sam.symbol;
 		}
 
-		var wallHit = false;
+		let wallHit = false;
 
 		// if agent moved, we have to re-sample
 		if (a != 4 && !t.symbol) {
 			str = '';
-			var ne2 = this.grid[t.x][t.y].neighbors;
-			for (var n of ne2) {
+			let ne2 = this.grid[t.x][t.y].neighbors;
+			for (let n of ne2) {
 				if (n == s) {
 					str += 0;
 					continue;
 				}
 
-				var sam = n.sample();
+				let sam = n.sample();
 				str += sam.symbol;
 			}
 
@@ -136,13 +136,13 @@ class DirichletGrid {
 
 		this.pos = s;
 
-		var pEmpty = s.prob(0);
-		var pDisp = s.prob(1);
-		var norm = pEmpty + pDisp;
-		var disp = Util.sample([pEmpty / norm, pDisp / norm]);
+		let pEmpty = s.prob(0);
+		let pDisp = s.prob(1);
+		let norm = pEmpty + pDisp;
+		let disp = Util.sample([pEmpty / norm, pDisp / norm]);
 
-		var o = parseInt(str, 2);
-		var r = Gridworld.rewards.empty;
+		let o = parseInt(str, 2);
+		let r = Gridworld.rewards.empty;
 		if (wallHit) {
 			r = Gridworld.rewards.wall;
 		} else if (disp) {
@@ -207,7 +207,7 @@ class DirichletGrid {
 	}
 
 	save() {
-		for (var i = 0; i < this.N; i++) {
+		for (let i = 0; i < this.N; i++) {
 			this.saved_params[i] = Util.arrayCopy(this.params[i]);
 		}
 
@@ -235,16 +235,16 @@ class DirichletGrid {
 	}
 
 	load2() {
-		for (var i = 0; i < this.N; i++) {
+		for (let i = 0; i < this.N; i++) {
 			this.params[i] = Util.arrayCopy(this.saved_params[i]);
 		}
 
 		this.pos = this.grid[this.saved_pos.x][this.saved_pos.y];
 		this.weights = [...this.saved_weights];
 
-		for (var i = 0; i < this.N; i++) {
-			for (var j = 0; j < this.N; j++) {
-				var t = this.grid[i][j];
+		for (let i = 0; i < this.N; i++) {
+			for (let j = 0; j < this.N; j++) {
+				let t = this.grid[i][j];
 				t.pr.alphas = this.params[i][j];
 				t.pr.alphaSum = Util.sum(t.pr.alphas);
 			}
@@ -261,7 +261,7 @@ class DirichletTile {
 		this.children.push(new Dispenser(x, y, 1));
 		this.children.push(new Wall(x, y));
 		this.children.push(new Trap(x, y));
-		for (var child of this.children) {
+		for (let child of this.children) {
 			child.parent = this;
 		}
 
@@ -269,8 +269,8 @@ class DirichletTile {
 	}
 
 	sample() {
-		var p = this.pr.means();
-		var idx = Util.sample(p);
+		let p = this.pr.means();
+		let idx = Util.sample(p);
 
 		return this.children[idx];
 	}

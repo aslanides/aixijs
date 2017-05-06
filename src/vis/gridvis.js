@@ -6,7 +6,7 @@ class GridVisualization extends Visualization {
 		this.grid = env.grid;
 		this.N = env.N;
 		this.rectangles = [];
-		for (var i = 0; i < env.N; i++) {
+		for (let i = 0; i < env.N; i++) {
 			this.rectangles.push(new Array(env.N));
 		}
 
@@ -19,7 +19,7 @@ class GridVisualization extends Visualization {
 
 		this.grid.forEach((row, idx) => {
 			row.forEach((tile, jdx) => {
-				var r = GridVisualization.makeTile(this.svg, tile);
+				let r = GridVisualization.makeTile(this.svg, tile);
 				this.rectangles[idx][jdx] = r;
 			});
 		});
@@ -34,8 +34,8 @@ class GridVisualization extends Visualization {
 	}
 
 	updateEnv() {
-		var x = this.pos_trace[this.time].x;
-		var y = this.pos_trace[this.time].y;
+		let x = this.pos_trace[this.time].x;
+		let y = this.pos_trace[this.time].y;
 		d3.select('#agent')
 			.attr('x', (x + 0.2) * this.d)
 			.attr('y', y * this.d);
@@ -43,7 +43,7 @@ class GridVisualization extends Visualization {
 
 	static makeTile(svg, t, color) {
 		const d = GridVisualization.tile_size_px;
-		var r = svg.append('rect')
+		let r = svg.append('rect')
 			.attr('x', t.x * d)
 			.attr('y', t.y * d)
 			.attr('height', d)
@@ -66,7 +66,7 @@ class GridVisualization extends Visualization {
 	}
 
 	static makeLegend(div, T, color) {
-		var svg = d3.select(`#${div}`).append('svg')
+		let svg = d3.select(`#${div}`).append('svg')
 			.attr('id', `${div}_svg`)
 			.attr('width', GridVisualization.tile_size_px)
 			.attr('height', GridVisualization.tile_size_px);
@@ -102,7 +102,7 @@ class TabularGridVis extends GridVisualization {
 	constructor(env, trace, ui) {
 		super(env, trace, ui);
 		this.arrows = [];
-		for (var i = 0; i < env.N; i++) {
+		for (let i = 0; i < env.N; i++) {
 			this.arrows.push(new Array(env.N));
 		}
 
@@ -127,11 +127,11 @@ class TabularGridVis extends GridVisualization {
 					return;
 				}
 
-				var xcoord = tile.x * this.d;
-				var ycoord = tile.y * this.d;
-				var arrowList = [];
+				let xcoord = tile.x * this.d;
+				let ycoord = tile.y * this.d;
+				let arrowList = [];
 				this.arrow_actions.forEach(a => {
-					var arrow = this.svg.append('line')
+					let arrow = this.svg.append('line')
 						.attr('x1', xcoord)
 						.attr('y1', ycoord)
 						.attr('x2', xcoord)
@@ -153,18 +153,18 @@ class TabularGridVis extends GridVisualization {
 					return;
 				}
 
-				var xcoord = tile.x * this.d;
-				var ycoord = tile.y * this.d;
+				let xcoord = tile.x * this.d;
+				let ycoord = tile.y * this.d;
 
-				var qSum = 0;
+				let qSum = 0;
 				this.arrow_actions.forEach(a => {
 					qSum += Math.pow(Math.E, tile.info[a]);
 				});
 
 				this.arrow_actions.forEach(a => {
-					var lineSize = this.d / 2 * Math.pow(Math.E, tile.info[a]) / qSum;
-					var dx = 0;
-					var dy = 0;
+					let lineSize = this.d / 2 * Math.pow(Math.E, tile.info[a]) / qSum;
+					let dx = 0;
+					let dy = 0;
 					if (a < 2) {
 						dx = Math.pow(-1, a + 1) * lineSize;
 					} else {
@@ -192,7 +192,7 @@ class TabularGridVis extends GridVisualization {
 			return;
 		}
 
-		var index = this.time / ((this.t_max + 1) / this.jumps);
+		let index = this.time / ((this.t_max + 1) / this.jumps);
 		if (this.time == 0) {
 			this.grid.forEach(row => {
 				row.forEach(tile => {
@@ -200,12 +200,12 @@ class TabularGridVis extends GridVisualization {
 				});
 			});
 		} else {
-			for (var [key, value] of this.q_list[index].map) {
-				var coord = {
+			for (let [key, value] of this.q_list[index].map) {
+				let coord = {
 					x: key.charAt(0),
 					y: key.charAt(1),
 				};
-				var a = key.charAt(2);
+				let a = key.charAt(2);
 				this.grid[coord.x][coord.y].info[a] = value;
 			}
 		}
@@ -223,13 +223,13 @@ class BayesGridVis extends GridVisualization {
 	updateAgent() {
 		this.grid.forEach(row => {
 			row.forEach(tile => {
-				var rectangle = this.rectangles[tile.x][tile.y];
-				var c = this.posteriorColor(tile, this.time);
-				var col = null;
+				let rectangle = this.rectangles[tile.x][tile.y];
+				let c = this.posteriorColor(tile, this.time);
+				let col = null;
 				if (c) {
-					var r = Math.floor(c.r);
-					var g = Math.floor(c.g);
-					var b = Math.floor(c.b);
+					let r = Math.floor(c.r);
+					let g = Math.floor(c.g);
+					let b = Math.floor(c.b);
 					col = `rgb(${r},${g},${b})`;
 				} else {
 					col = tile.color;
@@ -241,7 +241,7 @@ class BayesGridVis extends GridVisualization {
 	}
 
 	posteriorColor(tile, time) {
-		var tc = tile.constructor;
+		let tc = tile.constructor;
 		if (tc == Wall ||
 				tc == SelfModificationTile) {
 			return null;
@@ -255,11 +255,11 @@ class BayesGridVis extends GridVisualization {
 			};
 		}
 
-		var trap = tile.constructor == Trap;
+		let trap = tile.constructor == Trap;
 
 		// TODO visualize direct from agent mixture model!
 
-		var p = this.model_trace[time][tile.y * this.N + tile.x];
+		let p = this.model_trace[time][tile.y * this.N + tile.x];
 		return {
 			g: 255 - 100 * trap,
 			r: 255 - p * this.color_normalization,
@@ -277,8 +277,8 @@ class DirichletVis extends BayesGridVis {
 	}
 
 	posteriorColor(tile, time) {
-		var alphas = this.model_trace[time][tile.x][tile.y];
-		var as = Util.sum(alphas);
+		let alphas = this.model_trace[time][tile.x][tile.y];
+		let as = Util.sum(alphas);
 		if (as == 0) {
 			return { r: 255, g: 255, b: 255 };
 		}
@@ -302,7 +302,7 @@ class ThompsonVis extends BayesGridVis {
 	updateAgent() {
 		super.updateAgent();
 		d3.select('#thompson_disp').remove();
-		var rhoPos = this.rho_trace[this.time];
+		let rhoPos = this.rho_trace[this.time];
 		GridVisualization.addCircle(
 			this.svg, rhoPos.x, rhoPos.y, GridVisualization.colors.rho, 'thompson_disp');
 	}
@@ -325,11 +325,11 @@ class WireHeadVis extends BayesGridVis {
 	updateAgent() {
 		super.updateAgent();
 		if (this.pos_trace[this.time].wireheaded) {
-			for (var i = 0; i < this.N; i++) {
-				for (var j = 0; j < this.N; j++) {
-					var r = this.rectangles[i][j];
-					var col = r.attr('fill');
-					var rgb = col.replace(/[^\d,]/g, '').split(',');
+			for (let i = 0; i < this.N; i++) {
+				for (let j = 0; j < this.N; j++) {
+					let r = this.rectangles[i][j];
+					let col = r.attr('fill');
+					let rgb = col.replace(/[^\d,]/g, '').split(',');
 					rgb[0] += 20;
 					r.attr('fill', `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`);
 				}

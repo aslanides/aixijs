@@ -13,28 +13,28 @@ class CTW {
 	}
 
 	generatePercept() {
-		var symbols = new Array(this.perceptBits);
+		let symbols = new Array(this.perceptBits);
 		this.ct.genRandomSymbolsAndUpdate(symbols, this.perceptBits);
-		var obs = Util.decode(symbols, this.obsBits);
-		for (var i = 0; i < this.rewBits; i++) {
+		let obs = Util.decode(symbols, this.obsBits);
+		for (let i = 0; i < this.rewBits; i++) {
 			symbols[i] = symbols[i + this.obsBits]; // TODO: ???
 		}
 
-		var rew = Util.decode(symbols, this.rewBits);
+		let rew = Util.decode(symbols, this.rewBits);
 		rew += this.minReward;
 		return { obs: obs, rew: rew };
 	}
 
 	conditionalDistribution(e) {
-		var obs = e.obs;
-		var rew = e.rew - this.minReward;
-		var logProb = 0;
-		for (var i = 0; i < this.obsBits; i++) {
+		let obs = e.obs;
+		let rew = e.rew - this.minReward;
+		let logProb = 0;
+		for (let i = 0; i < this.obsBits; i++) {
 			logProb += this.ct.getLogProbNextSymbolGivenHWithUpdate(1 & obs);
 			obs /= 2;
 		}
 
-		for (var i = 0; i < this.rewBits; i++) {
+		for (let i = 0; i < this.rewBits; i++) {
 			logProb += this.ct.getLogProbNextSymbolGivenHWithUpdate(1 & rew);
 			rew /= 2;
 		}
@@ -43,7 +43,7 @@ class CTW {
 	}
 
 	perform(a) {
-		var symbols = [];
+		let symbols = [];
 		Util.encode(symbols, a, this.actionBits);
 		this.ct.updateHistory(symbols);
 		this.cycle++;
@@ -55,8 +55,8 @@ class CTW {
 	}
 
 	bayesUpdate(a, e) {
-		var rew = e.rew - this.minReward;
-		var symbols = [];
+		let rew = e.rew - this.minReward;
+		let symbols = [];
 		Util.encode(symbols, e.obs, this.obsBits);
 		Util.encode(symbols, e.rew, this.rewBits);
 
@@ -74,9 +74,9 @@ class CTW {
 	}
 
 	load() {
-		var n = this.cycle - this.saved_cycle;
-		for (var i = 0; i < n; i++) {
-			for (var j = 0; j < this.perceptBits; j++) {
+		let n = this.cycle - this.saved_cycle;
+		for (let i = 0; i < n; i++) {
+			for (let j = 0; j < this.perceptBits; j++) {
 				this.ct.revert();
 				this.ct.revertHistory(this.ct.history.length - 1);
 			}
@@ -106,15 +106,15 @@ class ContextTree {
 		if (!sym.length) {
 			this._update(sym);
 		} else {
-			for (var i = 0; i < sym.length; i++) {
+			for (let i = 0; i < sym.length; i++) {
 				this._update(sym[i]);
 			}
 		}
 	}
 
 	_update(sym) {
-		var contextPath = [];
-		var current = this.root;
+		let contextPath = [];
+		let current = this.root;
 		this.walkAndGeneratePath(0, contextPath, current);
 		while (contextPath.length > 0) {
 			current.update(sym);
@@ -129,16 +129,16 @@ class ContextTree {
 		if (!sym.length) {
 			this.history.push(sym);
 		} else {
-			for (var i = 0; i < sym.length; i++) {
+			for (let i = 0; i < sym.length; i++) {
 				this.history.push(sym[i]);
 			}
 		}
 	}
 
 	walkAndGeneratePath(bitFix, contextPath, current) {
-		var traverseDepth = 0;
-		var curHistorySym;
-		var h = this.history.length;
+		let traverseDepth = 0;
+		let curHistorySym;
+		let h = this.history.length;
 		while (traverseDepth < this.depth) {
 			curHistorySym = this.history[bitFix + h - 1 - traverseDepth];
 
@@ -153,15 +153,15 @@ class ContextTree {
 	}
 
 	revert() {
-		var contextPath = [];
-		var current = this.root;
-		var curDepth = this.depth;
-		var h = this.history.length;
+		let contextPath = [];
+		let current = this.root;
+		let curDepth = this.depth;
+		let h = this.history.length;
 		this.walkAndGeneratePath(-1, contextPath, current);
 		while (contextPath.length > 0) {
 			current.revert(this.history[h - 1]);
 			if (current.counts[0] == 0 && current.counts[1] == 0) {
-				for (var i = 0; i < 2; i++) {
+				for (let i = 0; i < 2; i++) {
 					current.children[i] = null;
 					current.counts = 0;
 				}
@@ -185,16 +185,16 @@ class ContextTree {
 	}
 
 	getLogProbNextSymbolGivenHWithUpdate(sym) {
-		var lastLogBlockProb = this.logBlockProbability();
+		let lastLogBlockProb = this.logBlockProbability();
 		this.update(sym);
-		var newLogBlockProb = this.logBlockProbability();
-		var probLogNextBit = newLogBlockProb - lastLogBlockProb;
+		let newLogBlockProb = this.logBlockProbability();
+		let probLogNextBit = newLogBlockProb - lastLogBlockProb;
 
 		return probLogNextBit;
 	}
 
 	getLogProbNextSymbolGivenH(sym) {
-		var probLogNextBit = this.getLogProbNextSymbolGivenHWithUpdate(sym);
+		let probLogNextBit = this.getLogProbNextSymbolGivenHWithUpdate(sym);
 		this.revert();
 		this.revertHistory(this.history.length - 1);
 
@@ -203,15 +203,15 @@ class ContextTree {
 
 	genRandomSymbols(symbols, bits) {
 		this.genRandomSymbolsAndUpdate(symbols, bits);
-		for (var i = 0; i < bits; i++) {
+		for (let i = 0; i < bits; i++) {
 			this.revert();
 		}
 	}
 
 	genRandomSymbolsAndUpdate(symbols, bits) {
-		var probNextBit;
-		var sym;
-		for (var i = 0; i < bits; i++) {
+		let probNextBit;
+		let sym;
+		for (let i = 0; i < bits; i++) {
 			probNextBit = Math.pow(2, this.getLogProbNextSymbolGivenH(0));
 			sym = (Math.random() > probNextBit);
 			this.update(sym);
@@ -237,7 +237,7 @@ class CTNode {
 	}
 
 	size() {
-		var s  = 1;
+		let s  = 1;
 		s += this[0] ? this[0].size() : 0;
 		s += this[1] ? this[1].size() : 0;
 		return s;

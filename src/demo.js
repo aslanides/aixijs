@@ -5,20 +5,20 @@ const demo = {
 		if (this.vis) this.vis.pause();
 
 		// get defaults
-		for (var opt of ['env', 'agent']) {
-			var lst = [];
-			for (var ptr = config[opt].type; ptr; ptr = ptr.__proto__) {
+		for (let opt of ['env', 'agent']) {
+			let lst = [];
+			for (let ptr = config[opt].type; ptr; ptr = ptr.__proto__) {
 				if (!ptr.params) {
 					continue;
 				}
 
-				for (var p of ptr.params) {
+				for (let p of ptr.params) {
 					lst.push(p);
 				}
 			}
 
-			for (var i = lst.length - 1; i >= 0; i--) {
-				var v = config[opt][lst[i].field];
+			for (let i = lst.length - 1; i >= 0; i--) {
+				let v = config[opt][lst[i].field];
 				if (!v) {
 					config[opt][lst[i].field] = lst[i].value;
 				}
@@ -31,20 +31,20 @@ const demo = {
 		this.ui.clear();
 		this.ui.push(config);
 
-		var label = this.ui.getElementById('setup_label');
+		let label = this.ui.getElementById('setup_label');
 		label.innerText = `Setup: ${config.name}`;
 
 		this.config = config;
 
 		this.ui.clearExplanations();
 		if (!config.vis.exps) return;
-		for (var exp of config.vis.exps) {
+		for (let exp of config.vis.exps) {
 			this.ui.showExplanation(exp);
 		}
 
 		if (!config.exps) return;
 
-		for (var exp of config.exps) {
+		for (let exp of config.exps) {
 			this.ui.showExplanation(exp);
 		}
 	},
@@ -55,7 +55,7 @@ const demo = {
 		// new: class defaults -> config -> ui
 		// run: ui -> options -> env/agent
 		if (this.vis) this.vis.remove();
-		var options = Util.deepCopy(this.config);
+		let options = Util.deepCopy(this.config);
 		this.ui.pull(options);
 		this.env = env ? env : new options.env.type(options.env);
 
@@ -79,26 +79,26 @@ const demo = {
 
 		this.plots = [];
 		Plot.clearAll();
-		for (var P of this.trace.plots) {
+		for (let P of this.trace.plots) {
 			this.plots.push(new P(this.trace));
 		}
 
-		for (var P of this.env.plots) {
+		for (let P of this.env.plots) {
 			this.plots.push(new P(this.trace));
 		}
 
-		var update = trace => {
-			for (var p of this.plots) {
+		let update = trace => {
+			for (let p of this.plots) {
 				p.dataUpdate(trace);
 			}
 		};
 
-		var callback = _ => {
+		let callback = _ => {
 			this.ui.end();
 			this.cancel = false;
-			var frames = this.trace.iter;
-			var second = Util.roundTo((performance.now() - this.t0) / 1000, 4);
-			var fps = Util.roundTo(frames / second, 2);
+			let frames = this.trace.iter;
+			let second = Util.roundTo((performance.now() - this.t0) / 1000, 4);
+			let fps = Util.roundTo(frames / second, 2);
 			this.trace.runtime = second;
 			this.trace.fps = fps;
 			console.log(`${frames} cycles, ${second} seconds (${fps} fps)`);
@@ -115,17 +115,17 @@ const demo = {
 	},
 
 	simulate(update, callback) {
-		var trace = this.trace;
-		var agent = this.agent;
-		var env = this.env;
+		let trace = this.trace;
+		let agent = this.agent;
+		let env = this.env;
 
-		var e = env.generatePercept();
-		var a = env.noop;
+		let e = env.generatePercept();
+		let a = env.noop;
 
 		trace.log(agent, env, a, e);
 		agent.update(a, e);
 
-		var cycle = _ => {
+		let cycle = _ => {
 			trace.log(agent, env, a, e);
 			a = agent.selectAction(e);
 			env.perform(a);
@@ -133,7 +133,7 @@ const demo = {
 			agent.update(a, e);
 		};
 
-		var loop;
+		let loop;
 		if (this.novis) {
 			loop = _ => {
 				while (true) {
@@ -180,8 +180,8 @@ const demo = {
 
 		results = {};
 		seed = seed || 'aixi';
-		var num = 1;
-		for (var config of dems) {
+		let num = 1;
+		for (let config of dems) {
 			if (config.agent.model) {
 				console.log(`Running ${config.agent.type.name} with model ${config.agent.model.name} on  ${config.env.type.name}.`)
 			} else {
@@ -190,9 +190,9 @@ const demo = {
 
 			Math.seedrandom(seed);
 			logs = [];
-			var env = null;
+			let env = null;
 			this.new(config);
-			for (var i = 0; i < runs; i++) {
+			for (let i = 0; i < runs; i++) {
 				console.log(`    run ${i + 1} of ${runs}...`);
 				if (i > 0) {
 					env = new env.constructor(env.options);
@@ -231,10 +231,10 @@ const demo = {
 
 		console.log('Done!');
 
-		var json = JSON.stringify(results);
-		var blob = new Blob([json], { type: 'application/json' });
+		let json = JSON.stringify(results);
+		let blob = new Blob([json], { type: 'application/json' });
 
-		var a = document.createElement('a');
+		let a = document.createElement('a');
 		a.download = `results-${this.experiment_number}.json`;
 		a.href = URL.createObjectURL(blob);
 		a.textContent = `Download results-${this.experiment_number}.json`;

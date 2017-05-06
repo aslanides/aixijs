@@ -19,7 +19,7 @@ class Matrix {
 	}
 
 	setColumn(m, i) {
-		for (var q = 0, n = m.w.length; q < n; q++) {
+		for (let q = 0, n = m.w.length; q < n; q++) {
 			this.w[(this.d * q) + i] = m.w[q];
 		}
 	}
@@ -37,19 +37,19 @@ class Matrix {
 		this.d = json.d;
 		this.dw = Util.zeros(this.n * this.d);
 		this.w = Util.zeros(this.n * this.d);
-		for (var i = 0, n = this.n * this.d; i < n; i++) {
+		for (let i = 0, n = this.n * this.d; i < n; i++) {
 			this.w[i] = json.w[i];
 		}
 	}
 
 	copy() {
-		var a = new Matrix(this.n, this.d);
+		let a = new Matrix(this.n, this.d);
 		a.setFrom(this.w);
 		return a;
 	}
 
 	update(alpha) {
-		for (var i = 0, n = this.n * this.d; i < n; i++) {
+		for (let i = 0, n = this.n * this.d; i < n; i++) {
 			if (this.dw[i] !== 0) {
 				this.w[i] += -alpha * this.dw[i];
 				this.dw[i] = 0;
@@ -58,25 +58,25 @@ class Matrix {
 	}
 
 	fillRandn(mu, std) {
-		for (var i = 0, n = this.w.length; i < n; i++) {
+		for (let i = 0, n = this.w.length; i < n; i++) {
 			this.w[i] = Util.randn(mu, std);
 		}
 	}
 
 	fillRand(lo, hi) {
-		for (var i = 0, n = this.w.length; i < n; i++) {
+		for (let i = 0, n = this.w.length; i < n; i++) {
 			this.w[i] = Util.randf(lo, hi);
 		}
 	}
 
 	gradFillConst(c) {
-		for (var i = 0, n = m.dw.length; i < n; i++) {
+		for (let i = 0, n = m.dw.length; i < n; i++) {
 			m.dw[i] = c;
 		}
 	}
 
 	static rand(n, d, mu, sigma) {
-		var m = new Matrix(n, d);
+		let m = new Matrix(n, d);
 		m.fillRandn(mu, sigma);
 
 		return m;

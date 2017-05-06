@@ -1,15 +1,15 @@
 class DirichletBandit {
 	constructor(options) {
-		var A = options.numActions;
+		let A = options.numActions;
 		this.numActions = A;
 		this.arms = [];
-		for (var a = 0; a < A; a++) {
+		for (let a = 0; a < A; a++) {
 			this.arms.push(new Beta(1, 1));
 		}
 	}
 
 	bayesUpdate(a, e) {
-		var { _, rew } = e;
+		let { _, rew } = e;
 		this.arms[a].update(rew);
 	}
 
@@ -23,8 +23,8 @@ class DirichletBandit {
 	}
 
 	conditionalDistribution(e) {
-		var { _, rew } = e;
-		var arm = this.arms[this.action];
+		let { _, rew } = e;
+		let arm = this.arms[this.action];
 		return rew ? arm.mean() : 1 - arm.mean();
 	}
 
@@ -34,7 +34,7 @@ class DirichletBandit {
 
 	save() {
 		this.params = [];
-		for (var arm of this.arms) {
+		for (let arm of this.arms) {
 			this.params.push({ alpha: arm.alpha, beta: arm.beta });
 		}
 
@@ -42,7 +42,7 @@ class DirichletBandit {
 	}
 
 	load() {
-		for (var a = 0; a < this.numActions; a++) {
+		for (let a = 0; a < this.numActions; a++) {
 			this.arms[a].alpha = this.params[a].alpha;
 			this.arms[a].beta = this.params[a].beta;
 		}
