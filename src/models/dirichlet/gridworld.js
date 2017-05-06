@@ -152,16 +152,16 @@ class DirichletGrid {
 	}
 
 	bayesUpdate(a, e) {
-		let o = e.obs;
-		let r = e.rew;
-		let oBits = [];
+		var o = e.obs;
+		var r = e.rew;
+		var oBits = [];
 		Util.encode(oBits, o, this.A - 1);
 		oBits.reverse();
 
-		let s = this.pos;
-		let ne = s.neighbors;
-		for (let i = 0; i < this.A - 1; i++) {
-			let n = ne[i];
+		var s = this.pos;
+		var ne = s.neighbors;
+		for (var i = 0; i < this.A - 1; i++) {
+			var n = ne[i];
 			if (!n.pr) {
 				continue;
 			}
@@ -182,7 +182,7 @@ class DirichletGrid {
 			}
 		}
 
-		let rew = r - Gridworld.rewards.move;
+		var rew = r - Gridworld.rewards.move;
 
 		if (rew == Gridworld.rewards.empty) {
 			s.update(0);

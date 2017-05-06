@@ -15,9 +15,9 @@ class Util {
 	}
 
 	static sum(arr) {
-		let s = 0;
-		let n = arr.length;
-		for (let i = 0; i < n; i++) {
+		var s = 0;
+		var n = arr.length;
+		for (var i = 0; i < n; i++) {
 			s += arr[i];
 		}
 
