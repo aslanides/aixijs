@@ -79,9 +79,9 @@ class Util {
 	}
 
 	static entropy(p) {
-		let s = 0;
-		let n = p.length;
-		for (let i = 0; i < n; i++) {
+		var s = 0;
+		var n = p.length;
+		for (var i = 0; i < n; i++) {
 			if (p[i] == 0) {
 				continue;
 			}
