@@ -182,13 +182,18 @@ const demo = {
 		seed = seed || 'aixi';
 		let num = 1;
 		for (let config of dems) {
+			if (config.agent.model) {
+				console.log(`Running ${config.agent.type.name} with model ${config.agent.model.name} on  ${config.env.type.name}.`)
+			} else {
+				console.log(`Running ${config.agent.type.name} on ${config.env.type.name}.`)
+			}
+
 			Math.seedrandom(seed);
 			logs = [];
 			let env = null;
 			this.new(config);
 			for (let i = 0; i < runs; i++) {
-				console.log(`Running ${config.agent.type.name} on ${config.env.type.name}:`
-					+ ` run ${i + 1} of ${runs}...`);
+				console.log(`    run ${i + 1} of ${runs}...`);
 				if (i > 0) {
 					env = new env.constructor(env.options);
 					if (env.constructor == Gridworld) {
