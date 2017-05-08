@@ -102,8 +102,8 @@ const configs = {
 		vis: ThompsonVis,
 		agent: {
 			type: ThompsonAgent,
-			horizon: 15,
-			samples: 2500,
+			horizon: 12,
+			samples: 5000,
 			ucb: 1,
 		},
 		env: {
@@ -251,6 +251,9 @@ const configs = {
 		agent: {
 			type: MDLAgent,
 			ucb: 0.5,
+			samples: 5000,
+			horizon: 12,
+			discountParam: {gamma: 0.8},
 		},
 		env: {
 			type: Gridworld,

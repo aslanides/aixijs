@@ -2,6 +2,7 @@ class BayesAgent extends Agent {
 	constructor(options) {
 		super(options);
 		this.samples = options.samples;
+		this.timeout = options.timeout;
 		this.horizon = options.horizon;
 		this.ucb = options.ucb;
 		this.max_reward = options.max_reward;

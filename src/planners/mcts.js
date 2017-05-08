@@ -8,6 +8,10 @@ class ExpectimaxTree {
 		this.rew_range = this.max_reward - this.min_reward;
 		this.numActions = agent.numActions;
 		this.samples = agent.samples;
+		this.timeout = agent.timeout
+		if (this.timeout) {
+			this.samples_total = 0
+		}
 		this.gamma = agent.gamma;
 		this.agent = agent; // TODO fix
 		if (nocaching) {
@@ -20,9 +24,22 @@ class ExpectimaxTree {
 	getValueEstimate() {
 		if (!this.sampled) {
 			this.model.save();
-			for (let iter = 0; iter < this.samples; iter++) {
-				this.root.sample(this, 0);
-				this.model.load();
+			if (this.timeout) {
+				// time budget
+				var t0 = performance.now()
+				var n = 0
+				while (performance.now() - t0 < this.timeout) {
+					this.root.sample(this,0);
+					this.model.load();
+					n++
+				}
+				this.samples_total += n
+			} else {
+				// sample budget
+				for (let iter = 0; iter < this.samples; iter++) {
+					this.root.sample(this, 0);
+					this.model.load();
+				}
 			}
 
 			this.sampled = true;
