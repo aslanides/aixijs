@@ -6,7 +6,7 @@ AIXIjs is a JavaScript demo for running General Reinforcement Learning (RL) agen
 ![](assets/aixi.gif) ![](assets/ksa.gif)
 
 ## Features
-Agents implemented:
+Agents:
 - Bayes (AIXI)
 - KSA (Square, Shannon, and Kullback-Leibler)
 - Thompson Sampling
@@ -14,7 +14,7 @@ Agents implemented:
 - BayesExp
 - (Tabular) QLearning/SARSA
 
-Environments implemented:
+Environments:
 - Bandits
 - Finite-state MDPs
 - Gridworld POMPDs
@@ -76,6 +76,6 @@ If you use this software in your own experiments, please cite it as:
 }
 ```
 
-## Contribution
+## Contributing
 
 If you'd like to contribute, I'm all ears! There's a lot of stuff to do :) Go ahead and open a pull request!
