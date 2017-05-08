@@ -97,7 +97,7 @@ const demo = {
 			this.ui.end();
 			this.cancel = false;
 			let frames = this.trace.iter;
-			let second = Util.roundTo((performance.now() - this.t0) / 1000, 4);
+			let second = Util.roundTo((performance.now() - this.t0) / 1000, 2);
 			let fps = Util.roundTo(frames / second, 2);
 			this.trace.runtime = second;
 			this.trace.fps = fps;
@@ -175,15 +175,35 @@ const demo = {
 		this.ui.clearExplanations();
 	},
 
-	experiment(dems, runs, seed) {
+	experiment(dems, params) {
 		this.experiment_number ? this.experiment_number++ : this.experiment_number = 1;
-
+		if (!params) {
+			// some defaults
+			params = {
+				runs: 20,
+				env: {N: 10},
+				agent: {cycles: 200},
+			}
+		}
+		var runs = params.runs
 		results = {};
-		seed = seed || 'aixi';
+		seed = params.seed || 'aixi';
 		let num = 1;
-		for (let config of dems) {
+		var t0 = performance.now()
+		for (let cfg of dems) {
+			let config = Util.deepCopy(cfg)
+			if (params.env) {
+				for (let param_name in params.env) {
+					config.env[param_name] = params.env[param_name]
+				}
+			}
+			if (params.agent) {
+				for (let param_name in params.agent) {
+					config.agent[param_name] = params.agent[param_name]
+				}
+			}
 			if (config.agent.model) {
-				console.log(`Running ${config.agent.type.name} with model ${config.agent.model.name} on  ${config.env.type.name}.`)
+				console.log(`Running ${config.agent.type.name} with model ${config.agent.model.name} on ${config.env.type.name}.`)
 			} else {
 				console.log(`Running ${config.agent.type.name} on ${config.env.type.name}.`)
 			}
@@ -229,7 +249,7 @@ const demo = {
 			}
 		}
 
-		console.log('Done!');
+		console.log(`Done! Total time elapsed: ${Math.floor(performance.now() - t0)/1000} seconds.`);
 
 		let json = JSON.stringify(results);
 		let blob = new Blob([json], { type: 'application/json' });

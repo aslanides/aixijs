@@ -207,10 +207,11 @@ const configs = {
 			type: KullbackLeiblerKSA,
 			model: DirichletGrid,
 			tracer: DirichletTrace,
-			cycles: 100,
+			cycles: 500,
 		},
 		env: {
 			type: Gridworld,
+			N: 20,
 		},
 	},
 	shksa_dirichlet: {
@@ -221,10 +222,11 @@ const configs = {
 			type: ShannonKSA,
 			model: DirichletGrid,
 			tracer: DirichletTrace,
-			cycles: 100,
+			cycles: 500,
 		},
 		env: {
 			type: Gridworld,
+			N: 20,
 		},
 	},
 	sqksa_dirichlet: {
@@ -234,10 +236,11 @@ const configs = {
 			type: SquareKSA,
 			model: DirichletGrid,
 			tracer: DirichletTrace,
-			cycles: 100,
+			cycles: 500,
 		},
 		env: {
 			type: Gridworld,
+			N: 20,
 		},
 	},
 	mdl: {
