@@ -10,6 +10,12 @@ class GridVisualization extends Visualization {
 			this.rectangles.push(new Array(env.N));
 		}
 
+		d3.selection.prototype.moveToFront = function() {
+	      return this.each(function(){
+	        this.parentNode.appendChild(this);
+	      });
+	    };
+
 		var view_width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 		var view_height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
@@ -319,6 +325,7 @@ class ThompsonVis extends BayesGridVis {
 		let rhoPos = this.rho_trace[this.time];
 		GridVisualization.addCircle(
 			this.svg, rhoPos.x, rhoPos.y, GridVisualization.colors.rho, 'thompson_disp',1,this);
+		d3.select("#agent").moveToFront()
 	}
 }
 
