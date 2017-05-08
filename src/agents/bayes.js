@@ -20,8 +20,7 @@ class BayesAgent extends Agent {
 		super.update(a, e);
 		this.model.save();
 		this.model.update(a, e);
-		this.information_gain = Util.KLDivergence(this.model.weights,
-			this.model.saved_weights);
+		this.information_gain = Util.entropy(this.model.saved_weights) - Util.entropy(this.model.weights);
 	}
 
 	selectAction(e) {
