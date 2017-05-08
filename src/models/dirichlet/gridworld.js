@@ -4,6 +4,8 @@ class DirichletGrid {
 		this.A = this.actions.length;
 		this.N = N;
 
+		this.T = 4;
+
 		this.grid = [];
 		this.params = [];
 		this.weight_queue = new Queue()
@@ -22,6 +24,9 @@ class DirichletGrid {
 		}
 
 		this.saved_params = [];
+		for (let i = 0; i < this.N; i++) {
+			this.saved_params[i] = Util.arrayCopy(this.params[i])
+		}
 
 		this.weights = Util.zeros(this.N * this.N);
 		for (let i = 0; i < this.N * this.N; i++) {
@@ -70,17 +75,17 @@ class DirichletGrid {
 	}
 
 	xi(e) {
-		let o = e.obs;
-		let r = e.rew;
-		let oBits = [];
+		var o = e.obs;
+		var r = e.rew;
+		var oBits = [];
 		Util.encode(oBits, o, this.A - 1);
 		oBits.reverse();
 
-		let s = this.pos;
+		var s = this.pos;
 
-		let p = 1;
-		let ne = s.neighbors;
-		for (let i = 0; i < this.A - 1; i++) {
+		var p = 1;
+		var ne = s.neighbors;
+		for (var i = 0; i < this.A - 1; i++) {
 			if (oBits[i]) {
 				p *= ne[i].prob(2); // wall
 			} else {
@@ -88,7 +93,7 @@ class DirichletGrid {
 			}
 		}
 
-		let rew = r - Gridworld.rewards.move;
+		var rew = r - Gridworld.rewards.move;
 		if (rew == Gridworld.rewards.chocolate) {
 			p *= s.prob(1);
 		} else if (rew == Gridworld.rewards.empty) {
@@ -211,7 +216,7 @@ class DirichletGrid {
 		var s = this.pos;
 		var ne = s.neighbors;
 		var ig = 0;
-		for (var i = 0; i < this.A - 1; i++) {
+		for (var i = 0; i < this.T; i++) {
 			if (!ne[i].pr) {
 				continue
 			}
@@ -236,8 +241,12 @@ class DirichletGrid {
 	}
 
 	save() {
-		for (let i = 0; i < this.N; i++) {
-			this.saved_params[i] = Util.arrayCopy(this.params[i]);
+		for (var i = 0; i < this.N; i++) {
+			for (var j = 0; j < this.N; j++) {
+				for (var k = 0; k < this.T; k++) {
+					this.saved_params[i][j][k] = this.params[i][j][k]
+				}
+			}
 		}
 
 		this.saved_pos = { x: this.pos.x, y: this.pos.y };
@@ -248,10 +257,9 @@ class DirichletGrid {
 		this.pos = this.grid[this.saved_pos.x][this.saved_pos.y]
 		while (!this.param_queue.isempty()) {
 			var [i,j] = this.param_queue.remove()
-			for (var k = 0; k < 4; k++) {
+			for (var k = 0; k < this.T; k++) {
 				this.params[i][j][k] = this.saved_params[i][j][k]
 			}
-			//this.params[i][j] = Util.arrayCopy(this.saved_params[i][j])
 			var t = this.grid[i][j]
 			t.pr.alphas = this.params[i][j]
 			t.pr.alphaSum = Util.sum(t.pr.alphas)
@@ -260,23 +268,6 @@ class DirichletGrid {
 		while (!this.weight_queue.isempty()) {
 			var idx = this.weight_queue.remove()
 			this.weights[idx] = this.saved_weights[idx]
-		}
-	}
-
-	load2() {
-		for (let i = 0; i < this.N; i++) {
-			this.params[i] = Util.arrayCopy(this.saved_params[i]);
-		}
-
-		this.pos = this.grid[this.saved_pos.x][this.saved_pos.y];
-		this.weights = [...this.saved_weights];
-
-		for (let i = 0; i < this.N; i++) {
-			for (let j = 0; j < this.N; j++) {
-				let t = this.grid[i][j];
-				t.pr.alphas = this.params[i][j];
-				t.pr.alphaSum = Util.sum(t.pr.alphas);
-			}
 		}
 	}
 }
