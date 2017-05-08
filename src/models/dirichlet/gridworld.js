@@ -206,8 +206,32 @@ class DirichletGrid {
 		this.bayesUpdate(a, e);
 	}
 
+	info_gain() {
+		var stack = []
+		var s = this.pos;
+		var ne = s.neighbors;
+		var ig = 0;
+		for (var i = 0; i < this.A - 1; i++) {
+			if (!ne[i].pr) {
+				continue
+			}
+			var idx = this.weight_queue.pop_back()
+			stack.push(idx)
+			var p_ = this.weights[idx]
+			var p = this.saved_weights[idx]
+			if (p != 0 && p_ != 0) {
+				ig += p_ * Math.log(p_) - p * Math.log(p)
+			}
+		}
+		while (stack.length > 0) {
+			var idx = stack.pop()
+			this.weight_queue.append(idx)
+		}
+
+		return ig
+	}
+
 	entropy() {
-		// TODO fix this: currently O(N^2), should be O(m)
 		return Util.entropy(this.weights)
 	}
 

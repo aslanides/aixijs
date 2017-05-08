@@ -10,7 +10,12 @@ class Queue {
   }
 
   append(item) {
-    this.arr.push(item)
+    if (this.N == this.arr.length) {
+        this.arr.push(item)
+    } else {
+        this.arr[this.N-1] = item
+    }
+
     this.N++
   }
 
@@ -26,5 +31,19 @@ class Queue {
       this.pos = 0
     }
     return val
+  }
+
+  peek() {
+      return this.arr[this.pos]
+  }
+
+  peek_back() {
+      return this.arr[this.N-1]
+  }
+
+  pop_back() {
+      var val = this.arr[this.N-1]
+      this.N--
+      return val
   }
 }

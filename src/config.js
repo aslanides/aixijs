@@ -161,10 +161,11 @@ const configs = {
 			agents: { SquareKSA, ShannonKSA, KullbackLeiblerKSA },
 			model: DirichletGrid,
 			tracer: DirichletTrace,
-			cycles: 100,
+			cycles: 500,
 		},
 		env: {
 			type: Gridworld,
+			N: 20,
 		},
 	},
 	shksa: {

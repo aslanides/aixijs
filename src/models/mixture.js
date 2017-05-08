@@ -61,6 +61,10 @@ class BayesMixture {
 		return this.modelClass[nu].generatePercept();
 	}
 
+	entropy() {
+		return Util.entropy(this.weights)
+	}
+
 	save() {
 		this.saved_weights = [...this.weights];
 		for (let i = 0, C = this.C; i < C; i++) {
@@ -79,7 +83,7 @@ class BayesMixture {
 		return this.modelClass[nu];
 	}
 
-	entropy() {
-		return Util.entropy(this.weights)
+	info_gain() {
+		return Util.entropy(this.saved_weights) - Util.entropy(this.weights)
 	}
 }
