@@ -78,4 +78,8 @@ class BayesMixture {
 	get(nu) {
 		return this.modelClass[nu];
 	}
+
+	entropy() {
+		return Util.entropy(this.weights)
+	}
 }

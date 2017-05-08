@@ -30,6 +30,6 @@ class KullbackLeiblerKSA extends BayesAgent {
 	}
 
 	utility(e) {
-		return -1 * Util.entropy(this.model.weights);
+		return -1 * this.model.entropy()
 	}
 }

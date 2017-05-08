@@ -206,6 +206,11 @@ class DirichletGrid {
 		this.bayesUpdate(a, e);
 	}
 
+	entropy() {
+		// TODO fix this: currently O(N^2), should be O(m)
+		return Util.entropy(this.weights)
+	}
+
 	save() {
 		for (let i = 0; i < this.N; i++) {
 			this.saved_params[i] = Util.arrayCopy(this.params[i]);
