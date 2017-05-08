@@ -10,7 +10,15 @@ class GridVisualization extends Visualization {
 			this.rectangles.push(new Array(env.N));
 		}
 
-		this.d = GridVisualization.tile_size_px;
+		var view_width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+		var view_height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
+		var dim = 0.5 * Math.min(view_width,view_height)
+		var d = dim / this.N
+		if (!d) {
+			d = GridVisualization.tile_size_px;
+		}
+		this.d = Math.min(d,GridVisualization.tile_size_px)
 		this.width = (this.d + 1) * this.N - 1;
 		this.height = (this.d + 1) * this.N - 1;
 		this.svg
@@ -19,7 +27,7 @@ class GridVisualization extends Visualization {
 
 		this.grid.forEach((row, idx) => {
 			row.forEach((tile, jdx) => {
-				let r = GridVisualization.makeTile(this.svg, tile);
+				let r = GridVisualization.makeTile(this.svg, tile, undefined, this);
 				this.rectangles[idx][jdx] = r;
 			});
 		});
@@ -41,8 +49,11 @@ class GridVisualization extends Visualization {
 			.attr('y', y * this.d);
 	}
 
-	static makeTile(svg, t, color) {
-		const d = GridVisualization.tile_size_px;
+	static makeTile(svg, t, color,gv) {
+		var d = GridVisualization.tile_size_px;
+		if (gv) {
+			d = gv.d
+		}
 		let r = svg.append('rect')
 			.attr('x', t.x * d)
 			.attr('y', t.y * d)
@@ -55,7 +66,7 @@ class GridVisualization extends Visualization {
 			r.attr('fill', t.color);
 		} else {
 			r.attr('fill', GridVisualization.colors.empty);
-			GridVisualization.addCircle(svg, t.x, t.y, t.color, '', t.freq);
+			GridVisualization.addCircle(svg, t.x, t.y, t.color, '', t.freq,gv);
 		}
 
 		if (color) {
@@ -73,8 +84,11 @@ class GridVisualization extends Visualization {
 		GridVisualization.makeTile(svg, new T(0, 0), color);
 	}
 
-	static addCircle(svg, x, y, color, id, size) {
-		const d = GridVisualization.tile_size_px;
+	static addCircle(svg, x, y, color, id, size,gv) {
+		var d = GridVisualization.tile_size_px;
+		if (gv) {
+			d = gv.d
+		}
 		svg.append('circle')
 			.attr('cx', x * d + d / 2)
 			.attr('cy', y * d + d / 2)
@@ -304,7 +318,7 @@ class ThompsonVis extends BayesGridVis {
 		d3.select('#thompson_disp').remove();
 		let rhoPos = this.rho_trace[this.time];
 		GridVisualization.addCircle(
-			this.svg, rhoPos.x, rhoPos.y, GridVisualization.colors.rho, 'thompson_disp');
+			this.svg, rhoPos.x, rhoPos.y, GridVisualization.colors.rho, 'thompson_disp',1,this);
 	}
 }
 

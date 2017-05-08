@@ -62,11 +62,12 @@ const configs = {
 		agent: {
 			type: BayesAgent,
 			model: DirichletGrid,
-			cycles: 100,
+			cycles: 500,
 			tracer: DirichletTrace,
 		},
 		env: {
 			type: Gridworld,
+			N: 20,
 			_mods: function (env) {
 				let pos = Gridworld.proposeGoal(env.options.N);
 				let t = env.grid[pos.x][pos.y];
