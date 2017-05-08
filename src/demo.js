@@ -103,13 +103,15 @@ const demo = {
 			this.trace.fps = fps;
 			console.log(`${frames} cycles, ${second} seconds (${fps} fps)`);
 
-			if (!this.novis && options.vis) {
+			if (!novis && options.vis) {
 				this.vis = new options.vis(this.env, this.trace, this.ui);
 				this.vis.reset();
 			}
 		};
+		if (!novis) {
+			this.ui.start();
+		}
 
-		this.ui.start();
 		this.t0 = performance.now();
 		this.simulate(update, callback);
 	},
@@ -137,7 +139,7 @@ const demo = {
 		if (this.novis) {
 			loop = _ => {
 				while (true) {
-					if (trace.iter >= trace.t || this.cancel) {
+					if (trace.iter >= trace.t) {
 						callback();
 						break;
 					}
@@ -176,6 +178,7 @@ const demo = {
 	},
 
 	experiment(dems, params) {
+		this.reset()
 		this.experiment_number ? this.experiment_number++ : this.experiment_number = 1;
 		if (!params) {
 			// some defaults
@@ -248,6 +251,7 @@ const demo = {
 				results[config.name] = logs;
 			}
 		}
+		this.reset()
 
 		console.log(`Done! Total time elapsed: ${Math.floor(performance.now() - t0)/1000} seconds.`);
 
