@@ -189,7 +189,7 @@ const demo = {
 			}
 		}
 		var runs = params.runs
-		results = {params:{}};
+		results = {};
 		seed = params.seed || 'aixi';
 		let num = 1;
 		var t0 = performance.now()
@@ -251,7 +251,6 @@ const demo = {
 				key = config.name
 			}
 			results[key] = logs
-			results.params[key] = {agent: this.agent.options, env: this.env.options}
 		}
 		this.reset()
 
