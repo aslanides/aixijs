@@ -189,7 +189,7 @@ const demo = {
 			}
 		}
 		var runs = params.runs
-		results = {};
+		results = {params:{}};
 		seed = params.seed || 'aixi';
 		let num = 1;
 		var t0 = performance.now()
@@ -243,13 +243,15 @@ const demo = {
 					epsilon: this.agent.epsilon,
 				});
 			}
-
+			var key = ''
 			if (config.name in results) {
-				results[`${config.name}-${num}`] = logs;
+				key = `${config.name}-${num}`
 				num++;
 			} else {
-				results[config.name] = logs;
+				key = config.name
 			}
+			results[key] = logs
+			results.params[key] = {agent: this.agent.options, env: this.env.options}
 		}
 		this.reset()
 

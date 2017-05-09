@@ -5,6 +5,7 @@ class Agent {
 		this.t = 0;
 		this.discount = new options.discount(options.discountParam);
 		this.last_action = null;
+		this.options = Util.deepCopy(options);
 	}
 
 	selectAction(e) {
