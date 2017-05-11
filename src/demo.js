@@ -183,12 +183,13 @@ const demo = {
 		if (!params) {
 			// some defaults
 			params = {
-				runs: 20,
+				runs: 1,
 				env: {N: 10},
 				agent: {cycles: 200},
 			}
 		}
-		var runs = params.runs
+		var runs = params.runs || 1
+		var frac = params.frac || 1
 		results = {};
 		seed = params.seed || 'aixi';
 		let num = 1;
@@ -229,9 +230,18 @@ const demo = {
 					env = this.env;
 				}
 
+				var rew = []
+				var exp = []
+				for (var j = 0; j < config.agent.cycles; j++) {
+					if (j % frac == 0) {
+						rew.push(this.trace.averageReward[j])
+						exp.push(this.trace.explored[j])
+					}
+				}
+
 				logs.push({
-					rewards: Util.arrayCopy(this.trace.averageReward),
-					explored: Util.arrayCopy(this.trace.explored),
+					rewards: rew,
+					explored: exp,
 					options: Util.deepCopy(this.config),
 					agent: this.config.agent.type.name,
 					cycles: this.trace.iter,
