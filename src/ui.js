@@ -54,6 +54,7 @@ class UI {
 						field == 'numStates' ||
 						field == 'numActions' ||
 						field == 'plan_caching' ||
+						field == 'state_percepts' ||
 						field[0] == '_') {
 					continue;
 				}

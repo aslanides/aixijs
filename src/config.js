@@ -302,6 +302,7 @@ const configs = {
 		},
 		env: {
 			type: Gridworld,
+			state_percepts: true,
 		},
 	},
 	bandit: {

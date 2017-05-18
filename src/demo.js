@@ -113,10 +113,10 @@ const demo = {
 		}
 
 		this.t0 = performance.now();
-		this.simulate(update, callback);
+		this._simulate(update, callback);
 	},
 
-	simulate(update, callback) {
+	_simulate(update, callback) {
 		let trace = this.trace;
 		let agent = this.agent;
 		let env = this.env;

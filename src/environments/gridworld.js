@@ -18,6 +18,7 @@ class Gridworld extends Environment {
 		this.reward = -1; // fix name conflict
 		this.noop = 4;
 		this.visits = 0;
+		this.state_percepts = options.state_percepts
 
 		this.min_reward = Gridworld.rewards.wall + Gridworld.rewards.move;
 		this.max_reward = Gridworld.rewards.chocolate + Gridworld.rewards.move;
@@ -73,8 +74,12 @@ class Gridworld extends Environment {
 
 					}
 				}
+				if (this.state_percepts) {
+					tile.obs = idx * this.N + jdx;
+				} else {
+					tile.obs = parseInt(str, 2);
+				}
 
-				tile.obs = parseInt(str, 2);
 			});
 		});
 	}
