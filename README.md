@@ -1,7 +1,7 @@
 # AIXIjs
 AIXIjs is a JavaScript demo for running General Reinforcement Learning (RL) agents in the browser. In particular, it provides a general and extensible framework for running experiments on Bayesian RL agents in general (partially observable, non-Markov, non-ergodic) environments.
 
-**UPDATE** (May 2017): I'll be presenting a conference paper containing a literature survey along with some experiments based on AIXIjs at IJCAI 2017, in Melbourne, Australia. The paper (to appear) is: J. S. Aslanides, Jan Leike, and Marcus Hutter. "General Reinforcement Learning Algorithms: Survey & Experiments", in Proceedings of the 26th Intl. Joint Conf. on A.I..
+**UPDATE** (May 2017): I'll be presenting a conference paper containing a literature survey along with some experiments based on AIXIjs at IJCAI 2017, in Melbourne, Australia. The paper (to appear) is: J. S. Aslanides, Jan Leike, and Marcus Hutter. "Universal Reinforcement Learning Algorithms: Survey & Experiments", in Proceedings of the 26th Intl. Joint Conf. on A.I..
 
 ![](assets/aixi.gif) ![](assets/ksa.gif)
 
@@ -68,7 +68,7 @@ If you use this software in your own experiments, please cite it as:
 ```
 @inproceedings{ALH2017,
  author = {Aslanides, John and Leike, Jan and Hutter, Marcus},
- title = {General Reinforcement Learning Algorithms: Survey and Experiments},
+ title = {Universal Reinforcement Learning Algorithms: Survey and Experiments},
  booktitle = {Proceedings of the Twenty-Sixth International Joint Conference on Artificial Intelligence},
  series = {IJCAI'17},
  year = {2017},
