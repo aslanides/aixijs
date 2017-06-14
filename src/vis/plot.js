@@ -18,7 +18,7 @@ class Plot {
 			.append('svg')
 			.attr('id', id)
 			.attr('width', this.width + this.margin.left + this.margin.right)
-			.attr('height', this.height + this.margin.top + this.margin.bottom)
+			.attr('height', this.height + this.margin.top + this.margin.bottom + 3)
 			.append('g')
 			.attr('transform', `translate(${this.margin.left},${this.margin.top})`);
 
@@ -77,7 +77,7 @@ class Plot {
 			.attr('transform', 'rotate(-90)')
 			.attr('x', 0 - this.height / 2)
 			.attr('y', 0 - this.margin.left)
-			.attr('dy', '1em')
+			.attr('dy', '2em')
 			.style('text-anchor', 'middle')
 			.text(this.y_label);
 	}
@@ -182,6 +182,19 @@ class TotalRewardPlot extends TooltipPlot {
 	constructor(trace) {
 		super(trace, 'rew',
 			{ x: 'Cycles', y: 'Reward', value: 'rew' }, 'rewards');
+	}
+}
+class AverageTrueRewardPlot extends TooltipPlot {
+	constructor(trace) {
+		super(trace, 'trew',
+			{ x: 'Cycles', y: 'True Reward per Cycle', value: 'rew' }, 'averageTrueReward');
+	}
+}
+
+class AverageCorruptRewardPlot extends TooltipPlot {
+	constructor(trace) {
+		super(trace, 'crew',
+			{ x: 'Cycles', y: 'Corrupt Reward per Cycle', value: 'rew' }, 'averageCorruptReward');
 	}
 }
 

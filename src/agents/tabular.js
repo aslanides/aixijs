@@ -6,7 +6,7 @@ class TabularAgent extends Agent {
 		this.gamma = options.gamma;
 		this.lifetime = 0;
 		this.Q = options.model;
-		this.tracer = TabularTrace;
+		this.tracer = options._tracer || TabularTrace;
 		this.last_q = 0;
 	}
 
