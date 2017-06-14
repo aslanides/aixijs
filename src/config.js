@@ -400,6 +400,40 @@ const configs = {
 			},
 		},
 	},
+	reward_corruption: {
+		active: true,
+		name: 'Reward Corruption',
+		description: `Agent encounters some true and corrupt reward tiles.`,
+		vis: GridVisualization,
+		agent: {
+			agents: {QLearn, SARSA},
+			type: QLearn,
+			alpha: 0.1,
+			gamma: 0.9,
+			epsilon: 0.1,
+		},
+		env: {
+			type: Gridworld,
+			N: 5,
+			wallProb: 0.01,
+			goals: [{ freq: 1 }, { freq: 1}, { freq: 1 }, { freq: 1},],
+			rewards: {chocolate: 0.9, wall: 0, empty: 0.1, move: 0,	modifier: 1},
+			state_percepts: true,
+			_set_seed: true,
+			_mods: function (env) {
+				let pos = Gridworld.proposeGoal(env.options.N);
+				let t = env.grid[pos.x][pos.y];
+				if (t.expanded) {
+					t = new SelfModificationTile(t.x, t.y);
+					env.grid[pos.x][pos.y] = t;
+					env.options.map[pos.y][pos.x] = 'M';
+				} else {
+					this._mods(env);
+				}
+				env.generateConnexions();
+			},
+		},
+	},
 	dogmatic_prior: {
 		active: true,
 		name: 'Dogmatic prior',

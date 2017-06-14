@@ -6,7 +6,9 @@ class Gridworld extends Environment {
 			options.randomized = true;
 			return Gridworld.generateRandom(Cl, options);
 		}
-
+		if (options.rewards) {
+			Gridworld.rewards = options.rewards;
+		}
 		this.plots = [ExplorationPlot];
 		this.obsBits = 4;
 		this.grid = [];
@@ -48,6 +50,7 @@ class Gridworld extends Environment {
 		} else {
 			this.pos = this.grid[0][0];
 		}
+
 	}
 
 	generateConnexions() {
@@ -144,6 +147,9 @@ class Gridworld extends Environment {
 		let trapProb = options.trapProb || 0;
 		let wallProb = options.wallProb || 0.4;
 		opt.map = [];
+		if (options._set_seed) {
+			Math.seedrandom('foo');
+		}
 		for (let i = 0; i < N; i++) {
 			opt.map[i] = new Array(N);
 			for (let j = 0; j < N; j++) {
@@ -372,28 +378,26 @@ Gridworld.actions = [
 ];
 
 Gridworld.rewards = {
-		chocolate: 100,
-		wall: -5,
-		empty: 0,
-		move: -1,
-	};
+	chocolate: 100,
+	wall: -5,
+	empty: 0,
+	move: -1,
+};
 
 Gridworld.params = [
-									{ field: 'N', value: 10 },
-									{ field: 'goals', value: [
-										{ freq: 0.75 },
-									], },
-								];
+	{ field: 'N', value: 10 },
+	{ field: 'goals', value: [{ freq: 0.75 },] },
+];
 
 Gridworld.map_symbols = {
-		empty: 'F',
-		chocolate: 'C',
-		wall: 'W',
-		dispenser: 'D',
-		sign: 'S',
-		trap: 'T',
-		modifier: 'M',
-	};
+	empty: 'F',
+	chocolate: 'C',
+	wall: 'W',
+	dispenser: 'D',
+	sign: 'S',
+	trap: 'T',
+	modifier: 'M',
+};
 
 class WireheadingGrid extends Gridworld {
 	dynamics(tile) {
@@ -511,6 +515,7 @@ class SelfModificationTile extends Tile {
 	constructor(x, y) {
 		super(x, y);
 		this.color = GridVisualization.colors.modifier;
+		this.reward = function () {return Gridworld.rewards.modifier;};
 	}
 }
 
