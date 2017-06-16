@@ -239,9 +239,22 @@ const demo = {
 					}
 				}
 
+				var crew = []
+				var trew = []
+				if (this.agent.tracer == RewardCorruptionTrace) {
+					for (var j = 0; j < config.agent.cycles; j++) {
+						if (j % frac == 0) {
+							crew.push(this.trace.averageCorruptReward[j])
+							trew.push(this.trace.averageTrueReward[j])
+						}
+					}
+				}
+
 				logs.push({
 					rewards: rew,
 					explored: exp,
+					corrupt_rewards: crew,
+					true_rewards: trew,
 					options: Util.deepCopy(this.config),
 					agent: this.config.agent.type.name,
 					cycles: this.trace.iter,
@@ -273,6 +286,7 @@ const demo = {
 		a.download = `results-${this.experiment_number}.json`;
 		a.href = URL.createObjectURL(blob);
 		a.textContent = `Download results-${this.experiment_number}.json`;
+		a.dispatchEvent(new MouseEvent('click'));
 		document.body.appendChild(a);
 
 		return results;
