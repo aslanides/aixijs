@@ -404,7 +404,7 @@ const configs = {
 		active: true,
 		name: 'Reward Corruption',
 		description: `Agent encounters some true and corrupt reward tiles.`,
-		vis: GridVisualization,
+		vis: RewardCorruptionVis,
 		agent: {
 			//agents: {SARSA, QLearn, SoftQLearn, Quantiliser},
 			type: Quantiliser,

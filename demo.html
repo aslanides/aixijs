@@ -300,6 +300,21 @@ to signify that the agent has taken this action and that its sensors have now be
 
 </span>
 
+<span class="md" id="reward_corruption_exp" style="display:none">
+# Reward Corruption
+
+This demo shows the experiments for the paper <a href=https://arxiv.org/abs/1705.08417 target=_blank>Reinforcement Learning with a Corrupted Reward Channel</a>. We test tabular agents (SARSA, Q-learning, Softmax Q-learning, and Quantilising) in a standard gridworld with 4 dispensers, with one addition: a blue tile with a corrupt reward - its observed reward is high, but its true reward is low. Can the agents avoid getting stuck on the corrupt blue tile?
+
+All the observed rewards are between 0 and 1 as follows: blue tile 1, yellow dispenser tiles 0.9, empty tiles 0.1, wall 0. Besides the usual agent parameters, you can set the temperature \\(\beta\\) for the softmax agent and the cutoff \\(\delta\\) for the quantilising agent.
+
+We recommend running the tabular agents for 1 million cycles. Since the real-time plots are slow to load, run the experiments in the console as follows:
+
+<code>for(let i=0; i<20; i++) {	demo.experiment([configs.reward_corruption], {agent: {type:Quantiliser,cycles:1000000}}) }</code>
+
+Code for analysing the experiments is given in this <a href=https://github.com/aslanides/aixijs/blob/master/experiments/analysis.ipynb target=_blank>iPython notebook</a>.
+
+</span>
+
 <span class="md" id="noise_exp" style="display:none">
 # Hooked on Noise
 
