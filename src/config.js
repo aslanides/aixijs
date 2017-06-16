@@ -406,12 +406,15 @@ const configs = {
 		description: `Agent encounters some true and corrupt reward tiles.`,
 		vis: GridVisualization,
 		agent: {
-			agents: {QLearn, SARSA},
-			type: QLearn,
+			//agents: {SARSA, QLearn, SoftQLearn, Quantiliser},
+			type: Quantiliser,
 			alpha: 0.1,
 			gamma: 0.9,
 			epsilon: 0.1,
+			delta: 0.5,
+			beta: 2,
 			_tracer: RewardCorruptionTrace,
+			_random: true,
 		},
 		env: {
 			type: Gridworld,
