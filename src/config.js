@@ -406,7 +406,43 @@ const configs = {
 		description: `Agent encounters some true and corrupt reward tiles.`,
 		vis: RewardCorruptionVis,
 		agent: {
-			//agents: {SARSA, QLearn, SoftQLearn, Quantiliser},
+			agents: {QLearn, SARSA, SoftQLearn, Quantiliser},
+			type: QLearn,
+			alpha: 0.1,
+			gamma: 0.9,
+			epsilon: 0.1,
+			delta: 0.5,
+			beta: 2,
+			_tracer: RewardCorruptionTrace,
+			_random: true,
+		},
+		env: {
+			type: Gridworld,
+			N: 5,
+			wallProb: 0.01,
+			goals: [{ freq: 1 }, { freq: 1}, { freq: 1 }, { freq: 1},],
+			rewards: {chocolate: 0.9, wall: 0, empty: 0.1, move: 0,	modifier: 1},
+			state_percepts: true,
+			_set_seed: true,
+			_mods: function (env) {
+				let pos = Gridworld.proposeGoal(env.options.N);
+				let t = env.grid[pos.x][pos.y];
+				if (t.expanded) {
+					t = new SelfModificationTile(t.x, t.y);
+					env.grid[pos.x][pos.y] = t;
+					env.options.map[pos.y][pos.x] = 'M';
+				} else {
+					this._mods(env);
+				}
+				env.generateConnexions();
+			},
+		},
+	},
+	reward_corruption_experiments: {
+		name: 'Reward Corruption Experiments',
+		description: `Agent encounters some true and corrupt reward tiles.`,
+		vis: RewardCorruptionVis,
+		agent: {
 			type: Quantiliser,
 			alpha: 0.1,
 			gamma: 0.9,

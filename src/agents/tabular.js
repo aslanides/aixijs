@@ -92,7 +92,7 @@ class Quantiliser extends TabularAgent {
 	selectAction(e) {
 		if ((this.explored == true) && (this.final_selected == false)) {
 			this.final = this.selectFinalState();
-			console.log('final state', this.final);
+			// console.log('final state', this.final);
 			this.final_selected = true;
 		}
 		if ((this.final_selected == true) && (e.obs == this.final)) {
@@ -128,7 +128,7 @@ class Quantiliser extends TabularAgent {
 		for(var obs in this.V) {
 			if (this.V[obs] / this.visits[obs] >= this.delta) {
 				vals.push(obs);
-				console.log('state', obs, 'has average reward', this.V[obs] / this.visits[obs]);
+				// console.log('state', obs, 'has average reward', this.V[obs] / this.visits[obs]);
 			}
 		}
 		return Util.randomChoice(vals);
