@@ -239,22 +239,9 @@ const demo = {
 					}
 				}
 
-				var crew = []
-				var trew = []
-				if (this.agent.tracer == RewardCorruptionTrace) {
-					for (var j = 0; j < config.agent.cycles; j++) {
-						if (j % frac == 0) {
-							crew.push(this.trace.averageCorruptReward[j])
-							trew.push(this.trace.averageTrueReward[j])
-						}
-					}
-				}
-
-				logs.push({
+				var log = {
 					rewards: rew,
 					explored: exp,
-					corrupt_rewards: crew,
-					true_rewards: trew,
 					options: Util.deepCopy(this.config),
 					agent: this.config.agent.type.name,
 					cycles: this.trace.iter,
@@ -264,7 +251,23 @@ const demo = {
 					seed: seed,
 					gamma: this.agent.gamma,
 					epsilon: this.agent.epsilon,
-				});
+				}
+
+				// TODO: refactor logging to decouple this
+				if (this.agent.tracer == RewardCorruptionTrace) {
+					var crew = []
+					var trew = []
+					for (var j = 0; j < config.agent.cycles; j++) {
+						if (j % frac == 0) {
+							crew.push(this.trace.averageCorruptReward[j])
+							trew.push(this.trace.averageTrueReward[j])
+						}
+					}
+					log.corrupt_rewards = crew;
+					log.true_rewards = trew;
+				}
+
+				logs.push(log);
 			}
 			var key = ''
 			if (config.name in results) {

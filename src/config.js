@@ -72,7 +72,7 @@ const configs = {
 				let pos = Gridworld.proposeGoal(env.options.N);
 				let t = env.grid[pos.x][pos.y];
 				if (t.expanded) {
-					t = new Dispenser(t.x, t.y, 0.5);
+					t = new Dispenser(t.x, t.y, 0.5, Gridworld.rewards.chocolate, Gridworld.rewards.empty);
 					env.grid[pos.x][pos.y] = t;
 					env.options.map[pos.y][pos.x] = 'M';
 				} else {
@@ -121,7 +121,7 @@ const configs = {
 			type: SquareKSA,
 			_mods: function (agent) {
 				for (let nu of agent.model.modelClass) {
-					nu.grid[0][1] = new NoiseTile(0, 1);
+					nu.grid[0][1] = new NoiseTile(0, 1, Gridworld.rewards.empty);
 					nu.generateConnexions();
 				}
 			},
@@ -129,7 +129,7 @@ const configs = {
 		env: {
 			type: Gridworld,
 			_mods: function (env) {
-				env.grid[0][1] = new NoiseTile(0, 1);
+				env.grid[0][1] = new NoiseTile(0, 1, Gridworld.rewards.empty);
 				env.generateConnexions();
 			},
 		},
@@ -389,7 +389,7 @@ const configs = {
 				let pos = Gridworld.proposeGoal(env.options.N);
 				let t = env.grid[pos.x][pos.y];
 				if (t.expanded) {
-					t = new SelfModificationTile(t.x, t.y);
+					t = new SelfModificationTile(t.x, t.y, Gridworld.rewards.modifier);
 					env.grid[pos.x][pos.y] = t;
 					env.options.map[pos.y][pos.x] = 'M';
 				} else {
@@ -428,7 +428,7 @@ const configs = {
 				let pos = Gridworld.proposeGoal(env.options.N);
 				let t = env.grid[pos.x][pos.y];
 				if (t.expanded) {
-					t = new SelfModificationTile(t.x, t.y);
+					t = new SelfModificationTile(t.x, t.y, 1);
 					env.grid[pos.x][pos.y] = t;
 					env.options.map[pos.y][pos.x] = 'M';
 				} else {
@@ -464,7 +464,7 @@ const configs = {
 				let pos = Gridworld.proposeGoal(env.options.N);
 				let t = env.grid[pos.x][pos.y];
 				if (t.expanded) {
-					t = new SelfModificationTile(t.x, t.y);
+					t = new SelfModificationTile(t.x, t.y, 1);
 					env.grid[pos.x][pos.y] = t;
 					env.options.map[pos.y][pos.x] = 'M';
 				} else {
@@ -490,7 +490,7 @@ const configs = {
 					for (let d of [[0, 1], [1, 0]]) {
 						let t = m.grid[d[0]][d[1]];
 						if (t.constructor != Wall && t.constructor != Dispenser) {
-							m.grid[d[0]][d[1]] = new Trap(d[0], d[1]);
+							m.grid[d[0]][d[1]] = new Trap(d[0], d[1], Gridworld.rewards.trap);
 						}
 					}
 

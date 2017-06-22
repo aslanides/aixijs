@@ -6,9 +6,9 @@ class Gridworld extends Environment {
 			options.randomized = true;
 			return Gridworld.generateRandom(Cl, options);
 		}
-		if (options.rewards) {
-			Gridworld.rewards = options.rewards;
-		}
+
+		this.rewards = options.rewards || Gridworld.rewards;
+
 		this.plots = [ExplorationPlot];
 		this.obsBits = 4;
 		this.grid = [];
@@ -22,13 +22,13 @@ class Gridworld extends Environment {
 		this.visits = 0;
 		this.state_percepts = options.state_percepts
 
-		this.min_reward = Gridworld.rewards.wall + Gridworld.rewards.move;
-		this.max_reward = Gridworld.rewards.chocolate + Gridworld.rewards.move;
+		this.min_reward = this.rewards.wall + this.rewards.move;
+		this.max_reward = this.rewards.chocolate + this.rewards.move;
 
 		for (let i = 0; i < this.N; i++) {
 			this.grid[i] = new Array(this.N);
 			for (let j = 0; j < this.N; j++) {
-				this.grid[i][j] = Gridworld.newTile(i, j, options, options.map[j][i]);
+				this.grid[i][j] = Gridworld.newTile(i, j, options, options.map[j][i], this.rewards);
 			}
 		}
 
@@ -36,7 +36,7 @@ class Gridworld extends Environment {
 			this.goals = [];
 			for (let goal of options.goals) {
 				let type = goal.type || Gridworld.map_symbols.dispenser;
-				let g = Gridworld.newTile(goal.x, goal.y, goal.freq, type);
+				let g = Gridworld.newTile(goal.x, goal.y, goal.freq, type, this.rewards);
 				g.goal = true;
 				this.grid[goal.x][goal.y] = g;
 				this.goals.push(g);
@@ -192,20 +192,20 @@ class Gridworld extends Environment {
 
 	}
 
-	static newTile(i, j, info, type) {
+	static newTile(i, j, info, type, rewards) {
 		let tile;
 		if (type == Gridworld.map_symbols.empty) {
-			tile = new Tile(i, j);
+			tile = new Tile(i, j, rewards.empty);
 		} else if (type == Gridworld.map_symbols.wall) {
-			tile = new Wall(i, j);
+			tile = new Wall(i, j, rewards.wall);
 		} else if (type == Gridworld.map_symbols.chocolate) {
-			tile = new Chocolate(i, j);
+			tile = new Chocolate(i, j, rewards.chocolate);
 		} else if (type == Gridworld.map_symbols.dispenser) {
-			tile = new Dispenser(i, j, info);
+			tile = new Dispenser(i, j, info, rewards.chocolate, rewards.empty);
 		} else if (type == Gridworld.map_symbols.trap) {
-			tile = new Trap(i, j);
+			tile = new Trap(i, j, rewards.wall);
 		} else if (type == Gridworld.map_symbols.modifier) {
-			tile = new SelfModificationTile(i, j);
+			tile = new SelfModificationTile(i, j, rewards.modifier);
 		} else {
 			throw `Error: unknown Tile type: ${type}.`;
 		}
@@ -214,7 +214,7 @@ class Gridworld extends Environment {
 	}
 
 	perform(action) {
-		var rew = Gridworld.rewards.move;
+		var rew = this.rewards.move;
 		var t = this.pos.connexions[action];
 
 		if (t) {
@@ -227,7 +227,7 @@ class Gridworld extends Environment {
 			this.pos = t;
 			this.wall_hit = false;
 		} else {
-			rew += Gridworld.rewards.wall;
+			rew += this.rewards.wall;
 			this.wall_hit = true;
 		}
 
@@ -357,13 +357,13 @@ class Gridworld extends Environment {
 			// all tiles except the goal are deterministic
 			return e.rew == p.rew ? 1 : 0;
 		} else {
-			let rew = e.rew - Gridworld.rewards.move;
-			if (rew == Gridworld.rewards.chocolate) {
+			let rew = e.rew - this.rewards.move;
+			if (rew == this.rewards.chocolate) {
 				return s.freq;
-			} else if (rew == Gridworld.rewards.empty) {
+			} else if (rew == this.rewards.empty) {
 				return 1 - s.freq;
 			} else {
-				return rew == Gridworld.rewards.wall && this.wall_hit;
+				return rew == this.rewards.wall && this.wall_hit;
 			}
 		}
 	}
@@ -455,10 +455,11 @@ class EpisodicGrid extends Gridworld {
 }
 
 class Tile {
-	constructor(x, y) {
+	constructor(x, y, r) {
 		this.x = x;
 		this.y = y;
-		this.reward = function () {return Gridworld.rewards.empty;};
+		this.rew = r;
+		this.reward = function () {return this.rew;};
 
 		this.legal = true;
 		this.color = GridVisualization.colors.empty;
@@ -471,9 +472,8 @@ class Tile {
 }
 
 class Wall extends Tile {
-	constructor(x, y) {
-		super(x, y);
-		this.reward = function () {return Gridworld.rewards.wall;};
+	constructor(x, y, r) {
+		super(x, y, r);
 
 		this.legal = false;
 		this.color = GridVisualization.colors.wall;
@@ -482,46 +482,42 @@ class Wall extends Tile {
 }
 
 class Chocolate extends Tile {
-	constructor(x, y) {
-		super(x, y);
-		this.reward = function () {return Gridworld.rewards.chocolate;};
+	constructor(x, y, r) {
+		super(x, y, r);
 
 		this.color = GridVisualization.colors.chocolate;
 	}
 }
 
 class Dispenser extends Tile {
-	constructor(x, y, freq) {
-		super(x, y);
+	constructor(x, y, freq, r1, r2) {
+		super(x, y, r1);
+		this.rew2 = r2;
 		this.freq = freq;
 		this.color = GridVisualization.colors.dispenser;
 		this.reward = function () {
-			return Math.random() < this.freq ? Gridworld.rewards.chocolate : Gridworld.rewards.empty;
+			return Math.random() < this.freq ? this.rew : this.rew2;
 		};
 	}
 }
 
 class Trap extends Tile {
-	constructor(x, y) {
-		super(x, y);
+	constructor(x, y, r) {
+		super(x, y, r);
 		this.color = GridVisualization.colors.trap;
-		this.reward = function () {
-			return Gridworld.rewards.wall;
-		};
 	}
 }
 
 class SelfModificationTile extends Tile {
-	constructor(x, y) {
-		super(x, y);
+	constructor(x, y, r) {
+		super(x, y, r);
 		this.color = GridVisualization.colors.modifier;
-		this.reward = function () {return Gridworld.rewards.modifier;};
 	}
 }
 
 class NoiseTile extends Tile {
-	constructor(x, y) {
-		super(x, y);
+	constructor(x, y, r) {
+		super(x, y, r);
 		this.numObs = Math.pow(2, 2);
 		this.prob = 1 / this.numObs;
 		this.color = GridVisualization.colors.noise;
