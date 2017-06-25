@@ -57,6 +57,36 @@ class TabularTrace extends Trace {
 	}
 }
 
+class RewardCorruptionTrace extends TabularTrace {
+	constructor(t) {
+		super(t);
+		this.averageTrueReward = [];
+		this.averageCorruptReward = [];
+		this.totalTrueReward = 0;
+		this.totalCorruptReward = 0;
+		this.plots = [AverageRewardPlot, AverageTrueRewardPlot, AverageCorruptRewardPlot];
+		this.cutoff = 1;
+	}
+	
+	logPercept(e) {
+		this.observations.push(e.obs);
+		this.totalReward += e.rew;
+		this.rewards.push(this.totalReward);
+		this.averageReward.push(this.totalReward / (this.iter + 1));
+		if (e.rew >= this.cutoff) {
+		    this.totalCorruptReward += e.rew;
+		} else {
+	        this.totalTrueReward += e.rew;
+		}
+		this.averageCorruptReward.push(this.totalCorruptReward / (this.iter + 1));
+		this.averageTrueReward.push(this.totalTrueReward / (this.iter + 1));
+		if (this.iter == this.t - 1) {
+		    console.log('average corrupt reward = ' + this.totalCorruptReward / (this.iter+1));
+		    console.log('average true reward = ' + this.totalTrueReward / (this.iter+1));
+		}
+	}
+}
+
 class BayesTrace extends Trace {
 	constructor(t) {
 		super(t);

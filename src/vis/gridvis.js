@@ -364,3 +364,7 @@ WireHeadVis.exps = ['wirehead', 'mixture', 'dispenser'];
 class HookedOnNoiseVis extends BayesGridVis {}
 
 HookedOnNoiseVis.exps = ['dispenser', 'mixture', 'noise'];
+
+class RewardCorruptionVis extends GridVisualization {}
+
+RewardCorruptionVis.exps = ['reward_corruption']

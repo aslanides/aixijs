@@ -239,7 +239,7 @@ const demo = {
 					}
 				}
 
-				logs.push({
+				var log = {
 					rewards: rew,
 					explored: exp,
 					options: Util.deepCopy(this.config),
@@ -251,7 +251,23 @@ const demo = {
 					seed: seed,
 					gamma: this.agent.gamma,
 					epsilon: this.agent.epsilon,
-				});
+				}
+
+				// TODO: refactor logging to decouple this
+				if (this.agent.tracer == RewardCorruptionTrace) {
+					var crew = []
+					var trew = []
+					for (var j = 0; j < config.agent.cycles; j++) {
+						if (j % frac == 0) {
+							crew.push(this.trace.averageCorruptReward[j])
+							trew.push(this.trace.averageTrueReward[j])
+						}
+					}
+					log.corrupt_rewards = crew;
+					log.true_rewards = trew;
+				}
+
+				logs.push(log);
 			}
 			var key = ''
 			if (config.name in results) {
@@ -273,6 +289,7 @@ const demo = {
 		a.download = `results-${this.experiment_number}.json`;
 		a.href = URL.createObjectURL(blob);
 		a.textContent = `Download results-${this.experiment_number}.json`;
+		a.dispatchEvent(new MouseEvent('click'));
 		document.body.appendChild(a);
 
 		return results;

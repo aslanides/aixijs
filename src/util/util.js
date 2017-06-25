@@ -214,4 +214,19 @@ class Util {
 
 		return Util.randomChoice(ties);
 	}
+
+	static argsoftmax(obj, accessor, numActions, beta=2) {
+		let sumexp = 0;
+		let vals = [];
+		for (let a = 0; a < numActions; a++) {
+			let val = Math.exp(beta * accessor(obj, a));
+			vals.push(val);
+			sumexp += val;
+		}
+		for (let a = 0; a < numActions; a++) {
+			vals[a] = vals[a] / sumexp;
+		}
+		let a = Util.sample(vals);
+		return a;
+	}
 }
