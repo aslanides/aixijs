@@ -86,7 +86,7 @@ class Quantiliser extends TabularAgent {
 		this.V = new Object();
 		this.visits = new Object();
 		this.num_visited = [0];
-		this.window = 1000;
+		this.window = 100;
 	}
 
 	selectAction(e) {
