@@ -16,7 +16,7 @@ class UI {
 		let md = this.doc.getElementById(`${exp}_exp`);
 		try {
 			md.style.display = 'block';
-		} catch (e) {}
+		} catch (e) { }
 	}
 
 	clearExplanations() {
@@ -41,21 +41,21 @@ class UI {
 		let fixerino = (options, level, div) => {
 			for (let field in options) {
 				if (field == 'type' ||
-						field == 'model' ||
-						field == 'discount' ||
-						field == 'discountParams' ||
-						field == 'tracer' ||
-						field == 'modelParametrization' ||
-						field == 'opponent' ||
-						field == 'dist' ||
-						field == 'transitions' ||
-						field == 'rewards' ||
-						field == 'groups' ||
-						field == 'numStates' ||
-						field == 'numActions' ||
-						field == 'plan_caching' ||
-						field == 'state_percepts' ||
-						field[0] == '_') {
+					field == 'model' ||
+					field == 'discount' ||
+					field == 'discountParams' ||
+					field == 'tracer' ||
+					field == 'modelParametrization' ||
+					field == 'opponent' ||
+					field == 'dist' ||
+					field == 'transitions' ||
+					field == 'rewards' ||
+					field == 'groups' ||
+					field == 'numStates' ||
+					field == 'numActions' ||
+					field == 'plan_caching' ||
+					field == 'state_percepts' ||
+					field[0] == '_') {
 					continue;
 				}
 
@@ -251,7 +251,7 @@ class UI {
 			i++;
 
 			let a = document.createElement('a');
-			a.href = '#';
+			a.id = d;
 			a.onclick = _ => demo.new(config);
 			row.appendChild(a);
 
@@ -274,5 +274,16 @@ class UI {
 			caption.appendChild(para);
 			div.appendChild(caption);
 		}
+		let url = document.location.href.split('?');
+		if (url.length != 2) {
+			return;
+		}
+		let str = url[1];
+		if (!configs[str]) {
+			return;
+		}
+		try {
+			document.getElementById(str).click();
+		} catch (e) { }
 	}
 }
