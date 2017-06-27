@@ -89,7 +89,9 @@ class Plot {
 		} else if (v < this.min) {
 			this.min = v;
 		}
-
+	}
+	
+	dataGUIUpdate() {
 		this.y.domain([this.min, this.max]);
 		this.yAxis.scale(this.y);
 		this.yAxisLabel.call(this.yAxis);
@@ -184,6 +186,7 @@ class TotalRewardPlot extends TooltipPlot {
 			{ x: 'Cycles', y: 'Reward', value: 'rew' }, 'rewards');
 	}
 }
+
 class AverageTrueRewardPlot extends TooltipPlot {
 	constructor(trace) {
 		super(trace, 'trew',

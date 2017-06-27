@@ -90,6 +90,7 @@ const demo = {
 		let update = trace => {
 			for (let p of this.plots) {
 				p.dataUpdate(trace);
+				p.dataGUIUpdate();
 			}
 		};
 
@@ -135,32 +136,46 @@ const demo = {
 			agent.update(a, e);
 		};
 
-		let loop;
-		if (this.novis) {
-			loop = _ => {
-				while (true) {
-					if (trace.iter >= trace.t) {
+		if (this.agent.tracer == RewardCorruptionTrace) {
+			while (true) {
+				if (trace.iter >= trace.t || this.cancel) {
+					callback();
+					break;
+				}
+				cycle();
+				for (let p of this.plots) {
+					p.dataUpdate(trace);
+				}
+			}
+			setTimeout(_ => { for (let p of this.plots) {p.dataGUIUpdate();} }, 0);
+		}
+		else {
+			let loop;
+			if (this.novis) {
+				loop = _ => {
+					while (true) {
+						if (trace.iter >= trace.t) {
+							callback();
+							break;
+						}
+
+						cycle();
+					}
+				};
+			} else {
+				loop = _ => {
+					if (trace.iter >= trace.t || this.cancel) {
 						callback();
-						break;
+						return;
 					}
 
 					cycle();
-				}
-			};
-		} else {
-			loop = _ => {
-				if (trace.iter >= trace.t || this.cancel) {
-					callback();
-					return;
-				}
-
-				cycle();
-				update(trace);
-				setTimeout(loop, 0);
-			};
+					update(trace);
+					setTimeout(loop, 0);
+				};
+			}
+			loop();
 		}
-
-		loop();
 	},
 
 	stop() {
