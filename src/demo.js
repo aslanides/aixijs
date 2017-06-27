@@ -186,6 +186,7 @@ const demo = {
 				runs: 1,
 				env: {N: 10},
 				agent: {cycles: 200},
+				download: false,
 			}
 		}
 		var runs = params.runs || 1
@@ -289,7 +290,9 @@ const demo = {
 		a.download = `results-${this.experiment_number}.json`;
 		a.href = URL.createObjectURL(blob);
 		a.textContent = `Download results-${this.experiment_number}.json`;
-		a.dispatchEvent(new MouseEvent('click'));
+		if (params.download) {
+			a.dispatchEvent(new MouseEvent('click'));
+		}
 		document.body.appendChild(a);
 
 		return results;
