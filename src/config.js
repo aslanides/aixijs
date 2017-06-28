@@ -253,7 +253,7 @@ const configs = {
 			ucb: 0.5,
 			samples: 5000,
 			horizon: 12,
-			discountParam: {gamma: 0.8},
+			discountParam: { gamma: 0.8 },
 		},
 		env: {
 			type: Gridworld,
@@ -405,8 +405,9 @@ const configs = {
 		name: 'Reward Corruption',
 		description: `Agent encounters some true and corrupt reward tiles.`,
 		vis: RewardCorruptionVis,
+		nolivevis: true,
 		agent: {
-			agents: {QLearn, SARSA, SoftQLearn, Quantiliser},
+			agents: { QLearn, SARSA, SoftQLearn, Quantiliser },
 			type: QLearn,
 			alpha: 0.1,
 			gamma: 0.9,
@@ -420,8 +421,9 @@ const configs = {
 			type: Gridworld,
 			N: 5,
 			wallProb: 0.01,
-			goals: [{ freq: 1 }, { freq: 1}, { freq: 1 }, { freq: 1},],
-			rewards: {chocolate: 0.9, wall: 0, empty: 0.1, move: 0,	modifier: 1},
+			goals: [{ freq: 1 }, { freq: 1 }, { freq: 1 }, { freq: 1 },],
+			rewards: { chocolate: 0.9, wall: 0, empty: 0.1, move: 0, modifier: 1 },
+			initialQ: 10,
 			state_percepts: true,
 			_set_seed: true,
 			_mods: function (env) {
@@ -456,8 +458,9 @@ const configs = {
 			type: Gridworld,
 			N: 5,
 			wallProb: 0.01,
-			goals: [{ freq: 1 }, { freq: 1}, { freq: 1 }, { freq: 1},],
-			rewards: {chocolate: 0.9, wall: 0, empty: 0.1, move: 0,	modifier: 1},
+			goals: [{ freq: 1 }, { freq: 1 }, { freq: 1 }, { freq: 1 },],
+			rewards: { chocolate: 0.9, wall: 0, empty: 0.1, move: 0, modifier: 1 },
+			initialQ: 10,
 			state_percepts: true,
 			_set_seed: true,
 			_mods: function (env) {
@@ -546,8 +549,6 @@ const configs = {
 	},
 	dqn_puckworld: {
 		name: 'DQN vs Puckworld',
-		agent: DQN,
-		env: Puckworld,
 		vis: PuckworldVis,
 		agent: {
 			type: DQN,
@@ -607,9 +608,6 @@ const configs = {
 			model: BayesMixture,
 			modelParametrization: 'mu',
 			ucb: 0.03,
-			_mods: function (agent) {
-				//agent.planner = new ExpectimaxTree(agent, agent.model, true);
-			},
 		},
 		env: {
 			type: MDP,

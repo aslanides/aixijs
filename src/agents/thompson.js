@@ -8,7 +8,7 @@ class ThompsonAgent extends BayesAgent {
 	thompsonSample() {
 		let idx = Util.sample(this.model.weights);
 		this.rho = this.model.modelClass[idx].copy();
-		this.rho.bayesUpdate = function () {};
+		this.rho.bayesUpdate = function () { };
 
 		this.planner = new ExpectimaxTree(this, this.rho);
 	}

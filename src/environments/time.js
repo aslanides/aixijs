@@ -5,7 +5,7 @@ class TimeInconsistentEnv extends Environment {
 		this.states = [0, 1, 2];
 
 		//TODO move into vis
-		this.pos_array = [{ x: 190, y: 60 }, { x: 80, y: 160 },  { x: 300, y: 160 }];
+		this.pos_array = [{ x: 190, y: 60 }, { x: 80, y: 160 }, { x: 300, y: 160 }];
 		this.delayed_dispense = 6; //Time at which delay state will return a non-zero reward
 		this.delayed_reward = 1000;
 		this.instant_reward = 4;

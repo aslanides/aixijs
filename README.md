@@ -17,7 +17,7 @@ Agents:
 Environments:
 - Bandits
 - Finite-state MDPs
-- Gridworld POMPDs
+- Gridworld POMDPs
 
 See the [main site](http://aslanides.io/aixijs) for more background, documentation, references, and demos.
 

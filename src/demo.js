@@ -56,6 +56,7 @@ const demo = {
 		// run: ui -> options -> env/agent
 		if (this.vis) this.vis.remove();
 		let options = Util.deepCopy(this.config);
+		this.nolivevis = options.nolivevis;
 		this.ui.pull(options);
 		this.env = env ? env : new options.env.type(options.env);
 
@@ -87,12 +88,6 @@ const demo = {
 			this.plots.push(new P(this.trace));
 		}
 
-		let update = trace => {
-			for (let p of this.plots) {
-				p.dataUpdate(trace);
-			}
-		};
-
 		let callback = _ => {
 			this.ui.end();
 			this.cancel = false;
@@ -107,16 +102,20 @@ const demo = {
 				this.vis = new options.vis(this.env, this.trace, this.ui);
 				this.vis.reset();
 			}
+
+			for (let p of this.plots) {
+				p.dataGUIUpdate();
+			}
 		};
 		if (!novis) {
 			this.ui.start();
 		}
 
 		this.t0 = performance.now();
-		this._simulate(update, callback);
+		this._simulate(callback);
 	},
 
-	_simulate(update, callback) {
+	_simulate(callback) {
 		let trace = this.trace;
 		let agent = this.agent;
 		let env = this.env;
@@ -135,30 +134,32 @@ const demo = {
 			agent.update(a, e);
 		};
 
-		let loop;
-		if (this.novis) {
-			loop = _ => {
-				while (true) {
-					if (trace.iter >= trace.t) {
-						callback();
-						break;
-					}
-
-					cycle();
-				}
-			};
-		} else {
-			loop = _ => {
-				if (trace.iter >= trace.t || this.cancel) {
+		if (this.nolivevis || this.novis) {
+			while (true) {
+				if (trace.iter == trace.t || this.cancel) {
 					callback();
 					return;
 				}
-
 				cycle();
-				update(trace);
-				setTimeout(loop, 0);
-			};
+				for (let p of this.plots) {
+					p.dataUpdate(trace);
+				}
+			}
 		}
+
+		loop = _ => {
+			if (trace.iter == trace.t || this.cancel) {
+				callback();
+				return;
+			}
+
+			cycle();
+			for (let p of this.plots) {
+				p.dataUpdate(trace);
+				p.dataGUIUpdate();
+			}
+			setTimeout(loop, 0);
+		};
 
 		loop();
 	},
@@ -178,38 +179,39 @@ const demo = {
 	},
 
 	experiment(dems, params) {
-		this.reset()
+		this.reset();
 		this.experiment_number ? this.experiment_number++ : this.experiment_number = 1;
 		if (!params) {
 			// some defaults
 			params = {
 				runs: 1,
-				env: {N: 10},
-				agent: {cycles: 200},
-			}
+				env: { N: 10 },
+				agent: { cycles: 200 },
+				download: false,
+			};
 		}
-		var runs = params.runs || 1
-		var frac = params.frac || 1
+		var runs = params.runs || 1;
+		var frac = params.frac || 1;
 		results = {};
 		seed = params.seed || 'aixi';
 		let num = 1;
-		var t0 = performance.now()
+		var t0 = performance.now();
 		for (let cfg of dems) {
-			let config = Util.deepCopy(cfg)
+			let config = Util.deepCopy(cfg);
 			if (params.env) {
 				for (let param_name in params.env) {
-					config.env[param_name] = params.env[param_name]
+					config.env[param_name] = params.env[param_name];
 				}
 			}
 			if (params.agent) {
 				for (let param_name in params.agent) {
-					config.agent[param_name] = params.agent[param_name]
+					config.agent[param_name] = params.agent[param_name];
 				}
 			}
 			if (config.agent.model) {
-				console.log(`Running ${config.agent.type.name} with model ${config.agent.model.name} on ${config.env.type.name}.`)
+				console.log(`Running ${config.agent.type.name} with model ${config.agent.model.name} on ${config.env.type.name}.`);
 			} else {
-				console.log(`Running ${config.agent.type.name} on ${config.env.type.name}.`)
+				console.log(`Running ${config.agent.type.name} on ${config.env.type.name}.`);
 			}
 
 			Math.seedrandom(seed);
@@ -230,12 +232,12 @@ const demo = {
 					env = this.env;
 				}
 
-				var rew = []
-				var exp = []
+				var rew = [];
+				var exp = [];
 				for (var j = 0; j < config.agent.cycles; j++) {
 					if (j % frac == 0) {
-						rew.push(this.trace.averageReward[j])
-						exp.push(this.trace.explored[j])
+						rew.push(this.trace.averageReward[j]);
+						exp.push(this.trace.explored[j]);
 					}
 				}
 
@@ -251,16 +253,16 @@ const demo = {
 					seed: seed,
 					gamma: this.agent.gamma,
 					epsilon: this.agent.epsilon,
-				}
+				};
 
 				// TODO: refactor logging to decouple this
 				if (this.agent.tracer == RewardCorruptionTrace) {
-					var crew = []
-					var trew = []
-					for (var j = 0; j < config.agent.cycles; j++) {
+					var crew = [];
+					var trew = [];
+					for (let j = 0; j < config.agent.cycles; j++) {
 						if (j % frac == 0) {
-							crew.push(this.trace.averageCorruptReward[j])
-							trew.push(this.trace.averageTrueReward[j])
+							crew.push(this.trace.averageCorruptReward[j]);
+							trew.push(this.trace.averageTrueReward[j]);
 						}
 					}
 					log.corrupt_rewards = crew;
@@ -269,18 +271,18 @@ const demo = {
 
 				logs.push(log);
 			}
-			var key = ''
+			var key = '';
 			if (config.name in results) {
-				key = `${config.name}-${num}`
+				key = `${config.name}-${num}`;
 				num++;
 			} else {
-				key = config.name
+				key = config.name;
 			}
-			results[key] = logs
+			results[key] = logs;
 		}
-		this.reset()
+		this.reset();
 
-		console.log(`Done! Total time elapsed: ${Math.floor(performance.now() - t0)/1000} seconds.`);
+		console.log(`Done! Total time elapsed: ${Math.floor(performance.now() - t0) / 1000} seconds.`);
 
 		let json = JSON.stringify(results);
 		let blob = new Blob([json], { type: 'application/json' });
@@ -289,7 +291,9 @@ const demo = {
 		a.download = `results-${this.experiment_number}.json`;
 		a.href = URL.createObjectURL(blob);
 		a.textContent = `Download results-${this.experiment_number}.json`;
-		a.dispatchEvent(new MouseEvent('click'));
+		if (params.download) {
+			a.dispatchEvent(new MouseEvent('click'));
+		}
 		document.body.appendChild(a);
 
 		return results;

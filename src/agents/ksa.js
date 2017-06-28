@@ -26,10 +26,10 @@ class KullbackLeiblerKSA extends BayesAgent {
 	constructor(options) {
 		super(options);
 		this.max_reward = 0;
-		this.min_reward = this.model.entropy()
+		this.min_reward = this.model.entropy();
 	}
 
 	utility(e) {
-		return this.model.info_gain()
+		return this.model.info_gain();
 	}
 }

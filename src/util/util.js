@@ -145,7 +145,7 @@ class Util {
 
 	static encode(symlist, value, bits) {
 		var tmp = value;
-		for (var i = 0; i < bits; i++, tmp /= 2) {
+		for (var i = 0; i < bits; i++ , tmp /= 2) {
 			symlist.push(tmp & 1);
 		}
 	}
@@ -215,7 +215,7 @@ class Util {
 		return Util.randomChoice(ties);
 	}
 
-	static argsoftmax(obj, accessor, numActions, beta=2) {
+	static argsoftmax(obj, accessor, numActions, beta = 2) {
 		let sumexp = 0;
 		let vals = [];
 		for (let a = 0; a < numActions; a++) {

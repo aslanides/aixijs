@@ -381,21 +381,21 @@ class Gradual extends PDAgent {
 }
 
 IteratedPrisonersDilemma.opponents = {
-		AlwaysCooperate,
-		AlwaysDefect,
-		Random,
-		TitForTat,
-		SuspiciousTitForTat,
-		TitForTwoTats,
-		Pavlov,
-		Adaptive,
-		Grudger,
-		Gradual,
-	};
+	AlwaysCooperate,
+	AlwaysDefect,
+	Random,
+	TitForTat,
+	SuspiciousTitForTat,
+	TitForTwoTats,
+	Pavlov,
+	Adaptive,
+	Grudger,
+	Gradual,
+};
 
 IteratedPrisonersDilemma.params = [
-{
-	field: 'opponent',
-	value: AlwaysCooperate,
-},
+	{
+		field: 'opponent',
+		value: AlwaysCooperate,
+	},
 ];

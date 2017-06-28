@@ -233,7 +233,7 @@ class UI {
 	}
 
 	static init() {
-		let $picker = $('#picker');
+		let picker = document.getElementById('picker');
 		let i = 0;
 		let row = null;
 		for (let d in configs) {
@@ -251,6 +251,7 @@ class UI {
 			i++;
 
 			let a = document.createElement('a');
+			a.href = '#';
 			a.id = d;
 			a.onclick = _ => demo.new(config);
 			row.appendChild(a);
@@ -282,8 +283,7 @@ class UI {
 		if (!configs[str]) {
 			return;
 		}
-		try {
-			document.getElementById(str).click();
-		} catch (e) { }
+
+		document.getElementById(str).click();
 	}
 }

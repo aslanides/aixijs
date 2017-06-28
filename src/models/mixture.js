@@ -41,8 +41,8 @@ class BayesMixture {
 
 		Util.assert(xi != 0, `Cromwell violation: xi(${e.obs},${e.rew}) = 0`);
 
-		for (var i = 0, C = this.C; i < C; i++) {
-			this.weights[i] /= xi;
+		for (var j = 0; j < this.C; j++) {
+			this.weights[j] /= xi;
 		}
 	}
 
@@ -62,7 +62,7 @@ class BayesMixture {
 	}
 
 	entropy() {
-		return Util.entropy(this.weights)
+		return Util.entropy(this.weights);
 	}
 
 	save() {
@@ -84,6 +84,6 @@ class BayesMixture {
 	}
 
 	info_gain() {
-		return Util.entropy(this.saved_weights) - Util.entropy(this.weights)
+		return Util.entropy(this.saved_weights) - Util.entropy(this.weights);
 	}
 }

@@ -20,7 +20,8 @@ class Gridworld extends Environment {
 		this.reward = -1; // fix name conflict
 		this.noop = 4;
 		this.visits = 0;
-		this.state_percepts = options.state_percepts
+		this.state_percepts = options.state_percepts;
+		this.initialQ = options.initialQ | 100;
 
 		this.min_reward = this.rewards.wall + this.rewards.move;
 		this.max_reward = this.rewards.chocolate + this.rewards.move;
@@ -172,7 +173,7 @@ class Gridworld extends Environment {
 			let g = Gridworld.proposeGoal(N);
 			goal.x = g.x;
 			goal.y = g.y;
-			opt.map[g.y][g.x] = Gridworld.map_symbols.empty;
+			opt.map[g.y][g.x] = Gridworld.map_symbols.chocolate;
 		}
 
 		return opt;
@@ -275,7 +276,7 @@ class Gridworld extends Environment {
 
 	makeModel(model, parametrization) {
 		if (model == QTable) {
-			return new QTable(100, this.numActions);
+			return new QTable(this.initialQ, this.numActions);
 		}
 
 		if (model == DirichletGrid) {
@@ -459,7 +460,7 @@ class Tile {
 		this.x = x;
 		this.y = y;
 		this.rew = r;
-		this.reward = function () {return this.rew;};
+		this.reward = function () { return this.rew; };
 
 		this.legal = true;
 		this.color = GridVisualization.colors.empty;
@@ -467,7 +468,7 @@ class Tile {
 		this.obs = null; // gets filled out on construction
 		this.symbol = 0; // what it looks like from afar
 		this.connexions = new Array();
-		this.dynamics = _ => {};
+		this.dynamics = _ => { };
 	}
 }
 
@@ -484,7 +485,6 @@ class Wall extends Tile {
 class Chocolate extends Tile {
 	constructor(x, y, r) {
 		super(x, y, r);
-
 		this.color = GridVisualization.colors.chocolate;
 	}
 }

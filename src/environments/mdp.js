@@ -25,7 +25,7 @@ class BasicMDP extends Environment {
 		if (this.current.actions.length > action) {
 			let old = this.current;
 			let weights = old.actions[action].probabilities;
-			let stateIndex =  Util.sample(weights);
+			let stateIndex = Util.sample(weights);
 			this.current = this.states[stateIndex];
 			this.reward = old.actions[action].rewards[stateIndex];
 		} else {

@@ -8,8 +8,8 @@ class DirichletGrid {
 
 		this.grid = [];
 		this.params = [];
-		this.weight_queue = new Queue()
-		this.param_queue = new Queue()
+		this.weight_queue = new Queue();
+		this.param_queue = new Queue();
 
 		for (let idx = 0; idx < this.N; idx++) {
 			let gridrow = [];
@@ -25,7 +25,7 @@ class DirichletGrid {
 
 		this.saved_params = [];
 		for (let i = 0; i < this.N; i++) {
-			this.saved_params[i] = Util.arrayCopy(this.params[i])
+			this.saved_params[i] = Util.arrayCopy(this.params[i]);
 		}
 
 		this.weights = Util.zeros(this.N * this.N);
@@ -184,11 +184,11 @@ class DirichletGrid {
 			}
 
 			this.weights[n.y * this.N + n.x] = n.prob(1);
-			this.weight_queue.append(n.y * this.N + n.x)
+			this.weight_queue.append(n.y * this.N + n.x);
 
 			if (n.pr) {
 				this.params[n.x][n.y] = n.pr.alphas;
-				this.param_queue.append([n.x,n.y])
+				this.param_queue.append([n.x, n.y]);
 			}
 		}
 
@@ -201,9 +201,9 @@ class DirichletGrid {
 		}
 
 		this.params[s.x][s.y] = s.pr.alphas;
-		this.param_queue.append([s.x,s.y])
+		this.param_queue.append([s.x, s.y]);
 		this.weights[s.y * this.N + s.x] = s.prob(1);
-		this.weight_queue.append(s.y * this.N + s.x)
+		this.weight_queue.append(s.y * this.N + s.x);
 	}
 
 	update(a, e) {
@@ -212,39 +212,39 @@ class DirichletGrid {
 	}
 
 	info_gain() {
-		var stack = []
+		var stack = [];
 		var s = this.pos;
 		var ne = s.neighbors;
 		var ig = 0;
 		for (var i = 0; i < this.T; i++) {
 			if (!ne[i].pr) {
-				continue
+				continue;
 			}
-			var idx = this.weight_queue.pop_back()
-			stack.push(idx)
-			var p_ = this.weights[idx]
-			var p = this.saved_weights[idx]
+			var idx = this.weight_queue.pop_back();
+			stack.push(idx);
+			var p_ = this.weights[idx];
+			var p = this.saved_weights[idx];
 			if (p != 0 && p_ != 0) {
-				ig += p_ * Math.log(p_) - p * Math.log(p)
+				ig += p_ * Math.log(p_) - p * Math.log(p);
 			}
 		}
 		while (stack.length > 0) {
-			var idx = stack.pop()
-			this.weight_queue.append(idx)
+			var jdx = stack.pop();
+			this.weight_queue.append(jdx);
 		}
 
-		return ig
+		return ig;
 	}
 
 	entropy() {
-		return Util.entropy(this.weights)
+		return Util.entropy(this.weights);
 	}
 
 	save() {
 		for (var i = 0; i < this.N; i++) {
 			for (var j = 0; j < this.N; j++) {
 				for (var k = 0; k < this.T; k++) {
-					this.saved_params[i][j][k] = this.params[i][j][k]
+					this.saved_params[i][j][k] = this.params[i][j][k];
 				}
 			}
 		}
@@ -254,20 +254,20 @@ class DirichletGrid {
 	}
 
 	load() {
-		this.pos = this.grid[this.saved_pos.x][this.saved_pos.y]
+		this.pos = this.grid[this.saved_pos.x][this.saved_pos.y];
 		while (!this.param_queue.isempty()) {
-			var [i,j] = this.param_queue.remove()
+			var [i, j] = this.param_queue.remove();
 			for (var k = 0; k < this.T; k++) {
-				this.params[i][j][k] = this.saved_params[i][j][k]
+				this.params[i][j][k] = this.saved_params[i][j][k];
 			}
-			var t = this.grid[i][j]
-			t.pr.alphas = this.params[i][j]
-			t.pr.alphaSum = Util.sum(t.pr.alphas)
+			var t = this.grid[i][j];
+			t.pr.alphas = this.params[i][j];
+			t.pr.alphaSum = Util.sum(t.pr.alphas);
 		}
 
 		while (!this.weight_queue.isempty()) {
-			var idx = this.weight_queue.remove()
-			this.weights[idx] = this.saved_weights[idx]
+			var idx = this.weight_queue.remove();
+			this.weights[idx] = this.saved_weights[idx];
 		}
 	}
 }
