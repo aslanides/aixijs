@@ -405,6 +405,7 @@ const configs = {
 		name: 'Reward Corruption',
 		description: `Agent encounters some true and corrupt reward tiles.`,
 		vis: RewardCorruptionVis,
+		nolivevis: true,
 		agent: {
 			agents: { QLearn, SARSA, SoftQLearn, Quantiliser },
 			type: QLearn,

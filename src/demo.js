@@ -56,6 +56,7 @@ const demo = {
 		// run: ui -> options -> env/agent
 		if (this.vis) this.vis.remove();
 		let options = Util.deepCopy(this.config);
+		this.nolivevis = options.nolivevis;
 		this.ui.pull(options);
 		this.env = env ? env : new options.env.type(options.env);
 
@@ -87,13 +88,6 @@ const demo = {
 			this.plots.push(new P(this.trace));
 		}
 
-		let update = trace => {
-			for (let p of this.plots) {
-				p.dataUpdate(trace);
-				p.dataGUIUpdate();
-			}
-		};
-
 		let callback = _ => {
 			this.ui.end();
 			this.cancel = false;
@@ -108,16 +102,20 @@ const demo = {
 				this.vis = new options.vis(this.env, this.trace, this.ui);
 				this.vis.reset();
 			}
+
+			for (let p of this.plots) {
+				p.dataGUIUpdate();
+			}
 		};
 		if (!novis) {
 			this.ui.start();
 		}
 
 		this.t0 = performance.now();
-		this._simulate(update, callback);
+		this._simulate(callback);
 	},
 
-	_simulate(update, callback) {
+	_simulate(callback) {
 		let trace = this.trace;
 		let agent = this.agent;
 		let env = this.env;
@@ -136,46 +134,34 @@ const demo = {
 			agent.update(a, e);
 		};
 
-		if (this.agent.tracer == RewardCorruptionTrace) {
+		if (this.nolivevis || this.novis) {
 			while (true) {
-				if (trace.iter >= trace.t || this.cancel) {
+				if (trace.iter == trace.t || this.cancel) {
 					callback();
-					break;
+					return;
 				}
 				cycle();
 				for (let p of this.plots) {
 					p.dataUpdate(trace);
 				}
 			}
-			setTimeout(_ => { for (let p of this.plots) { p.dataGUIUpdate(); } }, 0);
 		}
-		else {
-			let loop;
-			if (this.novis) {
-				loop = _ => {
-					while (true) {
-						if (trace.iter >= trace.t) {
-							callback();
-							break;
-						}
 
-						cycle();
-					}
-				};
-			} else {
-				loop = _ => {
-					if (trace.iter >= trace.t || this.cancel) {
-						callback();
-						return;
-					}
-
-					cycle();
-					update(trace);
-					setTimeout(loop, 0);
-				};
+		loop = _ => {
+			if (trace.iter == trace.t || this.cancel) {
+				callback();
+				return;
 			}
-			loop();
-		}
+
+			cycle();
+			for (let p of this.plots) {
+				p.dataUpdate(trace);
+				p.dataGUIUpdate();
+			}
+			setTimeout(loop, 0);
+		};
+
+		loop();
 	},
 
 	stop() {
