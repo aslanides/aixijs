@@ -181,7 +181,7 @@ class ContextTree {
 	revertHistory(newsize) {
 		Util.assert(newsize <= this.history.length);
 		while (this.history.length > newsize)
-						this.history.pop();
+			this.history.pop();
 	}
 
 	getLogProbNextSymbolGivenHWithUpdate(sym) {
@@ -237,7 +237,7 @@ class CTNode {
 	}
 
 	size() {
-		let s  = 1;
+		let s = 1;
 		s += this[0] ? this[0].size() : 0;
 		s += this[1] ? this[1].size() : 0;
 		return s;

@@ -8,9 +8,9 @@ class ExpectimaxTree {
 		this.rew_range = this.max_reward - this.min_reward;
 		this.numActions = agent.numActions;
 		this.samples = agent.samples;
-		this.timeout = agent.timeout
+		this.timeout = agent.timeout;
 		if (this.timeout) {
-			this.samples_total = 0
+			this.samples_total = 0;
 		}
 		this.gamma = agent.gamma;
 		this.agent = agent; // TODO fix
@@ -26,14 +26,14 @@ class ExpectimaxTree {
 			this.model.save();
 			if (this.timeout) {
 				// time budget
-				var t0 = performance.now()
-				var n = 0
+				var t0 = performance.now();
+				var n = 0;
 				while (performance.now() - t0 < this.timeout) {
-					this.root.sample(this,0);
+					this.root.sample(this, 0);
 					this.model.load();
-					n++
+					n++;
 				}
-				this.samples_total += n
+				this.samples_total += n;
 			} else {
 				// sample budget
 				for (let iter = 0; iter < this.samples; iter++) {
@@ -181,7 +181,7 @@ class DecisionNode {
 	}
 }
 
-class ChanceNode  {
+class ChanceNode {
 	constructor(action) {
 		this.visits = 0;
 		this.mean = 0;

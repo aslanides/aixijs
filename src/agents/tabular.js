@@ -125,7 +125,7 @@ class Quantiliser extends TabularAgent {
 
 	selectFinalState() {
 		let vals = [];
-		for(var obs in this.V) {
+		for (var obs in this.V) {
 			if (this.V[obs] / this.visits[obs] >= this.delta) {
 				vals.push(obs);
 				// console.log('state', obs, 'has average reward', this.V[obs] / this.visits[obs]);

@@ -90,7 +90,7 @@ class Plot {
 			this.min = v;
 		}
 	}
-	
+
 	dataGUIUpdate() {
 		this.y.domain([this.min, this.max]);
 		this.yAxis.scale(this.y);

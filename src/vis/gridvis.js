@@ -10,26 +10,26 @@ class GridVisualization extends Visualization {
 			this.rectangles.push(new Array(env.N));
 		}
 
-		d3.selection.prototype.moveToFront = function() {
-	      return this.each(function(){
-	        this.parentNode.appendChild(this);
-	      });
-	    };
+		d3.selection.prototype.moveToFront = function () {
+			return this.each(function () {
+				this.parentNode.appendChild(this);
+			});
+		};
 
 		var view_width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 		var view_height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
-		var dim = 0.5 * Math.min(view_width,view_height)
-		var d = dim / this.N
+		var dim = 0.5 * Math.min(view_width, view_height);
+		var d = dim / this.N;
 		if (!d) {
 			d = GridVisualization.tile_size_px;
 		}
-		this.d = Math.min(d,GridVisualization.tile_size_px)
+		this.d = Math.min(d, GridVisualization.tile_size_px);
 		this.width = (this.d + 1) * this.N - 1;
 		this.height = (this.d + 1) * this.N - 1;
 		this.svg
-		.attr('width', this.width)
-		.attr('height', this.height);
+			.attr('width', this.width)
+			.attr('height', this.height);
 
 		this.grid.forEach((row, idx) => {
 			row.forEach((tile, jdx) => {
@@ -55,10 +55,10 @@ class GridVisualization extends Visualization {
 			.attr('y', y * this.d);
 	}
 
-	static makeTile(svg, t, color,gv) {
+	static makeTile(svg, t, color, gv) {
 		var d = GridVisualization.tile_size_px;
 		if (gv) {
-			d = gv.d
+			d = gv.d;
 		}
 		let r = svg.append('rect')
 			.attr('x', t.x * d)
@@ -72,7 +72,7 @@ class GridVisualization extends Visualization {
 			r.attr('fill', t.color);
 		} else {
 			r.attr('fill', GridVisualization.colors.empty);
-			GridVisualization.addCircle(svg, t.x, t.y, t.color, '', t.freq,gv);
+			GridVisualization.addCircle(svg, t.x, t.y, t.color, '', t.freq, gv);
 		}
 
 		if (color) {
@@ -90,10 +90,10 @@ class GridVisualization extends Visualization {
 		GridVisualization.makeTile(svg, new T(0, 0), color);
 	}
 
-	static addCircle(svg, x, y, color, id, size,gv) {
+	static addCircle(svg, x, y, color, id, size, gv) {
 		var d = GridVisualization.tile_size_px;
 		if (gv) {
-			d = gv.d
+			d = gv.d;
 		}
 		svg.append('circle')
 			.attr('cx', x * d + d / 2)
@@ -108,15 +108,15 @@ class GridVisualization extends Visualization {
 GridVisualization.tile_size_px = 40;
 
 GridVisualization.colors = {
-		empty: '#fdfdfd',
-		wall: 'grey',
-		chocolate: 'yellow',
-		dispenser: 'orange',
-		agent: 'blue',
-		trap: 'pink',
-		rho: 'red',
-		modifier: 'blue',
-	};
+	empty: '#fdfdfd',
+	wall: 'grey',
+	chocolate: 'yellow',
+	dispenser: 'orange',
+	agent: 'blue',
+	trap: 'pink',
+	rho: 'red',
+	modifier: 'blue',
+};
 
 class TabularGridVis extends GridVisualization {
 	constructor(env, trace, ui) {
@@ -198,7 +198,7 @@ class TabularGridVis extends GridVisualization {
 							.attr('x2', xcoord + this.d / 2 + dx)
 							.attr('y2', ycoord + this.d / 2 - dy)
 							.attr('visibility', 'visible');
-					}  else {
+					} else {
 						this.arrows[tile.x][tile.y][a]
 							.attr('visibility', 'hidden');
 					}
@@ -263,7 +263,7 @@ class BayesGridVis extends GridVisualization {
 	posteriorColor(tile, time) {
 		let tc = tile.constructor;
 		if (tc == Wall ||
-				tc == SelfModificationTile) {
+			tc == SelfModificationTile) {
 			return null;
 		}
 
@@ -324,14 +324,14 @@ class ThompsonVis extends BayesGridVis {
 		d3.select('#thompson_disp').remove();
 		let rhoPos = this.rho_trace[this.time];
 		GridVisualization.addCircle(
-			this.svg, rhoPos.x, rhoPos.y, GridVisualization.colors.rho, 'thompson_disp',1,this);
-		d3.select("#agent").moveToFront()
+			this.svg, rhoPos.x, rhoPos.y, GridVisualization.colors.rho, 'thompson_disp', 1, this);
+		d3.select('#agent').moveToFront();
 	}
 }
 
 ThompsonVis.exps = ['dispenser', 'mixture', 'thompson'];
 
-class MDLVis extends ThompsonVis {}
+class MDLVis extends ThompsonVis { }
 
 MDLVis.exps = ['dispenser', 'mixture', 'mdl'];
 
@@ -361,10 +361,10 @@ class WireHeadVis extends BayesGridVis {
 
 WireHeadVis.exps = ['wirehead', 'mixture', 'dispenser'];
 
-class HookedOnNoiseVis extends BayesGridVis {}
+class HookedOnNoiseVis extends BayesGridVis { }
 
 HookedOnNoiseVis.exps = ['dispenser', 'mixture', 'noise'];
 
-class RewardCorruptionVis extends GridVisualization {}
+class RewardCorruptionVis extends GridVisualization { }
 
-RewardCorruptionVis.exps = ['reward_corruption']
+RewardCorruptionVis.exps = ['reward_corruption'];

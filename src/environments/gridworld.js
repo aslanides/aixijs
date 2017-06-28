@@ -20,7 +20,7 @@ class Gridworld extends Environment {
 		this.reward = -1; // fix name conflict
 		this.noop = 4;
 		this.visits = 0;
-		this.state_percepts = options.state_percepts
+		this.state_percepts = options.state_percepts;
 		this.initialQ = options.initialQ | 100;
 
 		this.min_reward = this.rewards.wall + this.rewards.move;
@@ -460,7 +460,7 @@ class Tile {
 		this.x = x;
 		this.y = y;
 		this.rew = r;
-		this.reward = function () {return this.rew;};
+		this.reward = function () { return this.rew; };
 
 		this.legal = true;
 		this.color = GridVisualization.colors.empty;
@@ -468,7 +468,7 @@ class Tile {
 		this.obs = null; // gets filled out on construction
 		this.symbol = 0; // what it looks like from afar
 		this.connexions = new Array();
-		this.dynamics = _ => {};
+		this.dynamics = _ => { };
 	}
 }
 
