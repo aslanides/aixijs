@@ -1,0 +1,27 @@
+{
+  "name": "aixijs",
+  "version": "0.8.0",
+  "description": "General Reinforcement Learning in the Browser.",
+  "main": "demo.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aslanides/aixijs.git"
+  },
+  "keywords": [
+    "AIXI",
+    "reinforcement",
+    "learning"
+  ],
+  "author": "John Aslanides",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/aslanides/aixijs/issues"
+  },
+  "homepage": "https://github.com/aslanides/aixijs#readme",
+  "dependencies": {
+    "eslint": "^4.1.1"
+  }
+}
