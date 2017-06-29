@@ -21,7 +21,7 @@ class Gridworld extends Environment {
 		this.noop = 4;
 		this.visits = 0;
 		this.state_percepts = options.state_percepts;
-		this.initialQ = options.initialQ | 100;
+		this.initialQ = options.initialQ || 100;
 
 		this.min_reward = this.rewards.wall + this.rewards.move;
 		this.max_reward = this.rewards.chocolate + this.rewards.move;
