@@ -1,78 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <title>
-        AIXIjs: General reinforcement learning in the browser
-    </title>
-    <meta charset="UTF-8">
+	<title>
+		AIXIjs: General reinforcement learning in the browser
+	</title>
+	<meta charset="UTF-8">
 	<meta name="description" content="A JavaScript demo for general reinforcement learning agents">
 	<meta name="author" content="John Aslanides, Sean Lamont, and Jan Leike">
 	<meta name="keywords" content="artificial intelligence, reinforcement learning, AIXI, gridworld">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	<link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="external/bootstrap.min.css">
-  <link rel="stylesheet" href="external/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="external/bootstrap.min.css">
+	<link rel="stylesheet" href="external/bootstrap-theme.min.css">
 
-  <link rel="icon" type="image/png" href="assets/favicon-32x32.png" sizes="32x32" />
-  <link rel="icon" type="image/png" href="assets/favicon-16x16.png" sizes="16x16" />
+	<link rel="icon" type="image/png" href="assets/favicon-32x32.png" sizes="32x32" />
+	<link rel="icon" type="image/png" href="assets/favicon-16x16.png" sizes="16x16" />
 
-  <script type="text/javascript" src="src/util/util.js"></script>
-  <script type="text/javascript" src="src/util/distribution.js"></script>
-  <script type="text/javascript" src="src/util/discount.js"></script>
-  <script type="text/javascript" src="src/util/qtable.js"></script>
-  <script type="text/javascript" src="src/util/queue.js"></script>
+	<script type="text/javascript" src="src/util/util.js"></script>
+	<script type="text/javascript" src="src/util/distribution.js"></script>
+	<script type="text/javascript" src="src/util/discount.js"></script>
+	<script type="text/javascript" src="src/util/qtable.js"></script>
+	<script type="text/javascript" src="src/util/queue.js"></script>
 
-  <script type="text/javascript" src="src/environments/environment.js"></script>
-  <script type="text/javascript" src="src/environments/bandit.js"></script>
-  <script type="text/javascript" src="src/environments/gridworld.js"></script>
-  <script type="text/javascript" src="src/environments/mdp.js"></script>
-  <script type="text/javascript" src="src/environments/mdp2.js"></script>
-  <script type="text/javascript" src="src/environments/prisoners.js"></script>
-  <script type="text/javascript" src="src/environments/puckworld.js"></script>
-  <script type="text/javascript" src="src/environments/time.js"></script>
+	<script type="text/javascript" src="src/environments/environment.js"></script>
+	<script type="text/javascript" src="src/environments/bandit.js"></script>
+	<script type="text/javascript" src="src/environments/gridworld.js"></script>
+	<script type="text/javascript" src="src/environments/mdp.js"></script>
+	<script type="text/javascript" src="src/environments/mdp2.js"></script>
+	<script type="text/javascript" src="src/environments/prisoners.js"></script>
+	<script type="text/javascript" src="src/environments/puckworld.js"></script>
+	<script type="text/javascript" src="src/environments/time.js"></script>
 
-  <script type="text/javascript" src="src/models/mixture.js"></script>
-  <script type="text/javascript" src="src/models/dirichlet/gridworld.js"></script>
-  <script type="text/javascript" src="src/models/dirichlet/mdp.js"></script>
-  <script type="text/javascript" src="src/models/ctw.js"></script>
-  <script type="text/javascript" src="src/models/neural/matrix.js"></script>
-  <script type="text/javascript" src="src/models/neural/net.js"></script>
-  <script type="text/javascript" src="src/models/neural/graph.js"></script>
-  <script type="text/javascript" src="src/models/neural/solver.js"></script>
+	<script type="text/javascript" src="src/models/mixture.js"></script>
+	<script type="text/javascript" src="src/models/dirichlet/gridworld.js"></script>
+	<script type="text/javascript" src="src/models/dirichlet/mdp.js"></script>
+	<script type="text/javascript" src="src/models/ctw.js"></script>
+	<script type="text/javascript" src="src/models/neural/matrix.js"></script>
+	<script type="text/javascript" src="src/models/neural/net.js"></script>
+	<script type="text/javascript" src="src/models/neural/graph.js"></script>
+	<script type="text/javascript" src="src/models/neural/solver.js"></script>
 
-  <script type="text/javascript" src="src/planners/mcts.js"></script>
-  <script type="text/javascript" src="src/planners/value_iteration.js"></script>
+	<script type="text/javascript" src="src/planners/mcts.js"></script>
+	<script type="text/javascript" src="src/planners/value_iteration.js"></script>
 
-  <script type="text/javascript" src="src/agents/agent.js"></script>
-  <script type="text/javascript" src="src/agents/bayes.js"></script>
-  <script type="text/javascript" src="src/agents/ksa.js"></script>
-  <script type="text/javascript" src="src/agents/mdl.js"></script>
-  <script type="text/javascript" src="src/agents/bayesexp.js"></script>
-  <script type="text/javascript" src="src/agents/thompson.js"></script>
-  <script type="text/javascript" src="src/agents/dqn.js"></script>
-  <script type="text/javascript" src="src/agents/tabular.js"></script>
+	<script type="text/javascript" src="src/agents/agent.js"></script>
+	<script type="text/javascript" src="src/agents/bayes.js"></script>
+	<script type="text/javascript" src="src/agents/ksa.js"></script>
+	<script type="text/javascript" src="src/agents/mdl.js"></script>
+	<script type="text/javascript" src="src/agents/bayesexp.js"></script>
+	<script type="text/javascript" src="src/agents/thompson.js"></script>
+	<script type="text/javascript" src="src/agents/dqn.js"></script>
+	<script type="text/javascript" src="src/agents/tabular.js"></script>
 
-  <script type="text/javascript" src="src/vis/visualization.js"></script>
-  <script type="text/javascript" src="src/vis/plot.js"></script>
-  <script type="text/javascript" src="src/vis/banditvis.js"></script>
-  <script type="text/javascript" src="src/vis/mdpvis.js"></script>
-  <script type="text/javascript" src="src/vis/mdp2vis.js"></script>
-  <script type="text/javascript" src="src/vis/gridvis.js"></script>
-  <script type="text/javascript" src="src/vis/puckworldvis.js"></script>
-  <script type="text/javascript" src="src/vis/timevis.js"></script>
+	<script type="text/javascript" src="src/vis/visualization.js"></script>
+	<script type="text/javascript" src="src/vis/plot.js"></script>
+	<script type="text/javascript" src="src/vis/banditvis.js"></script>
+	<script type="text/javascript" src="src/vis/mdpvis.js"></script>
+	<script type="text/javascript" src="src/vis/mdp2vis.js"></script>
+	<script type="text/javascript" src="src/vis/gridvis.js"></script>
+	<script type="text/javascript" src="src/vis/puckworldvis.js"></script>
+	<script type="text/javascript" src="src/vis/timevis.js"></script>
 
-  <script type="text/javascript" src="src/util/trace.js"></script>
-  <script type="text/javascript" src="src/config.js"></script>
+	<script type="text/javascript" src="src/util/trace.js"></script>
+	<script type="text/javascript" src="src/config.js"></script>
 
-  <script type="text/javascript" src="src/ui.js"></script>
-  <script type="text/javascript" src="src/demo.js"></script>
+	<script type="text/javascript" src="src/ui.js"></script>
+	<script type="text/javascript" src="src/demo.js"></script>
 
 	<script type="text/javascript" src="external/mathjs-3.1.4.min.js"></script>
 	<script type="text/javascript" src="external/jquery-2.2.3.min.js"></script>
 	<script type="text/javascript" src="external/d3-4.2.6.min.js"></script>
 	<script type="text/javascript" src="external/marked-0.3.6.min.js"></script>
-  <script type="text/javascript" src="external/seedrandom-2.4.0.min.js"></script>
+	<script type="text/javascript" src="external/seedrandom-2.4.0.min.js"></script>
 
 	<script>
 		function renderMarkdown() {
@@ -91,93 +92,94 @@
 
 			let script = document.createElement('script');
 			script.type = 'text/javascript';
-			script.src  = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+			script.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
 			document.getElementsByTagName('head')[0].appendChild(script);
 			jaxrendered = true;
 		}
 	</script>
 </head>
-<body onload="UI.init();renderMarkdown()">
-<div id="wrap">
-<div class="header">
-    <img src="assets/robot.png" alt="Roger the robot :)" style="width: 50px; float:left; margin: 0px 15px 15px 0px" />
-	<h1 style="font-size:50px">AIXI<span style="color:#058;">js</span></h1>
-  <ul class="nav nav-pills">
-    <li role="presentation"><a href="index.html">About</a></li>
-    <li role="presentation" class="active"><a href="demo.html">Demos</a></li>
-  </ul>
-</div>
 
-<span class="md">
+<body onload="UI.init();renderMarkdown()">
+	<div id="wrap">
+		<div class="header">
+			<img src="assets/robot.png" alt="Roger the robot :)" style="width: 50px; float:left; margin: 0px 15px 15px 0px" />
+			<h1 style="font-size:50px">AIXI<span style="color:#058;">js</span></h1>
+			<ul class="nav nav-pills">
+				<li role="presentation"><a href="index.html">About</a></li>
+				<li role="presentation" class="active"><a href="demo.html">Demos</a></li>
+			</ul>
+		</div>
+
+		<span class="md">
 ---
 </span>
-<!-- Fork me on github! -->
-<a href="https://github.com/aslanides/aixijs" target="_blank"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+		<!-- Fork me on github! -->
+		<a href="https://github.com/aslanides/aixijs" target="_blank"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
 
-<!-- Vis -->
-<table>
-	<tr>
-		<td style="width: 40%">
-			<span id="gridvis"></span>
-			<div class="spinner" id="loading" style="display: none">
-			  <div class="bounce1"></div>
-			  <div class="bounce2"></div>
-			  <div class="bounce3"></div>
-			</div>
-			<!-- Navigation -->
-		    <div id="navigation" style="display: none">
-		        <h3>Playback</h3>
-		        <p>
-		            <input type="range" name="slider" id="slider" min="0" value="0" oninput="demo.vis.jumpTo(value)">
-					<br />
-		            <button class="btn btn-default"  onclick="demo.vis.reset()">
+		<!-- Vis -->
+		<table>
+			<tr>
+				<td style="width: 40%">
+					<span id="gridvis"></span>
+					<div class="spinner" id="loading" style="display: none">
+						<div class="bounce1"></div>
+						<div class="bounce2"></div>
+						<div class="bounce3"></div>
+					</div>
+					<!-- Navigation -->
+					<div id="navigation" style="display: none">
+						<h3>Playback</h3>
+						<p>
+							<input type="range" name="slider" id="slider" min="0" value="0" oninput="demo.vis.jumpTo(value)">
+							<br />
+							<button class="btn btn-default" onclick="demo.vis.reset()">
 						<span class="glyphicon glyphicon-fast-backward"></span>
 					</button>
-		            <button class="btn btn-default" onclick="demo.vis.pause()">
+							<button class="btn btn-default" onclick="demo.vis.pause()">
 						<span class="glyphicon glyphicon-pause"></span>
 					</button>
-		            <button class="btn btn-default" onclick="demo.vis.run(300)">
+							<button class="btn btn-default" onclick="demo.vis.run(300)">
 						<span class="glyphicon glyphicon-play"></span>
 					</button>
-		            <button class="btn btn-default" onclick="demo.vis.run(50)">
+							<button class="btn btn-default" onclick="demo.vis.run(50)">
 						<span class="glyphicon glyphicon-forward"></span>
 					</button>
-		            <button class="btn btn-default" onclick="demo.vis.run(1)">
+							<button class="btn btn-default" onclick="demo.vis.run(1)">
 						<span class="glyphicon glyphicon-fast-forward"></span>
 					</button>
-		        </p>
-		    </div>
+						</p>
+					</div>
 
-			<!-- Demo Parameters -->
-		    <div id="setup" style="display:none">
-		        <h3 id='setup_label'>Setup: </h3>
-		        <form id="param_form">
-      					<div id='env'></div>
-      					<div id='agent'></div>
-					<input type="submit" class="btn btn-primary" id="run" value="Run" onclick="demo.run()">
-					<input type="submit" class="btn btn-primary" id="cancel" value="Stop" onclick="demo.stop()" style="display:none">
-          <input type="submit" class="btn btn-default" id="back" value="Back" onclick="demo.reset()">
-				</form>
-				<script>
-					$('#param_form').submit(event => event.preventDefault());
-				</script>
-		    </div>
-		</td>
-		<td style="vertical-align: top">
-			<span id="plots"></span>
-		</td>
-	</tr>
-	<tr>
-<div class="container" id='picker'></div>
+					<!-- Demo Parameters -->
+					<div id="setup" style="display:none">
+						<h3 id='setup_label'>Setup: </h3>
+						<form id="param_form">
+							<div id='env'></div>
+							<div id='agent'></div>
+							<input type="submit" class="btn btn-primary" id="run" value="Run" onclick="demo.run()">
+							<input type="submit" class="btn btn-primary" id="cancel" value="Stop" onclick="demo.stop()" style="display:none">
+							<input type="submit" class="btn btn-default" id="back" value="Back" onclick="demo.reset()">
+						</form>
+						<script>
+							$('#param_form').submit(event => event.preventDefault());
+						</script>
+					</div>
+				</td>
+				<td style="vertical-align: top">
+					<span id="plots"></span>
+				</td>
+			</tr>
+			<tr>
+				<div class="container" id='picker'></div>
 
-<!-- Explanations -->
-<td colspan=2>
+				<!-- Explanations -->
+				<td colspan=2>
 
-<span class="md">
+					<span class="md">
 ---
 </span>
 
-<span class="md" id="aixi_exp" style="display:none">
+					<span class="md" id="aixi_exp" style="display:none">
 # Monte Carlo AIXI
 
 This demo should give you the flavor of the environments and models that we're using. We use the standard Bayesian agent that has a mixture model
@@ -195,7 +197,7 @@ V\_\xi^{\star}\left(ae\_{&lt;t}\right) = \max\_{a\_t}\sum\_{e\_t}\cdots\max\_{a\
 $$
 </span>
 
-<span class="md" id="thompson_exp" style="display:none">
+					<span class="md" id="thompson_exp" style="display:none">
 # Thompson Sampling
 
 The Thompson sampling policy \\(\pi\_T\\) is: every _effective horizon_ \\(H\\), sample an environment \\(\rho\\) from the posterior \\(w(\cdot\lvert ae\_{&lt;t})\\) and follow the \\(\rho\\)-optimal policy for \\(H\\) time steps. For the Gridworld dispenser class parametrized by dispenser location, the red dot
@@ -206,21 +208,21 @@ represents the position of the dispenser in \\(\rho\\); the \\(\rho\\)-optimal p
 Thompson sampling is asymptotically optimal (Leike et al., 2015), unlike AIXI. This is essentially because Thompson sampling commits you to a fixed policy for a period, giving you the chance to learn and explore better than by random exploration or even by being greedy with respect to \\(V^{\pi}\_{\xi}\\).
 </span>
 
-<span class="md" id="ksa_exp" style="display:none">
+					<span class="md" id="ksa_exp" style="display:none">
 
 </span>
 
-<span class="md" id="ksa_dirichlet_exp" style="display:none">
+					<span class="md" id="ksa_dirichlet_exp" style="display:none">
 
 </span>
 
-<span class="md" id="dogmatic_exp" style="display:none">
+					<span class="md" id="dogmatic_exp" style="display:none">
 # Dogmatic priors
 
 Like all Bayesians, AIXI's behavior and learning depends on the choice of its prior. It turns out (Leike &amp; Hutter, 2015) that there are circumstances under which a Bayesian reinforcement learner can _never_ overcome the bias of its priors. In this demo, AIXI belives that the squares adjacent to it are traps, with high (99%) probability. The reality is that it's in just a normal, friendly gridworld with no traps. It is too afraid to try anything, and never learns that in fact its beliefs were wrong.
 </span>
 
-<span class="md" id="mdl_exp" style="display:none">
+					<span class="md" id="mdl_exp" style="display:none">
 # Minimum Description Length (MDL) agent
 
 In contrast to AIXI, which mixes over all plausible environments and weights them by their complexity, the MDL agent simply uses the policy that is optimal in the simplest unfalsified environment. That is, its policy is
@@ -242,7 +244,7 @@ represents the position of the dispenser in \\(\rho\\); the \\(\rho\\)-optimal p
 
 </span>
 
-<span class="md" id="time_inconsistent_exp" style="display:none">
+					<span class="md" id="time_inconsistent_exp" style="display:none">
 
 # Time inconsistency
 
@@ -285,7 +287,7 @@ then \\(\pi\_{\rightsquigarrow}\\) is optimal, and \\(\pi\_{\rightarrow}\\) is o
 
 </span>
 
-<span class="md" id="wirehead_exp" style="display:none">
+					<span class="md" id="wirehead_exp" style="display:none">
 # Wireheading
 
 This demo shows AIXI in a standard gridworld with a Dispenser as usual, but with one addition: a blue tile,
@@ -300,7 +302,7 @@ to signify that the agent has taken this action and that its sensors have now be
 
 </span>
 
-<span class="md" id="reward_corruption_exp" style="display:none">
+					<span class="md" id="reward_corruption_exp" style="display:none">
 # Reward Corruption
 
 This demo shows the experiments for the paper <a href=https://arxiv.org/abs/1705.08417 target=_blank>Reinforcement Learning with a Corrupted Reward Channel</a>, summarised in a blog post [here](http://www.tomeveritt.se/paper/2017/05/29/reinforcement-learning-with-corrupted-reward-channel.html).
@@ -325,9 +327,9 @@ To reproduce the experiments in the paper, you can run the experiments in the co
 
 The agent types are QLearn, SARSA, SoftQLearn, and Quantiliser. Code for analysing the experiments is given in this <a href=https://github.com/aslanides/aixijs/blob/master/experiments/analysis.ipynb target=_blank>iPython notebook</a>.
 
-</span>
+					</span>
 
-<span class="md" id="noise_exp" style="display:none">
+					<span class="md" id="noise_exp" style="display:none">
 # Hooked on Noise
 
 This demo is designed to contrast between the Entropy-seeking agents, `SquareKSA` and `ShannonKSA`, and the Knowledge-seeking agent, `KullbackLeiblerKSA`. This gridworld is setup as normal, except that near the top corner is a `Noisy` tile, that generates random observations and no reward (it flashes in various colors in the visualization). The entropy-seeking agents, which are effective knowledge-seeking agents only in _deterministic_ environments, fail completely in this stochastic environment; they get hooked on the noise and fail to explore. In contrast, the KL-KSA agent ignores the `Noisy` tile and explores the environment normally.
@@ -356,7 +358,7 @@ This way, the KL-KSA only cares about changes in its beliefs, and so will seek o
 
 </span>
 
-<span class="md" id="dispenser_exp" style="display:none">
+					<span class="md" id="dispenser_exp" style="display:none">
 
 # Gridworld
 
@@ -379,7 +381,7 @@ This environment is non-episodic, so once the agent finds the `Dispenser`, it sh
 
 </span>
 
-<span class="md" id="mixture_exp" style="display:none">
+					<span class="md" id="mixture_exp" style="display:none">
   # Bayes mixture model class
 
   The environment class \\(\mathcal{M}\\) is parametrized by the location of the dispenser:
@@ -399,7 +401,7 @@ This environment is non-episodic, so once the agent finds the `Dispenser`, it sh
   on each tile. Darker shading corresponds to higher probability. The percepts in this environment are mostly deterministic, with the exception of the rewards from the dispenser, which are sampled from a Bernoulli process. Hence, depending on the value of \\(\theta\\), the agent will be able to gradually falsify the hypothesis of whether some tile contains a dispenser or not.
 </span>
 
-<span class="md" id="dirichlet_exp" style="display:none">
+					<span class="md" id="dirichlet_exp" style="display:none">
 # Factorized Dirichlet model class
 
 The Dirichlet model class is not represented as a mixture. Instead, it is a simple model that assumes that the environment distribution factorizes, i.e. that each tile is independent.
@@ -408,19 +410,20 @@ TODO: port write-up here. A complete (and lengthy) write-up of the Dirichlet mod
 </span>
 
 
-<script>
-  GridVisualization.makeLegend('dispenser', Dispenser);
-  GridVisualization.makeLegend('wall', Wall);
-  GridVisualization.makeLegend('green', Tile, 'rgb(64,255,64)');
-  GridVisualization.makeLegend('rho', Tile);
-  GridVisualization.makeLegend('mdl', Tile);
-  GridVisualization.makeLegend('wirehead', SelfModificationTile);
-  GridVisualization.addCircle(d3.select('#rho_svg'), 0, 0, GridVisualization.colors.rho);
-  GridVisualization.addCircle(d3.select('#mdl_svg'), 0, 0, GridVisualization.colors.rho);
-</script>
-</td>
-</tr>
-</table>
-</div>
+					<script>
+							GridVisualization.makeLegend('dispenser', Dispenser);
+							GridVisualization.makeLegend('wall', Wall);
+							GridVisualization.makeLegend('green', Tile, 'rgb(64,255,64)');
+							GridVisualization.makeLegend('rho', Tile);
+							GridVisualization.makeLegend('mdl', Tile);
+							GridVisualization.makeLegend('wirehead', SelfModificationTile);
+							GridVisualization.addCircle(d3.select('#rho_svg'), 0, 0, GridVisualization.colors.rho);
+							GridVisualization.addCircle(d3.select('#mdl_svg'), 0, 0, GridVisualization.colors.rho);
+					</script>
+				</td>
+			</tr>
+		</table>
+	</div>
 </body>
+
 </html>

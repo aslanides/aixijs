@@ -1,26 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <title>
-        AIXIjs: General reinforcement learning in the browser
-    </title>
-    <meta charset="UTF-8">
+	<title>
+		AIXIjs: General reinforcement learning in the browser
+	</title>
+	<meta charset="UTF-8">
 	<meta name="description" content="A JavaScript demo for general reinforcement learning agents">
 	<meta name="author" content="John Aslanides, Sean Lamont, and Jan Leike">
 	<meta name="keywords" content="artificial intelligence, reinforcement learning, AIXI, gridworld">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="external/bootstrap.min.css">
-  <link rel="stylesheet" href="external/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="external/bootstrap.min.css">
+	<link rel="stylesheet" href="external/bootstrap-theme.min.css">
 
-  <link rel="icon" type="image/png" href="assets/favicon-32x32.png" sizes="32x32" />
-  <link rel="icon" type="image/png" href="assets/favicon-16x16.png" sizes="16x16" />
+	<link rel="icon" type="image/png" href="assets/favicon-32x32.png" sizes="32x32" />
+	<link rel="icon" type="image/png" href="assets/favicon-16x16.png" sizes="16x16" />
 
-  <script type="text/javascript" src="external/marked-0.3.6.min.js"></script>
-  <script type="text/javascript" src="external/jquery-2.2.3.min.js"></script>
+	<script type="text/javascript" src="external/marked-0.3.6.min.js"></script>
+	<script type="text/javascript" src="external/jquery-2.2.3.min.js"></script>
 
-  <script>
+	<script>
 		function renderMarkdown() {
 			$('.md').each(function (x) {
 				$(this).html(marked($(this).html()));
@@ -36,23 +37,24 @@
 			}
 			let script = document.createElement('script');
 			script.type = 'text/javascript';
-			script.src  = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+			script.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
 			document.getElementsByTagName('head')[0].appendChild(script);
 			jaxrendered = true;
 		}
 	</script>
-  </head>
-  <body onload='renderMarkdown()'>
-  <div id="wrap">
-  <div class="header">
-      <img src="assets/robot.png" alt="Roger the robot :)" style="width: 50px; float:left; margin: 0px 15px 15px 0px" />
-  	<h1 style="font-size:50px">AIXI<span style="color:#058;">js</span></h1>
-    <ul class="nav nav-pills">
-      <li role="presentation" class="active"><a href="index.html">About</a></li>
-      <li role="presentation"><a href="demo.html">Demos</a></li>
-    </ul>
-  </div>
-  <span class="md" id="rl">
+</head>
+
+<body onload='renderMarkdown()'>
+	<div id="wrap">
+		<div class="header">
+			<img src="assets/robot.png" alt="Roger the robot :)" style="width: 50px; float:left; margin: 0px 15px 15px 0px" />
+			<h1 style="font-size:50px">AIXI<span style="color:#058;">js</span></h1>
+			<ul class="nav nav-pills">
+				<li role="presentation" class="active"><a href="index.html">About</a></li>
+				<li role="presentation"><a href="demo.html">Demos</a></li>
+			</ul>
+		</div>
+		<span class="md" id="rl">
 ---
 
 # Contents
@@ -342,7 +344,7 @@ Of course, in practice (that is, for the purposes of our demos), we can't comput
 [Sutton &amp; Barto, 1998]: https://webdocs.cs.ualberta.ca/~sutton/book/the-book.html
 [Sunehag &amp; Hutter, 2015]: http://jmlr.org/papers/volume16/sunehag15a/sunehag15a.pdf
   </span>
-</div>
-  </body>
+	</div>
+</body>
 
 </html>
