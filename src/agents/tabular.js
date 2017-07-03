@@ -68,7 +68,7 @@ class SoftQLearn extends TabularAgent {
 	}
 
 	selectAction(e) {
-		return Util.argsoftmax(this.Q, (q, a) => q.get(e.obs, a), this.numActions, beta);
+		return Util.argsoftmax(this.Q, (q, a) => q.get(e.obs, a), this.numActions, this.beta);
 	}
 
 	TDUpdate(e) {
