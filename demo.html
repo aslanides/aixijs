@@ -303,14 +303,23 @@ to signify that the agent has taken this action and that its sensors have now be
 <span class="md" id="reward_corruption_exp" style="display:none">
 # Reward Corruption
 
-This demo shows the experiments for the paper <a href=https://arxiv.org/abs/1705.08417 target=_blank>Reinforcement Learning with a Corrupted Reward Channel</a>. We test tabular agents (Q-learning, SARSA, Softmax Q-learning, and Quantilising) in a standard gridworld with 4 dispensers, with one addition: a blue tile with a corrupt reward - its observed reward is high, but its true reward is low. Can the agents avoid getting stuck on the corrupt blue tile?
+This demo shows the experiments for the paper <a href=https://arxiv.org/abs/1705.08417 target=_blank>Reinforcement Learning with a Corrupted Reward Channel</a>, summarised in a blog post [here](http://www.tomeveritt.se/paper/2017/05/29/reinforcement-learning-with-corrupted-reward-channel.html).
 
-In this setup, the (observed) reward = true reward + corrupt reward. All the rewards are between 0 and 1. The observed rewards are as follows: blue tile 1, yellow dispenser tiles 0.9, empty tiles 0.1, wall 0. The true rewards are the same, except 0 for the blue tile.
+The setup is a standard gridworld with 4 dispensers, but with one addition: a blue tile with a corrupt reward. The blue tile represents bad ways of getting reward, such as wireheading or abusing a misspecified reward function. The blue tile has high observed reward, but low true reward.
 
-We recommend running the tabular agents for at least 100,000 cycles. Besides the usual agent parameters, you can set the temperature \\(\beta\\) for the softmax agent and the cutoff \\(\delta\\) for the quantilising agent. 
+Which agents get stuck on the corrupt blue tile? In the [paper](href=https://arxiv.org/abs/1705.08417 target=_blank), we show that Quantilisers are better at avoiding the corrupt reward than Q-learning and SARSA.
 
-## Optional: running experiments in the console
-If you'd like to reproduce the experiments in the paper or play around with the results, you can run the experiments in the console as follows:
+*Try running the different agents for 1000 time steps, and observe the difference in behaviour and true reward.*
+
+### Details
+In the plots, (observed) reward = true reward + corrupt reward.
+
+The observed rewards are as follows: blue tile 1, yellow dispenser tiles 0.9, empty tiles 0.1, wall 0. The true rewards are the same as the observed rewards, except the blue tile that has 0 true reward.
+
+Besides the usual agent parameters, you can set the temperature \\(\beta\\) for the softmax agent and the cutoff \\(\delta\\) for the quantilising agent. 
+
+### Running experiments in the console
+To reproduce the experiments in the paper, you can run the experiments in the console as follows:
 
 <code>for(let i=0; i<20; i++) {	demo.experiment([configs.reward_corruption_experiments], {download: true, agent: {type:Quantiliser, cycles:1000000}}) }</code>
 
