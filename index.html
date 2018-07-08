@@ -85,7 +85,7 @@ This page aims to provide an abridged introduction and survey of the GRL literat
 <a id="agent-env"></a>
 ## Agent-environment interaction
 
-In the standard [reinforcement learning] (RL) framework, the __agent__ and __environment__ play a turn-based game and interact in cycles ([Sutton &amp; Barto, 1998]). At time/cycle/turn \\(t\\), the agent supplies the environment with an __action__ \\(a\_t\\). The environment then performs some computation and returns a __percept__ \\(e_t\\) to the agent, and the cycle repeats.
+In the standard [reinforcement learning] (RL) framework, the __agent__ and __environment__ play a turn-based game and interact in steps ([Sutton &amp; Barto, 1998]). At time/step/turn \\(t\\), the agent supplies the environment with an __action__ \\(a\_t\\). The environment then performs some computation and returns a __percept__ \\(e_t\\) to the agent, and the step repeats.
 
 <p style="text-align: center"><img src="assets/agent-env.png" alt="agent-environment interaction" style="width: 200px"/></p>
 
@@ -179,7 +179,7 @@ The weights \\(w\_\nu\equiv\Pr\left(\nu\lvert ae\_{&lt;t}\right)\\) specify the 
 $$
 \Pr(\nu\lvert e\_t) = \frac{\Pr(e\_t\lvert \nu)\Pr(\nu)}{\Pr(e\_t)},
 $$
-which corresponds to performing the update at each cycle:
+which corresponds to performing the update at each step:
 $$
 w\_\nu\leftarrow\frac{\nu(e\_t)w\_\nu}{\xi(e\_t)}.
 $$
@@ -281,7 +281,7 @@ First, define the \\(\varepsilon\\)-effective horizon:
 $$
 H\_{t}^{\gamma}(\varepsilon) \stackrel{.}{=} \min\left\lbrace m\ :\ \sum\_{k=m}^{\infty}\gamma\_{t+k}\leq\varepsilon\right\rbrace,
 $$
-which is the minimum number of cycles ahead one needs to plan in order to account for a value of \\((1-\varepsilon)V\_{\nu}^{\pi}\\), for some \\(\varepsilon&gt;0\\). [Thompson Sampling] has been used as an exploration scheme in bandits, and more recently in MDPs. When generalized to POMDPs ([Leike et al., 2016]), Thompson sampling has a simple algorithm: every \\(H\_{t}^{\gamma}\\) steps, sample an environment \\(\rho\\) from the posterior belief distribution \\(w\_{\nu}\\), and use the \\(\rho\\)-optimal policy, re-sample, and repeat.
+which is the minimum number of steps ahead one needs to plan in order to account for a value of \\((1-\varepsilon)V\_{\nu}^{\pi}\\), for some \\(\varepsilon&gt;0\\). [Thompson Sampling] has been used as an exploration scheme in bandits, and more recently in MDPs. When generalized to POMDPs ([Leike et al., 2016]), Thompson sampling has a simple algorithm: every \\(H\_{t}^{\gamma}\\) steps, sample an environment \\(\rho\\) from the posterior belief distribution \\(w\_{\nu}\\), and use the \\(\rho\\)-optimal policy, re-sample, and repeat.
 
 ![Thompson sampling algorithm](assets/thompson.png)
 

@@ -76,7 +76,7 @@ const demo = {
 			options.agent._mods(this.agent);
 		}
 
-		this.trace = new this.agent.tracer(options.agent.cycles);
+		this.trace = new this.agent.tracer(options.agent.steps);
 
 		this.plots = [];
 		Plot.clearAll();
@@ -96,7 +96,7 @@ const demo = {
 			let fps = Util.roundTo(frames / second, 2);
 			this.trace.runtime = second;
 			this.trace.fps = fps;
-			console.log(`${frames} cycles, ${second} seconds (${fps} fps)`);
+			console.log(`${frames} steps, ${second} seconds (${fps} fps)`);
 
 			if (!novis && options.vis) {
 				this.vis = new options.vis(this.env, this.trace, this.ui);
@@ -126,7 +126,7 @@ const demo = {
 		trace.log(agent, env, a, e);
 		agent.update(a, e);
 
-		let cycle = _ => {
+		let step = _ => {
 			trace.log(agent, env, a, e);
 			a = agent.selectAction(e);
 			env.perform(a);
@@ -140,7 +140,7 @@ const demo = {
 					callback();
 					return;
 				}
-				cycle();
+				step();
 				for (let p of this.plots) {
 					p.dataUpdate(trace);
 				}
@@ -153,7 +153,7 @@ const demo = {
 				return;
 			}
 
-			cycle();
+			step();
 			for (let p of this.plots) {
 				p.dataUpdate(trace);
 				p.dataGUIUpdate();
@@ -186,7 +186,7 @@ const demo = {
 			params = {
 				runs: 1,
 				env: { N: 10 },
-				agent: { cycles: 200 },
+				agent: { steps: 200 },
 				download: false,
 			};
 		}
@@ -234,7 +234,7 @@ const demo = {
 
 				var rew = [];
 				var exp = [];
-				for (var j = 0; j < config.agent.cycles; j++) {
+				for (var j = 0; j < config.agent.steps; j++) {
 					if (j % frac == 0) {
 						rew.push(this.trace.averageReward[j]);
 						exp.push(this.trace.explored[j]);
@@ -246,7 +246,7 @@ const demo = {
 					explored: exp,
 					options: Util.deepCopy(this.config),
 					agent: this.config.agent.type.name,
-					cycles: this.trace.iter,
+					steps: this.trace.iter,
 					runtime: this.trace.runtime,
 					samples: this.agent.samples,
 					horizon: this.agent.horizon,
@@ -259,7 +259,7 @@ const demo = {
 				if (this.agent.tracer == RewardCorruptionTrace) {
 					var crew = [];
 					var trew = [];
-					for (let j = 0; j < config.agent.cycles; j++) {
+					for (let j = 0; j < config.agent.steps; j++) {
 						if (j % frac == 0) {
 							crew.push(this.trace.averageCorruptReward[j]);
 							trew.push(this.trace.averageTrueReward[j]);

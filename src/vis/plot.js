@@ -169,41 +169,41 @@ class TooltipPlot extends Plot {
 class ExplorationPlot extends TooltipPlot {
 	constructor(trace) {
 		super(trace, 'exp',
-			{ x: 'Cycles', y: '% explored', value: 'exp' }, 'explored');
+			{ x: 'Steps', y: '% explored', value: 'exp' }, 'explored');
 	}
 }
 
 class AverageRewardPlot extends TooltipPlot {
 	constructor(trace) {
 		super(trace, 'rew',
-			{ x: 'Cycles', y: 'Reward per Cycle', value: 'rew' }, 'averageReward');
+			{ x: 'Steps', y: 'Reward per Step', value: 'rew' }, 'averageReward');
 	}
 }
 
 class TotalRewardPlot extends TooltipPlot {
 	constructor(trace) {
 		super(trace, 'rew',
-			{ x: 'Cycles', y: 'Reward', value: 'rew' }, 'rewards');
+			{ x: 'Steps', y: 'Reward', value: 'rew' }, 'rewards');
 	}
 }
 
 class AverageTrueRewardPlot extends TooltipPlot {
 	constructor(trace) {
 		super(trace, 'trew',
-			{ x: 'Cycles', y: 'True Reward per Cycle', value: 'rew' }, 'averageTrueReward');
+			{ x: 'Steps', y: 'True Reward per Step', value: 'rew' }, 'averageTrueReward');
 	}
 }
 
 class AverageCorruptRewardPlot extends TooltipPlot {
 	constructor(trace) {
 		super(trace, 'crew',
-			{ x: 'Cycles', y: 'Corrupt Reward per Cycle', value: 'rew' }, 'averageCorruptReward');
+			{ x: 'Steps', y: 'Corrupt Reward per Step', value: 'rew' }, 'averageCorruptReward');
 	}
 }
 
 class IGPlot extends TooltipPlot {
 	constructor(trace) {
 		super(trace, 'ig',
-			{ x: 'Cycles', y: 'Information gain', value: 'IG' }, 'ig');
+			{ x: 'Steps', y: 'Information gain', value: 'IG' }, 'ig');
 	}
 }

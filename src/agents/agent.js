@@ -27,7 +27,7 @@ class Agent {
 }
 
 Agent.params = [
-	{ field: 'cycles', value: 2e2 },
+	{ field: 'steps', value: 2e2 },
 	{ field: 'discount', value: GeometricDiscount },
 	{ field: 'discountParams', value: { gamma: 0.99 } },
 ];

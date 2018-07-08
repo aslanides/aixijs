@@ -37,7 +37,7 @@ let a = null; // action
 let e = env.generatePercept() // percept
 
 // main loop
-for (let t = 0; t < options.cycles; t+s+) {
+for (let t = 0; t < options.steps; t+s+) {
 	trace.log(agent, env, a, e); // log info to trace
 	a = agent.selectAction(e); // agent computes its policy and selects an action
 	env.perform(a); // pass this action to the environment and compute dynamics

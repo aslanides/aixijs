@@ -5,7 +5,7 @@ class CTW {
 		this.rewBits = options.rewBits;
 		this.depth = options.depth;
 		this.perceptBits = this.obsBits + this.rewBits;
-		this.cycle = 0;
+		this.step = 0;
 		this.weights = Util.zeros(1);
 		this.saved_weights = [...this.weights];
 
@@ -46,7 +46,7 @@ class CTW {
 		let symbols = [];
 		Util.encode(symbols, a, this.actionBits);
 		this.ct.updateHistory(symbols);
-		this.cycle++;
+		this.step++;
 	}
 
 	update(a, e) {
@@ -66,15 +66,15 @@ class CTW {
 			this.ct.updateHistory(symbols);
 		}
 
-		this.cycle++;
+		this.step++;
 	}
 
 	save() {
-		this.saved_cycle = this.cycle;
+		this.saved_step = this.step;
 	}
 
 	load() {
-		let n = this.cycle - this.saved_cycle;
+		let n = this.step - this.saved_step;
 		for (let i = 0; i < n; i++) {
 			for (let j = 0; j < this.perceptBits; j++) {
 				this.ct.revert();

@@ -323,7 +323,7 @@ Besides the usual agent parameters, you can set the temperature \\(\beta\\) for 
 ### Running experiments in the console
 To reproduce the experiments in the paper, you can run the experiments in the console as follows:
 
-<code>for(let i=0; i<20; i++) {	demo.experiment([configs.reward_corruption_experiments], {download: true, agent: {type:Quantiliser, cycles:1000000}}) }</code>
+<code>for(let i=0; i<20; i++) {	demo.experiment([configs.reward_corruption_experiments], {download: true, agent: {type:Quantiliser, steps:1000000}}) }</code>
 
 The agent types are QLearn, SARSA, SoftQLearn, and Quantiliser. Code for analysing the experiments is given in this <a href=https://github.com/aslanides/aixijs/blob/master/experiments/analysis.ipynb target=_blank>iPython notebook</a>.
 

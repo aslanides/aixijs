@@ -7,9 +7,9 @@ const glossary = {
 		label: 'Theta',
 		description: 'Frequency that the dispenser dispenses rewards',
 	},
-	cycles: {
-		label: 'Cycles',
-		description: 'Number of cycles to run the simulation for (you can stop the simulation early)',
+	steps: {
+		label: 'Steps',
+		description: 'Number of steps to run the simulation for (you can stop the simulation early)',
 	},
 	gamma: {
 		label: 'Gamma',
@@ -62,7 +62,7 @@ const configs = {
 		agent: {
 			type: BayesAgent,
 			model: DirichletGrid,
-			cycles: 500,
+			steps: 500,
 			tracer: DirichletTrace,
 		},
 		env: {
@@ -89,7 +89,7 @@ const configs = {
 		agent: {
 			type: BayesAgent,
 			model: CTW,
-			cycles: 100,
+			steps: 100,
 		},
 		env: {
 			type: Gridworld,
@@ -161,7 +161,7 @@ const configs = {
 			agents: { SquareKSA, ShannonKSA, KullbackLeiblerKSA },
 			model: DirichletGrid,
 			tracer: DirichletTrace,
-			cycles: 500,
+			steps: 500,
 		},
 		env: {
 			type: Gridworld,
@@ -207,7 +207,7 @@ const configs = {
 			type: KullbackLeiblerKSA,
 			model: DirichletGrid,
 			tracer: DirichletTrace,
-			cycles: 500,
+			steps: 500,
 		},
 		env: {
 			type: Gridworld,
@@ -222,7 +222,7 @@ const configs = {
 			type: ShannonKSA,
 			model: DirichletGrid,
 			tracer: DirichletTrace,
-			cycles: 500,
+			steps: 500,
 		},
 		env: {
 			type: Gridworld,
@@ -236,7 +236,7 @@ const configs = {
 			type: SquareKSA,
 			model: DirichletGrid,
 			tracer: DirichletTrace,
-			cycles: 500,
+			steps: 500,
 		},
 		env: {
 			type: Gridworld,
@@ -280,7 +280,7 @@ const configs = {
 		vis: {},
 		agent: {
 			type: BayesAgent,
-			cycles: 100,
+			steps: 100,
 		},
 		env: {
 			type: IteratedPrisonersDilemma,
@@ -292,8 +292,9 @@ const configs = {
 		},
 	},
 	ql_dispenser: {
-		active: false,
+		active: true,
 		name: 'Q-Learning',
+		description: 'Tabular Q-Learning with optimistic initialization.',
 		vis: GridVisualization,
 		agent: {
 			type: QLearn,
@@ -315,7 +316,7 @@ const configs = {
 			alpha: 0.9,
 			gamma: 0.99,
 			epsilon: 0.05,
-			cycles: 1e3,
+			steps: 1e3,
 		},
 		env: {
 			type: Bandit,
@@ -342,7 +343,7 @@ const configs = {
 			alpha: 0.9,
 			gamma: 0.99,
 			epsilon: 0.05,
-			cycles: 1e3,
+			steps: 1e3,
 		},
 		env: {
 			type: BasicMDP,
@@ -487,7 +488,7 @@ const configs = {
 		agent: {
 			type: BayesAgent,
 			model: BayesMixture,
-			cycles: 100,
+			steps: 100,
 			_mods: function (agent) {
 				for (let m of agent.model.modelClass) {
 					for (let d of [[0, 1], [1, 0]]) {
@@ -521,7 +522,7 @@ const configs = {
 		vis: MDP2Vis,
 		agent: {
 			type: BayesAgent,
-			cycles: 10,
+			steps: 10,
 			modelParametrization: 'mu',
 		},
 		env: {
@@ -552,7 +553,7 @@ const configs = {
 		vis: PuckworldVis,
 		agent: {
 			type: DQN,
-			cycles: 3e3,
+			steps: 3e3,
 		},
 		env: {
 			type: Puckworld,
@@ -570,7 +571,7 @@ const configs = {
 			modelParametrization: 'mu',
 			horizon: 7,
 			samples: 1000,
-			cycles: 2e2,
+			steps: 2e2,
 			ucb: 0.03,
 			plan_caching: false,
 			discounts: {
