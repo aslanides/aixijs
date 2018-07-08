@@ -300,10 +300,12 @@ const configs = {
 			type: QLearn,
 			alpha: 0.9,
 			epsilon: 0.05,
+			steps: 500,
 		},
 		env: {
 			type: Gridworld,
 			state_percepts: true,
+			N: 20,
 		},
 	},
 	bandit: {
