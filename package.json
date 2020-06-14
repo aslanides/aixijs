@@ -1,19 +1,26 @@
 {
   "name": "aixijs",
-  "version": "0.8.0",
-  "description": "General Reinforcement Learning in the Browser.",
-  "main": "demo.js",
+  "version": "0.1.1",
+  "description": "Reinforcement learning in the browser",
+  "main": "index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "check": "gts check",
+    "clean": "gts clean",
+    "compile": "tsc -p .",
+    "fix": "gts fix",
+    "prepare": "npm run compile",
+    "pretest": "npm run compile",
+    "posttest": "npm run check"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/aslanides/aixijs.git"
   },
   "keywords": [
-    "AIXI",
-    "reinforcement",
-    "learning"
+    "reinforcement-learning",
+    "aixi",
+    "artificial-intelligence"
   ],
   "author": "John Aslanides",
   "license": "GPL-3.0",
@@ -22,6 +29,11 @@
   },
   "homepage": "https://github.com/aslanides/aixijs#readme",
   "dependencies": {
-    "eslint": "^4.1.1"
+    "parcel-bundler": "^1.12.4",
+    "typescript": "^3.9.5"
+  },
+  "devDependencies": {
+    "gts": "^1.1.2",
+    "typescript": "~3.4.0"
   }
 }
