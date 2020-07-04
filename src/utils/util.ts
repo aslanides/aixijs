@@ -208,7 +208,7 @@ export function randn(mu: number, std: number): number {
 	return mu + gaussRandom() * std;
 }
 
-export function argmax<T>(obj: T, accessor: (o: T, i: any) => number, size: number): number {
+export function argmax<T>(obj: T, accessor: (o: T, i: number) => number, size: number): number {
 	/* Arg-max, breaking ties at random. */
 	let max = Number.NEGATIVE_INFINITY;
 	let ties: number[] = [];

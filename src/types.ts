@@ -6,7 +6,7 @@ export interface Percept {
 
 // Actions are integers.
 export type Action = Integer;
-export type Observation = any;  // TODO(aslanides): nail this down.
+export type Observation = number;  // TODO(aslanides): generalise this.
 export type Reward = Float;
 
 // Primitive types (not enforced, of course, but for documentation).

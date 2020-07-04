@@ -240,7 +240,7 @@ export class Gridworld implements Environment {
 
 	generatePercept(): Percept {
 		return {
-			obs: this.pos.obs,
+			obs: this.pos.obs as number,
 			rew: this.reward,
 		};
 	}

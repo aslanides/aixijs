@@ -3,9 +3,9 @@ import { Gridworld, Dispenser, Tile } from "../environments/gridworld";
 import { Agent } from "../agents/base";
 import { Visualisation } from "./base";
 
-type SVG = d3.Selection<any, any, any, any>;
-type Rectangle = d3.Selection<SVGRectElement, any, any, any>;
-type Circle = d3.Selection<SVGCircleElement, any, any, any>;
+type SVG = d3.Selection<SVGSVGElement, unknown, HTMLElement, unknown>;
+type Rectangle = d3.Selection<SVGRectElement, unknown, HTMLElement, unknown>;
+type Circle = d3.Selection<SVGCircleElement, unknown, HTMLElement, unknown>;
 
 export class GridVisualisation implements Visualisation {
 	/* Visualisation for the Gridworld environment. */

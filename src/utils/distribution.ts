@@ -1,8 +1,8 @@
 import {assert, sum} from "./util";
 
 export interface Distribution {
-	sample(...args: any): number;
-	prob(x: any): number;
+	sample(...args: unknown[]): number;
+	prob(x: unknown): number;
 }
 
 export class Uniform implements Distribution {

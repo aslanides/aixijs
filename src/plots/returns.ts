@@ -10,7 +10,7 @@ export interface Result {
 export class ReturnPlot implements Plot {
 
   line: d3.Line<Result>;
-  svg: d3.Selection<any, any, any, any>;
+  svg: d3.Selection<SVGSVGElement, unknown, HTMLElement, unknown>;
 
   xScale: d3.ScaleLinear<number, number>;
   yScale: d3.ScaleLinear<number, number>;
@@ -27,12 +27,12 @@ export class ReturnPlot implements Plot {
     bottom: 20,
   };
 
-  xAxis: d3.Axis<any>;
-  yAxis: d3.Axis<any>;
-  path: any;
+  xAxis: d3.Axis<{valueOf(): number}>;
+  yAxis: d3.Axis<{valueOf(): number}>;
+  path: any; // TODO(aslanides): fix this!
 
-  xAxisLabel: d3.Selection<any, any, any, any>;
-  yAxisLabel: d3.Selection<any, any, any, any>;
+  xAxisLabel: d3.Selection<SVGGElement, unknown, HTMLElement, unknown>;
+  yAxisLabel: d3.Selection<SVGGElement, unknown, HTMLElement, unknown>;
 
   constructor() {
     // Plot dimensions.
@@ -65,6 +65,10 @@ export class ReturnPlot implements Plot {
       .attr('height', this.height)
       .attr('width', this.width)
       .attr('id', 'return_plot');
+    this.path = this.svg.append('path')
+      .attr('fill', 'none')
+      .attr('stroke', 'steelblue')
+      .attr('stroke-width', 2);
     this.clear();
     this.xAxis = d3.axisBottom(this.xScale);
     this.yAxis = d3.axisLeft(this.yScale).ticks(5);
