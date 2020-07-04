@@ -81,7 +81,7 @@ export class Gridworld implements Environment {
 		// Environment configuration.
 		this.options = util.deepCopy(options);
 		this.size = options.size;
-		util.assert(options.size < 50, 'Not recommended to have size >= 50.')
+		util.assert(options.size < 50, 'Not recommended to have size >= 50.');
 
 		// State.
 		this.reward = -1; // fix name conflict
@@ -95,11 +95,11 @@ export class Gridworld implements Environment {
 		
 		// Build grid.
 		this.grid = [];
-		const map = (options.map as string[][])
+		const map = (options.map as string[][]);
 		for (let i = 0; i < this.size; i++) {
 			this.grid[i] = new Array<Tile>(this.size);
 			for (let j = 0; j < this.size; j++) {
-				const tileType = map[j][i]
+				const tileType = map[j][i];
 				this.grid[i][j] = newTile(i, j, tileType);
 			}
 		}
@@ -107,9 +107,9 @@ export class Gridworld implements Environment {
 		// Construct goal tiles.
 		this.goals = [];
 		for (const goal of options.goals) {
-			const goalX = goal.x as number
-			const goalY = goal.y as number
-			const g = new Dispenser(goalX, goalY, goal.freq)
+			const goalX = goal.x as number;
+			const goalY = goal.y as number;
+			const g = new Dispenser(goalX, goalY, goal.freq);
 			this.grid[goalX][goalY] = g;
 			this.goals.push(g);
 		}
@@ -125,7 +125,7 @@ export class Gridworld implements Environment {
 		}
 
 		//
-		this.state = {x: this.pos.x, y: this.pos.y, reward: this.reward}
+		this.state = {x: this.pos.x, y: this.pos.y, reward: this.reward};
 	}
 
 	private generateConnexions() {
@@ -458,7 +458,7 @@ export class Tile {
 	// 
 	expanded?: boolean; //
 	visited?: boolean; //
-	parent?: Tile
+	parent?: Tile;
 
 	// For rendering.
 	color = GridVisualisation.colors.empty;
@@ -492,7 +492,7 @@ export class Chocolate extends Tile {
 
 export class Dispenser extends Tile {
 	freq: number; // Relative frequency of r2/r1.
-	rew = Gridworld.rewards.chocolate
+	rew = Gridworld.rewards.chocolate;
 	rew2 = Gridworld.rewards.empty;
 	color = GridVisualisation.colors.dispenser;
 	goal = true;

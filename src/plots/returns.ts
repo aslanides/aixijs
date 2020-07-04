@@ -1,5 +1,5 @@
-import * as d3 from "d3"
-import { Plot } from "./base"
+import * as d3 from "d3";
+import { Plot } from "./base";
 
 
 export interface Result {
@@ -9,14 +9,14 @@ export interface Result {
 
 export class ReturnPlot implements Plot {
 
-  line: d3.Line<Result>
-  svg: d3.Selection<any, any, any, any>
+  line: d3.Line<Result>;
+  svg: d3.Selection<any, any, any, any>;
 
-  xScale: d3.ScaleLinear<number, number>
-  yScale: d3.ScaleLinear<number, number>
+  xScale: d3.ScaleLinear<number, number>;
+  yScale: d3.ScaleLinear<number, number>;
 
-  xLim: [number, number]
-  yLim: [number, number]
+  xLim: [number, number];
+  yLim: [number, number];
 
   height = 500;
   width = 500;
@@ -27,12 +27,12 @@ export class ReturnPlot implements Plot {
     bottom: 20,
   };
 
-  xAxis: d3.Axis<any>
-  yAxis: d3.Axis<any>
+  xAxis: d3.Axis<any>;
+  yAxis: d3.Axis<any>;
   path: any;
 
-  xAxisLabel: d3.Selection<any, any, any, any>
-  yAxisLabel: d3.Selection<any, any, any, any>
+  xAxisLabel: d3.Selection<any, any, any, any>;
+  yAxisLabel: d3.Selection<any, any, any, any>;
 
   constructor() {
     // Plot dimensions.
@@ -41,8 +41,8 @@ export class ReturnPlot implements Plot {
     this.height -= (this.margin.top + this.margin.bottom);
 
     // Create x scale.
-    this.xLim = [0, 0]
-    this.yLim = [0, 0]
+    this.xLim = [0, 0];
+    this.yLim = [0, 0];
     this.xScale = d3
       .scaleLinear()
       .domain(this.xLim)
@@ -66,32 +66,32 @@ export class ReturnPlot implements Plot {
       .attr('width', this.width)
       .attr('id', 'return_plot');
     this.clear();
-    this.xAxis = d3.axisBottom(this.xScale)
-    this.yAxis = d3.axisLeft(this.yScale).ticks(5)
+    this.xAxis = d3.axisBottom(this.xScale);
+    this.yAxis = d3.axisLeft(this.yScale).ticks(5);
     this.xAxisLabel = this.svg.append('g')
-      .attr('class', 'x axis')
+      .attr('class', 'x axis');
     this.yAxisLabel = this.svg.append('g')
-      .attr('class', 'y axis')
+      .attr('class', 'y axis');
   }
 
   update(results: Result[]): void {
     // Update limits.
-    this.updateLimits(results[results.length - 1])
-    this.xScale.domain(this.xLim)
-    this.yScale.domain(this.yLim)
+    this.updateLimits(results[results.length - 1]);
+    this.xScale.domain(this.xLim);
+    this.yScale.domain(this.yLim);
 
-    this.path.attr('d', this.line(results))  // Probably O(N). Fix this with join() nonsense.
+    this.path.attr('d', this.line(results));  // Probably O(N). Fix this with join() nonsense.
 
-    this.yAxisLabel.call(this.yAxis)
-    this.xAxisLabel.call(this.xAxis)
+    this.yAxisLabel.call(this.yAxis);
+    this.xAxisLabel.call(this.xAxis);
 
   }
 
   clear() {
-    this.xLim = [0, 0]
-    this.yLim = [0, 0]
+    this.xLim = [0, 0];
+    this.yLim = [0, 0];
     this.svg.selectAll('*').remove();
-    (document.getElementById('return_plot') as HTMLDivElement).remove()
+    (document.getElementById('return_plot') as HTMLDivElement).remove();
     this.svg = d3.select('#plots')
       .append('svg')
       .attr('height', this.height)
@@ -100,11 +100,11 @@ export class ReturnPlot implements Plot {
     this.path = this.svg.append('path')
       .attr('fill', 'none')
       .attr('stroke', 'steelblue')
-      .attr('stroke-width', 2)
+      .attr('stroke-width', 2);
     this.xAxisLabel = this.svg.append('g')
-      .attr('class', 'x axis')
+      .attr('class', 'x axis');
     this.yAxisLabel = this.svg.append('g')
-      .attr('class', 'y axis')
+      .attr('class', 'y axis');
 
   }
 

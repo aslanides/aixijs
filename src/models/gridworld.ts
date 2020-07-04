@@ -9,16 +9,16 @@ export class DirichletGrid implements Model {
 	/* A Dirichlet model for a gridworld. */
 
 	// Environment parameters.
-	A: number // Size of action space.
-	size: number // Size of the gridworld.
+	A: number; // Size of action space.
+	size: number; // Size of the gridworld.
 	T = 4;  // Grid connection topology
 
 	// Model state.
-	grid: DirichletTile[][]
+	grid: DirichletTile[][];
 	pos: DirichletTile;
 	savedPos: {x: number, y: number};
 	
-	params: number[][][]  // 
+	params: number[][][];  // 
 	paramQueue: Queue<number[]>;
 	savedParams: number[][][];
 
@@ -32,7 +32,7 @@ export class DirichletGrid implements Model {
 	e?: Percept;
 
 	// TODO(aslanides): document this.
-	wall: DirichletTile
+	wall: DirichletTile;
 
 	constructor(size: number) {
 		this.actions = Gridworld.actions;
@@ -317,10 +317,10 @@ class DirichletTile extends Tile {
 
 	children: Tile[];
 	neighbors: DirichletTile[];
-	pr: Dirichlet  // 
+	pr: Dirichlet;  // 
 
 	constructor(x: number, y: number) {
-		super(x, y)
+		super(x, y);
 		this.children = [];
 		this.children.push(new Tile(x, y));
 		this.children.push(new Dispenser(x, y, 1));

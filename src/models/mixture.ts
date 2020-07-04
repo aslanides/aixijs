@@ -6,10 +6,10 @@ import { Environment } from "../environments/base";
 export class BayesMixture implements Model {
 	/* A Bayesian mixture model. */
 
-	modelClass: Model[]
-	weights: number[]  // The relative weights over the model/hypothesis class.
-	savedWeights: number[] // For checkpointing.
-	C: number // The size of the hypothesis class.
+	modelClass: Model[];
+	weights: number[];  // The relative weights over the model/hypothesis class.
+	savedWeights: number[]; // For checkpointing.
+	C: number; // The size of the hypothesis class.
 
 	numActions: number;
 
@@ -103,6 +103,6 @@ export class BayesMixture implements Model {
 	}
 
 	info() {
-		return {}
+		return {};
 	}
 }

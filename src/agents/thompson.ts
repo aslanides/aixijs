@@ -7,16 +7,16 @@ import { NoDiscount } from "../utils/discount";
 import { Model } from "../models/base";
 
 export class ThompsonAgent extends BayesAgent {
-	rho: Model
-	model: BayesMixture
+	rho: Model;
+	model: BayesMixture;
 	
 	horizon: number;
-	t = 0  // Lifetime.
+	t = 0;  // Lifetime.
 
 	constructor(options: MCTSOptions, model: BayesMixture, horizon: number) {
 		super(options, model, (e: Percept) => e.rew, NoDiscount());
 		this.rho = this.thompsonSample();
-		this.horizon = horizon
+		this.horizon = horizon;
 		this.model = model;
 	}
 
@@ -25,7 +25,7 @@ export class ThompsonAgent extends BayesAgent {
 		const rho = this.model.modelClass[idx];
 		this.planner.model =rho;
 		this.planner.reset();
-		return rho
+		return rho;
 	}
 
 	update(a: Action, e: Percept) {

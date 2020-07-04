@@ -1,6 +1,6 @@
 import * as gridworld from './environments/gridworld';
 import { RandomAgent } from './agents/random';
-import { Experiment } from './experiment'
+import { Experiment } from './experiment';
 import { GridVisualisation } from './visualisations/gridvis';
 import { ReturnPlot } from './plots/returns';
 import { BayesAgent } from './agents/bayes';
@@ -10,7 +10,7 @@ import { Percept } from './types';
 
 
 interface Options {
-  [key: string]: unknown,
+  [key: string]: unknown;
 }
 
 const environmentOptions = {
@@ -21,14 +21,14 @@ const environmentOptions = {
 
 const experimentOptions = {
   numSteps: 3000,
-}
+};
 
 const agentOptions = {
   alpha: 0.1,
   gamma: 0.99,
   epsilon: 0.05,
   initialQ: 1,
-}
+};
 
 let experiment: Experiment;
 
@@ -36,7 +36,7 @@ function newExperiment(): Experiment {
   const environment = gridworld.generateRandom(environmentOptions);
   // const agent = new RandomAgent(environment.numActions);
   // const agent = new QLearning(environment.numActions, agentOptions) // NOT WORKING
-  const model = gridworld.makeModel(environment, 'foo')
+  const model = gridworld.makeModel(environment, 'foo');
 
   const options = {
     horizon: 6,
@@ -46,25 +46,25 @@ function newExperiment(): Experiment {
     maxReward: environment.maxReward,
     minReward: environment.minReward,
     numActions: environment.numActions,
-  }
+  };
 
-  const agent = new BayesAgent(options, model, (e: Percept) => e.rew, NoDiscount())
+  const agent = new BayesAgent(options, model, (e: Percept) => e.rew, NoDiscount());
 
   const plot = new ReturnPlot();
   const visualisation = new GridVisualisation(environment as gridworld.Gridworld);
 
   const experiment = new Experiment(agent, environment, [plot], [visualisation]);
 
-  return experiment
+  return experiment;
 }
 
 experiment = newExperiment();
 
 makeButtons();
 
-makeUIOptions(experimentOptions, 'Experiment Options')
-makeUIOptions(environmentOptions, 'Environment Options')
-makeUIOptions(agentOptions, 'Agent Options')
+makeUIOptions(experimentOptions, 'Experiment Options');
+makeUIOptions(environmentOptions, 'Environment Options');
+makeUIOptions(agentOptions, 'Agent Options');
 
 function makeButtons() {
   /** TODO(aslanides): docstring. */
@@ -88,31 +88,31 @@ function makeUIOptions(options: Options, name: string) {
   if (Object.keys(options).length === 0) return;
 
   // Make a new section.
-  const section = document.createElement('div')
-  section.id = name
-  setupDiv.appendChild(section)
+  const section = document.createElement('div');
+  section.id = name;
+  setupDiv.appendChild(section);
 
   // Make a new heading.
-  const heading = document.createElement('h3')
-  heading.innerText = name
-  section.appendChild(heading)
+  const heading = document.createElement('h3');
+  heading.innerText = name;
+  section.appendChild(heading);
 
   // Add inputs for fields.
   for (const [field, value] of Object.entries(options)) {
-    const dataType = typeof(value)
+    const dataType = typeof(value);
 
     if (dataType !== 'number' && dataType !== 'boolean') {
-      console.log(`Warning: not implemented for datatype: ${dataType}.`)
+      console.log(`Warning: not implemented for datatype: ${dataType}.`);
       continue;
     }
 
     // Add label.
-    const label = document.createElement('label')
-    label.innerHTML = `<b>${field}: </b>`
-    section.appendChild(label)
+    const label = document.createElement('label');
+    label.innerHTML = `<b>${field}: </b>`;
+    section.appendChild(label);
 
     // Add input.
-    const input = document.createElement('input')
+    const input = document.createElement('input');
     if (typeof(value) === 'boolean') {
       input.type = 'checkbox';
       input.checked = value;
@@ -125,13 +125,13 @@ function makeUIOptions(options: Options, name: string) {
     input.addEventListener('change', (_: Event) => {
       // Whenever the user changes an option, we want to create a new experiment.
       // Update the options.
-      options[field] = (dataType === 'number' ? +input.value : input.checked)
-      console.log(options)
+      options[field] = (dataType === 'number' ? +input.value : input.checked);
+      console.log(options);
 
       // Create a new Experiment.
       experiment = newExperiment();
 
-    })
+    });
     section.appendChild(input);
   }
 }  

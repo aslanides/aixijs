@@ -10,8 +10,8 @@ let RUNNING = false;
 export class Experiment {
   /* TODO(aslanides): docstring. */
 
-  agent: Agent
-  environment: Environment
+  agent: Agent;
+  environment: Environment;
 
   plots: Plot[] = [];
   visualisations: Visualisation[] = [];
@@ -22,8 +22,8 @@ export class Experiment {
               visualisations?: Visualisation[]) {
     this.agent = agent;
     this.environment = environment;
-    if (plots) this.plots = plots
-    if (visualisations) this.visualisations = visualisations
+    if (plots) this.plots = plots;
+    if (visualisations) this.visualisations = visualisations;
   }
 
   run(tMax: number) {
@@ -32,7 +32,7 @@ export class Experiment {
     if (RUNNING) return;
     CANCELLED = false;
     RUNNING = true;
-    console.log('Experiment started.')
+    console.log('Experiment started.');
 
     // Logging.
     const results: object[] = [];
@@ -55,24 +55,24 @@ export class Experiment {
 
       // Book-keeping.
       totalReturn += e.rew;
-      const result = { step, return: totalReturn }
-      results.push(result)
+      const result = { step, return: totalReturn };
+      results.push(result);
       step++;
 
       // Update plots / logging.
       for (const plot of this.plots) plot.update(results);
-      for (const vis of this.visualisations) vis.update(agent, environment)
+      for (const vis of this.visualisations) vis.update(agent, environment);
 
       // Queue up next iteration.
-      setTimeout(simulate)
-    }
+      setTimeout(simulate);
+    };
 
-    simulate()
+    simulate();
   }
 
   stop(): void {
     if (!RUNNING) return;
-    console.log('Experiment stopped.')
+    console.log('Experiment stopped.');
     CANCELLED = true;
     RUNNING = false;
   }

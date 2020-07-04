@@ -4,36 +4,36 @@ import * as util from "../utils/util";
 import { QTable } from "../utils/qtable";
 
 interface TDLearner {
-	TDUpdate(e: Percept): Action
+	TDUpdate(e: Percept): Action;
 }
 
 interface TabularOptions {
-	alpha: number  // Learning rate.
-	gamma: number // Geometric discount factor.
-	epsilon: number  // Exploration epsilon.
-	initialQ: number  // Initial Q values
+	alpha: number;  // Learning rate.
+	gamma: number; // Geometric discount factor.
+	epsilon: number;  // Exploration epsilon.
+	initialQ: number;  // Initial Q values
 }
 
 export class TabularAgent implements Agent, TDLearner {
 	/* A tabular learning agent. */
 
 	// How many steps the agent has taken.
-	lifetime: number
+	lifetime: number;
 
 	// Number of actions in the environment.
 	numActions: number;
 
 	// Agent hyperparameters.
-	alpha: number // Learning rate for TD updates.
-	epsilon: number // Assumes epsilon-greedy policy.
-	gamma: number // Geometric discount factor.
+	alpha: number; // Learning rate for TD updates.
+	epsilon: number; // Assumes epsilon-greedy policy.
+	gamma: number; // Geometric discount factor.
 
 	// Model state.
 	Q: QTable;
-	lastAction?: Action
+	lastAction?: Action;
 
 	// Stuff for tracing.
-	lastQ: number  // TODO(aslanides): Remove this.
+	lastQ: number;  // TODO(aslanides): Remove this.
 	lastObservation = 0;
 
 	constructor(numActions: number, options: TabularOptions) {
@@ -56,7 +56,7 @@ export class TabularAgent implements Agent, TDLearner {
 	}
 
 	selectAction(e: Percept): Action {
-		console.log(e)
+		console.log(e);
 		if (Math.random() < this.epsilon) {
 			return util.randi(0, this.numActions);
 		}
@@ -78,15 +78,15 @@ export class TabularAgent implements Agent, TDLearner {
 
 	TDUpdate(e: Percept): Action {
 		// On-policy.
-		return this.selectAction(e)
+		return this.selectAction(e);
 	}
 
 	utility(e: Percept): Reward {
-		return e.rew
+		return e.rew;
 	}
 
 	info() {
-		return {}
+		return {};
 	}
 }
 

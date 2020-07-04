@@ -16,7 +16,7 @@ import { Percept, Action, Reward, UtilityFn, DiscountFn, Integer } from "../type
 import { Model } from "../models/base";
 
 // A reward function combines utility and discount.
-type RewardFn = (e: Percept, dfr: number, t?: number) => Reward
+type RewardFn = (e: Percept, dfr: number, t?: number) => Reward;
 
 export interface MCTSOptions {
   // Search configuration.
@@ -35,49 +35,49 @@ export class ExpectimaxTree {
   /* An MCTS planner. */
 
   // Stateful environment model.
-  model: Model
+  model: Model;
 
   // Search hyperparameters.
-  horizon: number
-  samples: number
-  timeout?: number
-  ucb: number
+  horizon: number;
+  samples: number;
+  timeout?: number;
+  ucb: number;
 
   // Planner state.
-  sampled = false
+  sampled = false;
   totalSamples = 0;
 
   // 
-  root: DecisionNode
-  rewardFn: RewardFn
+  root: DecisionNode;
+  rewardFn: RewardFn;
 
   // Metadata
-  numActions: number
-  rewardRange: Reward
-  minReward: Reward
+  numActions: number;
+  rewardRange: Reward;
+  minReward: Reward;
 
   constructor(
     options: MCTSOptions,
     model: Model,
     utilityFn: UtilityFn,
     discountFn: DiscountFn,
-    t = 0,
+    t = 0
   ) {
 
     // MCTS options.
     this.model = model;
     this.horizon = options.horizon;
     this.ucb = options.ucb;
-    this.samples = options.samples
-    this.timeout = options.timeout
+    this.samples = options.samples;
+    this.timeout = options.timeout;
 
     // Environment metadata.
     this.rewardRange = options.maxReward - options.minReward;
     this.numActions = options.numActions;
-    this.minReward = options.minReward
+    this.minReward = options.minReward;
 
     // Agent reward function.
-    this.rewardFn = (e: Percept, dfr: Integer, t?: Integer) => discountFn(dfr, t) * utilityFn(e)
+    this.rewardFn = (e: Percept, dfr: Integer, t?: Integer) => discountFn(dfr, t) * utilityFn(e);
 
     this.root = this.reset();
   }
@@ -112,17 +112,17 @@ export class ExpectimaxTree {
   bestAction() {
     this.getValueEstimate();
 
-    const values = []
+    const values = [];
     for (const a of this.root.children.keys()) {
       const child = this.root.getChild(a);
-      values.push(child ? child.mean : 0)
+      values.push(child ? child.mean : 0);
     }
     
     const accessor = (n: DecisionNode, a: Action) => {
-      const child = n.getChild(a)
-      return child ? child.mean : 0
-    }
-    return util.argmax(this.root, accessor, this.numActions)
+      const child = n.getChild(a);
+      return child ? child.mean : 0;
+    };
+    return util.argmax(this.root, accessor, this.numActions);
   }
 
   reset(): DecisionNode {
@@ -183,7 +183,7 @@ export class ExpectimaxTree {
         }
       }
     }
-    util.assert(a !== undefined)
+    util.assert(a !== undefined);
 
     return a as Action;
   }
@@ -197,7 +197,7 @@ export class ExpectimaxTree {
       reward = this.rollout(this.horizon, dfr);
     } else {
       const action = this.selectAction(node, dfr);
-      reward = this.sample2(node.getChild(action), dfr)
+      reward = this.sample2(node.getChild(action), dfr);
     }
 
     node.mean = (1 / (node.visits + 1)) * (reward + node.visits * node.mean);
@@ -217,7 +217,7 @@ export class ExpectimaxTree {
         node.addChild(e);
       }
 
-      reward = this.rewardFn(e, dfr) + this.sample1(node.getChild(e) as DecisionNode, dfr + 1)
+      reward = this.rewardFn(e, dfr) + this.sample1(node.getChild(e) as DecisionNode, dfr + 1);
     }
 
     node.mean = (1 / (node.visits + 1)) * (reward + node.visits * node.mean);
@@ -229,10 +229,10 @@ export class ExpectimaxTree {
 class DecisionNode {
   /* A decision node for MCTS. */
 
-  visits: number  // Visit count.
-  mean: number  // Mean value.
-  e?: Percept
-  children: ChanceNode[] // Child nodes.
+  visits: number;  // Visit count.
+  mean: number;  // Mean value.
+  e?: Percept;
+  children: ChanceNode[]; // Child nodes.
   nChildren: number;
   numActions: number;
   rewardRange: number;
@@ -246,7 +246,7 @@ class DecisionNode {
     this.children = new Array(numActions);
     this.nChildren = 0;
     this.actionSet = util.randInts(numActions);
-    this.numActions = numActions
+    this.numActions = numActions;
     this.rewardRange = rewardRange;
   }
 
@@ -263,9 +263,9 @@ class DecisionNode {
 class ChanceNode {
   /* A chance node for MCTS. */
 
-  visits: number  // Visit count.
-  mean: number  // Mean value.
-  action: Action   // The action taken to get here.
+  visits: number;  // Visit count.
+  mean: number;  // Mean value.
+  action: Action;   // The action taken to get here.
   children: Map<Action, DecisionNode>;
   rewardRange: number;
   numActions: number;
@@ -280,13 +280,13 @@ class ChanceNode {
   }
 
   addChild(e: Percept): void {
-    const key = e.obs * this.rewardRange + e.rew
-    const node = new DecisionNode(this.numActions, this.rewardRange, e)
-    this.children.set(key, node)
+    const key = e.obs * this.rewardRange + e.rew;
+    const node = new DecisionNode(this.numActions, this.rewardRange, e);
+    this.children.set(key, node);
   }
 
   getChild(e: Percept): DecisionNode | undefined {
-    const key = e.obs * this.rewardRange + e.rew
+    const key = e.obs * this.rewardRange + e.rew;
     return this.children.get(key);
   }
 }

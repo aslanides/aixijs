@@ -2,8 +2,8 @@ export class Queue<T> {
 	/* A simple generic queue. */
 
 	arr: T[];
-	N: number
-	pos: number
+	N: number;
+	pos: number;
 
 	constructor() {
 		this.arr = [];

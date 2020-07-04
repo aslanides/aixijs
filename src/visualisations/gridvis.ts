@@ -3,18 +3,18 @@ import { Gridworld, Dispenser, Tile } from "../environments/gridworld";
 import { Agent } from "../agents/base";
 import { Visualisation } from "./base";
 
-type SVG = d3.Selection<any, any, any, any>
-type Rectangle = d3.Selection<SVGRectElement, any, any, any>
-type Circle = d3.Selection<SVGCircleElement, any, any, any>
+type SVG = d3.Selection<any, any, any, any>;
+type Rectangle = d3.Selection<SVGRectElement, any, any, any>;
+type Circle = d3.Selection<SVGCircleElement, any, any, any>;
 
 export class GridVisualisation implements Visualisation {
 	/* Visualisation for the Gridworld environment. */
 
-	svg: SVG
+	svg: SVG;
 	rectangles: Rectangle[][] = [];
 
-	tileSize: number
-	static minTileSizePx = 40
+	tileSize: number;
+	static minTileSizePx = 40;
 
 	static colors = {
 		empty: '#fdfdfd',
@@ -47,7 +47,7 @@ export class GridVisualisation implements Visualisation {
 			.append('svg')
 			.attr('width', width)
 			.attr('height', height)
-			.attr('id', 'gridvis')
+			.attr('id', 'gridvis');
 
 		// Create grid of rectangles corresponding to each Tile.
 		env.grid.forEach((row, idx) => {
@@ -69,7 +69,7 @@ export class GridVisualisation implements Visualisation {
 			.attr('height', this.tileSize)
 			.attr('width', this.tileSize)
 			.attr('id', 'agent')
-			.attr('fill', 'blue')
+			.attr('fill', 'blue');
 	}
 
 	update(agent: Agent, env: Gridworld) {
@@ -87,7 +87,7 @@ function addCircle(svg: SVG, x: number, y: number, color: string, id: string, ti
 		.attr('fill', color)
 		.attr('stroke', '#000')
 		.attr('id', id);
-	return circle
+	return circle;
 }
 
 function addTile(svg: SVG, t: Tile, size: number, color?: string): Rectangle {

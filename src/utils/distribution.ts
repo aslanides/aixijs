@@ -1,14 +1,14 @@
-import {assert, sum} from "./util"
+import {assert, sum} from "./util";
 
 export interface Distribution {
-	sample(...args: any): number
-	prob(x: any): number
+	sample(...args: any): number;
+	prob(x: any): number;
 }
 
 export class Uniform implements Distribution {
 	// A simple uniform distribution U(a, b).
-	a: number
-	b: number
+	a: number;
+	b: number;
 
 	constructor(a: number, b: number) {
 		assert(b > a);
@@ -32,7 +32,7 @@ export class Uniform implements Distribution {
 
 export class Bernoulli implements Distribution {
 	// A simple Bernoulli distribution Bern(p).
-	p: number
+	p: number;
 	constructor(p: number) {
 		this.p = p;
 	}
@@ -55,12 +55,12 @@ export class Bernoulli implements Distribution {
 
 export class Normal implements Distribution {
 	// A standard normal distribution N(mu, sigma)
-	mu: number
-	sigma: number
+	mu: number;
+	sigma: number;
 
 	// TODO(aslanides): Fix interface here.
 	constructor(mu: number, sigma: number) {
-		this.mu = mu
+		this.mu = mu;
 		this.sigma = sigma;
 	}
 
@@ -91,15 +91,15 @@ export class Normal implements Distribution {
 }
 
 function factorial(n: number): number {
-	assert(n >= 1)
+	assert(n >= 1);
 	if (n === 1) return 1;
-	return n * factorial(n-1)
+	return n * factorial(n-1);
 }
 
 export class Beta implements Distribution {
 	// Standard Beta distribution B(alpha, beta).
-	alpha: number
-	beta: number
+	alpha: number;
+	beta: number;
 
 	constructor(alpha: number, beta: number) {
 		this.alpha = alpha;
@@ -130,8 +130,8 @@ export class Beta implements Distribution {
 export class Dirichlet implements Distribution {
 	// Standard Dirichlet distribution for categorical variables.
 
-	alphas: number[]
-	K: number
+	alphas: number[];
+	K: number;
 	alphaSum: number;
 
 	constructor(alphas: number[]) {

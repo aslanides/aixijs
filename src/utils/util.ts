@@ -1,4 +1,4 @@
-const clone = require('rfdc')()
+const clone = require('rfdc')();
 
 // TODO(aslanides): Use Float32Array.
 export function zeros(n: number): Float32Array {
@@ -37,7 +37,7 @@ export function prod(arr: number[]): number {
 }
 
 export function deepCopy<T>(obj: T): T {
-	return clone(obj)
+	return clone(obj);
 }
 
 export function arrayCopy<T>(arr: T[]): T[] {
@@ -193,8 +193,8 @@ export function gaussRandom(retval=false, val=0): number {
 
 export function randi(a: number, b: number): number {
 	// Random integer in range {a, ..., b}.
-	a = Math.floor(a)
-	b = Math.floor(b)
+	a = Math.floor(a);
+	b = Math.floor(b);
 	return Math.floor(Math.random() * (b - a)) + a;
 }
 

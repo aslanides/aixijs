@@ -1,15 +1,15 @@
-import {Agent} from "./base"
-import { Model } from "../models/base"
-import { Action, Percept, Reward, UtilityFn , DiscountFn} from "../types"
-import { ExpectimaxTree, MCTSOptions } from "../planners/mcts"
+import {Agent} from "./base";
+import { Model } from "../models/base";
+import { Action, Percept, Reward, UtilityFn , DiscountFn} from "../types";
+import { ExpectimaxTree, MCTSOptions } from "../planners/mcts";
 
 
 export class BayesAgent implements Agent {
 	/* A Bayesian model-based reinforcement learner. */
 
 	// Agent state
-	model: Model
-	planner: ExpectimaxTree
+	model: Model;
+	planner: ExpectimaxTree;
 	lastAction?: Action;
 
 	// Stuff for logging DO NOT SUBMIT without fixing up.
@@ -23,7 +23,7 @@ export class BayesAgent implements Agent {
 		// TODO assert options OK
 		this.informationGain = 0;
 		this.model = model;
-		this.planner = new ExpectimaxTree(options, model, utilityFn, discountFn)
+		this.planner = new ExpectimaxTree(options, model, utilityFn, discountFn);
 	}
 
 	update(a: Action, e: Percept) {
@@ -41,13 +41,13 @@ export class BayesAgent implements Agent {
 		}
 
 		const a = this.planner.bestAction();
-		this.lastAction = a
+		this.lastAction = a;
 
 		return a;
 	}
 
 	info(): object {
 		// TODO(aslanides): DO NOT SUBMIT without fixing this.
-		return {}
+		return {};
 	}
 }

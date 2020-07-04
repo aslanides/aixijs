@@ -4,14 +4,14 @@
   "description": "Reinforcement learning in the browser",
   "main": "index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "check": "gts check",
     "clean": "gts clean",
-    "compile": "tsc -p .",
+    "compile": "tsc",
     "fix": "gts fix",
     "prepare": "npm run compile",
     "pretest": "npm run compile",
-    "posttest": "npm run check"
+    "posttest": "npm run check",
+    "serve": "parcel main.html"
   },
   "repository": {
     "type": "git",
@@ -34,12 +34,15 @@
     "seedrandom": "^3.0.5"
   },
   "devDependencies": {
-    "parcel-bundler": "1.12.4",
     "@types/d3": "^5.7.2",
+    "@types/jest": "^26.0.3",
     "@types/node": "^14.0.14",
     "@types/rfdc": "^1.1.0",
     "@types/seedrandom": "^2.4.28",
-    "gts": "^1.1.2",
+    "gts": "^2.0.2",
+    "jest": "^26.1.0",
+    "parcel-bundler": "1.12.4",
+    "ts-jest": "^26.1.1",
     "typescript": "^3.9.6"
   }
 }

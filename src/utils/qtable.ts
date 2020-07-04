@@ -4,7 +4,7 @@ export class QTable {
 	// A tabular dictionary for action-values.
 	// Assumes that observations are state indices, i.e. integers.
 
-	map: Map<number, number>  // Dictionary mapping (s, a) -> Q(s, a).
+	map: Map<number, number>;  // Dictionary mapping (s, a) -> Q(s, a).
 	initialQ: number;  // Initial Q-values.
 	numActions: number; // Number of actions in environment.
 
