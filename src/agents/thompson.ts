@@ -1,5 +1,5 @@
 import { BayesAgent } from "./bayes";
-import { MCTSOptions } from "../planners/mcts";
+import { MCTSOptions } from "../utils/mcts";
 import { sample } from "../utils/util";
 import { BayesMixture } from "../models/mixture";
 import { Action, Percept } from "../types";

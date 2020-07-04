@@ -1,4 +1,4 @@
-import { MCTSOptions, ExpectimaxTree } from "../planners/mcts";
+import { MCTSOptions, ExpectimaxTree } from "../utils/mcts";
 import { DiscountFn, Percept, Action } from "../types";
 import { Model } from "../models/base";
 import { BayesAgent } from "./bayes";

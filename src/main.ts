@@ -4,7 +4,6 @@ import { Experiment } from './experiment';
 import { GridVisualisation } from './visualisations/gridvis';
 import { ReturnPlot } from './plots/returns';
 import { BayesAgent } from './agents/bayes';
-import { env } from 'process';
 import { NoDiscount } from './utils/discount';
 import { Percept } from './types';
 

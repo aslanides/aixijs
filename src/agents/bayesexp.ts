@@ -3,7 +3,7 @@ import { Agent } from "./base";
 import { Model } from "../models/base";
 import { KullbackLeiblerKSA } from "./ksa";
 import { BayesAgent } from "./bayes";
-import { MCTSOptions } from "../planners/mcts";
+import { MCTSOptions } from "../utils/mcts";
 
 
 

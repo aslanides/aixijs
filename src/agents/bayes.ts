@@ -1,7 +1,7 @@
 import {Agent} from "./base";
 import { Model } from "../models/base";
 import { Action, Percept, Reward, UtilityFn , DiscountFn} from "../types";
-import { ExpectimaxTree, MCTSOptions } from "../planners/mcts";
+import { ExpectimaxTree, MCTSOptions } from "../utils/mcts";
 
 
 export class BayesAgent implements Agent {
