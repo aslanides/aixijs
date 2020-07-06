@@ -1,6 +1,5 @@
-import * as d3 from "d3";
-import { Plot } from "./base";
-
+import * as d3 from 'd3';
+import {Plot} from './base';
 
 export interface Result {
   step: number;
@@ -8,7 +7,6 @@ export interface Result {
 }
 
 export class ReturnPlot implements Plot {
-
   line: d3.Line<Result>;
   svg: d3.Selection<SVGSVGElement, unknown, HTMLElement, unknown>;
 
@@ -37,8 +35,8 @@ export class ReturnPlot implements Plot {
   constructor() {
     // Plot dimensions.
 
-    this.width -= (this.margin.left + this.margin.right);
-    this.height -= (this.margin.top + this.margin.bottom);
+    this.width -= this.margin.left + this.margin.right;
+    this.height -= this.margin.top + this.margin.bottom;
 
     // Create x scale.
     this.xLim = [0, 0];
@@ -60,22 +58,22 @@ export class ReturnPlot implements Plot {
       .x(d => this.xScale(d.step))
       .y(d => this.yScale(d.return));
 
-    this.svg = d3.select('#plots')
+    this.svg = d3
+      .select('#plots')
       .append('svg')
       .attr('height', this.height)
       .attr('width', this.width)
       .attr('id', 'return_plot');
-    this.path = this.svg.append('path')
+    this.path = this.svg
+      .append('path')
       .attr('fill', 'none')
       .attr('stroke', 'steelblue')
       .attr('stroke-width', 2);
     this.clear();
     this.xAxis = d3.axisBottom(this.xScale);
     this.yAxis = d3.axisLeft(this.yScale).ticks(5);
-    this.xAxisLabel = this.svg.append('g')
-      .attr('class', 'x axis');
-    this.yAxisLabel = this.svg.append('g')
-      .attr('class', 'y axis');
+    this.xAxisLabel = this.svg.append('g').attr('class', 'x axis');
+    this.yAxisLabel = this.svg.append('g').attr('class', 'y axis');
   }
 
   update(results: Result[]): void {
@@ -84,11 +82,10 @@ export class ReturnPlot implements Plot {
     this.xScale.domain(this.xLim);
     this.yScale.domain(this.yLim);
 
-    this.path.attr('d', this.line(results));  // Probably O(N). Fix this with join() nonsense.
+    this.path.attr('d', this.line(results)); // Probably O(N). Fix this with join() nonsense.
 
     this.yAxisLabel.call(this.yAxis);
     this.xAxisLabel.call(this.xAxis);
-
   }
 
   clear() {
@@ -96,20 +93,19 @@ export class ReturnPlot implements Plot {
     this.yLim = [0, 0];
     this.svg.selectAll('*').remove();
     (document.getElementById('return_plot') as HTMLDivElement).remove();
-    this.svg = d3.select('#plots')
+    this.svg = d3
+      .select('#plots')
       .append('svg')
       .attr('height', this.height)
       .attr('width', this.width)
       .attr('id', 'return_plot');
-    this.path = this.svg.append('path')
+    this.path = this.svg
+      .append('path')
       .attr('fill', 'none')
       .attr('stroke', 'steelblue')
       .attr('stroke-width', 2);
-    this.xAxisLabel = this.svg.append('g')
-      .attr('class', 'x axis');
-    this.yAxisLabel = this.svg.append('g')
-      .attr('class', 'y axis');
-
+    this.xAxisLabel = this.svg.append('g').attr('class', 'x axis');
+    this.yAxisLabel = this.svg.append('g').attr('class', 'y axis');
   }
 
   private updateLimits(result: Result) {

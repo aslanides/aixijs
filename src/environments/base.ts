@@ -1,4 +1,4 @@
-import { Percept } from '../types';
+import {Percept} from '../types';
 
 export interface Environment {
   /* An interface for reinforcement learning environments. */

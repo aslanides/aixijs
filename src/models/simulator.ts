@@ -1,7 +1,6 @@
-import { Environment } from "../environments/base";
-import { Model } from "./base";
-import { Action, Percept } from "../types";
-
+import {Environment} from '../environments/base';
+import {Model} from './base';
+import {Action, Percept} from '../types';
 
 export class Simulator implements Model {
   /* TODO(aslanides): docstring. */
@@ -14,7 +13,7 @@ export class Simulator implements Model {
     this.numActions = environment.numActions;
   }
 
-  update(_: Action, __: Percept) { }
+  update(_: Action, __: Percept) {}
 
   generatePercept(): Percept {
     return this.environment.generatePercept();
@@ -36,9 +35,15 @@ export class Simulator implements Model {
     this.environment.load();
   }
 
-  info(): object { return {}; }
+  info(): object {
+    return {};
+  }
 
-  entropy() {return 0;}
+  entropy() {
+    return 0;
+  }
 
-  infoGain() {return 0;}
+  infoGain() {
+    return 0;
+  }
 }

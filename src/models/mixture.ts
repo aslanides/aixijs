@@ -1,108 +1,109 @@
-import { assert, sum, sample, entropy } from "../utils/util";
-import { Model } from "./base";
-import { Percept, Action } from "../types";
-import { Environment } from "../environments/base";
+import {assert, sum, sample, entropy} from '../utils/util';
+import {Model} from './base';
+import {Percept, Action} from '../types';
+import {Environment} from '../environments/base';
 
 export class BayesMixture implements Model {
-	/* A Bayesian mixture model. */
+  /* A Bayesian mixture model. */
 
-	modelClass: Model[];
-	weights: number[];  // The relative weights over the model/hypothesis class.
-	savedWeights: number[]; // For checkpointing.
-	C: number; // The size of the hypothesis class.
+  modelClass: Model[];
+  weights: number[]; // The relative weights over the model/hypothesis class.
+  savedWeights: number[]; // For checkpointing.
+  C: number; // The size of the hypothesis class.
 
-	numActions: number;
+  numActions: number;
 
-	constructor(modelClass: Model[], weights: number[]) {
-		this.modelClass = [...modelClass];
-		this.weights = [...weights];
-		this.numActions = modelClass[0].numActions;
+  constructor(modelClass: Model[], weights: number[]) {
+    this.modelClass = [...modelClass];
+    this.weights = [...weights];
+    this.numActions = modelClass[0].numActions;
 
-		this.savedWeights = [];
-		this.C = modelClass.length;
-		
-		assert(Math.abs(sum(weights) - 1) < 1e-4, 'Prior is not normalised!');
-	}
+    this.savedWeights = [];
+    this.C = modelClass.length;
 
-	conditionalDistribution(e: Percept): number {
-		let s = 0;
-		for (let i = 0, C = this.C; i < C; i++) {
-			if (this.weights[i] === 0) {
-				continue;
-			}
+    assert(Math.abs(sum(weights) - 1) < 1e-4, 'Prior is not normalised!');
+  }
 
-			s += this.weights[i] * this.modelClass[i].conditionalDistribution(e);
-		}
+  conditionalDistribution(e: Percept): number {
+    let s = 0;
+    for (let i = 0, C = this.C; i < C; i++) {
+      if (this.weights[i] === 0) {
+        continue;
+      }
 
-		assert(s !== 0, `Cromwell violation: xi(${e.obs},${e.rew}) = 0`);
-		return s;
-	}
+      s += this.weights[i] * this.modelClass[i].conditionalDistribution(e);
+    }
 
-	update(a: Action, e: Percept) {
-		/* TODO(aslanides): docstring. */
+    assert(s !== 0, `Cromwell violation: xi(${e.obs},${e.rew}) = 0`);
+    return s;
+  }
 
-		let xi = 0;
-		for (let i = 0, C = this.C; i < C; i++) {
-			if (this.weights[i] === 0) {
-				continue;
-			}
-			this.modelClass[i].update(a, e);
-			
-			// Compute posterior.
-			this.weights[i] = this.weights[i] * this.modelClass[i].conditionalDistribution(e);
-			xi += this.weights[i];
-		}
+  update(a: Action, e: Percept) {
+    /* TODO(aslanides): docstring. */
 
-		assert(xi !== 0, `Cromwell violation: xi(${e.obs},${e.rew}) = 0`);
+    let xi = 0;
+    for (let i = 0, C = this.C; i < C; i++) {
+      if (this.weights[i] === 0) {
+        continue;
+      }
+      this.modelClass[i].update(a, e);
 
-		// Normalise.
-		for (let j = 0; j < this.C; j++) {
-			this.weights[j] /= xi;
-		}
-	}
+      // Compute posterior.
+      this.weights[i] =
+        this.weights[i] * this.modelClass[i].conditionalDistribution(e);
+      xi += this.weights[i];
+    }
 
-	perform(a: Action) {
-		for (let i = 0, C = this.C; i < C; i++) {
-			if (this.weights[i] === 0) {
-				continue;
-			}
+    assert(xi !== 0, `Cromwell violation: xi(${e.obs},${e.rew}) = 0`);
 
-			this.modelClass[i].perform(a);
-		}
-	}
+    // Normalise.
+    for (let j = 0; j < this.C; j++) {
+      this.weights[j] /= xi;
+    }
+  }
 
-	generatePercept(): Percept {
-		const nu = sample(this.weights);
-		return this.modelClass[nu].generatePercept();
-	}
+  perform(a: Action) {
+    for (let i = 0, C = this.C; i < C; i++) {
+      if (this.weights[i] === 0) {
+        continue;
+      }
 
-	entropy() {
-		return entropy(this.weights);
-	}
+      this.modelClass[i].perform(a);
+    }
+  }
 
-	save() {
-		this.savedWeights = [...this.weights];
-		for (let i = 0, C = this.C; i < C; i++) {
-			this.modelClass[i].save();
-		}
-	}
+  generatePercept(): Percept {
+    const nu = sample(this.weights);
+    return this.modelClass[nu].generatePercept();
+  }
 
-	load() {
-		this.weights = [...this.savedWeights];
-		for (let i = 0, C = this.C; i < C; i++) {
-			this.modelClass[i].load();
-		}
-	}
+  entropy() {
+    return entropy(this.weights);
+  }
 
-	get(nu: number): Environment {
-		return this.modelClass[nu];
-	}
+  save() {
+    this.savedWeights = [...this.weights];
+    for (let i = 0, C = this.C; i < C; i++) {
+      this.modelClass[i].save();
+    }
+  }
 
-	infoGain(): number {
-		return entropy(this.savedWeights) - entropy(this.weights);
-	}
+  load() {
+    this.weights = [...this.savedWeights];
+    for (let i = 0, C = this.C; i < C; i++) {
+      this.modelClass[i].load();
+    }
+  }
 
-	info() {
-		return {};
-	}
+  get(nu: number): Environment {
+    return this.modelClass[nu];
+  }
+
+  infoGain(): number {
+    return entropy(this.savedWeights) - entropy(this.weights);
+  }
+
+  info() {
+    return {};
+  }
 }

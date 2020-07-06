@@ -1,4 +1,4 @@
-import { Percept, Action } from '../types';
+import {Percept, Action} from '../types';
 
 export interface Agent {
   /* TODO(aslanides): docstring. */

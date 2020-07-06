@@ -1,7 +1,7 @@
-import { Environment } from './environments/base';
-import { Agent } from './agents/base';
-import { Plot } from './plots/base';
-import { Visualisation } from './visualisations/base';
+import {Environment} from './environments/base';
+import {Agent} from './agents/base';
+import {Plot} from './plots/base';
+import {Visualisation} from './visualisations/base';
 
 // TODO(aslanides): WTF does everything break when these are attributes of Experiment?!
 let CANCELLED = false;
@@ -16,10 +16,12 @@ export class Experiment {
   plots: Plot[] = [];
   visualisations: Visualisation[] = [];
 
-  constructor(agent: Agent,
-              environment: Environment,
-              plots?: Plot[],
-              visualisations?: Visualisation[]) {
+  constructor(
+    agent: Agent,
+    environment: Environment,
+    plots?: Plot[],
+    visualisations?: Visualisation[]
+  ) {
     this.agent = agent;
     this.environment = environment;
     if (plots) this.plots = plots;
@@ -27,7 +29,6 @@ export class Experiment {
   }
 
   run(tMax: number) {
-
     // Some logic.
     if (RUNNING) return;
     CANCELLED = false;
@@ -55,7 +56,7 @@ export class Experiment {
 
       // Book-keeping.
       totalReturn += e.rew;
-      const result = { step, return: totalReturn };
+      const result = {step, return: totalReturn};
       results.push(result);
       step++;
 

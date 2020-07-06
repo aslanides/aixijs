@@ -1,6 +1,6 @@
-import { Agent } from './base';
-import { Percept, Action, Reward } from '../types';
-import { randi } from '../utils/util';
+import {Agent} from './base';
+import {Percept, Action, Reward} from '../types';
+import {randi} from '../utils/util';
 
 export class RandomAgent implements Agent {
   /* A uniform random policy. */
@@ -19,9 +19,5 @@ export class RandomAgent implements Agent {
 
   info(): object {
     return {};
-  }
-
-  utility(e: Percept): Reward {
-    return 0;
   }
 }

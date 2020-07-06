@@ -10,20 +10,26 @@ Specifically, this is a variant of UCT that:
 [1] Veness et al., 2011 - A Monte Carlo AIXI implementation.
 */
 
-
-import * as util from "../utils/util";
-import { Percept, Action, Reward, UtilityFn, DiscountFn, Integer } from "../types";
-import { Model } from "../models/base";
+import * as util from '../utils/util';
+import {
+  Percept,
+  Action,
+  Reward,
+  UtilityFn,
+  DiscountFn,
+  Integer,
+} from '../types';
+import {Model} from '../models/base';
 
 // A reward function combines utility and discount.
 type RewardFn = (e: Percept, dfr: number, t?: number) => Reward;
 
 export interface MCTSOptions {
   // Search configuration.
-  horizon: number;  // Planning horizon in steps for MCTS.
-  samples: number;  // Number of MCTS rollouts to do per action.
-  ucb: number;  // UCB constant for exploration within the search tree.
-  timeout?: number;  // Optional timeout (in seconds) for MCTS rollouts.
+  horizon: number; // Planning horizon in steps for MCTS.
+  samples: number; // Number of MCTS rollouts to do per action.
+  ucb: number; // UCB constant for exploration within the search tree.
+  timeout?: number; // Optional timeout (in seconds) for MCTS rollouts.
 
   // Environment properties.
   maxReward: number;
@@ -47,7 +53,7 @@ export class ExpectimaxTree {
   sampled = false;
   totalSamples = 0;
 
-  // 
+  //
   root: DecisionNode;
   rewardFn: RewardFn;
 
@@ -63,7 +69,6 @@ export class ExpectimaxTree {
     discountFn: DiscountFn,
     t = 0
   ) {
-
     // MCTS options.
     this.model = model;
     this.horizon = options.horizon;
@@ -77,7 +82,8 @@ export class ExpectimaxTree {
     this.minReward = options.minReward;
 
     // Agent reward function.
-    this.rewardFn = (e: Percept, dfr: Integer, t?: Integer) => discountFn(dfr, t) * utilityFn(e);
+    this.rewardFn = (e: Percept, dfr: Integer, t?: Integer) =>
+      discountFn(dfr, t) * utilityFn(e);
 
     this.root = this.reset();
   }
@@ -117,7 +123,7 @@ export class ExpectimaxTree {
       const child = this.root.getChild(a);
       values.push(child ? child.mean : 0);
     }
-    
+
     const accessor = (n: DecisionNode, a: Action) => {
       const child = n.getChild(a);
       return child ? child.mean : 0;
@@ -161,7 +167,6 @@ export class ExpectimaxTree {
 
     return reward;
   }
-
 
   private selectAction(node: DecisionNode, dfr: number): Action {
     let a;
@@ -217,7 +222,9 @@ export class ExpectimaxTree {
         node.addChild(e);
       }
 
-      reward = this.rewardFn(e, dfr) + this.sample1(node.getChild(e) as DecisionNode, dfr + 1);
+      reward =
+        this.rewardFn(e, dfr) +
+        this.sample1(node.getChild(e) as DecisionNode, dfr + 1);
     }
 
     node.mean = (1 / (node.visits + 1)) * (reward + node.visits * node.mean);
@@ -229,8 +236,8 @@ export class ExpectimaxTree {
 class DecisionNode {
   /* A decision node for MCTS. */
 
-  visits: number;  // Visit count.
-  mean: number;  // Mean value.
+  visits: number; // Visit count.
+  mean: number; // Mean value.
   e?: Percept;
   children: ChanceNode[]; // Child nodes.
   nChildren: number;
@@ -257,15 +264,14 @@ class DecisionNode {
   getChild(a: Action): ChanceNode {
     return this.children[a];
   }
-
 }
 
 class ChanceNode {
   /* A chance node for MCTS. */
 
-  visits: number;  // Visit count.
-  mean: number;  // Mean value.
-  action: Action;   // The action taken to get here.
+  visits: number; // Visit count.
+  mean: number; // Mean value.
+  action: Action; // The action taken to get here.
   children: Map<Action, DecisionNode>;
   rewardRange: number;
   numActions: number;

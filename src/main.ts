@@ -1,12 +1,11 @@
 import * as gridworld from './environments/gridworld';
-import { RandomAgent } from './agents/random';
-import { Experiment } from './experiment';
-import { GridVisualisation } from './visualisations/gridvis';
-import { ReturnPlot } from './plots/returns';
-import { BayesAgent } from './agents/bayes';
-import { NoDiscount } from './utils/discount';
-import { Percept } from './types';
-
+import {RandomAgent} from './agents/random';
+import {Experiment} from './experiment';
+import {GridVisualisation} from './visualisations/gridvis';
+import {ReturnPlot} from './plots/returns';
+import {BayesAgent} from './agents/bayes';
+import {NoDiscount} from './utils/discount';
+import {Percept} from './types';
 
 interface Options {
   [key: string]: unknown;
@@ -15,7 +14,7 @@ interface Options {
 const environmentOptions = {
   statePercepts: true,
   size: 10,
-  goals: [{ freq: 0.5 }],
+  goals: [{freq: 0.5}],
 };
 
 const experimentOptions = {
@@ -41,18 +40,30 @@ function newExperiment(): Experiment {
     horizon: 6,
     samples: 100,
     ucb: 1,
-    
+
     maxReward: environment.maxReward,
     minReward: environment.minReward,
     numActions: environment.numActions,
   };
 
-  const agent = new BayesAgent(options, model, (e: Percept) => e.rew, NoDiscount());
+  const agent = new BayesAgent(
+    options,
+    model,
+    (e: Percept) => e.rew,
+    NoDiscount()
+  );
 
   const plot = new ReturnPlot();
-  const visualisation = new GridVisualisation(environment as gridworld.Gridworld);
+  const visualisation = new GridVisualisation(
+    environment as gridworld.Gridworld
+  );
 
-  const experiment = new Experiment(agent, environment, [plot], [visualisation]);
+  const experiment = new Experiment(
+    agent,
+    environment,
+    [plot],
+    [visualisation]
+  );
 
   return experiment;
 }
@@ -67,7 +78,7 @@ makeUIOptions(agentOptions, 'Agent Options');
 
 function makeButtons() {
   /** TODO(aslanides): docstring. */
-  
+
   // Run button.
   const runButton = document.getElementById('run') as HTMLButtonElement;
   runButton.onclick = () => experiment.run(experimentOptions.numSteps);
@@ -76,7 +87,6 @@ function makeButtons() {
   const stopButton = document.getElementById('stop') as HTMLButtonElement;
   stopButton.onclick = experiment.stop;
 }
-
 
 function makeUIOptions(options: Options, name: string) {
   /** TODO(aslanides): docstring. */
@@ -98,7 +108,7 @@ function makeUIOptions(options: Options, name: string) {
 
   // Add inputs for fields.
   for (const [field, value] of Object.entries(options)) {
-    const dataType = typeof(value);
+    const dataType = typeof value;
 
     if (dataType !== 'number' && dataType !== 'boolean') {
       console.log(`Warning: not implemented for datatype: ${dataType}.`);
@@ -112,11 +122,11 @@ function makeUIOptions(options: Options, name: string) {
 
     // Add input.
     const input = document.createElement('input');
-    if (typeof(value) === 'boolean') {
+    if (typeof value === 'boolean') {
       input.type = 'checkbox';
       input.checked = value;
     } else {
-      input.type = dataType;  // number
+      input.type = dataType; // number
       input.value = `${value}`;
     }
     input.name = field;
@@ -124,13 +134,12 @@ function makeUIOptions(options: Options, name: string) {
     input.addEventListener('change', (_: Event) => {
       // Whenever the user changes an option, we want to create a new experiment.
       // Update the options.
-      options[field] = (dataType === 'number' ? +input.value : input.checked);
+      options[field] = dataType === 'number' ? +input.value : input.checked;
       console.log(options);
 
       // Create a new Experiment.
       experiment = newExperiment();
-
     });
     section.appendChild(input);
   }
-}  
+}

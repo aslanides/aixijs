@@ -6,11 +6,10 @@
   "scripts": {
     "check": "gts check",
     "clean": "gts clean",
-    "compile": "tsc",
     "fix": "gts fix",
-    "prepare": "npm run compile",
+    "compile": "tsc",
     "pretest": "npm run compile",
-    "posttest": "npm run check",
+    "test": "jest",
     "serve": "parcel main.html"
   },
   "repository": {

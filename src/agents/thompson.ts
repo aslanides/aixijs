@@ -1,46 +1,46 @@
-import { BayesAgent } from "./bayes";
-import { MCTSOptions } from "../utils/mcts";
-import { sample } from "../utils/util";
-import { BayesMixture } from "../models/mixture";
-import { Action, Percept } from "../types";
-import { NoDiscount } from "../utils/discount";
-import { Model } from "../models/base";
+import {BayesAgent} from './bayes';
+import {MCTSOptions} from '../utils/mcts';
+import {sample} from '../utils/util';
+import {BayesMixture} from '../models/mixture';
+import {Action, Percept} from '../types';
+import {NoDiscount} from '../utils/discount';
+import {Model} from '../models/base';
 
 export class ThompsonAgent extends BayesAgent {
-	rho: Model;
-	model: BayesMixture;
-	
-	horizon: number;
-	t = 0;  // Lifetime.
+  rho: Model;
+  model: BayesMixture;
 
-	constructor(options: MCTSOptions, model: BayesMixture, horizon: number) {
-		super(options, model, (e: Percept) => e.rew, NoDiscount());
-		this.rho = this.thompsonSample();
-		this.horizon = horizon;
-		this.model = model;
-	}
+  horizon: number;
+  t = 0; // Lifetime.
 
-	thompsonSample(): Model {
-		const idx = sample(this.model.weights);
-		const rho = this.model.modelClass[idx];
-		this.planner.model =rho;
-		this.planner.reset();
-		return rho;
-	}
+  constructor(options: MCTSOptions, model: BayesMixture, horizon: number) {
+    super(options, model, (e: Percept) => e.rew, NoDiscount());
+    this.rho = this.thompsonSample();
+    this.horizon = horizon;
+    this.model = model;
+  }
 
-	update(a: Action, e: Percept) {
-		super.update(a, e);
-		this.rho.perform(a);
-		this.t++;
-	}
+  thompsonSample(): Model {
+    const idx = sample(this.model.weights);
+    const rho = this.model.modelClass[idx];
+    this.planner.model = rho;
+    this.planner.reset();
+    return rho;
+  }
 
-	selectAction(e: Percept): Action {
-		if (this.t % this.horizon === 0) {
-			this.rho = this.thompsonSample();
-		} else {
-			this.planner.reset();
-		}
+  update(a: Action, e: Percept) {
+    super.update(a, e);
+    this.rho.perform(a);
+    this.t++;
+  }
 
-		return this.planner.bestAction();
-	}
+  selectAction(e: Percept): Action {
+    if (this.t % this.horizon === 0) {
+      this.rho = this.thompsonSample();
+    } else {
+      this.planner.reset();
+    }
+
+    return this.planner.bestAction();
+  }
 }
