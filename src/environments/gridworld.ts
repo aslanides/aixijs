@@ -7,17 +7,11 @@ import {Model} from '../models/base';
 import {Simulator} from '../models/simulator';
 
 interface GridworldOptions {
-  map?: string[][]; // Map to use, if any.
-
+  map: string[][]; // Map to use, if any. 
   statePercepts: boolean; // Whether to use tabular percepts (MDP) or POMDP.
 
-  size: number; // Gridworld size
-
-  initial?: {x: number; y: number}; // Optional; initial state of agent.
-
   goals: Array<{x?: number; y?: number; freq: number}>;
-  trapProb?: number; // Default prob that any given tile is a trap.
-  wallProb?: number; // Default prob that any given tile is a wall.
+  initialState?: {x: number; y: number}; // Optional; initial state of agent.
 }
 
 export class Gridworld implements Environment {
@@ -31,9 +25,9 @@ export class Gridworld implements Environment {
   // Gridworld state.
   grid: Tile[][];
   pos: Tile;
-  reward: Reward;
-  hitWall = false;
-  state: {x: number; y: number; reward: Reward}; // Saved state.
+  private reward: Reward;
+  private hitWall = false;
+  private state: {x: number; y: number; reward: Reward}; // Saved state.
 
   // Configuration.
   size: number;
@@ -80,24 +74,25 @@ export class Gridworld implements Environment {
 
     // Environment configuration.
     this.options = util.deepCopy(options);
-    this.size = options.size;
-    util.assert(options.size < 50, 'Not recommended to have size >= 50.');
-
+    
     // State.
     this.reward = -1; // fix name conflict
     this.visitedStates = 0;
-
+    
     // Set up metadata (reward bounds, observation type, num actions).
     this.statePercepts = options.statePercepts;
     this.numActions = Gridworld.actions.length;
     this.minReward = Gridworld.rewards.wall + Gridworld.rewards.move;
     this.maxReward = Gridworld.rewards.chocolate + Gridworld.rewards.move;
-
+    
     // Build grid.
     this.grid = [];
-    const map = options.map as string[][];
+    this.size = options.map.length
+    util.assert(this.size < 50, 'Not recommended to have size >= 50.');
+    const map = options.map;
     for (let i = 0; i < this.size; i++) {
       this.grid[i] = new Array<Tile>(this.size);
+      util.assert(map.length === map[i].length)
       for (let j = 0; j < this.size; j++) {
         const tileType = map[j][i];
         this.grid[i][j] = newTile(i, j, tileType);
@@ -118,8 +113,8 @@ export class Gridworld implements Environment {
     this.generateConnexions();
 
     // Set initial position.
-    if (options.initial) {
-      this.pos = this.grid[options.initial.x][options.initial.y];
+    if (options.initialState) {
+      this.pos = this.grid[options.initialState.x][options.initialState.y];
     } else {
       this.pos = this.grid[0][0];
     }
@@ -307,17 +302,29 @@ export class Gridworld implements Environment {
   }
 }
 
-export function generateRandom(options: GridworldOptions): Gridworld {
-  const opt = util.deepCopy(options);
-  const size = options.size;
+interface RandomOptions {
+  trapProb?: number; // Default prob that any given tile is a trap.
+  wallProb?: number; // Default prob that any given tile is a wall.
+
+  size: number; // Size of gridworld (when generating random).
+  statePercepts: boolean;
+}
+
+
+export function generateRandom(options: RandomOptions): Gridworld {
+  const size = options.size as number;
   const trapProb = options.trapProb || 0;
   const wallProb = options.wallProb || 0.4;
 
-  opt.map = [];
+  let opt = {
+      map: new Array<string[]>(size),
+      goals: new Array<{x: number, y: number, freq: number}>(),
+      statePercepts: options.statePercepts,
+  }
 
   // Generate a random maze.
   for (let i = 0; i < size; i++) {
-    opt.map[i] = new Array(size);
+    opt.map[i] = new Array<string>(size);
     for (let j = 0; j < size; j++) {
       // Always make the top left corner empty.
       if (i === 0 && j === 0) {
@@ -357,15 +364,21 @@ export function makeModel(env: Gridworld, modelType: string): Model {
   const modelClass = [];
   let modelWeights = [];
   const options = util.deepCopy(env.options);
+  const size = env.size as number;
+
+  const opt = {
+    size,
+    statePercepts: env.statePercepts,
+  }
 
   if (modelType === 'mu') {
     modelClass.push(new Gridworld(options));
     modelWeights = [1];
   } else if (modelType === 'maze') {
-    for (let n = 4; n < options.size; n++) {
-      options.size = n;
+    for (let n = 4; n < size; n++) {
+      opt.size = n;
       for (let k = 0; k < n; k++) {
-        modelClass.push(generateRandom(options));
+        modelClass.push(generateRandom(opt));
         modelWeights.push(1);
       }
     }
@@ -373,11 +386,11 @@ export function makeModel(env: Gridworld, modelType: string): Model {
     modelClass.push(new Gridworld(options));
     modelWeights.push(1);
   } else {
-    const C = options.size * options.size;
+    const C = size * size;
     modelWeights = [...util.zeros(C)];
 
-    for (let i = 0; i < options.size; i++) {
-      for (let j = 0; j < options.size; j++) {
+    for (let i = 0; i < size; i++) {
+      for (let j = 0; j < size; j++) {
         if (modelType === 'goal') {
           options.goals = [
             {
@@ -387,14 +400,14 @@ export function makeModel(env: Gridworld, modelType: string): Model {
             },
           ];
         } else if (modelType === 'pos') {
-          options.initial = {x: j, y: i};
+          options.initialState = {x: j, y: i};
         }
 
         const t = env.grid[j][i];
         if (t.constructor === Wall || !t.expanded) {
-          modelWeights[i * options.size + j] = 0;
+          modelWeights[i * size + j] = 0;
         } else {
-          modelWeights[i * options.size + j] = 1 / C; // default uniform
+          modelWeights[i * size + j] = 1 / C; // default uniform
         }
 
         const m = new Gridworld(options);
@@ -520,14 +533,13 @@ export class SelfModificationTile extends Tile {
 }
 
 export class NoiseTile extends Tile {
-  numObs = Math.pow(2, 2);
   prob: number;
   rew = Gridworld.rewards.empty;
-  constructor(x: number, y: number) {
+  constructor(x: number, y: number, numObs=4) {
     super(x, y);
-    this.prob = 1 / this.numObs;
+    this.prob = 1 / numObs;
     this.dynamics = () => {
-      this.obs = util.randi(0, this.numObs);
+      this.obs = util.randi(0, numObs);
     };
   }
 }

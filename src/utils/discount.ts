@@ -1,5 +1,5 @@
 import * as util from './util';
-import {DiscountFn} from '../types';
+import { DiscountFn } from '../types';
 
 export function NoDiscount(): DiscountFn {
   return (_: number) => 1;
@@ -30,18 +30,15 @@ export function CustomDiscount(discounts: number[]): DiscountFn {
   return (dfr: number) => discounts[dfr];
 }
 
-export function MatrixDiscount(params: {
-  discounts: Array<(x: number) => number>;
-  discountChanges: number[];
-}): DiscountFn {
-  const discounts = util.arrayCopy(params.discounts);
-  const times = util.arrayCopy(params.discountChanges);
+export function MatrixDiscount(discounts: Array<(t: number) => number>,
+  discountChanges: number[]
+): DiscountFn {
   let idx = 0;
   let current = discounts[idx];
   idx++;
 
   return (dfr: number, t?: number) => {
-    if ((t || 0) === times[idx]) {
+    if ((t || 0) === discountChanges[idx]) {
       current = discounts[idx];
       idx++;
     }

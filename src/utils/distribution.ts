@@ -80,7 +80,6 @@ export class Normal implements Distribution {
     );
   }
 
-  // TODO(aslanides): Fix type annotation here.
   data(numSamples = 10000): Array<{x: number; y: number}> {
     // Generates a bunch of samples.
     const xmin = this.mu - 4 * this.sigma;
@@ -103,6 +102,7 @@ function factorial(n: number): number {
 
 export class Beta implements Distribution {
   // Standard Beta distribution B(alpha, beta).
+
   alpha: number;
   beta: number;
 
