@@ -10,7 +10,7 @@ interface GridworldOptions {
   map: string[][]; // Map to use, if any. 
   statePercepts: boolean; // Whether to use tabular percepts (MDP) or POMDP.
 
-  goals: Array<{x?: number; y?: number; freq: number}>;
+  goals: Array<{x: number; y: number; freq: number}>;
   initialState?: {x: number; y: number}; // Optional; initial state of agent.
 }
 
@@ -87,12 +87,12 @@ export class Gridworld implements Environment {
     
     // Build grid.
     this.grid = [];
-    this.size = options.map.length
+    this.size = options.map.length;
     util.assert(this.size < 50, 'Not recommended to have size >= 50.');
     const map = options.map;
     for (let i = 0; i < this.size; i++) {
       this.grid[i] = new Array<Tile>(this.size);
-      util.assert(map.length === map[i].length)
+      util.assert(map.length === map[i].length);
       for (let j = 0; j < this.size; j++) {
         const tileType = map[j][i];
         this.grid[i][j] = newTile(i, j, tileType);
@@ -102,10 +102,8 @@ export class Gridworld implements Environment {
     // Construct goal tiles.
     this.goals = [];
     for (const goal of options.goals) {
-      const goalX = goal.x as number;
-      const goalY = goal.y as number;
-      const g = new Dispenser(goalX, goalY, goal.freq);
-      this.grid[goalX][goalY] = g;
+      const g = new Dispenser(goal.x, goal.y, goal.freq);
+      this.grid[goal.x][goal.y] = g;
       this.goals.push(g);
     }
 
@@ -306,6 +304,7 @@ interface RandomOptions {
   trapProb?: number; // Default prob that any given tile is a trap.
   wallProb?: number; // Default prob that any given tile is a wall.
 
+  goalFreqs: number[];
   size: number; // Size of gridworld (when generating random).
   statePercepts: boolean;
 }
@@ -316,11 +315,11 @@ export function generateRandom(options: RandomOptions): Gridworld {
   const trapProb = options.trapProb || 0;
   const wallProb = options.wallProb || 0.4;
 
-  let opt = {
+  const opt = {
       map: new Array<string[]>(size),
-      goals: new Array<{x: number, y: number, freq: number}>(),
       statePercepts: options.statePercepts,
-  }
+      goals: new Array<{x: number, y: number, freq: number}>(),
+  };
 
   // Generate a random maze.
   for (let i = 0; i < size; i++) {
@@ -344,23 +343,32 @@ export function generateRandom(options: RandomOptions): Gridworld {
   }
 
   // Generate random goal positions.
-  for (const goal of opt.goals) {
-    goal.x = util.randi(size / 4, size);
-    goal.y = util.randi(size / 4, size);
-    opt.map[goal.y][goal.x] = Gridworld.mapSymbols.chocolate;
+  for (const freq of options.goalFreqs) {
+    let goal = {
+      x: util.randi(size / 4, size),
+      y: util.randi(size / 4, size),
+      freq: freq,
+    }
+    opt.goals.push(goal)
+    console.log(`Adding goal: ${goal}.`);
   }
+
+  opt.map[0][0] = 'F';
 
   // Generate environment.
   const env = new Gridworld(opt);
   env.validate();
   if (!env.valid) {
+    // TODO(aslanides): Do something a bit more sophisticated here.
+    console.log('Invalid environment; retrying...');
+
     return generateRandom(options);
   }
 
   return env;
 }
 
-export function makeModel(env: Gridworld, modelType: string): Model {
+export function makeModel(env: Gridworld, modelType: 'mu'|'goal'|'pos'): Model {
   const modelClass = [];
   let modelWeights = [];
   const options = util.deepCopy(env.options);
@@ -369,22 +377,11 @@ export function makeModel(env: Gridworld, modelType: string): Model {
   const opt = {
     size,
     statePercepts: env.statePercepts,
-  }
+  };
 
   if (modelType === 'mu') {
     modelClass.push(new Gridworld(options));
     modelWeights = [1];
-  } else if (modelType === 'maze') {
-    for (let n = 4; n < size; n++) {
-      opt.size = n;
-      for (let k = 0; k < n; k++) {
-        modelClass.push(generateRandom(opt));
-        modelWeights.push(1);
-      }
-    }
-
-    modelClass.push(new Gridworld(options));
-    modelWeights.push(1);
   } else {
     const C = size * size;
     modelWeights = [...util.zeros(C)];

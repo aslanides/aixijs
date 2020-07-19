@@ -14,7 +14,7 @@ interface Options {
 const environmentOptions = {
   statePercepts: true,
   size: 10,
-  goals: [{freq: 0.5}],
+  goalFreqs: [0.5],
 };
 
 const experimentOptions = {
@@ -34,7 +34,7 @@ function newExperiment(): Experiment {
   const environment = gridworld.generateRandom(environmentOptions);
   // const agent = new RandomAgent(environment.numActions);
   // const agent = new QLearning(environment.numActions, agentOptions) // NOT WORKING
-  const model = gridworld.makeModel(environment, 'foo');
+  const model = gridworld.makeModel(environment, 'mu');
 
   const options = {
     horizon: 6,

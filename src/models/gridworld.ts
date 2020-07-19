@@ -9,7 +9,7 @@ import {
   Wall,
   Trap,
 } from '../environments/gridworld';
-import {Dirichlet, Distribution} from '../utils/distribution';
+import {Dirichlet} from '../utils/distribution';
 
 export class DirichletGrid implements Model {
   /* A Dirichlet model for a gridworld. */
