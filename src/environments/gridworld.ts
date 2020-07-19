@@ -344,12 +344,12 @@ export function generateRandom(options: RandomOptions): Gridworld {
 
   // Generate random goal positions.
   for (const freq of options.goalFreqs) {
-    let goal = {
+    const goal = {
       x: util.randi(size / 4, size),
       y: util.randi(size / 4, size),
-      freq: freq,
-    }
-    opt.goals.push(goal)
+      freq,
+    };
+    opt.goals.push(goal);
     console.log(`Adding goal: ${goal}.`);
   }
 
